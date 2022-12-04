@@ -15,9 +15,14 @@ export const useSimpleMenuStore = defineStore("simpleMenu", {
       },
       {
         icon: "SettingsIcon",
-        pageName: "top-menu-satuan",
+        pageName: "simple-menu-satuan",
         title: "Satuan",
-      }
+      },
+      {
+        icon: "ChevronsUpIcon",
+        pageName: "simple-menu-barang-keluar",
+        title: "Barang Keluar",
+      },
     ],
   }),
 });

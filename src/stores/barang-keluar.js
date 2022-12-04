@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
 import { request } from "../utils/api";
 
-export const useSatuanStore = defineStore({
-    id: "satuan",
+export const useBarangKeluarStore = defineStore({
+    id: "barang-keluar",
     state: () => ({
         rawItems: []
     }),
@@ -11,10 +11,11 @@ export const useSatuanStore = defineStore({
     },
     actions: {
         async readItem() {
-            const data = await request.get('satuan')
+            const data = await request.get('penjualan')
                     if (data.status >= 200 && data.status < 300) {
-                        this.rawItems = /*this.rawItems.concat(res.data.rows) res.data.rows*/ data.data
-                        //console.log('rawItems', this.rawItems)
+                        this.rawItems = /*this.rawItems.concat(res.data.rows) res.data.rows*/ data.data.penjualan
+                        console.log('data', data.data)
+                        console.log('rawItems', this.rawItems)
                         // return this.rawItems
                     }
         },
@@ -22,7 +23,7 @@ export const useSatuanStore = defineStore({
             const id_satuan = Date.now()
             this.rawItems.push({ id_satuan, nama_satuan, keterangan_satuan });
             try {
-                const data = await request.post('satuan/add', { nama_satuan, keterangan_satuan })
+                const data = await request.post('penjualan/add', { nama_satuan, keterangan_satuan })
 
                 this.rawItems = this.rawItems.map((item) => {
                     if (item.id_satuan === id_satuan) {
@@ -36,7 +37,7 @@ export const useSatuanStore = defineStore({
         },
         removeItem(id_satuan) {
             this.rawItems = this.rawItems.filter((item) => item.id_satuan !== id_satuan);
-            request.get(`satuan/delete/${id_satuan}`)
+            request.get(`penjualan/delete/${id_satuan}`)
                 .then((res) => {
                     if (res.status >= 200 && res.status < 300) {
                         // alert(`Sukses Hapus Data ${id_satuan}`)
@@ -44,17 +45,17 @@ export const useSatuanStore = defineStore({
                 })
                 .catch(e => console.error(e))
         },
-        updateItem(satuan) {
-            let id_satuan = satuan.id_satuan
-            let nama_satuan = satuan.nama_satuan
-            let keterangan_satuan = satuan.keterangan_satuan
+        updateItem(penjualan) {
+            let id_satuan = penjualan.id_satuan
+            let nama_satuan = penjualan.nama_satuan
+            let keterangan_satuan = penjualan.keterangan_satuan
             this.rawItems = this.rawItems.map((item) => {
                 if (item.id_satuan === id_satuan) {
-                    return satuan
+                    return penjualan
                 }
                 return item
             })
-            request.post(`satuan/edit/${id_satuan}`, { nama_satuan, keterangan_satuan })
+            request.post(`penjualan/edit/${id_satuan}`, { nama_satuan, keterangan_satuan })
         }
     }
 })

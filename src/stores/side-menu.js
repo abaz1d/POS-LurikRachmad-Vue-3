@@ -15,9 +15,14 @@ export const useSideMenuStore = defineStore("sideMenu", {
       },
       {
         icon: "SettingsIcon",
-        pageName: "top-menu-satuan",
+        pageName: "side-menu-satuan",
         title: "Satuan",
-      }
+      },
+      {
+        icon: "ChevronsUpIcon",
+        pageName: "side-menu-barang-keluar",
+        title: "Barang Keluar",
+      },
     ],
   }),
 });

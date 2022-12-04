@@ -17,7 +17,12 @@ export const useTopMenuStore = defineStore("topMenu", {
         icon: "SettingsIcon",
         pageName: "top-menu-satuan",
         title: "Satuan",
-      }
+      },
+      {
+        icon: "ChevronsUpIcon",
+        pageName: "top-menu-barang-keluar",
+        title: "Barang Keluar",
+      },
     ],
   }),
 });

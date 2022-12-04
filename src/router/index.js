@@ -5,6 +5,7 @@ import TopMenu from "../layouts/top-menu/Main.vue";
 import Page1 from "../views/page-1/Main.vue";
 import Page2 from "../views/page-2/Main.vue";
 import Satuan from "../views/satuan/Main.vue";
+import BarangKeluar from "../views/BarangKeluar/Main.vue"
 
 const routes = [
   {
@@ -25,6 +26,11 @@ const routes = [
         path: "satuan",
         name: "side-menu-satuan",
         component: Satuan,
+      },
+      {
+        path: "barang-keluar",
+        name: "side-menu-barang-keluar",
+        component: BarangKeluar,
       }
     ],
   },
@@ -42,6 +48,16 @@ const routes = [
         name: "simple-menu-page-2",
         component: Page2,
       },
+      {
+        path: "satuan",
+        name: "simple-menu-satuan",
+        component: Satuan,
+      },
+      {
+        path: "barang-keluar",
+        name: "simple-menu-barang-keluar",
+        component: BarangKeluar,
+      }
     ],
   },
   {
@@ -62,6 +78,11 @@ const routes = [
         path: "satuan",
         name: "top-menu-satuan",
         component: Satuan,
+      },
+      {
+        path: "barang-keluar",
+        name: "top-menu-barang-keluar",
+        component: BarangKeluar,
       }
 
     ],
