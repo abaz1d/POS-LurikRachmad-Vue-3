@@ -2,10 +2,11 @@ import { createRouter, createWebHistory } from "vue-router";
 import SideMenu from "../layouts/side-menu/Main.vue";
 import SimpleMenu from "../layouts/simple-menu/Main.vue";
 import TopMenu from "../layouts/top-menu/Main.vue";
-import Page1 from "../views/page-1/Main.vue";
+import Dashboard from "../views/dashboard/Main.vue";
 import Page2 from "../views/page-2/Main.vue";
 import Satuan from "../views/satuan/Main.vue";
 import BarangKeluar from "../views/BarangKeluar/Main.vue"
+import Barang from "../views/barang/Main.vue"
 
 const routes = [
   {
@@ -13,9 +14,9 @@ const routes = [
     component: SideMenu,
     children: [
       {
-        path: "page-1",
+        path: "dashboard",
         name: "side-menu-dashboard",
-        component: Page1,
+        component: Dashboard,
       },
       {
         path: "page-2",
@@ -31,6 +32,11 @@ const routes = [
         path: "barang-keluar",
         name: "side-menu-barang-keluar",
         component: BarangKeluar,
+      },
+      {
+        path: "barang",
+        name: "side-menu-barang",
+        component: Barang,
       }
     ],
   },
@@ -39,9 +45,9 @@ const routes = [
     component: SimpleMenu,
     children: [
       {
-        path: "page-1",
+        path: "dashboard",
         name: "simple-menu-dashboard",
-        component: Page1,
+        component: Dashboard,
       },
       {
         path: "page-2",
@@ -57,6 +63,11 @@ const routes = [
         path: "barang-keluar",
         name: "simple-menu-barang-keluar",
         component: BarangKeluar,
+      },
+      {
+        path: "barang",
+        name: "simple-menu-barang",
+        component: Barang,
       }
     ],
   },
@@ -67,7 +78,7 @@ const routes = [
       {
         path: "/",
         name: "top-menu-dashboard",
-        component: Page1,
+        component: Dashboard,
       },
       {
         path: "page-2",
@@ -83,6 +94,11 @@ const routes = [
         path: "barang-keluar",
         name: "top-menu-barang-keluar",
         component: BarangKeluar,
+      },
+      {
+        path: "barang",
+        name: "top-menu-barang",
+        component: Barang,
       }
 
     ],

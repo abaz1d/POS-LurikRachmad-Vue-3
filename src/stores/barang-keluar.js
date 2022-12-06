@@ -13,9 +13,9 @@ export const useBarangKeluarStore = defineStore({
         async readItem() {
             const data = await request.get('penjualan')
                     if (data.status >= 200 && data.status < 300) {
-                        this.rawItems = /*this.rawItems.concat(res.data.rows) res.data.rows*/ data.data.penjualan
-                        console.log('data', data.data)
-                        console.log('rawItems', this.rawItems)
+                        this.rawItems = data.data.penjualan
+                        // console.log('data', data.data)
+                        // console.log('rawItems', this.rawItems)
                         // return this.rawItems
                     }
         },

@@ -66,6 +66,7 @@ export default {
   methods: {
     renderQrScanner() {
       this.$refs.qrScanner.renderQrScanner()
+      // console.log("qrScanner", this.$refs)
     },
    closeQrScanner() {
       this.$refs.qrScanner.closeQrScanner()

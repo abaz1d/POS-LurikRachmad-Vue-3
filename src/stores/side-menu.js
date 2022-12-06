@@ -23,6 +23,11 @@ export const useSideMenuStore = defineStore("sideMenu", {
         pageName: "side-menu-barang-keluar",
         title: "Barang Keluar",
       },
+      {
+        icon: "BoxIcon",
+        pageName: "side-menu-barang",
+        title: "Barang",
+      }
     ],
   }),
 });

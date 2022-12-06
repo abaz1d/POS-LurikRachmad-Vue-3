@@ -23,6 +23,11 @@ export const useSimpleMenuStore = defineStore("simpleMenu", {
         pageName: "simple-menu-barang-keluar",
         title: "Barang Keluar",
       },
+      {
+        icon: "BoxIcon",
+        pageName: "simple-menu-barang",
+        title: "Barang",
+      }
     ],
   }),
 });

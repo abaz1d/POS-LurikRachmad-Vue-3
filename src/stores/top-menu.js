@@ -23,6 +23,11 @@ export const useTopMenuStore = defineStore("topMenu", {
         pageName: "top-menu-barang-keluar",
         title: "Barang Keluar",
       },
+      {
+        icon: "BoxIcon",
+        pageName: "top-menu-barang",
+        title: "Barang",
+      }
     ],
   }),
 });

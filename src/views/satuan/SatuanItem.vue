@@ -35,7 +35,6 @@
 
 <script>
 import { useSatuanStore } from "../../stores/satuan"
-import { ref } from "vue"
 
 export default {
   setup() {
@@ -43,6 +42,7 @@ export default {
 
     return { Satuan }
   },
+  emits: ["openModal"],
   props: {
     satuan: {
       type: Object,
