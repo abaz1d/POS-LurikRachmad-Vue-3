@@ -173,6 +173,7 @@ INNER JOIN gudang gud ON gud.id_gudang = var.id_gudang WHERE id_varian = $1;`, [
       gambar = req.files.gambar;
       const filename = `A${Date.now()}-${gambar.name}`
       uploadPath = path.join(__dirname, '/../public', 'gambar', filename);
+      //uploadPath = path.join(__dirname, '..', 'public, 'gambar', filename);
       // Use the mv() method to place the file somewhere on your server
       gambar.mv(uploadPath, function (err) {
         if (err)

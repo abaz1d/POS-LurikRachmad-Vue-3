@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import qrcode from './QrCode.vue'
+import qrcode from '../../components/qrcode/QrCode.vue'
 import { ref } from "vue";
 import { useSatuanStore } from "../../stores/satuan"
 
