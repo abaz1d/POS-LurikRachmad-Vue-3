@@ -6,7 +6,7 @@ import globalComponents from "./global-components";
 import utils from "./utils";
 import "./assets/css/app.css";
 
-const app = createApp(App).use(router).use(createPinia());
+const app = createApp(App).use(router).use(createPinia())
 
 globalComponents(app);
 utils(app);

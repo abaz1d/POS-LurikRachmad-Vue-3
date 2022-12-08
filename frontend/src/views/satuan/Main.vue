@@ -157,6 +157,7 @@ export default {
                 this.Satuan.addItem(inputNamaSatuan.value, inputKeteranganSatuan.value)
                 inputNamaSatuan.value = ''
                 inputKeteranganSatuan.value = ''
+                this.addModal = false
                 
             } catch (error) {
                 alert('Gagal Tambah Data', error)

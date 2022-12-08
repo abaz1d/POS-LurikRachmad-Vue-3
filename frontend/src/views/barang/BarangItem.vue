@@ -1,7 +1,9 @@
 <template>
     <tr style="margin: -50px;">
 
-        <td  @click="varianShow(e, barang.id_barang)" style="cursor: pointer;" class="text-left w-40 mr-0">{{ barang.id_barang }}</td>
+        <td @click="varianShow(e, barang.id_barang)" style="cursor: pointer;" class="text-left w-40 mr-0">{{
+                barang.id_barang
+        }}</td>
         <td v-if="isEdit">
             <input class="form-control flex-1" type="text" v-model="namaBarang" />
         </td>
@@ -9,7 +11,7 @@
         <td class="table-report__action w-56" v-if="isEdit">
             <div class="flex justify-center items-center">
                 <button class="flex items-center mr-3 text-primary" type="button"
-                    @click="updateSatuan(barang.id_barang)">
+                    @click="updateBarang(barang.id_barang)">
                     <SaveIcon class="w-4 h-4 mr-1" /> Save
                 </button>
                 <button class="flex items-center text-danger" type="button" @click="isEdit = false">
@@ -19,7 +21,7 @@
         </td>
         <td class="table-report__action w-56" v-else>
             <div class="flex justify-center items-center">
-                <button class="flex items-center mr-3" type="button" @click="isEdit = true">
+                <button class="flex items-center mr-3" type="button" @click="isEdit = true; isVarian = false">
                     <CheckSquareIcon class="w-4 h-4 mr-1" /> Edit
                 </button>
                 <button class="flex items-center text-danger" type="button"
@@ -32,7 +34,8 @@
 
     <tr v-if="isVarian" style="margin: -50px;">
         <td colspan="3">
-            <VarianList :varians="Barang.varians" :nama_barang="barang.nama_barang" @cekVarian="cekVarian" ref="VarList" />
+            <VarianList :varians="Barang.varians" :nama_barang="barang.nama_barang" @cekVarian="cekVarian"
+                ref="VarList" />
         </td>
     </tr>
 
@@ -48,9 +51,9 @@ export default {
     setup() {
         const Barang = useBarangStore()
         const varItem = ref(VarianItem)
-       // console.log('varitem',)
+        // console.log('varitem',)
 
-        return { Barang, varItem}
+        return { Barang, varItem }
     },
     emits: ["openModal"],
     components: {
@@ -66,10 +69,18 @@ export default {
         return {
             isEdit: false,
             isVarian: false,
-            namaBarangCek: this.barang.nama_barang,
+            namaBarang: this.barang.nama_barang,
         }
     },
     methods: {
+        updateBarang(id_barang) {
+            try {
+                this.Barang.updateItem({ id_barang, nama_barang: this.namaBarang })
+                this.isEdit = false
+            } catch (error) {
+                alert(`Gagal Update data ${id_barang}`, error)
+            }
+        },
         cekVarian() {
             this.isVarian = false;
         },
@@ -82,14 +93,6 @@ export default {
             }
 
         },
-        updateSatuan(id_barang) {
-            try {
-                this.Barang.updateItem({ id_barang, nama_barang: this.namaBarang, keterangan_satuan: this.keteranganSatuan })
-                this.isEdit = false
-            } catch (error) {
-                alert(`Gagal Update data ${id_barang}`, error)
-            }
-        },
         varianShow(e, id_barang) {
             // e.preventDefault()
             // this.$router.replace({
@@ -100,7 +103,7 @@ export default {
             // })
             this.Barang.readVarian(id_barang)
             this.isVarian = !this.isVarian
-            console.log('iavar',this.isVarian)
+            console.log('iavar', this.isVarian)
             // this.varItem.methods.varianOpen()
             //console.log('varI',this.varItem.methods.varianOpen())
             // this.$refs.qrScanner.closeQrScanner()

@@ -30,11 +30,11 @@ export const useBarangStore = defineStore({
                 // console.log('this.rawvarians', this.rawvarians)
             }
         },
-        async addItem(nama_barang, keterangan_barang) {
+        async addItem(nama_barang) {
             const id_barang = Date.now()
-            this.rawItems.push({ id_barang, nama_barang, keterangan_barang });
+            this.rawItems.push({ id_barang, nama_barang });
             try {
-                const data = await request.post('barang/add', { nama_barang, keterangan_barang })
+                const data = await request.post('barang/addbarang', { nama_barang })
 
                 this.rawItems = this.rawItems.map((item) => {
                     if (item.id_barang === id_barang) {
@@ -48,7 +48,7 @@ export const useBarangStore = defineStore({
         },
         removeItem(id_barang) {
             this.rawItems = this.rawItems.filter((item) => item.id_barang !== id_barang);
-            request.get(`barang/delete/${id_barang}`)
+            request.get(`barang/deletebar/${id_barang}`)
                 .then((res) => {
                     if (res.status >= 200 && res.status < 300) {
                         // alert(`Sukses Hapus Data ${id_barang}`)
@@ -59,14 +59,13 @@ export const useBarangStore = defineStore({
         updateItem(barang) {
             let id_barang = barang.id_barang
             let nama_barang = barang.nama_barang
-            let keterangan_barang = barang.keterangan_barang
             this.rawItems = this.rawItems.map((item) => {
                 if (item.id_barang === id_barang) {
                     return barang
                 }
                 return item
             })
-            request.post(`barang/edit/${id_barang}`, { nama_barang, keterangan_barang })
+            request.post(`barang/editbar/${id_barang}`, { nama_barang })
         }
     }
 })

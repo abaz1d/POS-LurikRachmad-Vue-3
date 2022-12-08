@@ -22,7 +22,7 @@
                 <XCircleIcon class="w-16 h-16 text-danger mx-auto mt-3" />
                 <div class="text-3xl mt-5">Apakah Anda Yakin ?</div>
                 <div class="text-slate-500 mt-2">
-                    Anda yakin ingin menghapus data <b>{{ nama_satuan }}</b> ? <br />Data yang telah dihapus tidak bisa
+                    Anda yakin ingin menghapus data <b>{{ nama_barang }}</b> ? <br />Data yang telah dihapus tidak bisa
                     kembali.
                 </div>
             </div>
@@ -32,7 +32,7 @@
                     Batal
                 </button>
                 <button type="button" class="btn btn-danger w-24"
-                    @click="(e) => { e.preventDefault(); deleteSatuan(id_satuan); }">Hapus</button>
+                    @click="(e) => { e.preventDefault(); deleteBarang(id_barang); }">Hapus</button>
             </div>
         </ModalBody>
     </Modal>
@@ -44,9 +44,9 @@ import BarangItem from "./BarangItem.vue"
 
 export default {
     setup() {
-        const Satuan = useBarangStore()
+        const Barang = useBarangStore()
 
-        return { Satuan }
+        return { Barang }
     },
     props: {
         barangs: {
@@ -64,23 +64,22 @@ export default {
     data() {
         return {
             deleteConfirmationModal: false,
-            id_satuan: '',
-            nama_satuan: '',
+            id_barang: '',
+            nama_barang: '',
         };
     },
     methods: {
-        openModal(id_satuan, nama_satuan) {
-            // console.log(id_satuan, nama_satuan, 'emit')
-            this.nama_satuan = nama_satuan
-            this.id_satuan = id_satuan
+        openModal(id_barang, nama_barang) {
+            // console.log(id_barang, nama_barang, 'emit')
+            this.id_barang = id_barang
             this.deleteConfirmationModal = true
         },
-        deleteSatuan(id_satuan) {
+        deleteBarang(id_barang) {
             try {
-                this.Satuan.removeItem(id_satuan)
+                this.Barang.removeItem(id_barang)
                 this.deleteConfirmationModal = false
             } catch (error) {
-                alert(`Gagal Delete Satuan ${id_satuan}`, error)
+                alert(`Gagal Delete Barang ${id_barang}`, error)
             }
         }
     }

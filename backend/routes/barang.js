@@ -155,7 +155,7 @@ INNER JOIN gudang gud ON gud.id_gudang = var.id_gudang WHERE id_varian = $1;`, [
 
   router.post('/editvar/:id', function (req, res) {
 
-    //const { id_varian, nama, barang, stok, harga, satuan, gudang, saved_gambar, harga_jual } = req.body
+    //const { id_varian, nama_barang, barang, stok, harga, satuan, gudang, saved_gambar, harga_jual } = req.body
     let gambar;
     let uploadPath;
     if (!req.files || Object.keys(req.files).length === 0) {
@@ -177,7 +177,7 @@ INNER JOIN gudang gud ON gud.id_gudang = var.id_gudang WHERE id_varian = $1;`, [
       gambar.mv(uploadPath, function (err) {
         if (err)
           return res.status(500).send(err);
-        //  const {id_varian, nama, barang, stok, harga, satuan, gudang } = req.body
+        //  const {id_varian, nama_barang, barang, stok, harga, satuan, gudang } = req.body
 
         db.query(`UPDATE varian SET nama_varian = $1, id_barang = $2, stok_varian = $3, harga_beli_varian = $4, id_satuan = $5, id_gudang = $6, gambar_varian = $7, harga_jual_varian = $8 WHERE id_varian = $9`,
           [req.body.nama_varian,
@@ -212,14 +212,15 @@ INNER JOIN gudang gud ON gud.id_gudang = var.id_gudang WHERE id_varian = $1;`, [
     res.render('barang/addbarang', { currentDir: 'settingdata', current: 'barang' });
   })
 
-  router.post('/addbarang', function (req, res) {
-    db.query(`INSERT INTO barang(nama_barang) 
-        VALUES ($1)`, [req.body.nama], (err) => {
-      if (err) {
-        return console.error(err.message);
-      }
-      res.redirect('/barang')
-    })
+  router.post('/addbarang', async function (req, res, next) {
+    try {
+      const { rows } = await db.query(`INSERT INTO barang(nama_barang) 
+      VALUES ($1) RETURNING *`, [req.body.nama_barang])
+      res.json(rows[0])
+    } catch (error) {
+      res.json({ error: error })
+    }
+
   })
 
   router.get('/editbar/:id', isLoggedIn, (req, res) => {
@@ -233,26 +234,33 @@ INNER JOIN gudang gud ON gud.id_gudang = var.id_gudang WHERE id_varian = $1;`, [
     })
   })
 
-  router.post('/editbar/:id', function (req, res) {
-    db.query(`UPDATE barang set
-        nama_barang = $1
-        WHERE id_barang = $2`, [req.body.nama, req.params.id], (err) => {
-      if (err) {
-        return console.error(err.message);
-      }
-      res.redirect('/barang')
-    })
+  router.post('/editbar/:id', async function (req, res) {
+    try {
+      const { rows } = await db.query(`UPDATE barang set
+      nama_barang = $1
+      WHERE id_barang = $2`, [req.body.nama_barang, req.params.id])
+      res.json(rows[0])
+    } catch (error) {
+      res.json({ error: error })
+    }
   })
 
-  router.get('/deletebar/:id', isLoggedIn, (req, res) => {
+  // router.get('/deletebar/:id', isLoggedIn, async function (req, res, next) {
+  //   try {
+  //     const { rows } = await db.query('DELETE FROM barang WHERE id_barang = $1', [req.params.id])
+  //   } catch (error) {
+  //     res.json({ error: error })
+  //   }
+  // })
 
-    db.query('DELETE FROM barang WHERE id_barang = $1', [req.params.id], (err) => {
-      if (err) {
-        return console.error(err.message);
-      }
-      res.redirect('/barang')
-    })
-  })
+  router.get('/deletebar/:id', isLoggedIn, async function (req, res, next) {
+    try {
+      const { rows } = await db.query('DELETE FROM barang WHERE id_barang = $1', [req.params.id])
+      res.json(rows[0])
+    } catch (e) {
+      res.send(e)
+    }
+  });
 
   return router;
 }

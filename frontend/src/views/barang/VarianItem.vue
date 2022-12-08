@@ -2,7 +2,11 @@
     <tr>
         <!-- <input type="text" v-model="nama"> -->
         <td style="width:25px; height:25px; text-align: center; padding: auto;">
-            <div>
+            <div class="imgUp justify-content-center mb-2" v-if="varian.gambar_varian == null || ''">
+                <div class="imagePreview"> Gambar Tidak Ditemukan </div>
+            </div>
+
+            <div v-else class="mb-2">
                 <img :src="getImgUrl(varian.gambar_varian)" v-bind:alt="varian.gambar_varian" style="width: 100%">
             </div>
             <div>
@@ -94,7 +98,7 @@ export default {
         }
     },
     methods: {
-        varianOpen(){
+        varianOpen() {
             this.varianOpen = true;
             console.log('varianOpen')
         },
@@ -111,3 +115,22 @@ export default {
 }
 
 </script>
+
+<style scoped>
+.imagePreview {
+    width: 100px;
+    height: 100px;
+    margin: auto;
+    text-align: center;
+    padding: 18px 15px 15px 15px;
+    background-position: center center;
+    background-color: #fff;
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.2);
+    border: 2px solid #D0d3d4;
+    border-radius: 5px 5px 5px 5px;
+}
+
+.imgUp {
+    margin-bottom: 5px;
+}
+</style>

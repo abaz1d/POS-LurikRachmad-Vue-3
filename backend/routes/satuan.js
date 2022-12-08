@@ -101,7 +101,7 @@ module.exports = function (db) {
   router.get('/delete/:id', isLoggedIn, async function (req, res, next) {
     try {
       const { rows } = await db.query('DELETE FROM satuan WHERE id_satuan = $1', [req.params.id])
-      res.redirect('/satuan')
+      res.json(rows[0])
     } catch (e) {
       res.send(e)
     }
