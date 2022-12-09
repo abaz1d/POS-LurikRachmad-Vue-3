@@ -112,11 +112,11 @@ module.exports = function (db) {
           db.query(`INSERT INTO varian(id_varian ,nama_varian, id_barang,
             stok_varian, harga_beli_varian, id_satuan,
              id_gudang, gambar_varian, harga_jual_varian) 
-              VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`, [ req.body.id_varian, req.body.nama_varian, req.body.kategori_barang, req.body.stok_varian, req.body.harga_beli, req.body.satuan_varian, req.body.gudang, filename, req.body.harga_jual])
+              VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`, [req.body.id_varian, req.body.nama_varian, req.body.kategori_barang, req.body.stok_varian, req.body.harga_beli, req.body.satuan_varian, req.body.gudang, filename, req.body.harga_jual])
         }
 
       });
-      res.status(200)
+      res.status(200).json({ succes: true });
     } catch (error) {
       res.send(error)
     }
@@ -160,49 +160,48 @@ INNER JOIN gudang gud ON gud.id_gudang = var.id_gudang WHERE id_varian = $1;`, [
     })
   })
 
-  router.post('/editvar/:id', function (req, res) {
+  router.post('/editvar/:id', async function (req, res) {
 
-    //const { id_varian, nama_barang, barang, stok, harga, satuan, gudang, saved_gambar, harga_jual } = req.body
-    let gambar;
-    let uploadPath;
-    if (!req.files || Object.keys(req.files).length === 0) {
-      console.log('gambar lama')
-      db.query(`UPDATE varian SET nama_varian = $1, id_barang = $2, stok_varian = $3, harga_beli_varian = $4, id_satuan = $5, id_gudang = $6, gambar_varian = $7, harga_jual_varian = $8 WHERE id_varian = $9`,
-        [req.body.nama_varian, req.body.kategori_barang, req.body.stok_varian, req.body.harga_beli, req.body.satuan_varian, req.body.gudang, req.body.saved_gambar, req.body.harga_jual, req.params.id], (err) => {
-          if (err) {
-            return console.error(err.message);
-          }
-          res.redirect('/barang')
-        })
-    } else {
-      console.log('gambar baru')
-      // The name of the input field (i.e. "gambar") is used to retrieve the uploaded file
-      gambar = req.files.file;
-      const filename = `A${Date.now()}-${gambar.name}`
-      uploadPath = path.join(__dirname, '/../public', 'gambar', filename);
-      //uploadPath = path.join(__dirname, '..', 'public, 'gambar', filename);
-      // Use the mv() method to place the file somewhere on your server
-      gambar.mv(uploadPath, function (err) {
-        if (err)
-          return res.status(500).send(err);
-        //  const {id_varian, nama_barang, barang, stok, harga, satuan, gudang } = req.body
-
+    try {
+      let gambar;
+      let uploadPath;
+      if (!req.files || Object.keys(req.files).length === 0) {
+        console.log('gambar lama')
         db.query(`UPDATE varian SET nama_varian = $1, id_barang = $2, stok_varian = $3, harga_beli_varian = $4, id_satuan = $5, id_gudang = $6, gambar_varian = $7, harga_jual_varian = $8 WHERE id_varian = $9`,
-          [req.body.nama_varian,
-          req.body.kategori_barang,
-          req.body.stok_varian,
-          req.body.harga_beli,
-          req.body.satuan_varian,
-          req.body.gudang,
-            filename,
-          req.body.harga_jual,
-          req.params.id], (err) => {
-            if (err) {
-              return console.error(err.message);
-            }
-            res.redirect('/barang')
-          })
-      })
+          [req.body.nama_varian, req.body.kategori_barang, req.body.stok_varian, req.body.harga_beli, req.body.satuan_varian, req.body.gudang, req.body.gambar_lama, req.body.harga_jual, req.params.id])
+        res.status(200).json({ succes: true });
+      } else {
+        console.log('gambar baru')
+        // The name of the input field (i.e. "gambar") is used to retrieve the uploaded file
+        gambar = req.files.file;
+        const filename = `A${Date.now()}-${gambar.name}`
+        uploadPath = path.join(__dirname, '/../public', 'gambar', filename);
+        //uploadPath = path.join(__dirname, '..', 'public, 'gambar', filename);
+        // Use the mv() method to place the file somewhere on your server
+        gambar.mv(uploadPath, function (err) {
+          if (err)
+            return res.status(500).send(err);
+          //  const {id_varian, nama_barang, barang, stok, harga, satuan, gudang } = req.body
+
+          db.query(`UPDATE varian SET nama_varian = $1, id_barang = $2, stok_varian = $3, harga_beli_varian = $4, id_satuan = $5, id_gudang = $6, gambar_varian = $7, harga_jual_varian = $8 WHERE id_varian = $9`,
+            [req.body.nama_varian,
+            req.body.kategori_barang,
+            req.body.stok_varian,
+            req.body.harga_beli,
+            req.body.satuan_varian,
+            req.body.gudang,
+              filename,
+            req.body.harga_jual,
+            req.params.id], (err) => {
+              if (err) {
+                return console.error(err.message);
+              }
+              res.redirect('/barang')
+            })
+        })
+      }
+    } catch (error) {
+      res.send(error)
     }
   })
 

@@ -21,6 +21,9 @@
         </td>
         <td class="table-report__action w-56" v-else>
             <div class="flex justify-center items-center">
+                <button class="flex items-center mr-3" type="button" @click="varianShow(e, barang.id_barang)">
+                    <ChevronsUpIcon class="w-4 h-4 mr-1" /> Varian
+                </button>
                 <button class="flex items-center mr-3" type="button" @click="isEdit = true; isVarian = false">
                     <CheckSquareIcon class="w-4 h-4 mr-1" /> Edit
                 </button>

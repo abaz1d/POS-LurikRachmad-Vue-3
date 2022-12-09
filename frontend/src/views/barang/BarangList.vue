@@ -8,12 +8,8 @@
             </tr>
         </thead>
         <tbody>
-            <BarangItem 
-            v-for="barang in barangs" 
-            :key="barang.id_barang" 
-            :barang="barang" 
-            @openModal="openModal">
-        </BarangItem>
+            <BarangItem v-for="barang in barangs" :key="barang.id_barang" :barang="barang" @openModal="openModal">
+            </BarangItem>
         </tbody>
     </table>
     <Modal :show="deleteConfirmationModal" @hidden="deleteConfirmationModal = false">
@@ -36,6 +32,7 @@
             </div>
         </ModalBody>
     </Modal>
+
 </template>
 
 <script>
@@ -72,6 +69,7 @@ export default {
         openModal(id_barang, nama_barang) {
             // console.log(id_barang, nama_barang, 'emit')
             this.id_barang = id_barang
+            this.nama_barang = nama_barang
             this.deleteConfirmationModal = true
         },
         deleteBarang(id_barang) {
