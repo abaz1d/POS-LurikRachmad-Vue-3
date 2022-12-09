@@ -71,18 +71,23 @@ export const useBarangStore = defineStore({
             const id_varian = Date.now()
             const formData = new FormData();
             formData.append('file', varian.file);
+            formData.append('nama_varian', varian.nama_varian);
+            formData.append('kategori_barang', varian.kategori_barang);
+            formData.append('stok_varian', varian.stok_varian);
+            formData.append('harga_beli', varian.harga_beli);
+            formData.append('satuan_varian', varian.satuan_varian);
+            formData.append('gudang', varian.gudang);
+            formData.append('harga_jual', varian.harga_jual);
+
             const headers = { 'Content-Type': 'multipart/form-data' };
 
             if (varian.id_varian == '' || null) {
-
+                console.log('id kosong')
                 this.rawVarians.push({
                     id_varian, nama_varian: varian.nama_varian, kategori_barang: varian.kategori_barang, stok_varian: varian.stok_varian, harga_beli: varian.harga_beli, satuan_varian: varian.satuan_varian, gudang: varian.gudang, harga_jual: varian.harga_jual
                 });
                 try {
-                    const data = await request.post('barang/addvarian', formData, {
-                        headers}, {
-                        id_varian, nama_varian: varian.nama_varian, kategori_barang: varian.kategori_barang, stok_varian: varian.stok_varian, harga_beli: varian.harga_beli, satuan_varian: varian.satuan_varian, gudang: varian.gudang, harga_jual: varian.harga_jual
-                    })
+                    const data = await request.post('barang/addvarian', formData, headers)
 
                     this.rawVarians = this.rawVarians.map((item) => {
                         if (item.id_varian === id_varian) {
@@ -94,14 +99,12 @@ export const useBarangStore = defineStore({
                     console.error(e)
                 }
             } else {
+                formData.append('id_varian', varian.id_varian);
                 this.rawVarians.push({
                     id_varian: varian.id_varian, nama_varian: varian.nama_varian, kategori_barang: varian.kategori_barang, stok_varian: varian.stok_varian, harga_beli: varian.harga_beli, satuan_varian: varian.satuan_varian, gudang: varian.gudang, harga_jual: varian.harga_jual
                 });
                 try {
-                    const data = await request.post('barang/addvarian', formData, {
-                        headers,
-                        id_varian: varian.id_varian, nama_varian: varian.nama_varian, kategori_barang: varian.kategori_barang, stok_varian: varian.stok_varian, harga_beli: varian.harga_beli, satuan_varian: varian.satuan_varian, gudang: varian.gudang, harga_jual: varian.harga_jual
-                    })
+                    const data = await request.post('barang/addvarian', formData, headers)
                 } catch (error) {
                     console.error(error)
                 }

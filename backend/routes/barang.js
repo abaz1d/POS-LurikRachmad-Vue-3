@@ -90,7 +90,8 @@ module.exports = function (db) {
     try {
       let gambar;
       let uploadPath;
-      console.log('Uploading', req.files.file);
+      console.log('Uploading', req.body);
+      // console.log('Uploading', req);
       if (!req.files || Object.keys(req.files).length === 0) {
         return res.status(400).send('No files were uploaded.');
       }
@@ -102,10 +103,18 @@ module.exports = function (db) {
       gambar.mv(uploadPath, function (err) {
         if (err)
           return res.status(500).send(err);
-        db.query(`INSERT INTO varian(nama_varian, id_barang,
+        if (req.body.length > 7) {
+          db.query(`INSERT INTO varian(nama_varian, id_barang,
                    stok_varian, harga_beli_varian, id_satuan,
                     id_gudang, gambar_varian, harga_jual_varian) 
                      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`, [req.body.nama_varian, req.body.kategori_barang, req.body.stok_varian, req.body.harga_beli, req.body.satuan_varian, req.body.gudang, filename, req.body.harga_jual])
+        } else {
+          db.query(`INSERT INTO varian(id_varian ,nama_varian, id_barang,
+            stok_varian, harga_beli_varian, id_satuan,
+             id_gudang, gambar_varian, harga_jual_varian) 
+              VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`, [ req.body.id_varian, req.body.nama_varian, req.body.kategori_barang, req.body.stok_varian, req.body.harga_beli, req.body.satuan_varian, req.body.gudang, filename, req.body.harga_jual])
+        }
+
       });
       res.status(200)
     } catch (error) {
