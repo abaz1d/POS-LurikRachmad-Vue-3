@@ -86,33 +86,31 @@ module.exports = function (db) {
     })
   })
 
-  router.post('/addvarian', function (req, res) {
-    let gambar;
-    let uploadPath;
-    if (!req.files || Object.keys(req.files).length === 0) {
-      return res.status(400).send('No files were uploaded.');
-    }
-    // The name of the input field (i.e. "gambar") is used to retrieve the uploaded file
-    gambar = req.files.gambar;
-    const filename = `A${Date.now()}-${gambar.name}`
-    uploadPath = path.join(__dirname, '/../public', 'gambar', filename);
-    // Use the mv() method to place the file somewhere on your server
-    gambar.mv(uploadPath, function (err) {
-      if (err)
-        return res.status(500).send(err);
-      db.query(`INSERT INTO varian(nama_varian, id_barang,
+  router.post('/addvarian', async function (req, res) {
+    try {
+      let gambar;
+      let uploadPath;
+      console.log('Uploading', req.files.file);
+      if (!req.files || Object.keys(req.files).length === 0) {
+        return res.status(400).send('No files were uploaded.');
+      }
+      // The name of the input field (i.e. "gambar") is used to retrieve the uploaded file
+      gambar = req.files.file;
+      const filename = `A${Date.now()}-${gambar.name}`
+      uploadPath = path.join(__dirname, '/../public', 'gambar', filename);
+      // Use the mv() method to place the file somewhere on your server
+      gambar.mv(uploadPath, function (err) {
+        if (err)
+          return res.status(500).send(err);
+        db.query(`INSERT INTO varian(nama_varian, id_barang,
                    stok_varian, harga_beli_varian, id_satuan,
                     id_gudang, gambar_varian, harga_jual_varian) 
-                     VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`, [req.body.nama_varian, req.body.kategori_barang, req.body.stok_varian, req.body.harga_beli, req.body.satuan_varian, req.body.gudang, filename, req.body.harga_jual], (err) => {
-        if (err) {
-          return console.error(err.message);
-        }
-        res.redirect('/barang')
-      })
-
-
-
-    });
+                     VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`, [req.body.nama_varian, req.body.kategori_barang, req.body.stok_varian, req.body.harga_beli, req.body.satuan_varian, req.body.gudang, filename, req.body.harga_jual])
+      });
+      res.status(200)
+    } catch (error) {
+      res.send(error)
+    }
 
   })
 
@@ -170,7 +168,7 @@ INNER JOIN gudang gud ON gud.id_gudang = var.id_gudang WHERE id_varian = $1;`, [
     } else {
       console.log('gambar baru')
       // The name of the input field (i.e. "gambar") is used to retrieve the uploaded file
-      gambar = req.files.gambar;
+      gambar = req.files.file;
       const filename = `A${Date.now()}-${gambar.name}`
       uploadPath = path.join(__dirname, '/../public', 'gambar', filename);
       //uploadPath = path.join(__dirname, '..', 'public, 'gambar', filename);
@@ -199,14 +197,14 @@ INNER JOIN gudang gud ON gud.id_gudang = var.id_gudang WHERE id_varian = $1;`, [
     }
   })
 
-  router.get('/deletevar/:id', isLoggedIn, (req, res) => {
+  router.get('/deletevar/:id', isLoggedIn, async function (req, res, next) {
+    try {
+      const { rows } = await db.query('DELETE FROM varian WHERE id_varian = $1', [req.params.id])
 
-    db.query('DELETE FROM varian WHERE id_varian = $1', [req.params.id], (err) => {
-      if (err) {
-        return console.error(err.message);
-      }
-      res.redirect('/barang')
-    })
+      res.json(rows[0])
+    } catch (e) {
+      res.send(e)
+    }
   })
   //=====================================================
   router.get('/addbarang', isLoggedIn, function (req, res) {

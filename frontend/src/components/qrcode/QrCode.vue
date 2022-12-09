@@ -1,5 +1,5 @@
 <script>
-// import { Html5QrcodeScanner } from "html5-qrcode"
+import { Html5QrcodeScanner } from "html5-qrcode"
 
 export default {
   name: "qrcode",
@@ -53,6 +53,7 @@ export default {
   color: black;
   border: 1px solid black;
   border-radius: 10px;
+  display: inline-block;
 }
 
 </style>

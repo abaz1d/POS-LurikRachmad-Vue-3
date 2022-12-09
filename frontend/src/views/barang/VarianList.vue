@@ -23,7 +23,7 @@
                 <XCircleIcon class="w-16 h-16 text-danger mx-auto mt-3" />
                 <div class="text-3xl mt-5">Apakah Anda Yakin ?</div>
                 <div class="text-slate-500 mt-2">
-                    Anda yakin ingin menghapus data <b>{{ nama_satuan }}</b> ? <br />Data yang telah dihapus tidak bisa
+                    Anda yakin ingin menghapus data <b>{{ nama_varian }}</b> ? <br />Data yang telah dihapus tidak bisa
                     kembali.
                 </div>
             </div>
@@ -33,7 +33,7 @@
                     Batal
                 </button>
                 <button type="button" class="btn btn-danger w-24"
-                    @click="(e) => { e.preventDefault(); deleteSatuan(id_satuan); }">Hapus</button>
+                    @click="(e) => { e.preventDefault(); deleteVarian(id_varian); }">Hapus</button>
             </div>
         </ModalBody>
     </Modal>
@@ -47,10 +47,10 @@ import VarianItem from "./VarianItem.vue"
 export default {
     name: "varianList",
     setup(props) {
-        const Satuan = useBarangStore()
+        const Barang = useBarangStore()
         //console.log('props:', props)
 
-        return { Satuan }
+        return { Barang }
     },
     props: {
         varians: {
@@ -71,8 +71,8 @@ export default {
     data() {
         return {
             deleteConfirmationModal: false,
-            id_satuan: '',
-            nama_satuan: '',
+            id_varian: '',
+            nama_varian: '',
         };
     },
     emits: ["cekVarian"],
@@ -80,18 +80,18 @@ export default {
         cekVarian() {
             this.$emit('cekVarian')
         },
-        openModal(id_satuan, nama_satuan) {
-            // console.log(id_satuan, nama_satuan, 'emit')
-            this.nama_satuan = nama_satuan
-            this.id_satuan = id_satuan
+        openModal(id_varian, nama_varian) {
+            // console.log(id_varian, nama_varian, 'emit')
+            this.nama_varian = nama_varian
+            this.id_varian = id_varian
             this.deleteConfirmationModal = true
         },
-        deleteSatuan(id_satuan) {
+        deleteVarian(id_varian) {
             try {
-                this.Satuan.removeItem(id_satuan)
+                this.Barang.removeVarian(id_varian)
                 this.deleteConfirmationModal = false
             } catch (error) {
-                alert(`Gagal Delete Satuan ${id_satuan}`, error)
+                alert(`Gagal Delete Varian ${id_varian}`, error)
             }
         }
     }

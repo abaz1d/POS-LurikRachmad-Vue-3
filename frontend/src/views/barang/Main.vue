@@ -58,26 +58,29 @@
                       <div class="grid grid-cols-12 form-label">
                         <label for="pos-form-1" class="form-check col-span-2">ID Varian</label>
                         <div class="form-check col-span-4">
-                          <input id="oldID" class="form-check-input" type="radio" value="oldID" v-model="checkedID" />
-                          <label for="pos-form-1" @click="checkedID = 'oldID'" class="form-check-label">ID Lama</label>
+                          <input id="defaultID" class="form-check-input" type="radio" value="defaultID"
+                            v-model="checkedID" />
+                          <label for="pos-form-1" @click="checkedID = 'defaultID'" class="form-check-label">Auto
+                            Generate</label>
                         </div>
                         <div class="form-check col-span-4">
-                          <input id="newID" class="form-check-input" type="radio" value="newID" v-model="checkedID" />
-                          <label for="pos-form-1" @click="checkedID = 'newID'" class="form-check-label">Edit ID</label>
+                          <input id="ScanID" class="form-check-input" type="radio" value="ScanID" v-model="checkedID" />
+                          <label for="pos-form-1" @click="checkedID = 'ScanID'" class="form-check-label">Scan
+                            Manual</label>
                         </div>
                       </div>
-                      <input v-if="checkedID == 'oldID'" id="pos-form-1" type="text" class="form-control flex-1"
+                      <input v-if="checkedID == 'defaultID'" id="pos-form-1" type="text" class="form-control flex-1"
                         placeholder="Masukan Nama Varian" v-model="idVarian" readonly />
 
                       <div v-else class="input-group">
-                        <input type="text" class="form-control min-w-[6rem]" placeholder="Ketik / Scan ID Baru"
-                          v-model="newIDVarian" />
+                        <input type="text" class="form-control min-w-[6rem]" placeholder="Ketik / Scan ID"
+                          v-model="ScanIDVarian" />
                         <div class="camera input-group-text" @click="isModalScanner = true; renderQrScanner();">
                           <component is="CameraIcon" />
                         </div>
                       </div>
 
-                      <small v-if="checkedID == 'oldID'" class="text-grey-800 text-xs ml-2">
+                      <small v-if="checkedID == 'defaultID'" class="text-grey-800 text-xs ml-2">
                         * Untuk mengedit ID Varian pilih Edit ID pada radio di atas
                       </small>
 
@@ -144,13 +147,13 @@
                                 class="w-full mt-3 xl:mt-0 flex-1 border-2 border-dashed dark:border-darkmode-400 rounded-md pt-4">
                                 <div class="grid grid-cols-10 gap-5 pl-4 pr-5">
                                   <div
-                                    class="imgUp justify-content-center mb-2 col-span-5 md:col-span-2 h-28 relative image-fit cursor-pointer zoom-in">
+                                    class="imgUp justify-content-center mb-2 col-span-5 md:col-span-2 h-28 relative image-fit cursor-pointer zoom-in"
+                                    v-if="url == null || ''">
 
                                   </div>
-                                  <div class="col-span-5 md:col-span-2 h-28 relative image-fit cursor-pointer zoom-in">
-                                    <img v-if="url === null" class="rounded-md" alt="Midone - HTML Admin Template"
-                                       />
-                                    <img v-else class="rounded-md" alt="Midone - HTML Admin Template" :src="url" />
+                                  <div v-else
+                                    class="col-span-5 md:col-span-2 h-28 relative image-fit cursor-pointer zoom-in">
+                                    <img class="rounded-md" alt="Midone - HTML Admin Template" :src="url" />
                                     <Tippy content="Remove this image?" @click="url = null"
                                       class="tooltip w-5 h-5 flex items-center justify-center absolute rounded-full text-white bg-danger right-0 top-0 -mr-2 -mt-2">
                                       <XIcon class="w-4 h-4" />
@@ -161,7 +164,7 @@
                                   <ImageIcon class="w-4 h-4 mr-2" />
                                   <span class="text-primary mr-1">Upload a file</span> or drag
                                   and drop
-                                  <input id="gambarBaru" @change="" type="file"
+                                  <input id="gambarBaru" @change="previewImage" type="file"
                                     class="w-full h-full top-0 left-0 absolute opacity-0" />
                                 </div>
                               </div>
@@ -324,7 +327,7 @@ export default {
   },
   data() {
     return {
-      checkedID: 'oldID',
+      checkedID: 'defaultID',
       isVarianOpen: false,
       isModalScanner: false,
 
@@ -341,7 +344,7 @@ export default {
 
       url: null,
       file: null,
-      newIDVarian: '',
+      ScanIDVarian: '',
       publicPath: import.meta.env.VITE_APP_BASE_API,
 
       addModal,
@@ -366,23 +369,62 @@ export default {
       } catch (error) {
         alert('Gagal Tambah Data', error)
       }
+    },
+    addVarian() {
+      try {
+        if (this.ScanIDVarian === '' || null) {
+          this.Barang.addVarian({
+            id_varian: this.idVarian,
+            nama_varian: this.namaVarian,
+            kategori_barang: this.kategoriBarangVarian,
+            stok_varian: parseInt(this.stokVarian),
+            harga_beli: parseInt(this.hargaBeliVarian),
+            satuan_varian: this.satuanVarian,
+            gudang: this.kategoriGudangVarian,
+
+            file: this.file,
+            harga_jual: parseInt(this.hargaJualVarian)
+          })
+        } else {
+          this.Barang.addVarian({
+            id_varian: this.ScanIDVarian,
+            nama_varian: this.namaVarian,
+            kategori_barang: this.kategoriBarangVarian,
+            stok_varian: this.stokVarian,
+            harga_beli: this.hargaBeliVarian,
+            satuan_varian: this.satuanVarian,
+            gudang: this.kategoriGudangVarian,
+
+            file: this.file,
+            harga_jual: this.hargaJualVarian
+          })
+        }
+        this.addModalVarian = false
+
+      } catch (error) {
+        alert('Varian Tambah Data', error)
+      }
 
     },
     renderQrScanner() {
-      console.log("openQrScanner")
       this.$refs.qrScanner.renderQrScanner()
       // console.log("qrScanner", this.$refs)
     },
     closeQrScanner() {
-      console.log("closeQrScanner")
       this.$refs.qrScanner.closeQrScanner()
     },
     resultScan(result) {
-      console.log('varian', result)
-      this.newIDVarian = result
+      // ntar di concat ma it outlet
+      this.ScanIDVarian = result
       this.isModalScanner = false
       this.$refs.qrScanner.closeQrScanner()
-    }
+    },
+    previewImage(e) {
+      this.file = e.target.files[0];
+      this.url = URL.createObjectURL(this.file);
+      console.log('image', this.url);
+
+    },
   },
   mounted() {
     this.Barang.readItem()
@@ -391,7 +433,6 @@ export default {
 </script>
 
 <style scoped>
-
 .imagePreview {
   width: 100px;
   height: 100px;
@@ -416,5 +457,4 @@ export default {
 .camera :hover {
   background-color: #c7c8c8;
 }
-
 </style>

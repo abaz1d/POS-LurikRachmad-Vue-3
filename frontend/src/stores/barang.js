@@ -5,11 +5,11 @@ export const useBarangStore = defineStore({
     id: "barang",
     state: () => ({
         rawItems: [],
-        rawvarians: []
+        rawVarians: []
     }),
     getters: {
         items: (state) => state.rawItems,
-        varians: (state) => state.rawvarians
+        varians: (state) => state.rawVarians
     },
     actions: {
         async readItem() {
@@ -18,16 +18,16 @@ export const useBarangStore = defineStore({
                 this.rawItems = data.data.barang;
 
                 // console.log('rawItems', this.rawItems)
-                // console.log('rawvarians', this.rawvarians)
+                // console.log('rawVarians', this.rawVarians)
                 // return this.rawItems
             }
         },
         async readVarian(id_barang) {
             const data = await request.get(`barang?id_barang=${id_barang}`)
             if (data.status >= 200 && data.status < 300) {
-                this.rawvarians = data.data.varian;
+                this.rawVarians = data.data.varian;
                 // console.log('data.data', data.data)
-                // console.log('this.rawvarians', this.rawvarians)
+                // console.log('this.rawVarians', this.rawVarians)
             }
         },
         async addItem(nama_barang) {
@@ -67,12 +67,55 @@ export const useBarangStore = defineStore({
             })
             request.post(`barang/editbar/${id_barang}`, { nama_barang })
         },
+        async addVarian(varian) {
+            const id_varian = Date.now()
+            const formData = new FormData();
+            formData.append('file', varian.file);
+            const headers = { 'Content-Type': 'multipart/form-data' };
+
+            if (varian.id_varian == '' || null) {
+
+                this.rawVarians.push({
+                    id_varian, nama_varian: varian.nama_varian, kategori_barang: varian.kategori_barang, stok_varian: varian.stok_varian, harga_beli: varian.harga_beli, satuan_varian: varian.satuan_varian, gudang: varian.gudang, harga_jual: varian.harga_jual
+                });
+                try {
+                    const data = await request.post('barang/addvarian', formData, {
+                        headers}, {
+                        id_varian, nama_varian: varian.nama_varian, kategori_barang: varian.kategori_barang, stok_varian: varian.stok_varian, harga_beli: varian.harga_beli, satuan_varian: varian.satuan_varian, gudang: varian.gudang, harga_jual: varian.harga_jual
+                    })
+
+                    this.rawVarians = this.rawVarians.map((item) => {
+                        if (item.id_varian === id_varian) {
+                            return data.data
+                        }
+                        return item
+                    })
+                } catch (e) {
+                    console.error(e)
+                }
+            } else {
+                this.rawVarians.push({
+                    id_varian: varian.id_varian, nama_varian: varian.nama_varian, kategori_barang: varian.kategori_barang, stok_varian: varian.stok_varian, harga_beli: varian.harga_beli, satuan_varian: varian.satuan_varian, gudang: varian.gudang, harga_jual: varian.harga_jual
+                });
+                try {
+                    const data = await request.post('barang/addvarian', formData, {
+                        headers,
+                        id_varian: varian.id_varian, nama_varian: varian.nama_varian, kategori_barang: varian.kategori_barang, stok_varian: varian.stok_varian, harga_beli: varian.harga_beli, satuan_varian: varian.satuan_varian, gudang: varian.gudang, harga_jual: varian.harga_jual
+                    })
+                } catch (error) {
+                    console.error(error)
+                }
+            }
+            console.log('addVarian',
+                varian
+            )
+        },
         updateVarian(varian) {
             const formData = new FormData();
             formData.append('file', varian.file,);
             const headers = { 'Content-Type': 'multipart/form-data' };
 
-            this.varians = this.varians.map(item => {
+            this.rawVarians = this.rawVarians.map(item => {
                 if (item.id_varian == varian.id_varian) {
                     return varian
                 }
@@ -86,9 +129,19 @@ export const useBarangStore = defineStore({
                 harga_beli: varian.harga_beli,
                 satuan_varian: varian.satuan_varian,
                 gudang: varian.gudang,
-                
+
                 harga_jual: varian.harga_jual,
             })
         },
+        removeVarian(id_varian) {
+            this.rawVarians = this.rawVarians.filter(item => item.id_varian !== id_varian);
+            request.get(`barang/deletevar/${id_varian}`)
+                .then((res) => {
+                    if (res.status >= 200 && res.status < 300) {
+                        // alert(`Sukses Hapus Data ${id_barang}`)
+                    }
+                })
+            console.log('sukse delete', id_varian)
+        }
     }
 })
