@@ -21,6 +21,14 @@ const pool = new Pool({
   // }
 })
 
+var allowCrossDomain = function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+
+  next();
+}
+
 var indexRouter = require('./routes/index')(pool);
 var gudangRouter = require('./routes/gudang')(pool);
 var satuanRouter = require('./routes/satuan')(pool);
@@ -55,6 +63,8 @@ app.use(session({
   app.use('/penjualan', penjualanRouter);
   app.use('/pembelian', pembelianRouter);
   app.use('/users', usersRouter);
+
+  app.use(allowCrossDomain);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

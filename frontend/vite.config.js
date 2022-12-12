@@ -1,11 +1,13 @@
 import { fileURLToPath, URL } from "node:url";
+import basicSsl from '@vitejs/plugin-basic-ssl'
 
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue({
+  plugins: [ basicSsl(),
+    vue({
     // template: {
     //   compilerOptions: {
     //     isCustomElement: (tag) => ["qrcode-scanner"].includes(tag),
