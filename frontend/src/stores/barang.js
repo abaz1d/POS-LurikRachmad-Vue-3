@@ -14,22 +14,13 @@ export const useBarangStore = defineStore({
     actions: {
         async readItem() {
             const data = await request.get('barang')
+            
             if (data.status >= 200 && data.status < 300) {
                 this.rawItems = data.data.barang;
-
-                // console.log('rawItems', this.rawItems)
-                // console.log('rawVarians', this.rawVarians)
-                // return this.rawItems
-            }
-        },
-        async readVarian(id_barang) {
-            const data = await request.get(`barang?id_barang=${id_barang}`)
-            if (data.status >= 200 && data.status < 300) {
                 this.rawVarians = data.data.varian;
-                // console.log('data.data', data.data)
-                // console.log('this.rawVarians', this.rawVarians)
             }
         },
+
         async addItem(nama_barang) {
             const id_barang = Date.now()
             this.rawItems.push({ id_barang, nama_barang });
@@ -46,6 +37,7 @@ export const useBarangStore = defineStore({
                 console.error(e)
             }
         },
+
         removeItem(id_barang) {
             this.rawItems = this.rawItems.filter((item) => item.id_barang !== id_barang);
             request.get(`barang/deletebar/${id_barang}`)
@@ -56,6 +48,7 @@ export const useBarangStore = defineStore({
                 })
                 .catch(e => console.error(e))
         },
+
         updateItem(barang) {
             let id_barang = barang.id_barang
             let nama_barang = barang.nama_barang
@@ -67,6 +60,27 @@ export const useBarangStore = defineStore({
             })
             request.post(`barang/editbar/${id_barang}`, { nama_barang })
         },
+
+        //---------------------------------------------------------------- Varian ----------------
+
+        async readVarian(id_barang) {
+            const data = await request.get(`barang?id_barang=${id_barang}`)
+            if (data.status >= 200 && data.status < 300) {
+                this.rawVarians = data.data.varian;
+                // console.log('data.data', data.data)
+                // console.log('this.rawVarians', this.rawVarians)
+            }
+        },
+
+        async addVarianGet() {
+            const data = await request.get('barang/addvarian')
+            if (data.status >= 200 && data.status < 300) {
+            return data.data
+            } else {
+                console.log('error', data.status)
+            }
+        },
+
         async addVarian(varian) {
             const id_varian = Date.now()
             const formData = new FormData();
@@ -80,11 +94,12 @@ export const useBarangStore = defineStore({
             formData.append('harga_jual', varian.harga_jual);
 
             const headers = { 'Content-Type': 'multipart/form-data' };
+            console.log('formData',varian);
 
-            if (varian.id_varian == '' || null) {
+            if (varian.id_varian === '' || null) {
                 console.log('id kosong')
                 this.rawVarians.push({
-                    id_varian, nama_varian: varian.nama_varian, kategori_barang: varian.kategori_barang, stok_varian: varian.stok_varian, harga_beli: varian.harga_beli, satuan_varian: varian.satuan_varian, gudang: varian.gudang, harga_jual: varian.harga_jual
+                    id_varian: id_varian, nama_varian: varian.nama_varian, kategori_barang: varian.kategori_barang, stok_varian: varian.stok_varian, harga_beli: varian.harga_beli, satuan_varian: varian.satuan_varian, gudang: varian.gudang, harga_jual: varian.harga_jual
                 });
                 try {
                     const data = await request.post('barang/addvarian', formData, headers)
@@ -110,12 +125,12 @@ export const useBarangStore = defineStore({
                 }
             }
             console.log('addVarian',
-                varian
+                this.rawVarians
             )
         },
         async updateVarian(varian) {
             const formData = new FormData();
-            formData.append('file', varian.file,);
+            formData.append('file', varian.gambar_varian,);
             formData.append('id_varian', varian.id_varian);
             formData.append('nama_varian', varian.nama_varian);
             formData.append('kategori_barang', varian.kategori_barang);
@@ -128,6 +143,7 @@ export const useBarangStore = defineStore({
             formData.append('gambar_lama', varian.gambar_lama);
 
             const headers = { 'Content-Type': 'multipart/form-data' };
+            console.log('rawVariaqns', this.rawVarians)
 
             this.rawVarians = this.rawVarians.map(item => {
                 if (item.id_varian == varian.id_varian) {

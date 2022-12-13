@@ -1,17 +1,25 @@
 <template>
-    <table class="table table-report mt-2">
-        <thead>
-            <tr>
-                <th class="whitespace-nowrap">ID</th>
-                <th class="text-center whitespace-nowrap">NAMA BARANG</th>
-                <th class="text-center whitespace-nowrap">ACTIONS</th>
-            </tr>
-        </thead>
-        <tbody>
-            <BarangItem v-for="barang in barangs" :key="barang.id_barang" :barang="barang" @openModal="openModal">
-            </BarangItem>
-        </tbody>
-    </table>
+
+    <div class="block div div-bordered mt-2">
+        <div class=" block grid grid-cols-3 gap-4 mb-3 ">
+            <div class="col whitespace-nowrap ml-2"><b>ID</b></div>
+            <div class="col text-center whitespace-nowrap"><b>NAMA BARANG</b></div>
+            <div class="col text-center whitespace-nowrap"><b>ACTIONS</b></div>
+        </div>
+        <hr>
+        <br>
+        <div class="mt-2">
+            <AccordionGroupTable>
+        
+                <BarangItem v-for="barang in barangs" :key="barang.id_barang" :id_awal="barangs[0].id_barang"
+                    :barang="barang" @openModal="openModal" />
+           
+            </AccordionGroupTable>
+        </div>
+    </div>
+
+
+
     <Modal :show="deleteConfirmationModal" @hidden="deleteConfirmationModal = false">
         <ModalBody class="p-0">
             <div class="p-5 text-center">
@@ -80,6 +88,9 @@ export default {
                 alert(`Gagal Delete Barang ${id_barang}`, error)
             }
         }
-    }
+    },
+    // mounted() {
+    //     console.log("mounted[0]", this.barangs)
+    // }
 }
 </script>

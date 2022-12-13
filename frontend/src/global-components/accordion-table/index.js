@@ -43,8 +43,8 @@ const init = (el, { props, emit }) => {
 };
 
 // Accordion wrapper
-const AccordionGroup = defineComponent({
-  name: "AccordionGroup",
+const AccordionGroupTable = defineComponent({
+  name: "AccordionGroupTable",
   props: {
     selectedIndex: {
       type: [Number, Object],
@@ -81,8 +81,8 @@ const AccordionGroup = defineComponent({
   },
 });
 
-const AccordionItem = defineComponent({
-  name: "AccordionItem",
+const AccordionItemTable = defineComponent({
+  name: "AccordionItemTable",
   setup(props, { slots, attrs, emit }) {
     return () =>
       h(
@@ -95,7 +95,7 @@ const AccordionItem = defineComponent({
   },
 });
 
-const Accordion = defineComponent({
+const AccordionTable = defineComponent({
   name: "Accordion",
   props: {
     class: {
@@ -108,7 +108,7 @@ const Accordion = defineComponent({
       h(
         "div",
         {
-          class: "accordion-header",
+          class: "col accordion-header",
         },
         [
           h(
@@ -126,7 +126,7 @@ const Accordion = defineComponent({
   },
 });
 
-const AccordionPanel = defineComponent({
+const AccordionPanelTable = defineComponent({
   name: "AccordionPanel",
   props: {
     class: {
@@ -154,4 +154,4 @@ const AccordionPanel = defineComponent({
   },
 });
 
-export { AccordionGroup, AccordionItem, Accordion, AccordionPanel };
+export { AccordionGroupTable, AccordionItemTable, AccordionTable, AccordionPanelTable };

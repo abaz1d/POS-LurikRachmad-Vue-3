@@ -247,7 +247,11 @@
     <!-- BEGIN: Data List -->
     <div class="intro-y col-span-12 overflow-auto lg:overflow-visible">
       <!-- <Ba :satuans="Barang.items" /> -->
+
+
       <BarangList :barangs="Barang.items" />
+
+
     </div>
     <!-- END: Data List -->
     <!-- BEGIN: Pagination -->
@@ -446,7 +450,7 @@ export default {
 
     },
   },
-  mounted() {
+  beforeCreate() {
     this.Barang.readItem()
   }
 }

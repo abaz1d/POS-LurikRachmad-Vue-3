@@ -45,6 +45,7 @@ module.exports = function (db) {
       const id_barang = req.query.id_barang ? req.query.id_barang : '';
 
       db.query('SELECT dp.*, b.nama_barang FROM varian as dp LEFT JOIN barang as b ON dp.id_barang = b.id_barang WHERE dp.id_barang = $1 ORDER BY dp.id_varian ASC', [id_barang], (err, varian) => {
+        // db.query('SELECT * FROM varian ORDER BY id_varian ASC', (err, varian) => {
         if (err) console.log(err)
         db.query(`SELECT count(no_invoice) AS totaljual FROM penjualan`, (err, totaljual) => {
           db.query(`SELECT count(no_invoice) AS totalbeli FROM pembelian`, (err, totalbeli) => {
@@ -80,7 +81,8 @@ module.exports = function (db) {
           const barang = rowsB.rows
           const satuan = rowsS.rows
           const gudang = rowsG.rows
-          res.render('barang/addvarian', { current: '', barang, satuan, gudang });
+          // res.render('barang/addvarian', { current: '', barang, satuan, gudang });
+          res.status(200).json({ barang, satuan, gudang });
         })
       })
     })
@@ -90,7 +92,7 @@ module.exports = function (db) {
     try {
       let gambar;
       let uploadPath;
-      console.log('Uploading', req.body);
+      console.log('Uploading', req.body,req.body.id_varian, Object.keys(req.body).length, Object.keys(req.body).length > 7);
       // console.log('Uploading', req);
       if (!req.files || Object.keys(req.files).length === 0) {
         return res.status(400).send('No files were uploaded.');
@@ -101,14 +103,17 @@ module.exports = function (db) {
       uploadPath = path.join(__dirname, '/../public', 'gambar', filename);
       // Use the mv() method to place the file somewhere on your server
       gambar.mv(uploadPath, function (err) {
-        if (err)
+        if (err) {
           return res.status(500).send(err);
-        if (req.body.length > 7) {
+        }
+        if (Object.keys(req.body).length < 8) {
+          console.log('7 body')
           db.query(`INSERT INTO varian(nama_varian, id_barang,
                    stok_varian, harga_beli_varian, id_satuan,
                     id_gudang, gambar_varian, harga_jual_varian) 
                      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`, [req.body.nama_varian, req.body.kategori_barang, req.body.stok_varian, req.body.harga_beli, req.body.satuan_varian, req.body.gudang, filename, req.body.harga_jual])
         } else {
+          console.log('7 lebih')
           db.query(`INSERT INTO varian(id_varian ,nama_varian, id_barang,
             stok_varian, harga_beli_varian, id_satuan,
              id_gudang, gambar_varian, harga_jual_varian) 

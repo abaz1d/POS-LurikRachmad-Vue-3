@@ -5,10 +5,45 @@ import TopMenu from "../layouts/top-menu/Main.vue";
 import Dashboard from "../views/dashboard/Main.vue";
 import Page2 from "../views/page-2/Main.vue";
 import Satuan from "../views/satuan/Main.vue";
-import BarangKeluar from "../views/BarangKeluar/Main.vue"
-import Barang from "../views/barang/Main.vue"
+import BarangKeluar from "../views/BarangKeluar/Main.vue";
+import Barang from "../views/barang/Main.vue";
+import Login from "../views/login/Main.vue";
+import Register from "../views/register/Main.vue";
+import ErrorPage from "../views/error-page/Main.vue";
 
 const routes = [
+  {
+    path: "/",
+    component: TopMenu,
+    children: [
+      {
+        path: "/",
+        name: "top-menu-dashboard",
+        component: Dashboard,
+      },
+      {
+        path: "page-2",
+        name: "top-menu-page-2",
+        component: Page2,
+      },
+      {
+        path: "satuan",
+        name: "top-menu-satuan",
+        component: Satuan,
+      },
+      {
+        path: "barang-keluar",
+        name: "top-menu-barang-keluar",
+        component: BarangKeluar,
+      },
+      {
+        path: "barang",
+        name: "top-menu-barang",
+        component: Barang,
+      }
+
+    ],
+  },
   {
     path: "/side-menu",
     component: SideMenu,
@@ -72,36 +107,23 @@ const routes = [
     ],
   },
   {
-    path: "/",
-    component: TopMenu,
-    children: [
-      {
-        path: "/",
-        name: "top-menu-dashboard",
-        component: Dashboard,
-      },
-      {
-        path: "page-2",
-        name: "top-menu-page-2",
-        component: Page2,
-      },
-      {
-        path: "satuan",
-        name: "top-menu-satuan",
-        component: Satuan,
-      },
-      {
-        path: "barang-keluar",
-        name: "top-menu-barang-keluar",
-        component: BarangKeluar,
-      },
-      {
-        path: "barang",
-        name: "top-menu-barang",
-        component: Barang,
-      }
-
-    ],
+    path: "/login",
+    name: "login",
+    component: Login,
+  },
+  {
+    path: "/register",
+    name: "register",
+    component: Register,
+  },
+  {
+    path: "/error-page",
+    name: "error-page",
+    component: ErrorPage,
+  },
+  {
+    path: "/:pathMatch(.*)*",
+    component: ErrorPage,
   },
 ];
 

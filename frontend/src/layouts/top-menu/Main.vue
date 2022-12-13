@@ -211,7 +211,8 @@
               </DropdownItem>
               <DropdownDivider class="border-white/[0.08]" />
               <DropdownItem class="hover:bg-white/5">
-                <ToggleRightIcon class="w-4 h-4 mr-2" /> Logout
+                <ToggleRightIcon class="w-4 h-4 mr-2" /> 
+                <RouterLink to="/login">Logout</RouterLink>
               </DropdownItem>
             </DropdownContent>
           </DropdownMenu>
@@ -309,7 +310,7 @@
 
 <script setup>
 import { computed, onMounted, provide, ref, watch } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRoute, useRouter, RouterLink } from "vue-router";
 import { useTopMenuStore } from "@/stores/top-menu";
 import { helper as $h } from "@/utils/helper";
 import MobileMenu from "@/components/mobile-menu/Main.vue";

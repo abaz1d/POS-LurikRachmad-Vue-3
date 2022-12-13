@@ -1,7 +1,7 @@
 <template>
-    <table class="table mt-5">
+    <table class="table mt-5 table-bordered table-hover">
         <thead class="table-light">
-            <tr>
+            <tr class="text-center">
                 <th class="whitespace-nowrap">Gambar & ID</th>
                 <th class="whitespace-nowrap">Nama Barang</th>
                 <th class="whitespace-nowrap">Nama Varian</th>
@@ -56,7 +56,7 @@
         </ModalHeader>
         <ModalBody class="grid grid-cols-12 gap-4 gap-y-3">
             <div class="col-span-12">
-                <form @submit.prevent="updateVarian($event)" id="editVarianForm" class="grid grid-cols-12 gap-6">
+                <form @submit.prevent="" id="editVarianForm" class="grid grid-cols-12 gap-6">
 
                     <div class="col-span-6">
 
@@ -72,37 +72,37 @@
                     <div class="col-span-6">
                         <label for="pos-form-1" class="form-label">Nama Varian</label>
                         <input id="pos-form-1" type="text" class="form-control flex-1" placeholder="Masukan Nama Varian"
-                            v-model="nama_varian" required />
+                            v-model="nama_varian" />
                     </div>
                     <div class="col-span-6">
                         <label for="pos-form-1" class="form-label">Kategori Barang</label>
                         <input id="pos-form-1" type="text" class="form-control flex-1"
-                            placeholder="Masukan Kategori Barang" v-model="kategori_barang" required />
+                            placeholder="Masukan Kategori Barang" v-model="kategori_barang" />
                     </div>
                     <div class="col-span-6">
                         <label for="pos-form-1" class="form-label">Kategori Gudang</label>
                         <input id="pos-form-1" type="text" class="form-control flex-1"
-                            placeholder="Masukan Kategori Gudang" v-model="gudang" required />
+                            placeholder="Masukan Kategori Gudang" v-model="gudang" />
                     </div>
                     <div class="col-span-6">
                         <label for="pos-form-1" class="form-label">Stok Varian</label>
                         <input id="pos-form-1" type="number" class="form-control flex-1"
-                            placeholder="Masukan Stok Varian" v-model="stok_varian" required />
+                            placeholder="Masukan Stok Varian" v-model="stok_varian" />
                     </div>
                     <div class="col-span-6">
                         <label for="pos-form-1" class="form-label">Satuan Varian</label>
                         <input id="pos-form-1" type="text" class="form-control flex-1"
-                            placeholder="Masukan Satuan Varian" v-model="satuan_varian" required />
+                            placeholder="Masukan Satuan Varian" v-model="satuan_varian" />
                     </div>
                     <div class="col-span-6">
                         <label for="pos-form-1" class="form-label">Harga Beli Varian</label>
                         <input id="pos-form-1" type="number" class="form-control flex-1"
-                            placeholder="Masukan Harga Beli Varian" v-model="harga_beli" required />
+                            placeholder="Masukan Harga Beli Varian" v-model="harga_beli" />
                     </div>
                     <div class="col-span-6">
                         <label for="pos-form-1" class="form-label">Harga Jual Varian</label>
                         <input id="pos-form-1" type="number" class="form-control flex-1"
-                            placeholder="Masukan Harga Jual Varian" v-model="harga_jual" required />
+                            placeholder="Masukan Harga Jual Varian" v-model="harga_jual" />
                     </div>
                     <div class="col-span-12">
                         <label for="pos-form-1" class="form-label">Gambar Varian</label>
@@ -168,8 +168,7 @@
             <button type="button" @click="isEdit = false" class="btn btn-outline-secondary w-32 mr-1">
                 Cancel
             </button>
-            <button @click="isEdit = false" type="submit" form="editVarianForm"
-                class="btn btn-primary w-32">Simpan</button>
+            <button @click="isEdit = false, updateVarian($event)" class="btn btn-primary w-32">Simpan</button>
         </ModalFooter>
     </Modal>
 
@@ -220,6 +219,7 @@ export default {
             gambar_varian: '',
             file: '',
             harga_jual: '',
+            data: '',
 
             url: null,
             publicPath: import.meta.env.VITE_APP_BASE_API
@@ -232,22 +232,32 @@ export default {
         },
         // openModalEdit(id_varian, nama_varian, kategori_barang, stok_varian, harga_beli, satuan_varian, gudang, gambar_varian, file, harga_jual) {
         openModalEdit(varian) {
-            alert("Edit Belum jalan")
-            // this.id_varian = varian.id_varian
-            // this.nama_varian = varian.nama_varian
-            // this.kategori_barang = varian.kategori_barang
-            // this.stok_varian = varian.stok_varian
-            // this.harga_beli = varian.harga_beli
-            // this.satuan_varian = varian.satuan_varian
-            // this.gudang = varian.gudang
-            // this.gambar_varian = varian.gambar_varian
-            // // this.file = varian.file
-            // this.harga_jual = varian.harga_jual
-            // this.isEdit = true
+            // alert("Edit Belum jalan")
+            try {
+                this.Barang.addVarianGet()
+                .then((data) => {
+                    this.data = data
+                    console.log('res', this.data);
+                    this.id_varian = varian.id_varian
+                    this.nama_varian = varian.nama_varian
+                    this.kategori_barang = varian.kategori_barang
+                    this.stok_varian = varian.stok_varian
+                    this.harga_beli = varian.harga_beli
+                    this.satuan_varian = varian.satuan_varian
+                    this.gudang = varian.gudang
+                    this.gambar_varian = varian.gambar_varian
+                    // this.file = varian.file
+                    this.harga_jual = varian.harga_jual
+                    this.isEdit = true
+                })
+            } catch (error) {
+                console.log(error)
+            }
 
         },
         updateVarian(e) {
             try {
+                console.log('file', this.id_varian.valueOf())
                 this.Barang.updateVarian({
                     // console.log("update", {
                     id_varian: this.id_varian,
@@ -261,18 +271,20 @@ export default {
                     file: this.file,
                     harga_jual: this.harga_jual,
 
-                })
-                this.id_varian = ''
-                this.nama_varian = ''
-                this.kategori_barang = ''
-                this.stok_varian = ''
-                this.harga_beli = ''
-                this.satuan_varian = ''
-                this.gudang = ''
-                this.gambar_varian = ''
-                this.file = ''
-                this.harga_jual = ''
-                this.isEdit = false
+                }).then(() =>
+                    this.id_varian = '',
+                    this.nama_varian = '',
+                    this.kategori_barang = '',
+                    this.stok_varian = '',
+                    this.harga_beli = '',
+                    this.satuan_varian = '',
+                    this.gudang = '',
+                    this.gambar_varian = '',
+                    this.file = '',
+                    this.harga_jual = '',
+                    this.isEdit = false
+                )
+
                 // console.log('file',this.file)
 
             } catch (error) {

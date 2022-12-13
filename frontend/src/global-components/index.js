@@ -34,6 +34,12 @@ import {
   Accordion,
   AccordionPanel,
 } from "./accordion";
+import {
+  AccordionGroupTable,
+  AccordionItemTable,
+  AccordionTable,
+  AccordionPanelTable,
+} from "./accordion-table";
 import { Alert } from "./alert";
 import {
   PreviewComponent,
@@ -44,6 +50,10 @@ import {
 import LucideIcons from "./lucide";
 
 export default (app) => {
+  app.component("AccordionGroupTable", AccordionGroupTable);
+  app.component("AccordionItemTable", AccordionItemTable);
+  app.component("AccordionTable", AccordionTable);
+  app.component("AccordionPanelTable", AccordionPanelTable);
   app.component("Chart", Chart);
   app.component("GoogleMapLoader", GoogleMapLoader);
   app.component("Litepicker", Litepicker);
