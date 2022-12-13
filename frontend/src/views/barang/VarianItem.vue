@@ -46,7 +46,7 @@
         <button class="flex items-center mr-3" type="button" @click="$emit('openModalEdit', {
           id_varian: varian.id_varian,
           nama_varian: varian.nama_varian,
-          kategori_barang: varian.nama_barang,
+          kategori_barang: varian.id_barang,
           stok_varian: varian.stok_varian,
           harga_beli: varian.harga_beli_varian,
           satuan_varian: varian.id_satuan,

@@ -22,7 +22,7 @@
         <ModalBody class="p-0">
             <div class="p-5 text-center">
                 <XCircleIcon class="w-16 h-16 text-danger mx-auto mt-3" />
-                <div class="text-3xl mt-5">Apakah Anda Yakin ?</div>
+                <div class="text-3xl mt-5">Apakah Anda Yakin ? <br>{{ id_variandel }}</div>
                 <div class="text-slate-500 mt-2">
                     Anda yakin ingin menghapus data <b>{{ nama_variandel }}</b> ? <br />Data yang telah dihapus tidak
                     bisa
@@ -35,7 +35,7 @@
                     Batal
                 </button>
                 <button type="button" class="btn btn-danger w-24"
-                    @click="(e) => { e.preventDefault(); deleteVarian(id_varian); }">Hapus</button>
+                    @click="(e) => { e.preventDefault(); deleteVarian(id_variandel); }">Hapus</button>
             </div>
         </ModalBody>
     </Modal>
@@ -58,7 +58,7 @@
             <div class="col-span-12">
                 <form @submit.prevent="" id="editVarianForm" class="grid grid-cols-12 gap-6">
 
-                    <div class="col-span-6">
+                    <div class="col-span-6 mb-0">
 
                         <label for="pos-form-1" class="form-label">ID Varian</label>
                         <input id="pos-form-1" type="text" class="form-control flex-1" placeholder="Masukan Nama Varian"
@@ -76,13 +76,21 @@
                     </div>
                     <div class="col-span-6">
                         <label for="pos-form-1" class="form-label">Kategori Barang</label>
-                        <input id="pos-form-1" type="text" class="form-control flex-1"
-                            placeholder="Masukan Kategori Barang" v-model="kategori_barang" />
+                        <!-- <input id="pos-form-1" type="text" class="form-control flex-1"
+                            placeholder="Masukan Kategori Barang" v-model="kategori_barang" /> -->
+                        <select v-model="kategori_barang" id="pos-form-1" class="form-select sm:mr-2" aria-label="Default select example">
+                            <option v-for="barang in data.barang" :key="barang.id_barang" :barang="barang" :value="barang.id_barang" :selected="kategori_barang == barang.id_barang">
+                                {{barang.id_barang}} - {{barang.nama_barang}}
+                            </option>
+                        </select>
                     </div>
                     <div class="col-span-6">
                         <label for="pos-form-1" class="form-label">Kategori Gudang</label>
-                        <input id="pos-form-1" type="text" class="form-control flex-1"
-                            placeholder="Masukan Kategori Gudang" v-model="gudang" />
+                        <select v-model="gudang" id="pos-form-1" class="form-select sm:mr-2" aria-label="Default select example">
+                            <option v-for="gudang in data.gudang" :key="gudang.id_gudang" :gudang="gudang" :value="gudang.id_gudang" :selected="gudang == gudang.id_gudang">
+                                {{gudang.id_gudang}} - {{gudang.nama_gudang}}
+                            </option>
+                        </select>
                     </div>
                     <div class="col-span-6">
                         <label for="pos-form-1" class="form-label">Stok Varian</label>
@@ -91,8 +99,11 @@
                     </div>
                     <div class="col-span-6">
                         <label for="pos-form-1" class="form-label">Satuan Varian</label>
-                        <input id="pos-form-1" type="text" class="form-control flex-1"
-                            placeholder="Masukan Satuan Varian" v-model="satuan_varian" />
+                        <select v-model="satuan_varian" id="pos-form-1" class="form-select sm:mr-2" aria-label="Default select example">
+                            <option v-for="satuan in data.satuan" :key="satuan.id_satuan" :satuan="satuan" :value="satuan.id_satuan" :selected="satuan_varian == satuan.id_satuan">
+                                {{satuan.id_satuan}} - {{satuan.nama_satuan}}
+                            </option>
+                        </select>
                     </div>
                     <div class="col-span-6">
                         <label for="pos-form-1" class="form-label">Harga Beli Varian</label>
@@ -235,21 +246,21 @@ export default {
             // alert("Edit Belum jalan")
             try {
                 this.Barang.addVarianGet()
-                .then((data) => {
-                    this.data = data
-                    console.log('res', this.data);
-                    this.id_varian = varian.id_varian
-                    this.nama_varian = varian.nama_varian
-                    this.kategori_barang = varian.kategori_barang
-                    this.stok_varian = varian.stok_varian
-                    this.harga_beli = varian.harga_beli
-                    this.satuan_varian = varian.satuan_varian
-                    this.gudang = varian.gudang
-                    this.gambar_varian = varian.gambar_varian
-                    // this.file = varian.file
-                    this.harga_jual = varian.harga_jual
-                    this.isEdit = true
-                })
+                    .then((data) => {
+                        this.data = data
+                        
+                        this.id_varian = varian.id_varian
+                        this.nama_varian = varian.nama_varian
+                        this.kategori_barang = varian.kategori_barang
+                        this.stok_varian = varian.stok_varian
+                        this.harga_beli = varian.harga_beli
+                        this.satuan_varian = varian.satuan_varian
+                        this.gudang = varian.gudang
+                        this.gambar_varian = varian.gambar_varian
+                        // this.file = varian.file
+                        this.harga_jual = varian.harga_jual
+                        this.isEdit = true
+                    })
             } catch (error) {
                 console.log(error)
             }

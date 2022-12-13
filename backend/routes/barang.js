@@ -88,11 +88,11 @@ module.exports = function (db) {
     })
   })
 
-  router.post('/addvarian', async function (req, res) {
+  router.post('/addvarian', async function (req, res, next) {
     try {
       let gambar;
       let uploadPath;
-      console.log('Uploading', req.body,req.body.id_varian, Object.keys(req.body).length, Object.keys(req.body).length > 7);
+      //console.log('Uploading', req.body,req.body.id_varian, Object.keys(req.body).length, Object.keys(req.body).length > 7);
       // console.log('Uploading', req);
       if (!req.files || Object.keys(req.files).length === 0) {
         return res.status(400).send('No files were uploaded.');
@@ -108,20 +108,41 @@ module.exports = function (db) {
         }
         if (Object.keys(req.body).length < 8) {
           console.log('7 body')
-          db.query(`INSERT INTO varian(nama_varian, id_barang,
-                   stok_varian, harga_beli_varian, id_satuan,
-                    id_gudang, gambar_varian, harga_jual_varian) 
-                     VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`, [req.body.nama_varian, req.body.kategori_barang, req.body.stok_varian, req.body.harga_beli, req.body.satuan_varian, req.body.gudang, filename, req.body.harga_jual])
-        } else {
-          console.log('7 lebih')
-          db.query(`INSERT INTO varian(id_varian ,nama_varian, id_barang,
+          // db.query(`INSERT INTO varian(nama_varian, id_barang,
+          //          stok_varian, harga_beli_varian, id_satuan,
+          //           id_gudang, gambar_varian, harga_jual_varian) 
+          //            VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`, [req.body.nama_varian, req.body.kategori_barang, req.body.stok_varian, req.body.harga_beli, req.body.satuan_varian, req.body.gudang, filename, req.body.harga_jual])
+          db.query(`WITH inserted AS (INSERT INTO varian(nama_varian, id_barang,
             stok_varian, harga_beli_varian, id_satuan,
              id_gudang, gambar_varian, harga_jual_varian) 
-              VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`, [req.body.id_varian, req.body.nama_varian, req.body.kategori_barang, req.body.stok_varian, req.body.harga_beli, req.body.satuan_varian, req.body.gudang, filename, req.body.harga_jual])
+              VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *) SELECT * FROM inserted LEFT JOIN barang ON inserted.id_barang = barang.id_barang`, [req.body.nama_varian, req.body.kategori_barang, req.body.stok_varian, req.body.harga_beli, req.body.satuan_varian, req.body.gudang, filename, req.body.harga_jual])
+            .then((rows) => {
+              res.status(200).json(rows.rows[0])
+            })
+            .catch((err) => {
+              res.status(500)
+            })
+
+        } else {
+          console.log('7 lebih')
+          // db.query(`INSERT INTO varian(id_varian ,nama_varian, id_barang,
+          //   stok_varian, harga_beli_varian, id_satuan,
+          //    id_gudang, gambar_varian, harga_jual_varian) 
+          //     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`, [req.body.id_varian, req.body.nama_varian, req.body.kategori_barang, req.body.stok_varian, req.body.harga_beli, req.body.satuan_varian, req.body.gudang, filename, req.body.harga_jual])
+          db.query(`WITH inserted AS (INSERT INTO varian(id_varian ,nama_varian, id_barang,
+            stok_varian, harga_beli_varian, id_satuan,
+             id_gudang, gambar_varian, harga_jual_varian) 
+              VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *) SELECT * FROM inserted LEFT JOIN barang ON inserted.id_barang = barang.id_barang`, [req.body.id_varian, req.body.nama_varian, req.body.kategori_barang, req.body.stok_varian, req.body.harga_beli, req.body.satuan_varian, req.body.gudang, filename, req.body.harga_jual])
+            .then((rows) => {
+              res.status(200).json(rows.rows[0])
+            })
+            .catch((err) => {
+              res.status(500)
+            })
         }
 
       });
-      res.status(200).json({ succes: true });
+
     } catch (error) {
       res.send(error)
     }
@@ -157,7 +178,7 @@ INNER JOIN gudang gud ON gud.id_gudang = var.id_gudang WHERE id_varian = $1;`, [
             if (err) {
               return console.error(err.message);
             }
-            res.render('barang/editvarian', { item: rows.rows[0], barang, satuan, gudang });
+            res.status(200).json('barang/editvarian', { item: rows.rows[0], barang, satuan, gudang });
 
           })
         })
@@ -216,7 +237,7 @@ INNER JOIN gudang gud ON gud.id_gudang = var.id_gudang WHERE id_varian = $1;`, [
 
       res.json(rows[0])
     } catch (e) {
-      res.send(e)
+      res.json({ error: error })
     }
   })
   //=====================================================
@@ -228,7 +249,7 @@ INNER JOIN gudang gud ON gud.id_gudang = var.id_gudang WHERE id_varian = $1;`, [
     try {
       const { rows } = await db.query(`INSERT INTO barang(nama_barang) 
       VALUES ($1) RETURNING *`, [req.body.nama_barang])
-      res.json(rows[0])
+      res.status(200).json(rows[0])
     } catch (error) {
       res.json({ error: error })
     }

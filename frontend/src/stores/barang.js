@@ -14,7 +14,7 @@ export const useBarangStore = defineStore({
     actions: {
         async readItem() {
             const data = await request.get('barang')
-            
+
             if (data.status >= 200 && data.status < 300) {
                 this.rawItems = data.data.barang;
                 this.rawVarians = data.data.varian;
@@ -29,8 +29,10 @@ export const useBarangStore = defineStore({
 
                 this.rawItems = this.rawItems.map((item) => {
                     if (item.id_barang === id_barang) {
+                        this.readVarian(data.data.id_barang)
                         return data.data
                     }
+
                     return item
                 })
             } catch (e) {
@@ -75,7 +77,7 @@ export const useBarangStore = defineStore({
         async addVarianGet() {
             const data = await request.get('barang/addvarian')
             if (data.status >= 200 && data.status < 300) {
-            return data.data
+                return data.data
             } else {
                 console.log('error', data.status)
             }
@@ -94,7 +96,6 @@ export const useBarangStore = defineStore({
             formData.append('harga_jual', varian.harga_jual);
 
             const headers = { 'Content-Type': 'multipart/form-data' };
-            console.log('formData',varian);
 
             if (varian.id_varian === '' || null) {
                 console.log('id kosong')
@@ -120,13 +121,20 @@ export const useBarangStore = defineStore({
                 });
                 try {
                     const data = await request.post('barang/addvarian', formData, headers)
+                    console.log('data',data);
+                    this.rawVarians = this.rawVarians.map((item) => {
+                        if (item.id_varian === varian.id_varian) {
+                            return data.data
+                        }
+                        return item
+                    })
                 } catch (error) {
                     console.error(error)
                 }
             }
-            console.log('addVarian',
-                this.rawVarians
-            )
+            // console.log('addVarian',
+            //     this.rawVarians
+            // )
         },
         async updateVarian(varian) {
             const formData = new FormData();
@@ -165,9 +173,10 @@ export const useBarangStore = defineStore({
                 .then((res) => {
                     if (res.status >= 200 && res.status < 300) {
                         // alert(`Sukses Hapus Data ${id_barang}`)
+
                     }
                 })
-            console.log('sukse delete', id_varian)
+
         }
     }
 })

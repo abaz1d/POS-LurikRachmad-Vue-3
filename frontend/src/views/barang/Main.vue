@@ -2,7 +2,7 @@
   <h2 class="intro-y text-lg font-medium mt-10">Data List Layout</h2>
   <div class="grid grid-cols-12 gap-6 mt-5">
     <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
-      <button class="btn btn-primary shadow-md mr-2" @click="addModal = true">Add New Product</button>
+      <button class="btn btn-primary shadow-md mr-2" @click="openAddModal()">Add New Product</button>
 
       <!-- BEGIN: Modal Content -->
       <Modal :show="addModal" @hidden="addModal = false">
@@ -59,144 +59,155 @@
             <Modal backdrop="static" size="modal-xl" :show="addModalVarian" @hidden="addModalVarian = false">
               <ModalHeader>
                 <h2 class="font-medium text-base mr-auto">Tambah Varian</h2>
-                <button type="button" @click="addModalVarian = false"
-                  class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
-                  <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd"
-                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                      clip-rule="evenodd"></path>
-                  </svg>
-                  <span class="sr-only">Close modal</span>
+                <button type="button" @click="resetFormVarian"
+                  class="btn btn-outline-danger inline-block hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                  <RefreshCwIcon class="mr-2" />Reset Form
                 </button>
               </ModalHeader>
-              <ModalBody class="grid grid-cols-12 gap-4 gap-y-3">
-                <div class="col-span-12">
-                  <form @submit.prevent="addVarian" id="addVarianForm" class="grid grid-cols-12 gap-6">
+              <ModalBody class="">
+                <form @submit.prevent="addVarian" id="addVarianForm">
+                  <div class="overflow-hidden shadow sm:rounded-md">
+                    <div class="bg-white px-4 py-5 sm:p-6">
+                      <div class="grid grid-cols-6 gap-6">
 
-                    <div class="col-span-6">
-                      <div class="grid grid-cols-12 form-label">
-                        <label for="pos-form-1" class="form-check col-span-2">ID Varian</label>
-                        <div class="form-check col-span-4">
-                          <input id="defaultID" class="form-check-input" type="radio" value="defaultID"
-                            v-model="checkedID" />
-                          <label for="pos-form-1" @click="checkedID = 'defaultID'" class="form-check-label">Auto
-                            Generate</label>
+                        <div class="col-span-6 sm:col-span-3 form-switch mb-0">
+                          <label for="idVarian" class="block text-sm font-medium text-gray-700">ID Varian | <input
+                              id="ScanID" class="form-check-input" type="checkbox" v-model="checkedID" /></label>
+                          <div class="input-group">
+                            <input type="text" id="idVarian"
+                              class="form-control mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                              :placeholder="checkedID ? 'Ketik / Scan ID' : 'Auto Generate ID'" v-model="ScanIDVarian"
+                              :readonly="!checkedID" />
+                            <div v-if="checkedID" class="camera inline-flex items-center rounded-r-md border border-l-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500 mt-1"
+                              @click="isModalScanner = true; renderQrScanner();">
+                              <component is="CameraIcon" />
+                            </div>
+                          </div>
                         </div>
-                        <div class="form-check col-span-4">
-                          <input id="ScanID" class="form-check-input" type="radio" value="ScanID" v-model="checkedID" />
-                          <label for="pos-form-1" @click="checkedID = 'ScanID'" class="form-check-label">Scan
-                            Manual</label>
+
+                        <div class="col-span-6 sm:col-span-3 mb-0">
+                          <label for="namaVarian" class="block text-sm font-medium text-gray-700 mb-2">Nama
+                            Varian</label>
+                          <input id="namaVarian" type="text"
+                            class="form-control flex-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            placeholder="Masukan Nama Varian" v-model="namaVarian" required />
                         </div>
-                      </div>
-                      <input v-if="checkedID == 'defaultID'" id="pos-form-1" type="text" class="form-control flex-1"
-                        placeholder="Masukan Nama Varian" v-model="idVarian" readonly />
 
-                      <div v-else class="input-group">
-                        <input type="text" class="form-control min-w-[6rem]" placeholder="Ketik / Scan ID"
-                          v-model="ScanIDVarian" />
-                        <div class="camera input-group-text" @click="isModalScanner = true; renderQrScanner();">
-                          <component is="CameraIcon" />
+                        <div class="col-span-6 sm:col-span-6" style="margin-top: -20px;">
+                          <small v-if="!checkedID" class="text-grey-800 text-xs ml-2 mt-0">
+                            * Untuk manambah ID Manual cek pada checkbox.
+                          </small>
+
+                          <small v-else class="text-grey-800 text-xs ml-2 mt-0"> * Tekan lambang Kamera untuk scan
+                            <b>Barcode /
+                              ID</b></small>
                         </div>
-                      </div>
 
-                      <small v-if="checkedID == 'defaultID'" class="text-grey-800 text-xs ml-2">
-                        * Untuk mengedit ID Varian pilih Edit ID pada radio di atas
-                      </small>
+                        <div class="col-span-6 sm:col-span-3">
+                          <label for="kategoriBarang" class="block text-sm font-medium text-gray-700">Kategori
+                            Barang</label>
+                          <select v-model="kategoriBarangVarian" id="kategoriBarang"
+                            class="form-select mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                            aria-label="Default select example" required>
+                            <option value="" disabled>>-- Pilih Barang --&lt</option>
+                            <option v-for="barang in data.barang" :key="barang.id_barang" :barang="barang"
+                              :value="barang.id_barang">
+                              {{ barang.id_barang }} - {{ barang.nama_barang }}
+                            </option>
+                          </select>
+                        </div>
 
-                      <small v-else class="text-grey-800 text-xs ml-2"> * Tekan lambang Kamera untuk scan <b>Barcode /
-                          ID</b></small>
+                        <div class="col-span-6 sm:col-span-3">
+                          <label for="kategoriGudang" class="block text-sm font-medium text-gray-700">Kategori
+                            Gudang</label>
+                          <select v-model="kategoriGudangVarian" id="kategoriGudang"
+                            class="form-select mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                            aria-label="Default select example" required>
+                            <option value="" disabled>>-- Pilih Gudang --&lt</option>
+                            <option v-for="gudang in data.gudang" :key="gudang.id_gudang" :gudang="gudang"
+                              :value="gudang.id_gudang">
+                              {{ gudang.id_gudang }} - {{ gudang.nama_gudang }}
+                            </option>
+                          </select>
+                        </div>
 
-                    </div>
-                    <div class="col-span-6">
-                      <label for="pos-form-1" class="form-label">Nama Varian</label>
-                      <input id="pos-form-1" type="text" class="form-control flex-1" placeholder="Masukan Nama Varian"
-                        v-model="namaVarian" required />
-                    </div>
-                    <div class="col-span-6">
-                      <label for="pos-form-1" class="form-label">Kategori Barang</label>
-                      <input id="pos-form-1" type="text" class="form-control flex-1"
-                        placeholder="Masukan Kategori Barang" v-model="kategoriBarangVarian" required />
-                    </div>
-                    <div class="col-span-6">
-                      <label for="pos-form-1" class="form-label">Kategori Gudang</label>
-                      <input id="pos-form-1" type="text" class="form-control flex-1"
-                        placeholder="Masukan Kategori Gudang" v-model="kategoriGudangVarian" required />
-                    </div>
-                    <div class="col-span-6">
-                      <label for="pos-form-1" class="form-label">Stok Varian</label>
-                      <input id="pos-form-1" type="text" class="form-control flex-1" placeholder="Masukan Stok Varian"
-                        v-model="stokVarian" required />
-                    </div>
-                    <div class="col-span-6">
-                      <label for="pos-form-1" class="form-label">Satuan Varian</label>
-                      <input id="pos-form-1" type="text" class="form-control flex-1" placeholder="Masukan Satuan Varian"
-                        v-model="satuanVarian" required />
-                    </div>
-                    <div class="col-span-6">
-                      <label for="pos-form-1" class="form-label">Harga Beli Varian</label>
-                      <input id="pos-form-1" type="text" class="form-control flex-1"
-                        placeholder="Masukan Harga Beli Varian" v-model="hargaBeliVarian" required />
-                    </div>
-                    <div class="col-span-6">
-                      <label for="pos-form-1" class="form-label">Harga Jual Varian</label>
-                      <input id="pos-form-1" type="text" class="form-control flex-1"
-                        placeholder="Masukan Harga Jual Varian" v-model="hargaJualVarian" required />
-                    </div>
-                    <div class="col-span-12">
-                      <label for="pos-form-1" class="form-label">Gambar Varian</label>
-                      <div class="intro-y box p-5">
-                        <div class="border border-slate-200/60 dark:border-darkmode-400 rounded-md p-5">
+                        <div class="col-span-6 sm:col-span-3 mb-0">
+                          <label for="stokVarian" class="block text-sm font-medium text-gray-700">Stok
+                            Varian</label>
+                          <input id="stokVarian" type="text"
+                            class="form-control flex-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            placeholder="Masukan Stok Varian" v-model="stokVarian" required />
+                        </div>
+
+                        <div class="col-span-6 sm:col-span-3">
+                          <label for="satuanVarian" class="block text-sm font-medium text-gray-700">Satuan
+                            Varian</label>
+                          <select v-model="satuanVarian" id="satuanVarian"
+                            class="form-select mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                            aria-label="Default select example" required>
+                            <option value="" disabled>>-- Pilih Satuan --&lt</option>
+                            <option v-for="satuan in data.satuan" :key="satuan.id_satuan" :satuan="satuan"
+                              :value="satuan.id_satuan">
+                              {{ satuan.id_satuan }} - {{ satuan.nama_satuan }}
+                            </option>
+                          </select>
+                        </div>
+
+                        <div class="col-span-6 sm:col-span-3">
+                          <label for="hargaBeliVarian" class="block text-sm font-medium text-gray-700">Harga Beli
+                            Varian</label>
+                          <input id="hargaBeliVarian" type="text"
+                            class="form-control flex-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            placeholder="Masukan Harga Beli Varian" v-model="hargaBeliVarian" required />
+                        </div>
+
+                        <div class="col-span-6 sm:col-span-3">
+                          <label for="hargaJualVarian" class="block text-sm font-medium text-gray-700">Harga Jual
+                            Varian</label>
+                          <input id="hargaJualVarian" type="text"
+                            class="form-control flex-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            placeholder="Masukan Harga Jual Varian" v-model="hargaJualVarian" required />
+                        </div>
+
+                        <div class="col-span-6 sm:col-span-6">
+                          <label class="block text-sm font-medium text-gray-700">Gambar Varian</label>
                           <div
-                            class="font-medium text-base flex items-center border-b border-slate-200/60 dark:border-darkmode-400 pb-5">
-                            <ChevronDownIcon class="w-4 h-4 mr-2" /> Upload Product
-                          </div>
-                          <div class="mt-5">
-                            <div class="flex items-center text-slate-500">
-                              <span>
-                                <LightbulbIcon class="w-5 h-5 text-warning" />
-                              </span>
-                              <div class="ml-2">
-                                <span class="mr-1">Avoid selling counterfeit products / violating Intellectual
-                                  Property Rights, so that your products are not deleted.</span>
-                                <a href="#" class="text-primary font-medium" target="blank">Learn More</a>
-                              </div>
-                            </div>
-                            <div class="form-inline items-start flex-col xl:flex-row mt-10">
-                              <div
-                                class="w-full mt-3 xl:mt-0 flex-1 border-2 border-dashed dark:border-darkmode-400 rounded-md pt-4">
-                                <div class="grid grid-cols-10 gap-5 pl-4 pr-5">
-                                  <div
-                                    class="imgUp justify-content-center mb-2 col-span-5 md:col-span-2 h-28 relative image-fit cursor-pointer zoom-in"
-                                    v-if="url == null || ''">
+                            class="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
+                            <div class="space-y-1 text-center">
+                              <svg v-if="url == null || ''" class="mx-auto h-12 w-12 text-gray-400"
+                                stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                <path
+                                  d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                              </svg>
 
-                                  </div>
-                                  <div v-else
-                                    class="col-span-5 md:col-span-2 h-28 relative image-fit cursor-pointer zoom-in">
-                                    <img class="rounded-md" alt="Midone - HTML Admin Template" :src="url" />
-                                    <Tippy content="Remove this image?" @click="url = null"
-                                      class="tooltip w-5 h-5 flex items-center justify-center absolute rounded-full text-white bg-danger right-0 top-0 -mr-2 -mt-2">
-                                      <XIcon class="w-4 h-4" />
-                                    </Tippy>
-                                  </div>
+                              <div v-else class="col-span-5 md:col-span-2 relative image-fit cursor-pointer zoom-in"
+                                style="height: 9rem;">
+                                <img class="imgUp rounded-md" alt="Midone - HTML Admin Template" :src="url" />
+                                <Tippy content="Remove this image?" @click="url = null"
+                                  class="tooltip w-5 h-5 flex items-center justify-center absolute rounded-full text-white bg-danger right-0 top-0 -mr-2 -mt-2">
+                                  <XIcon class="w-4 h-4" />
+                                </Tippy>
+                              </div>
+                              <div @click="this.$refs.gambarBaru.click()">
+                                <div class="flex text-sm text-gray-600" >
+                                  <label for="gambarBaru"
+                                    class="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500">
+                                    <span>Upload a file</span>
+                                    <input id="gambarBaru" ref="gambarBaru" @change="previewImage" name="file-upload"
+                                      type="file" class="sr-only" />
+                                  </label>
+                                  <p class="pl-1">or drag and drop</p>
                                 </div>
-                                <div class="px-4 pb-4 mt-5 flex items-center justify-center cursor-pointer relative">
-                                  <ImageIcon class="w-4 h-4 mr-2" />
-                                  <span class="text-primary mr-1">Upload a file</span> or drag
-                                  and drop
-                                  <input id="gambarBaru" @change="previewImage" type="file"
-                                    class="w-full h-full top-0 left-0 absolute opacity-0" />
-                                </div>
+                                <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-
-
-                  </form>
-                </div>
+                  </div>
+                </form>
               </ModalBody>
               <ModalFooter class="text-right">
                 <button type="button" @click="addModalVarian = false" class="btn btn-outline-secondary w-32 mr-1">
@@ -351,7 +362,7 @@ export default {
   },
   data() {
     return {
-      checkedID: 'defaultID',
+      checkedID: false,
       isVarianOpen: false,
       isModalScanner: false,
 
@@ -365,6 +376,8 @@ export default {
       kategoriBarangVarian: '',
       namaVarian: '',
       stokVarian: '',
+
+      data: '',
 
       url: null,
       file: null,
@@ -380,8 +393,12 @@ export default {
     };
   },
   methods: {
-    showValue() {
-      console.log("showValue", this.inputNamaVarian.value)
+    openAddModal() {
+      this.Barang.addVarianGet()
+        .then((data) => {
+          this.data = data
+          this.addModal = true
+        })
     },
     addBarang() {
       try {
@@ -423,12 +440,36 @@ export default {
             harga_jual: this.hargaJualVarian
           })
         }
+        this.idVarian = ''
+        this.ScanIDVarian = ''
+        this.namaVarian = ''
+        this.kategoriBarangVarian = ''
+        this.stokVarian = ''
+        this.hargaBeliVarian = ''
+        this.satuanVarian = ''
+        this.kategoriGudangVarian = ''
+        this.file = null
+        this.url = null
+        this.hargaJualVarian = ''
         this.addModalVarian = false
 
       } catch (error) {
         alert('Varian Tambah Data', error)
       }
 
+    },
+    resetFormVarian() {
+      this.idVarian = ''
+      this.ScanIDVarian = ''
+      this.namaVarian = ''
+      this.kategoriBarangVarian = ''
+      this.stokVarian = ''
+      this.hargaBeliVarian = ''
+      this.satuanVarian = ''
+      this.kategoriGudangVarian = ''
+      this.file = null
+      this.url = null
+      this.hargaJualVarian = ''
     },
     renderQrScanner() {
       this.$refs.qrScanner.renderQrScanner()
@@ -446,7 +487,6 @@ export default {
     previewImage(e) {
       this.file = e.target.files[0];
       this.url = URL.createObjectURL(this.file);
-      console.log('image', this.url);
 
     },
   },
