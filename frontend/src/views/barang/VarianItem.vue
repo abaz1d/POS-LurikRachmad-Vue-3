@@ -45,15 +45,15 @@
       <div class="flex justify-center items-center">
         <button class="flex items-center mr-3" type="button" @click="$emit('openModalEdit', {
           id_varian: varian.id_varian,
-          nama_varian: varian.nama_varian,
-          kategori_barang: varian.id_barang,
-          stok_varian: varian.stok_varian,
-          harga_beli: varian.harga_beli_varian,
-          satuan_varian: varian.id_satuan,
-          gudang: varian.id_gudang,
-          gambar_varian: gambar_lama,
-          file,
-          harga_jual: varian.harga_jual_varian
+          // nama_varian: varian.nama_varian,
+          // kategori_barang: varian.id_barang,
+          // stok_varian: varian.stok_varian,
+          // harga_beli: varian.harga_beli_varian,
+          // satuan_varian: varian.id_satuan,
+          // gudang: varian.id_gudang,
+          gambar_lama_preview: gambar_lama,
+          // file,
+          // harga_jual: varian.harga_jual_varian
         })">
           <CheckSquareIcon class="w-4 h-4 mr-1" /> Edit
         </button>
