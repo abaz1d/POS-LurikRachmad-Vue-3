@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+const fs = require("fs");
 
 var path = require('path');
 const { isLoggedIn } = require('../helpers/util')
@@ -40,7 +41,7 @@ module.exports = function (db) {
     sql += ` ORDER BY id_barang ASC`
     db.query(sql, search, (err, barang) => {
       if (err) console.log(err)
-      console.log('sql', sql)
+      // console.log('sql', sql)
       //const id_barang = req.query.id_barang ? req.query.id_barang : barang.rows.length > 0 ? barang.rows[0].id_barang : '';
       const id_barang = req.query.id_barang ? req.query.id_barang : '';
 
@@ -192,16 +193,19 @@ INNER JOIN gudang gud ON gud.id_gudang = var.id_gudang WHERE id_varian = $1`, [r
     try {
       let gambar;
       let uploadPath;
+
       if (!req.files || Object.keys(req.files).length === 0) {
-        console.log('gambar lama')
+        console.log('gambar lama', req.body.gambar_lama)
         db.query(`UPDATE varian SET nama_varian = $1, id_barang = $2, stok_varian = $3, harga_beli_varian = $4, id_satuan = $5, id_gudang = $6, gambar_varian = $7, harga_jual_varian = $8 WHERE id_varian = $9 RETURNING * `,
           [req.body.nama_varian, req.body.kategori_barang, req.body.stok_varian, req.body.harga_beli, req.body.satuan_varian, req.body.gudang, req.body.gambar_lama, req.body.harga_jual, req.params.id])
           .then((rows) => {
+            // console.log('rows',rows.rows[0]);
             res.status(200).json(rows.rows[0])
           })
           .catch((err) => {
             res.status(500)
           })
+
       } else {
         console.log('gambar baru')
         // The name of the input field (i.e. "gambar") is used to retrieve the uploaded file
@@ -224,10 +228,11 @@ INNER JOIN gudang gud ON gud.id_gudang = var.id_gudang WHERE id_varian = $1`, [r
             req.body.gudang,
               filename,
             req.body.harga_jual,
-            req.params.id], (rows, err) => {
+            req.params.id], (err, rows) => {
               if (err) {
-                return console.error(err.message);
+                console.log('e',err);
               }
+              //console.log('rows',rows);
               res.status(200).json(rows.rows[0])
             })
         })
@@ -293,6 +298,7 @@ INNER JOIN gudang gud ON gud.id_gudang = var.id_gudang WHERE id_varian = $1`, [r
   // })
 
   router.get('/deletebar/:id', isLoggedIn, async function (req, res, next) {
+    console.log('gambar',req.params.gambar_delete)
     try {
       const { rows } = await db.query('DELETE FROM barang WHERE id_barang = $1', [req.params.id])
       res.json(rows[0])

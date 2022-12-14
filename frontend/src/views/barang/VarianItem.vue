@@ -7,7 +7,7 @@
       </div>
 
       <div v-else class="mb-2">
-        <img :src="getImgUrl(varian.gambar_varian)" v-bind:alt="varian.gambar_varian" data-action="zoom"
+        <img :src="getImgUrl(varian.gambar_varian)" :alt="varian.gambar_varian" data-action="zoom"
           class="w-full rounded-md">
       </div>
       <div>
@@ -59,7 +59,7 @@
         </button>
 
         <button class="flex items-center text-danger" type="button"
-          @click="$emit('openModal', varian.id_varian, varian.nama_varian)">
+          @click="$emit('openModalDel', varian.id_varian, varian.nama_varian, gambar_lama)">
           <Trash2Icon class="w-4 h-4 mr-1" /> Delete
         </button>
       </div>
@@ -83,7 +83,7 @@ export default {
 
     return { Barang, varians, watch }
   },
-  emits: ["openModal", "openModalEdit", "cekVarian"],
+  emits: ["openModalDel", "openModalEdit", "cekVarian"],
   components: {
     // qrcode
   },

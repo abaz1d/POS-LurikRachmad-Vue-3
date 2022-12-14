@@ -84,6 +84,7 @@ export const useBarangStore = defineStore({
     },
 
     async addVarian(varian) {
+      console.log('addVarian', varian.file)
       const id_varian = Date.now()
       const formData = new FormData();
       formData.append('file', varian.file);
@@ -158,15 +159,13 @@ export const useBarangStore = defineStore({
       formData.append('gudang', varian.gudang);
       formData.append('harga_jual', varian.harga_jual);
 
-      formData.append('gambar_lama', varian.gambar_lama);
+      formData.append('gambar_lama', varian.gambar_lama.data.map(b => String.fromCharCode(b)).join(''));
 
       const headers = { 'Content-Type': 'multipart/form-data' };
-      console.log('rawVariaqns', this.rawVarians)
 
       try {
-        if (varian.file = '' || null) {
-          const data = request.post(`barang/editvar/${varian.id_varian}`, formData, headers)
-          console.log('file', data)
+        if (varian.file === '' || null) {
+          const data = await request.post(`barang/editvar/${varian.id_varian}`, formData, headers)
           if (data.status >= 200 && data.status < 300) {
             this.rawVarians = this.rawVarians.map((item) => {
               if (item.id_varian === varian.id_varian) {
@@ -176,9 +175,7 @@ export const useBarangStore = defineStore({
             })
           }
         } else {
-          formData.append('file', varian.file,);
-          const data = request.post(`barang/editvar/${varian.id_varian}`, formData, headers)
-          console.log('file', data)
+          const data = await request.post(`barang/editvar/${varian.id_varian}`, formData, headers, {timeout: 2})
           if (data.status >= 200 && data.status < 300) {
             this.rawVarians = this.rawVarians.map((item) => {
               if (item.id_varian === varian.id_varian) {
@@ -192,25 +189,11 @@ export const useBarangStore = defineStore({
       } catch (error) {
         console.error(error)
       }
-
-      // this.rawVarians = this.rawVarians.map(item => {
-      //     if (item.id_varian == varian.id_varian) {
-      //         return varian
-      //     }
-      //     return item
-      // })
-      // try {
-      //     console.log('update', varian)
-      //     // request.post(`barang/editvar/${varian.id_varian}`, formData, headers ) 
-      // } catch (error) {
-      //     console.error(error)
-      // }
-
     },
 
-    removeVarian(id_varian) {
-      this.rawVarians = this.rawVarians.filter(item => item.id_varian !== id_varian);
-      request.get(`barang/deletevar/${id_varian}`)
+    removeVarian(varian) {
+      this.rawVarians = this.rawVarians.filter(item => item.id_varian !== varian.id_varian);
+      request.get(`barang/deletevar/${varian.id_varian}`)
         .then((res) => {
           if (res.status >= 200 && res.status < 300) {
             // alert(`Sukses Hapus Data ${id_barang}`)
