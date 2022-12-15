@@ -39,6 +39,8 @@ var penjualanRouter = require('./routes/penjualan')(pool);
 var pembelianRouter = require('./routes/pembelian')(pool);
 var usersRouter = require('./routes/users')(pool);
 
+//var produk = require('./routes/produk') (pool);
+
 
 var app = express();
 
@@ -63,6 +65,8 @@ app.use(session({
   app.use('/penjualan', penjualanRouter);
   app.use('/pembelian', pembelianRouter);
   app.use('/users', usersRouter);
+
+  //app.use('/produk', produk);
 
   app.use(allowCrossDomain);
 

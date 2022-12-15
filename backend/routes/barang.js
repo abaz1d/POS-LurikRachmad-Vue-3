@@ -41,23 +41,13 @@ module.exports = function (db) {
     sql += ` ORDER BY id_barang ASC`
     db.query(sql, search, (err, barang) => {
       if (err) console.log(err)
-      // console.log('sql', sql)
-      //const id_barang = req.query.id_barang ? req.query.id_barang : barang.rows.length > 0 ? barang.rows[0].id_barang : '';
       const id_barang = req.query.id_barang ? req.query.id_barang : '';
 
       db.query('SELECT dp.*, b.nama_barang FROM varian as dp LEFT JOIN barang as b ON dp.id_barang = b.id_barang WHERE dp.id_barang = $1 ORDER BY dp.id_varian ASC', [id_barang], (err, varian) => {
-        // db.query('SELECT * FROM varian ORDER BY id_varian ASC', (err, varian) => {
+
         if (err) console.log(err)
         db.query(`SELECT count(no_invoice) AS totaljual FROM penjualan`, (err, totaljual) => {
           db.query(`SELECT count(no_invoice) AS totalbeli FROM pembelian`, (err, totalbeli) => {
-            // res.render('barang/list', {
-            //     varian: varian.rows,
-            //     rows: barang.rows,
-            //     query: req.query,
-            //     totaljual: totaljual.rows[0].totaljual,
-            //     totalbeli: totalbeli.rows[0].totalbeli,
-            //     user: req.session.user
-            // });
             res.status(200).json({
               varian: varian.rows,
               barang: barang.rows,

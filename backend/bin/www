@@ -8,24 +8,37 @@ var app = require('../app');
 var debug = require('debug')('pos-api:server');
 var http = require('http');
 
+const https = require('https');
+const fs = require('fs');
 /**
  * Get port from environment and store in Express.
  */
 
 var port = normalizePort(process.env.PORT || '3000');
+var hostname = process.env.HOSTNAME || 'localhost';
+
 app.set('port', port);
 
 /**
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+const options = {
+  key: fs.readFileSync('key.pem'),
+  cert: fs.readFileSync('cert.pem')
+};
+// https
+var server = https.createServer(options ,app);
+
 
 /**
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
+server.listen(port,hostname, () => {
+  console.log(`Server running at https://${hostname}:${port}/`);
+});
+
 server.on('error', onError);
 server.on('listening', onListening);
 

@@ -19,6 +19,9 @@ export default defineConfig({
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
+  // server: {
+  //   port: 8000,
+  // },
   build: {
     chunkSizeWarningLimit: 5600,
   },
