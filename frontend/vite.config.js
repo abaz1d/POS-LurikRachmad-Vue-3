@@ -1,12 +1,13 @@
 import { fileURLToPath, URL } from "node:url";
 import basicSsl from '@vitejs/plugin-basic-ssl'
+const tailwindcss = require('tailwindcss');
 
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [ basicSsl(),
+  plugins: [ /*basicSsl()*/, tailwindcss,
     vue({
     // template: {
     //   compilerOptions: {
