@@ -27,6 +27,11 @@ export const useTopMenuStore = defineStore("topMenu", {
         icon: "BoxIcon",
         pageName: "top-menu-barang",
         title: "Barang",
+      },
+      {
+        icon: "TruckIcon",
+        pageName: "top-menu-supplier",
+        title: "Supplier",
       }
     ],
   }),

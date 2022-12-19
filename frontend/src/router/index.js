@@ -10,6 +10,7 @@ import Barang from "../views/barang/Main.vue";
 import Login from "../views/login/Main.vue";
 import Register from "../views/register/Main.vue";
 import ErrorPage from "../views/error-page/Main.vue";
+import Supplier from "../views/supplier/Main.vue";
 
 const routes = [
   {
@@ -40,8 +41,12 @@ const routes = [
         path: "barang",
         name: "top-menu-barang",
         component: Barang,
+      },
+      {
+        path: "supplier",
+        name: "top-menu-supplier",
+        component: Supplier,
       }
-
     ],
   },
   {
@@ -72,6 +77,11 @@ const routes = [
         path: "barang",
         name: "side-menu-barang",
         component: Barang,
+      },
+      {
+        path: "supplier",
+        name: "side-menu-supplier",
+        component: Supplier,
       }
     ],
   },
@@ -103,6 +113,11 @@ const routes = [
         path: "barang",
         name: "simple-menu-barang",
         component: Barang,
+      },
+      {
+        path: "supplier",
+        name: "sumple-menu-supplier",
+        component: Supplier,
       }
     ],
   },

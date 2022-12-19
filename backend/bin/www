@@ -28,8 +28,10 @@ const options = {
   cert: fs.readFileSync('cert.pem')
 };
 // https
-var server = https.createServer(options ,app);
-//var server = http.createServer(app);
+//var server = https.createServer(options ,app);
+
+//http
+var server = http.createServer(app);
 
 
 
