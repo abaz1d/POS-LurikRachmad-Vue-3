@@ -18,8 +18,13 @@
           @focus="showSearchDropdown" @blur="hideSearchDropdown" />
         <SearchIcon class="search__icon dark:text-slate-500" />
       </div>
-      <a class="notification sm:hidden" href="">
-        <SearchIcon class="notification__icon dark:text-slate-500" />
+      <a class="notification sm:hidden">
+        <!-- <SearchIcon class="notification__icon dark:text-slate-500" /> -->
+        <form action="" class="items-center justify-center">
+          <input type="search"
+            class="peer shadow-none cursor-pointer relative z-10 h-12 w-12 rounded-full border bg-transparent dark:bg-transparent dark:text-white pl-9 outline-none focus:w-full focus:cursor-text  focus:pl-16 focus:pr-4 search__input form-control border-transparent" />
+          <SearchIcon class="absolute inset-y-0 my-auto h-8 w-12 px-3.5 mr-0 search__icon dark:stroke-white" />
+        </form>
       </a>
       <div class="search-result" :class="{ show: searchDropdown }">
         <div class="search-result__content">

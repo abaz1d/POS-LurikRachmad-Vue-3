@@ -1,4 +1,22 @@
 <template>
+
+  <form action="" class="relative mx-auto w-max items-center justify-center">
+    <input type="search"
+      class="peer cursor-pointer relative z-10 h-12 w-12 rounded-full border bg-transparent pl-12 outline-none focus:w-full focus:cursor-text  focus:pl-16 focus:pr-4 search__input form-control border-transparent" />
+    <!-- <svg xmlns="http://www.w3.org/2000/svg"
+      class="absolute inset-y-0 my-auto h-8 w-12 border-r border-transparent stroke-gray-500 px-3.5 peer-focus:border-slate-300 peer-focus:stroke-slate-500"
+      fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+    </svg> -->
+    <SearchIcon class="absolute inset-y-0 my-auto h-8 w-12 px-3.5 mr-0 search__icon dark:text-slate-500" />
+  </form>
+
+  <div class="search hidden sm:block">
+    <input type="text" class="search__input form-control border-transparent" placeholder="Search..."
+      @focus="showSearchDropdown" @blur="hideSearchDropdown" />
+    <SearchIcon class="search__icon dark:text-slate-500" />
+  </div>
+
   <div class="intro-y flex items-center mt-8">
     <h2 class="text-lg font-medium mr-auto">Page 2</h2>
   </div>
@@ -67,37 +85,37 @@
       </AccordionPanel>
     </AccordionItem>
 
-  <!-- BEGIN: Modal Toggle -->
-  <div class="text-center">
-    <a href="javascript:;" @click="isModal = true; renderQrScanner();" class="btn btn-primary">QR
-      Scanner</a>
-  </div>
-  <!-- END: Modal Toggle -->
-  <!-- BEGIN: Modal Content -->
+    <!-- BEGIN: Modal Toggle -->
+    <div class="text-center">
+      <a href="javascript:;" @click="isModal = true; renderQrScanner();" class="btn btn-primary">QR
+        Scanner</a>
+    </div>
+    <!-- END: Modal Toggle -->
+    <!-- BEGIN: Modal Content -->
 
-  <Modal size="modal-xl" backdrop="static" :show="isModal" @hidden="isModal = false">
-    <ModalHeader>
-      <div class="text-center mt-2">
-        <h2 class="text-lg font-bold">QR Code Scanner</h2>
-      </div>
-    </ModalHeader>
-    <ModalBody class="px-5 py-10">
-      <div class="text-center">
-        <div class="mb-5">
-          <div class="intro-y justify-center flex mt-5">
-            <qrcode v-bind:qrbox="250" v-bind:fps="10" ref="qrScanner" />
-          </div>
+    <Modal size="modal-xl" backdrop="static" :show="isModal" @hidden="isModal = false">
+      <ModalHeader>
+        <div class="text-center mt-2">
+          <h2 class="text-lg font-bold">QR Code Scanner</h2>
         </div>
-        <button type="button" @click="isModal = false; closeQrScanner();" class="btn btn-danger w-24">
-          Close
-        </button>
-      </div>
-    </ModalBody>
-  </Modal>
-  <!-- END: Modal Content -->
-  <button type="button" @click="Satuan.readItem" class="btn btn-primary w-24">Close</button>
-  <li v-for="item in Satuan.items" :key="item.id_satuan"> {{ item.id_satuan }} - {{ item.nama_satuan }}</li>
-  <AccordionItem>
+      </ModalHeader>
+      <ModalBody class="px-5 py-10">
+        <div class="text-center">
+          <div class="mb-5">
+            <div class="intro-y justify-center flex mt-5">
+              <qrcode v-bind:qrbox="250" v-bind:fps="10" ref="qrScanner" />
+            </div>
+          </div>
+          <button type="button" @click="isModal = false; closeQrScanner();" class="btn btn-danger w-24">
+            Close
+          </button>
+        </div>
+      </ModalBody>
+    </Modal>
+    <!-- END: Modal Content -->
+    <button type="button" @click="Satuan.readItem" class="btn btn-primary w-24">Close</button>
+    <li v-for="item in Satuan.items" :key="item.id_satuan"> {{ item.id_satuan }} - {{ item.nama_satuan }}</li>
+    <AccordionItem>
       <Accordion>
         OpenSSL Essentials: Working with SSL Certificates, Private
         Keys
@@ -113,40 +131,7 @@
       </AccordionPanel>
     </AccordionItem>
   </AccordionGroup>
-  <div class="overflow-x-auto">
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th class="whitespace-nowrap">#</th>
-                <th class="whitespace-nowrap">First Name</th>
-                <th class="whitespace-nowrap">Last Name</th>
-                <th class="whitespace-nowrap">Username</th>
-            </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <tr>
-                <td>1</td>
-                <td>Angelina</td>
-                <td>Jolie</td>
-                <td>@angelinajolie</td>
-            </tr>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Brad</td>
-                <td>Pitt</td>
-                <td>@bradpitt</td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>Charlie</td>
-                <td>Hunnam</td>
-                <td>@charliehunnam</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+
 
 </template>
 

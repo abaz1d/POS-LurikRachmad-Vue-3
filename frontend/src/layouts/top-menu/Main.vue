@@ -44,7 +44,7 @@
             />
             <SearchIcon class="search__icon dark:text-slate-500" />
           </div>
-          <a class="notification notification--light sm:hidden" href="">
+          <a class="notification notification--light sm:hidden">
             <SearchIcon class="notification__icon dark:text-slate-500" />
           </a>
           <div class="search-result" :class="{ show: searchDropdown }">
@@ -305,6 +305,9 @@
       <RouterView />
     </div>
     <!-- END: Content -->
+    <!-- <ScrollTopComponent>
+      <ChevronUpIcon />
+    </ScrollTopComponent> -->
   </div>
 </template>
 
@@ -316,6 +319,7 @@ import { helper as $h } from "@/utils/helper";
 import MobileMenu from "@/components/mobile-menu/Main.vue";
 import DarkModeSwitcher from "@/components/dark-mode-switcher/Main.vue";
 import MainColorSwitcher from "@/components/main-color-switcher/Main.vue";
+
 import {
   searchDropdown,
   showSearchDropdown,

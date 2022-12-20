@@ -116,7 +116,7 @@ const routes = [
       },
       {
         path: "supplier",
-        name: "sumple-menu-supplier",
+        name: "simple-menu-supplier",
         component: Supplier,
       }
     ],

@@ -1,19 +1,22 @@
 <template>
 
     <div class="block div div-bordered mt-2">
-        <div class=" block grid grid-cols-3 gap-4 mb-3 ">
-            <div class="col whitespace-nowrap ml-2"><b>ID</b></div>
-            <div class="col text-center whitespace-nowrap"><b>NAMA BARANG</b></div>
-            <div class="col text-center whitespace-nowrap"><b>ACTIONS</b></div>
+        <div class="bg-white dark:bg-slate-200 pt-3 rounded-t-lg dark:text-slate-800">
+            <div class=" block grid grid-cols-3 gap-4 mb-3 h-15 items-center">
+                <div class="col whitespace-nowrap ml-2"><b>ID</b></div>
+                <div class="col text-center whitespace-nowrap"><b>NAMA BARANG</b></div>
+                <div class="col text-center whitespace-nowrap"><b>ACTIONS</b></div>
+            </div>
+            <hr>
+
         </div>
-        <hr>
         <br>
         <div class="mt-2">
             <AccordionGroupTable>
-        
+
                 <BarangItem v-for="barang in barangs" :key="barang.id_barang" :id_awal="barangs[0].id_barang"
                     :barang="barang" @openModal="openModal" />
-           
+
             </AccordionGroupTable>
         </div>
     </div>

@@ -36,10 +36,10 @@
     </td>
 
     <td>
-      {{ varian.harga_beli_varian }}
+      {{ currencyFormat.format(varian.harga_beli_varian) }}
     </td>
     <td>
-      {{ varian.harga_jual_varian }}
+      {{ currencyFormat.format(varian.harga_jual_varian) }}
     </td>
     <td class="table-report__action w-56">
       <div class="flex justify-center items-center">
@@ -72,6 +72,7 @@
 
 <script>
 import { useBarangStore } from "../../stores/barang"
+import { currencyFormatter } from "../../utils/helper"
 import { storeToRefs } from 'pinia'
 import { watch } from 'vue'
 
@@ -80,8 +81,9 @@ export default {
   setup(props) {
     const Barang = useBarangStore()
     const { varians } = storeToRefs(Barang)
+    const currencyFormat = currencyFormatter
 
-    return { Barang, varians, watch }
+    return { Barang, varians, watch, currencyFormat }
   },
   emits: ["openModalDel", "openModalEdit", "cekVarian"],
   components: {
