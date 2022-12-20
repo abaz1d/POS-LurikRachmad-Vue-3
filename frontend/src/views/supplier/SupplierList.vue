@@ -3,7 +3,7 @@
         <thead>
             <tr>
                 <th class="whitespace-nowrap">ID</th>
-                <th class="text-center whitespace-nowrap">NAMA SATUAN</th>
+                <th class="text-center whitespace-nowrap">NAMA SUPPLIER</th>
                 <th class="text-center whitespace-nowrap">ALAMAT</th>
                 <th class="text-center whitespace-nowrap">TELEPON</th>
                 <th class="text-center whitespace-nowrap">EMAIL</th>

@@ -82,7 +82,7 @@ export default {
         },
         updateSupplier(id_supplier) {
             try {
-                this.Supplier.updateItem({ id_supplier, nama_supplier: this.namaSupplier, keterangan_supplier: this.alamatSupplier })
+                this.Supplier.updateItem({ id_supplier, nama_supplier: this.namaSupplier, alamat_supplier: this.alamatSupplier, telepon_supplier: this.teleponSupplier, email_supplier: this.emailSupplier })
                 this.isEdit = false
             } catch (error) {
                 alert(`Gagal Update data ${id_supplier}`, error)

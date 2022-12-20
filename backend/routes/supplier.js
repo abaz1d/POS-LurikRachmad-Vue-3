@@ -48,13 +48,14 @@ module.exports = function (db) {
             const totaljual = await db.query(`SELECT count(no_invoice) AS totaljual FROM penjualan`)
             const totalbeli = await db.query(`SELECT count(no_invoice) AS totalbeli FROM pembelian`)
 
-            res.render('supplier/list', {
-                rows,
-                user: req.session.user,
-                totaljual: totaljual.rows[0].totaljual,
-                totalbeli: totalbeli.rows[0].totalbeli,
-                query: req.query
-            })
+            res.status(200).json(rows)
+            // res.render('supplier/list', {
+            //     rows,
+            //     user: req.session.user,
+            //     totaljual: totaljual.rows[0].totaljual,
+            //     totalbeli: totalbeli.rows[0].totalbeli,
+            //     query: req.query
+            // })
         } catch (e) {
             res.send(e)
         }
@@ -72,8 +73,7 @@ module.exports = function (db) {
         try {
             const { rows } = await db.query('INSERT INTO supplier(nama_supplier,alamat_supplier,telepon_supplier,email_supplier) VALUES ($1, $2, $3, $4)',
                 [req.body.nama_supplier, req.body.alamat_supplier, req.body.telepon_supplier , req.body.email_supplier])
-                console.log('tlp', req.body.telepon_supplier)
-            res.redirect('/supplier')
+                res.json(rows[0])
         } catch (e) {
             res.send(e)
         }
@@ -96,7 +96,7 @@ module.exports = function (db) {
       telepon_supplier = $3,
       email_supplier = $4
       WHERE id_supplier = $5`, [req.body.nama_supplier, req.body.alamat_supplier, req.body.telepon_supplier , req.body.email_supplier, req.params.id])
-            res.redirect('/supplier')
+      res.json(rows[0])
         } catch (e) {
             res.send(e)
         }
@@ -105,7 +105,7 @@ module.exports = function (db) {
     router.get('/delete/:id', isLoggedIn, async function (req, res, next) {
         try {
             const { rows } = await db.query('DELETE FROM supplier WHERE id_supplier = $1', [req.params.id])
-            res.redirect('/supplier')
+            res.json(rows[0])
         } catch (e) {
             res.send(e)
         }

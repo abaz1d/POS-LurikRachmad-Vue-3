@@ -18,11 +18,11 @@ export const useSupplierStore = defineStore({
                         // return this.rawItems
                     }
         },
-        async addItem(nama_supplier, keterangan_supplier) {
+        async addItem(nama_supplier, alamat_supplier, telepon_supplier, email_supplier) {
             const id_supplier = Date.now()
-            this.rawItems.push({ id_supplier, nama_supplier, keterangan_supplier });
+            this.rawItems.push({ id_supplier, nama_supplier, alamat_supplier, telepon_supplier, email_supplier });
             try {
-                const data = await request.post('supplier/add', { nama_supplier, keterangan_supplier })
+                const data = await request.post('supplier/add', { nama_supplier, alamat_supplier, telepon_supplier, email_supplier })
 
                 this.rawItems = this.rawItems.map((item) => {
                     if (item.id_supplier === id_supplier) {
@@ -47,14 +47,16 @@ export const useSupplierStore = defineStore({
         updateItem(supplier) {
             let id_supplier = supplier.id_supplier
             let nama_supplier = supplier.nama_supplier
-            let keterangan_supplier = supplier.keterangan_supplier
+            let alamat_supplier = supplier.alamat_supplier
+            let telepon_supplier = supplier.telepon_supplier
+            let email_supplier = supplier.email_supplier
             this.rawItems = this.rawItems.map((item) => {
                 if (item.id_supplier === id_supplier) {
                     return supplier
                 }
                 return item
             })
-            request.post(`supplier/edit/${id_supplier}`, { nama_supplier, keterangan_supplier })
+            request.post(`supplier/edit/${id_supplier}`, { nama_supplier, alamat_supplier, telepon_supplier, email_supplier })
         }
     }
 })
