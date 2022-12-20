@@ -258,7 +258,7 @@
                 @click="linkTo(subMenu, router, $event)"
               >
                 <div class="top-menu__icon">
-                  <ActivityIcon />
+                  <component :is="subMenu.icon" />
                 </div>
                 <div class="top-menu__title">
                   {{ subMenu.title }}

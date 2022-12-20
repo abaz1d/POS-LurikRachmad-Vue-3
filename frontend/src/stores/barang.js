@@ -175,6 +175,7 @@ export const useBarangStore = defineStore({
             })
           }
         } else {
+          formData.append('file', varian.file);
           const data = await request.post(`barang/editvar/${varian.id_varian}`, formData, headers, {timeout: 2})
           if (data.status >= 200 && data.status < 300) {
             this.rawVarians = this.rawVarians.map((item) => {

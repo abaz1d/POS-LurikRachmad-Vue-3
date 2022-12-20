@@ -13,11 +13,11 @@ export const useSideMenuStore = defineStore("sideMenu", {
         pageName: "side-menu-page-2",
         title: "Page 2",
       },
-      {
-        icon: "SettingsIcon",
-        pageName: "side-menu-satuan",
-        title: "Satuan",
-      },
+      // {
+      //   icon: "InfoIcon",
+      //   pageName: "side-menu-satuan",
+      //   title: "Satuan",
+      // },
       {
         icon: "ChevronsUpIcon",
         pageName: "side-menu-barang-keluar",
@@ -28,11 +28,28 @@ export const useSideMenuStore = defineStore("sideMenu", {
         pageName: "side-menu-barang",
         title: "Barang",
       },
+      // {
+      //   icon: "TruckIcon",
+      //   pageName: "side-menu-supplier",
+      //   title: "Supplier",
+      // },
       {
-        icon: "TruckIcon",
-        pageName: "side-menu-supplier",
-        title: "Supplier",
-      }
+        icon: "SettingsIcon",
+        pageName: "side-menu-pengaturan",
+        title: "Pengaturan",
+        subMenu: [
+          {
+            icon: "TruckIcon",
+            pageName: "side-menu-supplier",
+            title: "Supplier",
+          },
+          {
+            icon: "InfoIcon",
+            pageName: "side-menu-satuan",
+            title: "Satuan",
+          },
+        ]
+      },
     ],
   }),
 });

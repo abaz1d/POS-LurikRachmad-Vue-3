@@ -268,8 +268,6 @@ export default {
             this.harga_beli = data.item.harga_beli_varian
             this.satuan_varian = data.item.id_satuan
             this.gudang = data.item.id_gudang
-            // this.gambar_varian = data.item.gambar_varian
-            // this.file = data.item.file
             this.harga_jual = data.item.harga_jual_varian
 
             this.isEdit = true
@@ -305,6 +303,9 @@ export default {
           this.gambar_varian = '',
           this.file = '',
           this.harga_jual = '',
+          this.gambar_lama = '',
+          this.urlPreview = null,
+          this.gambar_lama_preview = '',
           this.isEdit = false
         )
 

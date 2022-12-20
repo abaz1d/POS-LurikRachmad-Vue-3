@@ -5,7 +5,7 @@
             <button class="btn btn-primary shadow-md mr-2" @click="addModal = true">Add New Product</button>
 
             <!-- BEGIN: Modal Content -->
-            <Modal :show="addModal" @hidden="addModal = false">
+            <Modal backdrop="static" :show="addModal" @hidden="addModal = false">
                 <ModalHeader>
                     <h2 class="font-medium text-base mr-auto">Tambah Supplier</h2>
                 </ModalHeader>

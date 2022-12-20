@@ -78,11 +78,18 @@
                               class="form-control mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                               :placeholder="checkedID ? 'Ketik / Scan ID' : 'Auto Generate ID'" v-model="ScanIDVarian"
                               :readonly="!checkedID" />
-                            <div v-if="checkedID" class="camera inline-flex items-center rounded-r-md border border-l-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500 mt-1"
+                            <div v-if="checkedID"
+                              class="camera inline-flex items-center rounded-r-md border border-l-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500 mt-1"
                               @click="isModalScanner = true; renderQrScanner();">
                               <component is="CameraIcon" />
                             </div>
                           </div>
+                          <small v-if="!checkedID" class="text-grey-800 text-xs ml-2 mt-0">
+                            * Untuk manambah ID Manual cek pada checkbox.
+                          </small>
+                          <small v-else class="text-grey-800 text-xs ml-2 mt-0"> * Tekan lambang Kamera untuk scan
+                            <b>Barcode /
+                              ID</b></small>
                         </div>
 
                         <div class="col-span-6 sm:col-span-3 mb-0">
@@ -91,16 +98,6 @@
                           <input id="namaVarian" type="text"
                             class="form-control flex-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                             placeholder="Masukan Nama Varian" v-model="namaVarian" required />
-                        </div>
-
-                        <div class="col-span-6 sm:col-span-6" style="margin-top: -20px;">
-                          <small v-if="!checkedID" class="text-grey-800 text-xs ml-2 mt-0">
-                            * Untuk manambah ID Manual cek pada checkbox.
-                          </small>
-
-                          <small v-else class="text-grey-800 text-xs ml-2 mt-0"> * Tekan lambang Kamera untuk scan
-                            <b>Barcode /
-                              ID</b></small>
                         </div>
 
                         <div class="col-span-6 sm:col-span-3">
@@ -190,7 +187,7 @@
                                 </Tippy>
                               </div>
                               <div @click="this.$refs.gambarBaru.click()">
-                                <div class="flex text-sm text-gray-600" >
+                                <div class="flex text-sm text-gray-600">
                                   <label for="gambarBaru"
                                     class="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500">
                                     <span>Upload a file</span>
