@@ -71,7 +71,7 @@ module.exports = function (db) {
 
     router.post('/add', async function (req, res, next) {
         try {
-            const { rows } = await db.query('INSERT INTO supplier(nama_supplier,alamat_supplier,telepon_supplier,email_supplier) VALUES ($1, $2, $3, $4)',
+            const { rows } = await db.query('INSERT INTO supplier(nama_supplier,alamat_supplier,telepon_supplier,email_supplier) VALUES ($1, $2, $3, $4) RETURNING * ',
                 [req.body.nama_supplier, req.body.alamat_supplier, req.body.telepon_supplier , req.body.email_supplier])
                 res.json(rows[0])
         } catch (e) {

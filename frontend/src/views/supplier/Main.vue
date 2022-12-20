@@ -12,17 +12,24 @@
                 <ModalBody class="grid grid-cols-12 gap-4 gap-y-3">
                     <form @submit.prevent="addSupplier" id="addSupplierForm" class="col-span-12">
                         <div class="col-span-12 mb-5">
-                            <label for="pos-form-1" class="form-label">Nama Supplier</label>
+                            <label for="pos-form-1" class="form-label mb-1">Nama Supplier</label>
                             <input id="pos-form-1" type="text" class="form-control flex-1"
                                 placeholder="Masukan Nama Supplier" v-model="inputNamaSupplier" required />
                         </div>
-                        <div class="col-span-12">
-                            <label for="pos-form-5" class="form-label">Keterangan Supplier</label>
-                            <textarea id="pos-form-5" class="form-control" placeholder="Masukan Keterangan Supplier"
-                                v-model="inputKeteranganSupplier" required />
-                            <small class="text-grey-800 text-xs">Contoh : Digunakan untuk mewakili supplier stok
-                                ketersediaan
-                                barang dalam bentuk benda padat</small>
+                        <div class="col-span-12 mb-5">
+                            <label for="pos-form-5" class="form-label mb-1">Alamat Supplier</label>
+                            <textarea id="pos-form-5" class="form-control" placeholder="Masukan Alamat Supplier"
+                                v-model="inputAlamatSupplier" required />
+                        </div>
+                        <div class="col-span-12 mb-5">
+                            <label for="pos-form-1" class="form-label mb-1">Telepon Supplier</label>
+                            <input id="pos-form-1" type="number" class="form-control flex-1"
+                                placeholder="Masukan Telepon Supplier" v-model="inputTeleponSupplier" required />
+                        </div>
+                        <div class="col-span-12 mb-5">
+                            <label for="pos-form-1" class="form-label mb-1">Email Supplier</label>
+                            <input id="pos-form-1" type="text" class="form-control flex-1"
+                                placeholder="Masukan Email Supplier" v-model="inputEmailSupplier" required />
                         </div>
                     </form>
                 </ModalBody>
@@ -128,7 +135,9 @@ import { ref } from "vue";
 // const Supplier = useSupplierStore();
 const addModal = ref(false);
 const inputNamaSupplier = ref('')
-const inputKeteranganSupplier = ref('')
+const inputAlamatSupplier = ref('')
+const inputTeleponSupplier = ref()
+const inputEmailSupplier = ref('')
 // const suppliers = ref('')
 
 // onMounted(() => {
@@ -147,16 +156,20 @@ export default {
         return {
             addModal,
             inputNamaSupplier,
-            inputKeteranganSupplier,
+            inputAlamatSupplier,
+            inputTeleponSupplier,
+            inputEmailSupplier,
         };
     },
     methods: {
         addSupplier() {
             try {
-                // console.log("addSupplier", inputNamaSupplier.value, inputKeteranganSupplier.value)
-                this.Supplier.addItem(inputNamaSupplier.value, inputKeteranganSupplier.value)
+                // console.log("addSupplier", inputNamaSupplier.value, inputAlamatSupplier.value)
+                this.Supplier.addItem(inputNamaSupplier.value, inputAlamatSupplier.value, inputTeleponSupplier.value, inputEmailSupplier.value);
                 inputNamaSupplier.value = ''
-                inputKeteranganSupplier.value = ''
+                inputAlamatSupplier.value = ''
+                inputTeleponSupplier.value = ''
+                inputEmailSupplier.value = ''
                 this.addModal = false
                 
             } catch (error) {
