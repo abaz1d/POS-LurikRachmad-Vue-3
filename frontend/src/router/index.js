@@ -23,8 +23,8 @@ const routes = [
         component: Dashboard,
       },
       {
-        path: "page-2",
-        name: "top-menu-page-2",
+        path: "page-coba",
+        name: "top-menu-page-coba",
         component: Page2,
       },
       {

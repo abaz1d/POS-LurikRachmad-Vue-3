@@ -2,7 +2,7 @@
   <!-- BEGIN: Dark Mode Switcher-->
   
     <ScrollTopComponent>
-      <ChevronUpIcon class="w-12 h-12 dark:stroke-white" style=" /*box-shadow: 0 0 25px yellow, 0 0 15px yellow;*/ border-radius: 50px;" />
+      <ChevronUpIcon class="w-11 h-11 dark:stroke-white" style=" /*box-shadow: 0 0 25px yellow, 0 0 15px yellow;*/ border-radius: 50px;" />
     </ScrollTopComponent>
 
   <div

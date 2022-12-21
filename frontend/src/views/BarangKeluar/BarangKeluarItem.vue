@@ -11,26 +11,25 @@
         </td>
         <td class="w-40">
             <a href="" class="font-medium whitespace-nowrap">{{
-                    barangKeluar.tanggal_penjualan
+                    dateFormat(barangKeluar.tanggal_penjualan).format('DD MMM YYYY HH:SS')
             }}</a>
         </td>
         <td class="text-center">
             <a href="" class="font-medium whitespace-nowrap">{{
-                    barangKeluar.total_harga_jual
+                    currencyFormat.format(barangKeluar.total_harga_jual)
             }}</a>
         </td>
         <td>
             <a href="" class="font-medium whitespace-nowrap">{{
-                    barangKeluar.total_bayar_jual
+                    currencyFormat.format(barangKeluar.total_bayar_jual)
             }}</a>
         </td>
         <td class="w-40 text-right">
-            <div class="pr-16">{{ barangKeluar.kembalian_jual }}</div>
+            <div class="pr-16">{{ currencyFormat.format(barangKeluar.kembalian_jual) }}</div>
         </td>
         <td class="table-report__action w-56" v-if="isEdit">
             <div class="flex justify-center items-center">
-                <button class="flex items-center mr-3 text-primary" type="button"
-                    @click="">
+                <button class="flex items-center mr-3 text-primary" type="button" @click="">
                     <SaveIcon class="w-4 h-4 mr-1" /> Save
                 </button>
                 <button class="flex items-center text-danger" type="button" @click="isEdit = false">
@@ -43,8 +42,7 @@
                 <button class="flex items-center mr-3" type="button" @click="isEdit = true">
                     <CheckSquareIcon class="w-4 h-4 mr-1" /> Edit
                 </button>
-                <button class="flex items-center text-danger" type="button"
-                    @click="$emit('openModal',)">
+                <button class="flex items-center text-danger" type="button" @click="$emit('openModal',)">
                     <Trash2Icon class="w-4 h-4 mr-1" /> Delete
                 </button>
             </div>
@@ -55,13 +53,19 @@
 
 <script>
 import { useBarangKeluarStore } from '../../stores/barang-keluar';
+import { currencyFormatter } from "../../utils/helper"
+import moment from 'moment'
 
 export default {
     setup() {
         const barangKeluar = useBarangKeluarStore();
+        const currencyFormat = currencyFormatter
+        const dateFormat = moment
 
         return {
             barangKeluar,
+            currencyFormat,
+            dateFormat
         };
     },
     props: {
