@@ -6,13 +6,13 @@
             class="border border-b-0 border-gray-200 rounded-t-xl focus:border-4 focus:border-blue-200 dark:focus:border-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-800 group/item hover:stroke-sky-500 grid grid-cols-3 gap-4 pr-5 md:pr-1">
             <!-- <tr > -->
 
-            <div style="cursor: pointer;" class="col text-left pl-2">{{
+            <div style="cursor: pointer;" class="col text-center">{{
                     barang.id_barang
             }}</div>
             <div class="col" v-if="isEdit">
                 <input class="form-control flex-1" type="text" v-model="namaBarang" />
             </div>
-            <div v-else class="col text-left md:text-center ml-8 md:ml-0">{{ barang.nama_barang }}</div>
+            <div v-else class="col text-center">{{ barang.nama_barang }}</div>
             <div class="col " v-if="isEdit">
                 <div class="flex justify-center items-center">
                     <button class="flex items-center mr-3 text-primary" type="button"
@@ -37,8 +37,8 @@
             </div>
             <!-- <p class="col-span-3 mt-0 mb-0 block mx-auto group/edit invisible hover:bg-slate-200 group-hover/item:visible">Klik Untuk Menampilkan Varian !</p> -->
             <ChevronDownIcon
-                class="col-span-3 mb-0 block md:mx-auto mx-52 group/edit invisible hover:bg-slate-200 group-hover/item:visible"
-                style="margin-top: -20px; margin-bottom: -20px;" />
+                class=" animate-bounce col-span-3 block mt-2 mx-auto"
+                style="margin-top: -15px; margin-bottom: -20px;" />
             <!-- </tr> -->
         </AccordionTable>
 

@@ -1,10 +1,10 @@
 <template>
-
+    <Alert v-if="alert" class="hover:animate-none md:animate-bounce animate-pulse alert-primary md:mb-2 m-5"><b> Klik pada baris barang untuk menampilkan data tabel varian</b> <XCircleIcon @click="alert = false" class="absolute stroke-2 stroke-red-500 bg-white rounded-full h-6 w-6 -right-3 -top-3 cursor-pointer" /></Alert>
     <div class="block overflow-hidden mt-2">
         <div class="bg-white dark:bg-slate-200 pt-3 rounded-t-lg dark:text-slate-800">
-            <div class=" block grid grid-cols-3 mb-3 h-15 items-center">
-                <div class="col ml-2"><b>ID</b></div>
-                <div class="col ml-0 text-left md:text-center"><b>NAMA BARANG</b></div>
+            <div class=" block grid grid-cols-3 mb-3 h-15 items-center justify-center">
+                <div class="col text-center"><b>ID</b></div>
+                <div class="col text-center"><b>NAMA BARANG</b></div>
                 <div class="col text-center ml-2 mr-5 md:mr-0"><b>ACTIONS</b></div>
             </div>
             <hr>
@@ -71,6 +71,7 @@ export default {
     },
     data() {
         return {
+            alert: true,
             deleteConfirmationModal: false,
             id_barang: '',
             nama_barang: '',
@@ -92,8 +93,11 @@ export default {
             }
         }
     },
-    // mounted() {
-    //     console.log("mounted[0]", this.barangs)
-    // }
+    created() {
+        setTimeout(() => this.alert = false, 10000)
+    },
+	unmounted() {
+		setTimeout(() => this.alert = false, 10000)
+	}
 }
 </script>
