@@ -1,5 +1,5 @@
 <template>
-  <table class="table mt-5 table-bordered table-hover">
+  <table class="table mt-5 table-bordered">
     <thead class="table-light">
       <tr class="text-center">
         <th class="whitespace-nowrap">Gambar & ID</th>
@@ -15,7 +15,7 @@
     </thead>
     <tbody>
       <VarianItem v-for="varian in varians" :key="varian.id_varian" :varian="varian" :nama_barang="nama_barang"
-        @openModalDel="openModalDel" @openModalEdit="openModalEdit" @cekVarian="cekVarian" ref="varItem" />
+        @openModalDel="openModalDel" @openModalEdit="openModalEdit" @cekVarian="cekVarian" ref="varItem" class="border border-b-0 border-gray-200 rounded-t-xl focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-800" />
     </tbody>
   </table>
   <Modal :show="deleteConfirmationModal" @hidden="deleteConfirmationModal = false">

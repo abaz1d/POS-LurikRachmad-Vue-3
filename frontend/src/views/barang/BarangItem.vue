@@ -2,7 +2,8 @@
 
     <AccordionItemTable @click="varianShow(barang.id_barang)" class="mt-2 mb-2">
 
-        <AccordionTable class="group/item hover:stroke-sky-500 grid grid-cols-3 gap-4">
+        <AccordionTable
+            class="border border-b-0 border-gray-200 rounded-t-xl focus:border-4 focus:border-blue-200 dark:focus:border-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-800 group/item hover:stroke-sky-500 grid grid-cols-3 gap-4 pr-5 md:pr-1">
             <!-- <tr > -->
 
             <div style="cursor: pointer;" class="col text-left pl-2">{{
@@ -11,7 +12,7 @@
             <div class="col" v-if="isEdit">
                 <input class="form-control flex-1" type="text" v-model="namaBarang" />
             </div>
-            <div v-else class="col text-center">{{ barang.nama_barang }}</div>
+            <div v-else class="col text-left md:text-center ml-8 md:ml-0">{{ barang.nama_barang }}</div>
             <div class="col " v-if="isEdit">
                 <div class="flex justify-center items-center">
                     <button class="flex items-center mr-3 text-primary" type="button"
@@ -35,15 +36,17 @@
                 </div>
             </div>
             <!-- <p class="col-span-3 mt-0 mb-0 block mx-auto group/edit invisible hover:bg-slate-200 group-hover/item:visible">Klik Untuk Menampilkan Varian !</p> -->
-            <ChevronDownIcon class="col-span-3 mb-0 block mx-auto group/edit invisible hover:bg-slate-200 group-hover/item:visible" style="margin-top: -20px; margin-bottom: -20px;" />
+            <ChevronDownIcon
+                class="col-span-3 mb-0 block md:mx-auto mx-52 group/edit invisible hover:bg-slate-200 group-hover/item:visible"
+                style="margin-top: -20px; margin-bottom: -20px;" />
             <!-- </tr> -->
         </AccordionTable>
 
 
-        <AccordionPanelTable class="col-span-3 text-slate-600 dark:text-slate-500 leading-relaxed">
+        <AccordionPanelTable class="col-span-3 text-slate-600 dark:text-slate-500 leading-relaxed border-r-4 border-b-4 border-l-4  border-b-0 border-blue-200 dark:border-blue-800 rounded-b-lg pb-2 mb-2">
 
             <!-- <tr style="margin: -50px;"> -->
-            <div class="mr-2 ml-2">
+            <div class="mr-2 ml-2 overflow-auto">
                 <!-- <ChevronDownIcon class="block mx-auto" /> -->
                 <!-- <p>Tabel Varian {{ barang.nama_barang }}</p> -->
                 <VarianList :varians="Barang.varians" :nama_barang="barang.nama_barang" @cekVarian="cekVarian"
@@ -94,17 +97,17 @@ export default {
             namaBarang: this.barang.nama_barang,
         }
     },
-//     watch: {
-//         Link() {
-//       // console.log("watch", this.nama_barang, this.varian.nama_barang )
-//     //   if (this.$route.query) {
-//     //     this.$emit("cekVarian", this.namaBarang)
-//     // //   }
-//     this.Barang.readVarian(this.id_awal)
-//     console.log("watch")
+    //     watch: {
+    //         Link() {
+    //       // console.log("watch", this.nama_barang, this.varian.nama_barang )
+    //     //   if (this.$route.query) {
+    //     //     this.$emit("cekVarian", this.namaBarang)
+    //     // //   }
+    //     this.Barang.readVarian(this.id_awal)
+    //     console.log("watch")
 
-//     },
-//   },
+    //     },
+    //   },
     methods: {
         updateBarang(id_barang) {
             try {
@@ -151,8 +154,8 @@ export default {
     //     console.log("centermt", this.id_awal)
     //      this.Barang.readVarian(this.id_awal)   
     // },
-    async beforeMount(){
-        await this.Barang.readVarian(this.id_awal)  
+    async beforeMount() {
+        await this.Barang.readVarian(this.id_awal)
     }
 
 }

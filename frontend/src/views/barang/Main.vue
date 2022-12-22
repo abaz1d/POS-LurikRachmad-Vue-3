@@ -2,7 +2,9 @@
   <h2 class="intro-y text-lg font-medium mt-10">Data Barang</h2>
   <div class="grid grid-cols-12 gap-6 mt-5">
     <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
-      <button class="btn btn-primary shadow-md mb-3 mr-2 pr-5" @click="openAddModal()"><PlusIcon class="w-4 h-4 mr-2" /> New Product</button>
+      <button class="btn btn-primary shadow-md mb-3 mr-2 pr-5" @click="openAddModal()">
+        <PlusIcon class="w-4 h-4 mr-2" /> New Product
+      </button>
 
       <!-- BEGIN: Modal Content -->
       <Modal :show="addModal" @hidden="addModal = false">
@@ -258,7 +260,7 @@
           <input type="search"
             class="peer shadow-none cursor-pointer relative z-10 h-10 w-10 box border bg-transparent dark:bg-transparent dark:text-white pl-9 outline-none focus:w-full focus:cursor-text  focus:pl-16 focus:pr-4 search__input form-control border-transparent" />
           <SearchIcon class="absolute inset-y-0 my-auto h-8 w-12 px-3.5 dark:stroke-white" />
-          
+
         </form>
       </a>
       <div class="hidden md:block mx-auto text-slate-500">
@@ -283,7 +285,7 @@
             <li class="page-item active">
               <!-- <a class="page-link" href="#">2</a> -->
               <input type="number" class="form-control" id="page_number" value="1" />
-              
+
             </li>
             <li class="page-item">
               <!-- <a class="page-link" href="#">3</a> -->
@@ -317,7 +319,7 @@
     </div>
     <!-- END: Data List -->
     <!-- BEGIN: Pagination -->
-    
+
     <!-- END: Pagination -->
   </div>
 
@@ -399,11 +401,12 @@ export default {
   },
   methods: {
     openAddModal() {
-      this.Barang.addVarianGet()
-        .then((data) => {
-          this.data = data
-          this.addModal = true
-        })
+      // this.Barang.addVarianGet()
+      //   .then((data) => {
+      //     this.data = data
+      //     this.addModal = true
+      //   })
+        this.addModal = true
     },
     addBarang() {
       try {
@@ -497,6 +500,10 @@ export default {
   },
   beforeCreate() {
     this.Barang.readItem()
+    this.Barang.addVarianGet()
+      .then((data) => {
+        this.data = data
+      })
   }
 }
 </script>

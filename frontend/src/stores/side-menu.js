@@ -10,8 +10,8 @@ export const useSideMenuStore = defineStore("sideMenu", {
       },
       {
         icon: "HomeIcon",
-        pageName: "side-menu-page-coba",
-        title: "Page Coba",
+        pageName: "side-menu-page-2",
+        title: "Page 2",
       },
       // {
       //   icon: "InfoIcon",

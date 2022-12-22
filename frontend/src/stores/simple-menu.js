@@ -10,8 +10,8 @@ export const useSimpleMenuStore = defineStore("simpleMenu", {
       },
       {
         icon: "HomeIcon",
-        pageName: "simple-menu-page-coba",
-        title: "Page Coba",
+        pageName: "simple-menu-page-2",
+        title: "Page 2",
       },
       // {
       //   icon: "InfoIcon",
