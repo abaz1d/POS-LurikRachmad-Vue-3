@@ -19,11 +19,11 @@ export const useBarangKeluarStore = defineStore({
                         // return this.rawItems
                     }
         },
-        async addItem(nama_satuan, keterangan_satuan) {
+        async addItem() {
             const id_satuan = Date.now()
-            this.rawItems.push({ id_satuan, nama_satuan, keterangan_satuan });
+            this.rawItems.push({ id_satuan });
             try {
-                const data = await request.post('penjualan/add', { nama_satuan, keterangan_satuan })
+                const data = await request.post('penjualan/create')
 
                 this.rawItems = this.rawItems.map((item) => {
                     if (item.id_satuan === id_satuan) {

@@ -533,4 +533,8 @@ export default {
 .camera :hover {
   background-color: #c7c8c8;
 }
+
+.modal .modal-dialog.modal-xl {
+  width: 1200px;
+}
 </style>

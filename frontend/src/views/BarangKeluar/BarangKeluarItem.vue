@@ -22,44 +22,9 @@
             </DropdownHeader>
             <DropdownDivider />
             <div class="overflow-x-auto">
-              <table class="table table-bordered table-hover">
-                <thead>
-                  <tr>
-                    <th class="whitespace-nowrap">#</th>
-                    <th class="whitespace-nowrap">First Name</th>
-                    <th class="whitespace-nowrap">Last Name</th>
-                    <th class="whitespace-nowrap">Username</th>
-                    <th class="whitespace-nowrap">Last Name</th>
-                    <th class="whitespace-nowrap">Username</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>Angelina</td>
-                    <td>Jolie</td>
-                    <td>Jolie</td>
-                    <td>@angelinajolie</td>
-                    <td>@angelinajolie</td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>Brad</td>
-                    <td>Pitt</td>
-                    <td>Jolie</td>
-                    <td>@angelinajolie</td>
-                    <td>@bradpitt</td>
-                  </tr>
-                  <tr>
-                    <td>3</td>
-                    <td>Charlie</td>
-                    <td>Hunnam</td>
-                    <td>Jolie</td>
-                    <td>@angelinajolie</td>
-                    <td>@charliehunnam</td>
-                  </tr>
-                </tbody>
-              </table>
+
+              <TabelDetailList />
+
             </div>
           </DropdownContent>
         </DropdownMenu>
@@ -112,39 +77,41 @@
 import { useBarangKeluarStore } from '../../stores/barang-keluar';
 import { currencyFormatter } from "../../utils/helper"
 import moment from 'moment'
+import TabelDetailList from './TabelDetailList.vue';
 
 export default {
-  setup() {
-    const barangKeluar = useBarangKeluarStore();
-    const currencyFormat = currencyFormatter
-    const dateFormat = moment
-
-    return {
-      barangKeluar,
-      currencyFormat,
-      dateFormat
-    };
-  },
-  emits: ["openDeleteModal", "openInvoice",],
-  props: {
-    barangKeluar: {
-      type: Object,
-      required: true,
-    }
-  },
-  data() {
-    return {
-      isEdit: false,
-    };
-  },
-  methods: {
-    deleteBarangKeluar() {
-
+    setup() {
+        const barangKeluar = useBarangKeluarStore();
+        const currencyFormat = currencyFormatter;
+        const dateFormat = moment;
+        return {
+            barangKeluar,
+            currencyFormat,
+            dateFormat
+        };
     },
-    updateBarangKeluar() {
-
-    }
-  }
+    components: {
+      TabelDetailList
+    },
+    emits: ["openDeleteModal", "openInvoice",],
+    props: {
+        barangKeluar: {
+            type: Object,
+            required: true,
+        }
+    },
+    data() {
+        return {
+            isEdit: false,
+        };
+    },
+    methods: {
+        deleteBarangKeluar() {
+        },
+        updateBarangKeluar() {
+        }
+    },
+    components: { TabelDetailList }
 }
 </script>
 <style scoped>

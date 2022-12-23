@@ -1,0 +1,30 @@
+<template>
+  <tr>
+    <td>1</td>
+    <td>Angelina</td>
+    <td>Jolie</td>
+    <td>Jolie</td>
+    <td>@angelinajolie</td>
+    <td>@angelinajolie</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Brad</td>
+    <td>Pitt</td>
+    <td>Jolie</td>
+    <td>@angelinajolie</td>
+    <td>@bradpitt</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Charlie</td>
+    <td>Hunnam</td>
+    <td>Jolie</td>
+    <td>@angelinajolie</td>
+    <td>@charliehunnam</td>
+  </tr>
+</template>
+
+<script>
+
+</script>
