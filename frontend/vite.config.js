@@ -9,11 +9,6 @@ import vue from "@vitejs/plugin-vue";
 export default defineConfig({
   plugins: [ /*basicSsl()*/, tailwindcss,
     vue({
-    // template: {
-    //   compilerOptions: {
-    //     isCustomElement: (tag) => ["qrcode-scanner"].includes(tag),
-    //   },
-    // },
   })],
   resolve: {
     alias: {
