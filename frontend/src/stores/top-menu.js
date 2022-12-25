@@ -48,7 +48,7 @@ export const useTopMenuStore = defineStore("topMenu", {
             pageName: "top-menu-satuan",
             title: "Satuan",
           },
-        ]
+        ],
       },
     ],
   }),

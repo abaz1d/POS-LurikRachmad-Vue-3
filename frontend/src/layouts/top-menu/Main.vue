@@ -211,7 +211,7 @@
               </DropdownItem>
               <DropdownDivider class="border-white/[0.08]" />
               <DropdownItem class="hover:bg-white/5">
-                <ToggleRightIcon class="w-4 h-4 mr-2" /> 
+                <ToggleRightIcon class="w-4 h-4 mr-2" />
                 <RouterLink to="/login">Logout</RouterLink>
               </DropdownItem>
             </DropdownContent>

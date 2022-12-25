@@ -48,7 +48,7 @@ export const useSimpleMenuStore = defineStore("simpleMenu", {
             pageName: "simple-menu-satuan",
             title: "Satuan",
           },
-        ]
+        ],
       },
     ],
   }),

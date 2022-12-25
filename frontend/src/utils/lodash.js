@@ -1,7 +1,7 @@
-import _ from 'lodash'
+import _ from "lodash";
 
-const install = app => {
-  app.config.globalProperties.$_ = _
-}
+const install = (app) => {
+  app.config.globalProperties.$_ = _;
+};
 
-export { install as default }
+export { install as default };

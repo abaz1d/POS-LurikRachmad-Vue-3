@@ -11,23 +11,18 @@
       </tr>
     </thead>
     <tbody>
-
       <TabelDetailItem />
-
     </tbody>
   </table>
 </template>
 
 <script>
-import TabelDetailItem from "./TabelDetailItem.vue"
+import TabelDetailItem from "./TabelDetailItem.vue";
 
 export default {
-  setup() {
-
-  },
+  setup() {},
   components: {
-    TabelDetailItem
-  }
-}
-
+    TabelDetailItem,
+  },
+};
 </script>

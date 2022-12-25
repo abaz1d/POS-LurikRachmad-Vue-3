@@ -48,7 +48,7 @@ export const useSideMenuStore = defineStore("sideMenu", {
             pageName: "side-menu-satuan",
             title: "Satuan",
           },
-        ]
+        ],
       },
     ],
   }),

@@ -154,4 +154,9 @@ const AccordionPanelTable = defineComponent({
   },
 });
 
-export { AccordionGroupTable, AccordionItemTable, AccordionTable, AccordionPanelTable };
+export {
+  AccordionGroupTable,
+  AccordionItemTable,
+  AccordionTable,
+  AccordionPanelTable,
+};

@@ -1,21 +1,22 @@
 <script>
-import { Html5QrcodeScanner } from "html5-qrcode"
+import { Html5QrcodeScanner } from "html5-qrcode";
 
 export default {
   name: "qrcode",
-  data(){
+  data() {
+    let html5QrcodeScanner = ""
     return {
-      html5QrcodeScanner: "",
-    }
+      html5QrcodeScanner
+    };
   },
   props: {
     qrbox: {
       type: Number,
-      default: 250
+      default: 250,
     },
     fps: {
       type: Number,
-      default: 10
+      default: 10,
     },
   },
   mounted() {
@@ -23,12 +24,15 @@ export default {
       fps: this.fps,
       qrbox: this.qrbox,
     };
-    this.html5QrcodeScanner = new Html5QrcodeScanner('qr-code-full-region', config);
+    this.html5QrcodeScanner = new Html5QrcodeScanner(
+      "qr-code-full-region",
+      config
+    );
     // this.html5QrcodeScanner.render(this.onScanSuccess);
   },
   methods: {
     onScanSuccess(decodedText, decodedResult) {
-      this.$emit('resultScan', decodedText, decodedResult);
+      this.$emit("resultScan", decodedText, decodedResult);
       // console.log(`Scan result: ${decodedText}`, decodedResult);
     },
     renderQrScanner() {
@@ -36,9 +40,9 @@ export default {
     },
     closeQrScanner() {
       this.html5QrcodeScanner.clear();
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <template>
@@ -46,14 +50,12 @@ export default {
 </template>
 
 <style scoped>
-
 #qr-code-full-region {
   width: 800px;
-  background-color: white; 
+  background-color: white;
   color: black;
   border: 1px solid black;
   border-radius: 10px;
   display: inline-block;
 }
-
 </style>

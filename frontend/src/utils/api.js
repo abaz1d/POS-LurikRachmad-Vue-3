@@ -1,9 +1,9 @@
 import axios from "axios";
-const API = import.meta.env.VITE_APP_BASE_API
+// const API = import.meta.env.VITE_APP_BASE_API;
 
 export const request = axios.create({
-    baseURL: import.meta.env.VITE_APP_BASE_API,
-    timeout: 11500,
+  baseURL: import.meta.env.VITE_APP_BASE_API,
+  timeout: 11500,
 });
 
 // request.get('satuan')

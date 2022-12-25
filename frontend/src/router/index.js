@@ -46,7 +46,7 @@ const routes = [
         path: "supplier",
         name: "top-menu-supplier",
         component: Supplier,
-      }
+      },
     ],
   },
   {
@@ -82,7 +82,7 @@ const routes = [
         path: "supplier",
         name: "side-menu-supplier",
         component: Supplier,
-      }
+      },
     ],
   },
   {
@@ -118,7 +118,7 @@ const routes = [
         path: "supplier",
         name: "simple-menu-supplier",
         component: Supplier,
-      }
+      },
     ],
   },
   {
