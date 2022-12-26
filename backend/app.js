@@ -10,6 +10,8 @@ var session = require('express-session');
 var cors = require('cors')
 
 const { Pool } = require('pg')
+
+
 const pool = new Pool({
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
@@ -20,8 +22,14 @@ const pool = new Pool({
   //   rejectUnauthorized: false
   // }
 })
+pool.connect((err) => {
+  if (err) {
+    console.log('e database', error)
+  }
+  console.log('Connect DB successfully')
+})
 
-var allowCrossDomain = function(req, res, next) {
+var allowCrossDomain = function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
   res.header('Access-Control-Allow-Headers', 'Content-Type');
@@ -52,36 +60,36 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 app.use(fileUpload());
 app.use(session({
-    secret: 'apipos',
-    resave: false,
-    saveUninitialized: true,
-  }));
+  secret: 'apipos',
+  resave: false,
+  saveUninitialized: true,
+}));
 
-  app.use('/', indexRouter);
-  app.use('/gudang', gudangRouter);
-  app.use('/satuan', satuanRouter);
-  app.use('/supplier', supplierRouter);
-  app.use('/barang', barangRouter);
-  app.use('/penjualan', penjualanRouter);
-  app.use('/pembelian', pembelianRouter);
-  app.use('/users', usersRouter);
+app.use('/', indexRouter);
+app.use('/gudang', gudangRouter);
+app.use('/satuan', satuanRouter);
+app.use('/supplier', supplierRouter);
+app.use('/barang', barangRouter);
+app.use('/penjualan', penjualanRouter);
+app.use('/pembelian', pembelianRouter);
+app.use('/users', usersRouter);
 
-  //app.use('/produk', produk);
+//app.use('/produk', produk);
 
-  app.use(allowCrossDomain);
+app.use(allowCrossDomain);
 
 // // catch 404 and forward to error handler
 // app.use(function(req, res, next) {
 //     next(createError(404));
 //     //res.render('pages-404');
 //   });
-  
+
 //   // error handler
 //   app.use(function(err, req, res, next) {
 //     // set locals, only providing error in development
 //     res.locals.message = err.message;
 //     res.locals.error = req.app.get('env') === 'development' ? err : {};
-  
+
 //     // render the error page
 //     res.status(err.status || 500);
 //     // res.render('error');
