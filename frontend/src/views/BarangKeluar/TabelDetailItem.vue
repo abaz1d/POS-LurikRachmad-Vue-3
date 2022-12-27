@@ -1,28 +1,45 @@
 <template>
-  <tr>
-    <td>1</td>
-    <td>Angelina</td>
-    <td>Jolie</td>
-    <td>Jolie</td>
-    <td>@angelinajolie</td>
-    <td>@angelinajolie</td>
-  </tr>
-  <tr>
-    <td>2</td>
-    <td>Brad</td>
-    <td>Pitt</td>
-    <td>Jolie</td>
-    <td>@angelinajolie</td>
-    <td>@bradpitt</td>
-  </tr>
-  <tr>
-    <td>3</td>
-    <td>Charlie</td>
-    <td>Hunnam</td>
-    <td>Jolie</td>
-    <td>@angelinajolie</td>
-    <td>@charliehunnam</td>
+  <tr class="text-center min-w-max">
+    <td>
+      {{ no }}
+    </td>
+    <td>
+      {{ detail.id_varian }}
+    </td>
+    <td>
+      {{ detail.nama_varian }}
+    </td>
+    <td>
+      {{ detail.qty }}
+    </td>
+    <td>
+      {{ currencyFormat.format(detail.harga_detail_jual) }}
+    </td>
+    <td>
+      {{ currencyFormat.format(detail.total_harga_detail_jual) }}
+    </td>
+
   </tr>
 </template>
 
-<script></script>
+<script>
+import { currencyFormatter } from "../../utils/helper";
+
+export default {
+  name: 'TabelDetailItem',
+  setup() {
+    const currencyFormat = currencyFormatter;
+    return {currencyFormat}
+  },
+  props: {
+    no: {
+      type: Number,
+      required: true,
+    },
+    detail: {
+      type: Object,
+      required: true,
+    }
+  }
+}
+</script>

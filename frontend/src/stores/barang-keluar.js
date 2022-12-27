@@ -5,15 +5,20 @@ export const useBarangKeluarStore = defineStore({
   id: "barang-keluar",
   state: () => ({
     rawItems: [],
+    rawDetails: [],
+    rawPrints: [],
   }),
   getters: {
     items: (state) => state.rawItems,
+    details: (state) => state.rawDetails,
+    prints: (state) => state.rawPrints
   },
   actions: {
     async readItem() {
       const data = await request.get("penjualan");
       if (data.status >= 200 && data.status < 300) {
         this.rawItems = data.data.penjualan;
+        this.rawDetails = data.data.detailsj;
         // console.log('data', data.data)
         // console.log('rawItems', this.rawItems)
         // return this.rawItems
@@ -63,5 +68,17 @@ export const useBarangKeluarStore = defineStore({
         keterangan_satuan,
       });
     },
+
+    // ---------------------------------------------------------------- Detail ----------------------------------------------------------------
+    async readDetail(no_invoice) {
+      const data = await request.get(`penjualan?noInvoice=${no_invoice}`);
+      if (data.status >= 200 && data.status < 300) {
+        this.rawDetails = data.data.detailsj;
+        this.rawPrints = data.data.print.rows;
+        console.log('data.data', data.data, 'status', data.data.print.rows)
+        // console.log('this.rawVarians', this.rawVarians)
+      }
+    },
+
   },
 });

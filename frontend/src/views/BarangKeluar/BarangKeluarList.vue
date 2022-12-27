@@ -6,27 +6,24 @@
       class="block absolute stroke-2 stroke-red-500 bg-white rounded-full h-6 w-6 -right-3 -top-3 cursor-pointer" />
   </Alert>
 
-  <div class="block overflow-y-hidden overflow-x-auto mt-2 pt-4 min-w-max">
+  <div class="block overflow-y-hidden overflow-x-auto mt-2 pt-4 md:min-w-min min-w-max">
     <div class="bg-white dark:bg-slate-200 pt-3 rounded-t-lg dark:text-slate-800">
-      <div class="block grid grid-cols-7 mb-3 h-15 min-w-max">
-        <div class="col min-w-min">
-          <input class="ml-6 form-check-input" type="checkbox" />
-        </div>
-        <div class="col min-w-max items-center ">INVOICE</div>
-        <div class="col min-w-max">TANGGAL KELUAR</div>
-        <div class="col text-center min-w-max">TOTAL HARGA</div>
-        <div class="col min-w-max">TOTAL BAYAR</div>
-        <div class="col text-right min-w-max">
-          <div class="pr-16">TOTAL KEMBALIAN</div>
-        </div>
-        <div class="col text-center min-w-max">ACTIONS</div>
+      <div class="grid grid-cols-6 mb-3 h-15">
+
+        <div class="col text-center"><b>INVOICE</b></div>
+        <div class="col text-center"><b>TANGGAL KELUAR</b></div>
+        <div class="col text-center"><b>TOTAL HARGA</b></div>
+        <div class="col text-center"><b>TOTAL BAYAR</b></div>
+        <div class="col text-center"><b>TOTAL KEMBALIAN</b></div>
+        <div class="col text-center"><b>ACTIONS</b></div>
       </div>
       <hr />
     </div>
     <div class="mt-6">
       <AccordionGroupTable>
         <BarangKeluarItem v-for="(barangKeluar, index) in barangKeluars" :key="barangKeluar.no_invoice"
-          :barangKeluar="barangKeluar" :no="index + 1" @openDeleteModal="openDeleteModal" @openInvoice="openInvoice" />
+          :id_awal="barangKeluars[0].no_invoice" :barangKeluar="barangKeluar" :no="index + 1"
+          @openDeleteModal="openDeleteModal" @openInvoice="openInvoice" />
       </AccordionGroupTable>
     </div>
   </div>
@@ -58,7 +55,7 @@
         Transaksi No Invoice <b>{{ no_invoice }}</b>
       </h2>
 
-      <div class="sm:w-auto flex mt-4 sm:mt-0 mr-0 ml-2 items-right">
+      <div class="sm:w-auto flex mt-4 sm:mt-0 mr-0 ml-4 items-right">
         <Dropdown class="mr-2 rounded border border-slate-500">
           <DropdownToggle class="btn px-2 box">
             <span class="w-5 h-5 flex items-center justify-center">
@@ -80,175 +77,28 @@
           <PrinterIcon class="w-4 h-4 mr-2" /> Print
         </button>
       </div>
-
-      <!-- <button type="button" @click="isInvoice = false"
-				class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
-				<svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-					xmlns="http://www.w3.org/2000/svg">
-					<path fill-rule="evenodd"
-						d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-						clip-rule="evenodd"></path>
-				</svg>
-				<span class="sr-only">Close modal</span>
-			</button> -->
     </ModalHeader>
     <ModalBody>
-      <div class="intro-y box overflow-hidden mt-2">
-        <div class="flex flex-col lg:flex-row pt-10 px-5 sm:px-20 sm:pt-20 lg:pb-20 text-center sm:text-left">
-          <div class="font-semibold text-primary text-3xl">
-            INVOICE <br />
-            <div class="text-xl dark:text-secondary text-dark font-medium">
-              {{ no_invoice }}
-            </div>
-          </div>
-          <div class="mt-20 lg:mt-0 lg:ml-auto lg:text-right">
-            <div class="text-xl text-primary font-medium">Left4code</div>
-            <div class="mt-1">left4code@gmail.com</div>
-            <div class="mt-1">8023 Amerige Street Harriman, NY 10926.</div>
-          </div>
-        </div>
-        <div class="flex flex-col lg:flex-row border-b px-5 sm:px-20 pt-10 pb-10 sm:pb-20 text-center sm:text-left">
-          <div>
-            <div class="text-base text-slate-500">Client Details</div>
-            <div class="text-lg font-medium text-primary mt-2">
-              Arnold Schwarzenegger
-            </div>
-            <div class="mt-1">arnodlschwarzenegger@gmail.com</div>
-            <div class="mt-1">260 W. Storm Street New York, NY 10025.</div>
-          </div>
-          <div class="mt-10 lg:mt-0 lg:ml-auto lg:text-right">
-            <div class="text-base text-slate-500">Receipt</div>
-            <div class="text-lg text-primary font-medium mt-2">#1923195</div>
-            <div class="mt-1">Jan 02, 2021</div>
-          </div>
-        </div>
-        <div class="px-5 sm:px-16 py-10 sm:py-20">
-          <div class="overflow-x-auto">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th class="border-b-2 dark:border-darkmode-400 whitespace-nowrap">
-                    DESCRIPTION
-                  </th>
-                  <th class="border-b-2 dark:border-darkmode-400 text-right whitespace-nowrap">
-                    QTY
-                  </th>
-                  <th class="border-b-2 dark:border-darkmode-400 text-right whitespace-nowrap">
-                    PRICE
-                  </th>
-                  <th class="border-b-2 dark:border-darkmode-400 text-right whitespace-nowrap">
-                    SUBTOTAL
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td class="border-b dark:border-darkmode-400">
-                    <div class="font-medium whitespace-nowrap">
-                      Midone HTML Admin Template
-                    </div>
-                    <div class="text-slate-500 text-sm mt-0.5 whitespace-nowrap">
-                      Regular License
-                    </div>
-                  </td>
-                  <td class="text-right border-b dark:border-darkmode-400 w-32">
-                    2
-                  </td>
-                  <td class="text-right border-b dark:border-darkmode-400 w-32">
-                    $25
-                  </td>
-                  <td class="text-right border-b dark:border-darkmode-400 w-32 font-medium">
-                    $50
-                  </td>
-                </tr>
-                <tr>
-                  <td class="border-b dark:border-darkmode-400">
-                    <div class="font-medium whitespace-nowrap">
-                      Vuejs Admin Template
-                    </div>
-                    <div class="text-slate-500 text-sm mt-0.5 whitespace-nowrap">
-                      Regular License
-                    </div>
-                  </td>
-                  <td class="text-right border-b dark:border-darkmode-400 w-32">
-                    1
-                  </td>
-                  <td class="text-right border-b dark:border-darkmode-400 w-32">
-                    $25
-                  </td>
-                  <td class="text-right border-b dark:border-darkmode-400 w-32 font-medium">
-                    $25
-                  </td>
-                </tr>
-                <tr>
-                  <td class="border-b dark:border-darkmode-400">
-                    <div class="font-medium whitespace-nowrap">
-                      React Admin Template
-                    </div>
-                    <div class="text-slate-500 text-sm mt-0.5 whitespace-nowrap">
-                      Regular License
-                    </div>
-                  </td>
-                  <td class="text-right border-b dark:border-darkmode-400 w-32">
-                    1
-                  </td>
-                  <td class="text-right border-b dark:border-darkmode-400 w-32">
-                    $25
-                  </td>
-                  <td class="text-right border-b dark:border-darkmode-400 w-32 font-medium">
-                    $25
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="font-medium whitespace-nowrap">
-                      Laravel Admin Template
-                    </div>
-                    <div class="text-slate-500 text-sm mt-0.5 whitespace-nowrap">
-                      Regular License
-                    </div>
-                  </td>
-                  <td class="text-right w-32">3</td>
-                  <td class="text-right w-32">$25</td>
-                  <td class="text-right w-32 font-medium">$75</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="px-5 sm:px-20 pb-10 sm:pb-20 flex flex-col-reverse sm:flex-row">
-          <div class="text-center sm:text-left mt-10 sm:mt-0">
-            <div class="text-base text-slate-500">Bank Transfer</div>
-            <div class="text-lg text-primary font-medium mt-2">Elon Musk</div>
-            <div class="mt-1">Bank Account : 098347234832</div>
-            <div class="mt-1">Code : LFT133243</div>
-          </div>
-          <div class="text-center sm:text-right sm:ml-auto">
-            <div class="text-base text-slate-500">Total Amount</div>
-            <div class="text-xl text-primary font-medium mt-2">$20.600.00</div>
-            <div class="mt-1">Taxes included</div>
-          </div>
-        </div>
-      </div>
+      <PrintInvoice :prints="BarangKeluar.prints" :no_invoice="no_invoice" :total_harga_jual="total_harga_jual"
+        :total_bayar_jual="total_bayar_jual" :kembalian_jual="kembalian_jual" />
     </ModalBody>
-    <!-- <ModalFooter class="text-right">
-			<button type="button" @click="isInvoice = false" class="btn btn-outline-secondary w-32 mr-1">
-				Cancel
-			</button>
-			<button @click="isInvoice = false /*,updateVarian($event)*/" class="btn btn-primary w-32">Simpan</button>
-		</ModalFooter> -->
   </Modal>
 </template>
 
 <script>
 import { useBarangKeluarStore } from "../../stores/barang-keluar";
 import BarangKeluarItem from "./BarangKeluarItem.vue";
+import PrintInvoice from "./PrintInvoice.vue";
+import { currencyFormatter } from "../../utils/helper";
 
 export default {
   setup() {
     const BarangKeluar = useBarangKeluarStore();
+    const currencyFormat = currencyFormatter;
+
     return {
       BarangKeluar,
+      currencyFormat
     };
   },
   props: {
@@ -259,6 +109,7 @@ export default {
   },
   components: {
     BarangKeluarItem,
+    PrintInvoice
   },
   data() {
     return {
@@ -266,11 +117,18 @@ export default {
       deleteConfirmationModal: false,
       isInvoice: false,
       no_invoice: "",
+      total_harga_jual: "",
+      total_bayar_jual: "",
+      kembalian_jual: ""
+
     };
   },
   methods: {
-    openInvoice(no_invoice) {
+    openInvoice(no_invoice, total_harga_jual, total_bayar_jual, kembalian_jual) {
       this.no_invoice = no_invoice;
+      this.total_harga_jual = total_harga_jual
+      this.total_bayar_jual = total_bayar_jual;
+      this.kembalian_jual = kembalian_jual
       this.isInvoice = true;
     },
     openDeleteModal(no_invoice) {

@@ -11,7 +11,7 @@
     <div
       class="bg-white dark:bg-slate-200 pt-3 rounded-t-lg dark:text-slate-800"
     >
-      <div class="block grid grid-cols-3 mb-3 h-15 items-center justify-center">
+      <div class="block grid grid-cols-3 gap-2 mb-3 h-15 items-center justify-center">
         <div class="col text-center"><b>ID</b></div>
         <div class="col text-center"><b>NAMA BARANG</b></div>
         <div class="col text-center ml-2 mr-5 md:mr-0"><b>ACTIONS</b></div>

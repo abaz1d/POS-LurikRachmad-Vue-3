@@ -53,8 +53,7 @@
       </div>
       <!-- <p class="col-span-3 mt-0 mb-0 block mx-auto group/edit invisible hover:bg-slate-200 group-hover/item:visible">Klik Untuk Menampilkan Varian !</p> -->
       <ChevronDownIcon
-        class="animate-bounce col-span-3 block mt-2 mx-auto"
-        style="margin-top: -15px; margin-bottom: -20px"
+        class="animate-bounce col-span-3 mt-[-15px] mb-[-20px] block mx-auto"
       />
       <!-- </tr> -->
     </AccordionTable>

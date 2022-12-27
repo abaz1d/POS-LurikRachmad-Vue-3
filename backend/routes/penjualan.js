@@ -64,7 +64,7 @@ module.exports = function (db) {
             console.log(req.query.noInvoice, 'noInvoice')
             const details = await db.query('SELECT dp.*, v.nama_varian FROM penjualan_detail as dp LEFT JOIN varian as v ON dp.id_varian = v.id_varian WHERE dp.no_invoice = $1 ORDER BY dp.id_detail_jual', [noInvoice]);
             const varian = await db.query('SELECT var.*, b.id_barang, b.nama_barang FROM varian as var LEFT JOIN barang as b ON var.id_barang = b.id_barang ORDER BY var.id_barang');
-            const print = await db.query('SELECT dp.*,pe.*,v.nama_varian FROM penjualan_detail as dp LEFT JOIN varian as v ON dp.id_varian = v.id_varian LEFT JOIN penjualan as pe ON dp.no_invoice = pe.no_invoice WHERE dp.no_invoice = $1', [noInvoice]);
+            const print = await db.query('SELECT dp.*,pe.*, v.nama_varian, b.nama_barang FROM penjualan_detail as dp LEFT JOIN varian as v ON dp.id_varian = v.id_varian LEFT JOIN barang as b ON b.id_barang = v.id_barang LEFT JOIN penjualan as pe ON dp.no_invoice = pe.no_invoice WHERE dp.no_invoice = $1', [noInvoice]);
             const totaljual = await db.query(`SELECT count(no_invoice) AS totaljual FROM penjualan`)
             const totalbeli = await db.query(`SELECT count(no_invoice) AS totalbeli FROM pembelian`)
             //console.log('print', print.rows[0].no_invoice)
