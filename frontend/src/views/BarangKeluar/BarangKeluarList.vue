@@ -1,46 +1,37 @@
 <template>
-  <Alert
-    v-if="alert"
-    class="hover:animate-none md:animate-bounce animate-pulse alert-primary md:mb-2 m-5"
-    ><b>
+  <Alert v-if="alert" class="hover:animate-none md:animate-bounce animate-pulse alert-primary md:mb-2 m-5"><b>
       Klik pada nomor invoice untuk melihat data tabel detail pembelian dan
-      mencetak invoice</b
-    >
-    <XCircleIcon
-      @click="alert = false"
-      class="block absolute stroke-2 stroke-red-500 bg-white rounded-full h-6 w-6 -right-3 -top-3 cursor-pointer"
-  /></Alert>
-  <table class="table table-report table-hover mt-2">
-    <thead>
-      <tr>
-        <th class="whitespace-nowrap">
-          <input class="form-check-input" type="checkbox" />
-        </th>
-        <th class="whitespace-nowrap">INVOICE</th>
-        <th class="whitespace-nowrap">TANGGAL KELUAR</th>
-        <th class="text-center whitespace-nowrap">TOTAL HARGA</th>
-        <th class="whitespace-nowrap">TOTAL BAYAR</th>
-        <th class="text-right whitespace-nowrap">
+      mencetak invoice</b>
+    <XCircleIcon @click="alert = false"
+      class="block absolute stroke-2 stroke-red-500 bg-white rounded-full h-6 w-6 -right-3 -top-3 cursor-pointer" />
+  </Alert>
+
+  <div class="block overflow-y-hidden overflow-x-auto mt-2 pt-4 min-w-max">
+    <div class="bg-white dark:bg-slate-200 pt-3 rounded-t-lg dark:text-slate-800">
+      <div class="block grid grid-cols-7 mb-3 h-15 min-w-max">
+        <div class="col min-w-min">
+          <input class="ml-6 form-check-input" type="checkbox" />
+        </div>
+        <div class="col min-w-max items-center ">INVOICE</div>
+        <div class="col min-w-max">TANGGAL KELUAR</div>
+        <div class="col text-center min-w-max">TOTAL HARGA</div>
+        <div class="col min-w-max">TOTAL BAYAR</div>
+        <div class="col text-right min-w-max">
           <div class="pr-16">TOTAL KEMBALIAN</div>
-        </th>
-        <th class="text-center whitespace-nowrap">ACTIONS</th>
-      </tr>
-    </thead>
-    <tbody>
-      <BarangKeluarItem
-        v-for="(barangKeluar, index) in barangKeluars"
-        :key="barangKeluar.no_invoice"
-        :barangKeluar="barangKeluar"
-        :no="index + 1"
-        @openDeleteModal="openDeleteModal"
-        @openInvoice="openInvoice"
-      />
-    </tbody>
-  </table>
-  <Modal
-    :show="deleteConfirmationModal"
-    @hidden="deleteConfirmationModal = false"
-  >
+        </div>
+        <div class="col text-center min-w-max">ACTIONS</div>
+      </div>
+      <hr />
+    </div>
+    <div class="mt-6">
+      <AccordionGroupTable>
+        <BarangKeluarItem v-for="(barangKeluar, index) in barangKeluars" :key="barangKeluar.no_invoice"
+          :barangKeluar="barangKeluar" :no="index + 1" @openDeleteModal="openDeleteModal" @openInvoice="openInvoice" />
+      </AccordionGroupTable>
+    </div>
+  </div>
+
+  <Modal :show="deleteConfirmationModal" @hidden="deleteConfirmationModal = false">
     <ModalBody class="p-0">
       <div class="p-5 text-center">
         <XCircleIcon class="w-16 h-16 text-danger mx-auto mt-3" />
@@ -51,18 +42,10 @@
         </div>
       </div>
       <div class="px-5 pb-8 text-center">
-        <button
-          type="button"
-          @click="deleteConfirmationModal = false"
-          class="btn btn-outline-secondary w-24 mr-1"
-        >
+        <button type="button" @click="deleteConfirmationModal = false" class="btn btn-outline-secondary w-24 mr-1">
           Cancel
         </button>
-        <button
-          type="button"
-          class="btn btn-danger w-24"
-          @click="deleteBarangKeluar()"
-        >
+        <button type="button" class="btn btn-danger w-24" @click="deleteBarangKeluar()">
           Delete
         </button>
       </div>
@@ -111,9 +94,7 @@
     </ModalHeader>
     <ModalBody>
       <div class="intro-y box overflow-hidden mt-2">
-        <div
-          class="flex flex-col lg:flex-row pt-10 px-5 sm:px-20 sm:pt-20 lg:pb-20 text-center sm:text-left"
-        >
+        <div class="flex flex-col lg:flex-row pt-10 px-5 sm:px-20 sm:pt-20 lg:pb-20 text-center sm:text-left">
           <div class="font-semibold text-primary text-3xl">
             INVOICE <br />
             <div class="text-xl dark:text-secondary text-dark font-medium">
@@ -126,9 +107,7 @@
             <div class="mt-1">8023 Amerige Street Harriman, NY 10926.</div>
           </div>
         </div>
-        <div
-          class="flex flex-col lg:flex-row border-b px-5 sm:px-20 pt-10 pb-10 sm:pb-20 text-center sm:text-left"
-        >
+        <div class="flex flex-col lg:flex-row border-b px-5 sm:px-20 pt-10 pb-10 sm:pb-20 text-center sm:text-left">
           <div>
             <div class="text-base text-slate-500">Client Details</div>
             <div class="text-lg font-medium text-primary mt-2">
@@ -148,24 +127,16 @@
             <table class="table">
               <thead>
                 <tr>
-                  <th
-                    class="border-b-2 dark:border-darkmode-400 whitespace-nowrap"
-                  >
+                  <th class="border-b-2 dark:border-darkmode-400 whitespace-nowrap">
                     DESCRIPTION
                   </th>
-                  <th
-                    class="border-b-2 dark:border-darkmode-400 text-right whitespace-nowrap"
-                  >
+                  <th class="border-b-2 dark:border-darkmode-400 text-right whitespace-nowrap">
                     QTY
                   </th>
-                  <th
-                    class="border-b-2 dark:border-darkmode-400 text-right whitespace-nowrap"
-                  >
+                  <th class="border-b-2 dark:border-darkmode-400 text-right whitespace-nowrap">
                     PRICE
                   </th>
-                  <th
-                    class="border-b-2 dark:border-darkmode-400 text-right whitespace-nowrap"
-                  >
+                  <th class="border-b-2 dark:border-darkmode-400 text-right whitespace-nowrap">
                     SUBTOTAL
                   </th>
                 </tr>
@@ -176,9 +147,7 @@
                     <div class="font-medium whitespace-nowrap">
                       Midone HTML Admin Template
                     </div>
-                    <div
-                      class="text-slate-500 text-sm mt-0.5 whitespace-nowrap"
-                    >
+                    <div class="text-slate-500 text-sm mt-0.5 whitespace-nowrap">
                       Regular License
                     </div>
                   </td>
@@ -188,9 +157,7 @@
                   <td class="text-right border-b dark:border-darkmode-400 w-32">
                     $25
                   </td>
-                  <td
-                    class="text-right border-b dark:border-darkmode-400 w-32 font-medium"
-                  >
+                  <td class="text-right border-b dark:border-darkmode-400 w-32 font-medium">
                     $50
                   </td>
                 </tr>
@@ -199,9 +166,7 @@
                     <div class="font-medium whitespace-nowrap">
                       Vuejs Admin Template
                     </div>
-                    <div
-                      class="text-slate-500 text-sm mt-0.5 whitespace-nowrap"
-                    >
+                    <div class="text-slate-500 text-sm mt-0.5 whitespace-nowrap">
                       Regular License
                     </div>
                   </td>
@@ -211,9 +176,7 @@
                   <td class="text-right border-b dark:border-darkmode-400 w-32">
                     $25
                   </td>
-                  <td
-                    class="text-right border-b dark:border-darkmode-400 w-32 font-medium"
-                  >
+                  <td class="text-right border-b dark:border-darkmode-400 w-32 font-medium">
                     $25
                   </td>
                 </tr>
@@ -222,9 +185,7 @@
                     <div class="font-medium whitespace-nowrap">
                       React Admin Template
                     </div>
-                    <div
-                      class="text-slate-500 text-sm mt-0.5 whitespace-nowrap"
-                    >
+                    <div class="text-slate-500 text-sm mt-0.5 whitespace-nowrap">
                       Regular License
                     </div>
                   </td>
@@ -234,9 +195,7 @@
                   <td class="text-right border-b dark:border-darkmode-400 w-32">
                     $25
                   </td>
-                  <td
-                    class="text-right border-b dark:border-darkmode-400 w-32 font-medium"
-                  >
+                  <td class="text-right border-b dark:border-darkmode-400 w-32 font-medium">
                     $25
                   </td>
                 </tr>
@@ -245,9 +204,7 @@
                     <div class="font-medium whitespace-nowrap">
                       Laravel Admin Template
                     </div>
-                    <div
-                      class="text-slate-500 text-sm mt-0.5 whitespace-nowrap"
-                    >
+                    <div class="text-slate-500 text-sm mt-0.5 whitespace-nowrap">
                       Regular License
                     </div>
                   </td>
@@ -259,9 +216,7 @@
             </table>
           </div>
         </div>
-        <div
-          class="px-5 sm:px-20 pb-10 sm:pb-20 flex flex-col-reverse sm:flex-row"
-        >
+        <div class="px-5 sm:px-20 pb-10 sm:pb-20 flex flex-col-reverse sm:flex-row">
           <div class="text-center sm:text-left mt-10 sm:mt-0">
             <div class="text-base text-slate-500">Bank Transfer</div>
             <div class="text-lg text-primary font-medium mt-2">Elon Musk</div>
@@ -322,7 +277,7 @@ export default {
       this.no_invoice = no_invoice;
       this.deleteConfirmationModal = true;
     },
-    deleteBarangKeluar() {},
+    deleteBarangKeluar() { },
   },
   created() {
     setTimeout(() => (this.alert = false), 10000);
