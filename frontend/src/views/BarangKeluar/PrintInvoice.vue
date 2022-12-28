@@ -2,9 +2,12 @@
   <div class="intro-y box overflow-hidden mt-2">
     <div class="flex flex-col lg:flex-row pt-10 px-5 sm:px-20 sm:pt-20 lg:pb-20 text-center sm:text-left">
       <div class="font-semibold text-primary text-3xl">
-        INVOICE <br />
+        {{ no_invoice }} <br />
         <div class="text-xl dark:text-secondary text-dark font-medium">
-          {{ no_invoice }}
+          {{ dateFormat(prints.map(
+            item => {return item.tanggal_penjualan}
+          ).filter(
+            (item, index) => index === 0).toString()).format("DD MMM YYYY HH:SS") }}
         </div>
       </div>
       <div class="mt-20 lg:mt-0 lg:ml-auto lg:text-right">
@@ -89,12 +92,16 @@
 
 <script>
 import { currencyFormatter } from "../../utils/helper";
+import moment from "moment";
 
 export default {
   setup() {
     const currencyFormat = currencyFormatter;
+    const dateFormat = moment;
+
     return {
-      currencyFormat
+      currencyFormat,
+      dateFormat
     }
   },
   data() {

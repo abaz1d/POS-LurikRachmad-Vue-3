@@ -2,15 +2,22 @@ import { createRouter, createWebHistory } from "vue-router";
 import SideMenu from "../layouts/side-menu/Main.vue";
 import SimpleMenu from "../layouts/simple-menu/Main.vue";
 import TopMenu from "../layouts/top-menu/Main.vue";
-import Dashboard from "../views/dashboard/Main.vue";
+import Dashboard from "../views/Dashboard/Main.vue";
 import Page2 from "../views/page-2/Main.vue";
-import Satuan from "../views/satuan/Main.vue";
+import Satuan from "../views/Satuan/Main.vue";
 import BarangKeluar from "../views/BarangKeluar/Main.vue";
-import Barang from "../views/barang/Main.vue";
-import Login from "../views/login/Main.vue";
-import Register from "../views/register/Main.vue";
-import ErrorPage from "../views/error-page/Main.vue";
-import Supplier from "../views/supplier/Main.vue";
+import Barang from "../views/Barang/Main.vue";
+import Login from "../views/Login/Main.vue";
+import Register from "../views/Register/Main.vue";
+import ErrorPage from "../views/ErrorPage/Main.vue";
+import Supplier from "../views/Supplier/Main.vue";
+import Outlet from "../views/Outlet/Main.vue";
+import Pelanggan from "../views/Pelanggan/Main.vue";
+import BarangMasuk from "../views/BarangMasuk/Main.vue";
+import Penjualan from "../views/Penjualan/Main.vue";
+import Pembelian from "../views/Pembelian/Main.vue";
+import Return from "../views/Return/Main.vue";
+import StokGlobal from "../views/StokGlobal/Main.vue";
 
 const routes = [
   {
@@ -46,6 +53,41 @@ const routes = [
         path: "supplier",
         name: "top-menu-supplier",
         component: Supplier,
+      },
+      {
+        path: "outlet",
+        name: "top-menu-outlet",
+        component: Outlet,
+      },
+      {
+        path: "pelanggan",
+        name: "top-menu-pelanggan",
+        component: Pelanggan,
+      },
+      {
+        path: "barang-masuk",
+        name: "top-menu-barang-masuk",
+        component: BarangMasuk,
+      },
+      {
+        path: "penjualan",
+        name: "top-menu-penjualan",
+        component: Penjualan,
+      },
+      {
+        path: "return",
+        name: "top-menu-return",
+        component: Return,
+      },
+      {
+        path: "stok-global",
+        name: "top-menu-stok-global",
+        component: StokGlobal,
+      },
+      {
+        path: "pembelian",
+        name: "top-menu-pembelian",
+        component: Pembelian,
       },
     ],
   },
@@ -83,6 +125,41 @@ const routes = [
         name: "side-menu-supplier",
         component: Supplier,
       },
+      {
+        path: "outlet",
+        name: "side-menu-outlet",
+        component: Outlet,
+      },
+      {
+        path: "pelanggan",
+        name: "side-menu-pelanggan",
+        component: Pelanggan,
+      },
+      {
+        path: "barang-masuk",
+        name: "side-menu-barang-masuk",
+        component: BarangMasuk,
+      },
+      {
+        path: "penjualan",
+        name: "side-menu-penjualan",
+        component: Penjualan,
+      },
+      {
+        path: "return",
+        name: "side-menu-return",
+        component: Return,
+      },
+      {
+        path: "stok-global",
+        name: "side-menu-stok-global",
+        component: StokGlobal,
+      },
+      {
+        path: "pembelian",
+        name: "side-menu-pembelian",
+        component: Pembelian,
+      },
     ],
   },
   {
@@ -118,6 +195,41 @@ const routes = [
         path: "supplier",
         name: "simple-menu-supplier",
         component: Supplier,
+      },
+      {
+        path: "outlet",
+        name: "simple-menu-outlet",
+        component: Outlet,
+      },
+      {
+        path: "pelanggan",
+        name: "simple-menu-pelanggan",
+        component: Pelanggan,
+      },
+      {
+        path: "barang-masuk",
+        name: "simple-menu-barang-masuk",
+        component: BarangMasuk,
+      },
+      {
+        path: "penjualan",
+        name: "simple-menu-penjualan",
+        component: Penjualan,
+      },
+      {
+        path: "return",
+        name: "simple-menu-return",
+        component: Return,
+      },
+      {
+        path: "stok-global",
+        name: "simple-menu-stok-global",
+        component: StokGlobal,
+      },
+      {
+        path: "pembelian",
+        name: "simple-menu-pembelian",
+        component: Pembelian,
       },
     ],
   },
