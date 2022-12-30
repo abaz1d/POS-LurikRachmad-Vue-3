@@ -113,18 +113,18 @@
 
           <div class="grid grid-cols-12 gap-2">
 
-            <div class="col-span-12 lg:col-span-7 2xl:col-span-8">
-              <!-- BEGIN: Display Information -->
+            <div class="col-span-12 lg:col-span-8 2xl:col-span-9">
+              <!-- BEGIN: Display Item -->
               <div class="intro-y box">
                 <div class="p-5">
                   <div class="flex flex-col-reverse xl:flex-row flex-col">
-                    <div class="flex-1 mt-6 xl:mt-0">
-                      <div class="grid grid-cols-12 gap-x-5">
+                    <div class="flex-1 mt-0">
+                      <div class="grid grid-cols-12 gap-x-3 sm:gap-y-2">
                         <div class="col-span-9 mb-5">
                           <label for="pos-form-1" class="form-label">ID Barang/Item</label>
                           <div class="flex w-full">
                             <div
-                              class="z-30 rounded-l w-10 flex items-center justify-center bg-gray-100 border text-gray-600 dark:bg-dark-1 dark:border-dark-4 -mr-1 cursor-pointer">
+                              class="z-30 rounded-l w-10 flex items-center justify-center bg-gray-100 hover:bg-gray-300 border text-gray-600 dark:bg-dark-1 dark:border-dark-4 -mr-1 cursor-pointer">
                               <CameraIcon class="w-4 h-4" />
                             </div>
                             <TomSelect v-model="select" class="w-full">
@@ -136,54 +136,54 @@
                             </TomSelect>
                           </div>
                           <div class="form-help">
-                            * Klik Kamera untuk scan barcode.
+                            * Pilih atau Klik Kamera untuk scan barcode.
                           </div>
                         </div>
                         <div class="col-span-3 mb-5">
-                          <label for="pos-form-1" class="form-label">Nama Satuan</label>
+                          <label for="pos-form-1" class="form-label">Stok Tersisa</label>
                           <input id="pos-form-1" type="text" class="form-control flex-1"
-                            placeholder="Masukan Nama Satuan" required />
+                            placeholder="Masukan Stok Tersisa" readonly />
                         </div>
 
                         <div class="col-span-6 mb-5">
-                          <label for="pos-form-1" class="form-label">Nama Satuan</label>
+                          <label for="pos-form-1" class="form-label">Nama Barang</label>
                           <input id="pos-form-1" type="text" class="form-control flex-1"
-                            placeholder="Masukan Nama Satuan" required />
+                            placeholder="Masukan Nama Barang" readonly />
                         </div>
                         <div class="col-span-6 mb-5">
-                          <label for="pos-form-1" class="form-label">Nama Satuan</label>
+                          <label for="pos-form-1" class="form-label">Nama Varian</label>
                           <input id="pos-form-1" type="text" class="form-control flex-1"
-                            placeholder="Masukan Nama Satuan" required />
+                            placeholder="Masukan Nama Varian" readonly />
                         </div>
 
                         <div class="col-span-4 mb-5">
-                          <label for="pos-form-1" class="form-label">Nama Satuan</label>
+                          <label for="pos-form-1" class="form-label">Harga Item</label>
                           <input id="pos-form-1" type="text" class="form-control flex-1"
-                            placeholder="Masukan Nama Satuan" required />
+                            placeholder="Masukan Harga Item" readonly />
                         </div>
                         <div class="col-span-4 mb-5">
-                          <label for="pos-form-1" class="form-label">Nama Satuan</label>
-                          <input id="pos-form-1" type="text" class="form-control flex-1"
-                            placeholder="Masukan Nama Satuan" required />
+                          <label for="pos-form-1" class="form-label">Qty</label>
+                          <input id="pos-form-1" type="text" class="form-control flex-1" placeholder="Masukan Qty"
+                            required />
                         </div>
                         <div class="col-span-4 mb-5">
-                          <label for="pos-form-1" class="form-label">Nama Satuan</label>
+                          <label for="pos-form-1" class="form-label">Total Harga</label>
                           <input id="pos-form-1" type="text" class="form-control flex-1"
-                            placeholder="Masukan Nama Satuan" required />
+                            placeholder="Masukan Total Harga" readonly />
                         </div>
                       </div>
-                      <button type="button" class="btn btn-primary w-20 mt-3">
-                        Save
+                      <button type="button" class="btn btn-primary w-20 mt-3 sm:mt-5">
+                        Tambah
                       </button>
                     </div>
                   </div>
                 </div>
               </div>
-              <!-- END: Display Information -->
+              <!-- END: Display Item -->
             </div>
 
-            <!-- BEGIN: Profile Menu -->
-            <div class="col-span-12 lg:col-span-5 2xl:col-span-4 flex lg:block flex-col-reverse">
+            <!-- BEGIN: Display Total Harga -->
+            <div class="col-span-12 lg:col-span-4 2xl:col-span-3 flex lg:block flex-col-reverse">
               <div class="intro-y box">
 
                 <div class="box flex p-5">
@@ -191,71 +191,182 @@
                     placeholder="Use coupon code..." />
                   <button class="btn btn-primary ml-2">Apply</button>
                 </div>
-                <div class="box p-5 mt-5">
-                  <div class="flex">
+                <div class="box p-5 mt-2">
+                  <!-- <div class="flex">
                     <div class="mr-auto">Subtotal</div>
                     <div class="font-medium">$250</div>
                   </div>
                   <div class="flex mt-4">
-                    <div class="mr-auto">Discount</div>
+                    <div class="mr-auto">Diskon</div>
                     <div class="font-medium text-danger">-$20</div>
                   </div>
                   <div class="flex mt-4">
-                    <div class="mr-auto">Tax</div>
+                    <div class="mr-auto">Pajak</div>
                     <div class="font-medium">15%</div>
+                  </div> -->
+                  <div class="flex">
+                    <div class="mr-auto font-medium text-base">Total Harga</div>
                   </div>
+                  <div class="bg-slate-200 rounded-md p-2">
+                    <div class="font-medium text-xl"><p class="text-right text-black">Rp.22.000</p> </div>
+                  </div>
+
                   <div class="flex mt-4 pt-4 border-t border-slate-200/60 dark:border-darkmode-400">
-                    <div class="mr-auto font-medium text-base">Total Charge</div>
-                    <div class="font-medium text-base">$220</div>
+                    <div class="mr-auto font-medium text-base">Total Bayar</div>
+                  </div>
+                  <div class="input-group bg-slate-200 rounded-md border-2 border-slate-200/60 mr-0">
+                    <!-- <div class="font-medium text-xl"><p class="text-right">$220</p> </div> -->
+                    <div class="input-group-text my-auto text-xl"><p class="text-black">Rp.</p></div>
+                    <input type="number" class="form-control flex-1 font-medium text-xl text-right"
+                      placeholder="Nominal Uang" required />
+                  </div>
+
+                  <div class="flex mt-1 pt-4">
+                    <div class="mr-auto font-medium text-base">Kembalian</div>
+                  </div>
+                  <div class="bg-slate-200 rounded-md p-2">
+                    <div class="font-medium text-xl"><p class="text-right text-black">Rp.22.0000</p> </div>
                   </div>
                 </div>
               </div>
             </div>
-            <!-- END: Profile Menu -->
+            <!-- END: Display Total Harga -->
 
-            <!-- BEGIN: Personal Information -->
+            <!-- BEGIN: Detail Information -->
             <div class="col-span-12 flex-col-reverse">
               <div class="intro-y box">
-                <div class="flex items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400">
-                  <h2 class="font-medium text-base mr-auto">Personal Information</h2>
+                <div class="flex items-center px-5 py-2 border-b border-slate-200/60 dark:border-darkmode-400">
+                  <h2 class="font-medium text-base mr-auto">Detail Penjualan</h2>
                 </div>
-                <div class="p-5">
-                  <div class="col-span-12">
-                    <table class="table mt-5">
+                <div class="px-5 py-2">
+                  <div class="col-span-12 overflow-auto w-full h-56">
+                    <table class="table table-hover mt-2">
                       <thead class="table-light">
                         <tr>
-                          <th class="whitespace-nowrap">#</th>
-                          <th class="whitespace-nowrap">First Name</th>
-                          <th class="whitespace-nowrap">Last Name</th>
-                          <th class="whitespace-nowrap">Username</th>
+                          <th class="sticky top-0 left-0 w-5 bg-slate-200">#</th>
+                          <th class="sticky top-0 whitespace-nowrap bg-slate-200">ID & Nama Varian</th>
+                          <th class="sticky top-0 whitespace-nowrap bg-slate-200">QTY</th>
+                          <th class="sticky top-0 whitespace-nowrap bg-slate-200">Harga Satuan</th>
+                          <th class="sticky top-0 whitespace-nowrap bg-slate-200">Total Harga</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr>
-                          <td>1</td>
+                          <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer hover:bg-slate-500">
+                            <TrashIcon class="text-danger w-4 h-4 p-0" />
+                          </td>
                           <td>Angelina</td>
                           <td>Jolie</td>
                           <td>@angelinajolie</td>
+                          <td>@angelinajolie</td>
                         </tr>
                         <tr>
-                          <td>2</td>
+                          <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
+                            <TrashIcon class="text-danger w-4 h-4 p-0" />
+                          </td>
                           <td>Brad</td>
                           <td>Pitt</td>
+                          <td>@angelinajolie</td>
                           <td>@bradpitt</td>
                         </tr>
                         <tr>
-                          <td>3</td>
+                          <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
+                            <TrashIcon class="text-danger w-4 h-4 p-0" />
+                          </td>
                           <td>Charlie</td>
                           <td>Hunnam</td>
+                          <td>@angelinajolie</td>
+                          <td>@charliehunnam</td>
+                        </tr>
+                        <tr>
+                          <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
+                            <TrashIcon class="text-danger w-4 h-4 p-0" />
+                          </td>
+                          <td>Angelina</td>
+                          <td>Jolie</td>
+                          <td>@angelinajolie</td>
+                          <td>@angelinajolie</td>
+                        </tr>
+                        <tr>
+                          <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
+                            <TrashIcon class="text-danger w-4 h-4 p-0" />
+                          </td>
+                          <td>Brad</td>
+                          <td>Pitt</td>
+                          <td>@angelinajolie</td>
+                          <td>@bradpitt</td>
+                        </tr>
+                        <tr>
+                          <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
+                            <TrashIcon class="text-danger w-4 h-4 p-0" />
+                          </td>
+                          <td>Charlie</td>
+                          <td>Hunnam</td>
+                          <td>@angelinajolie</td>
+                          <td>@charliehunnam</td>
+                        </tr>
+                        <tr>
+                          <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
+                            <TrashIcon class="text-danger w-4 h-4 p-0" />
+                          </td>
+                          <td>Angelina</td>
+                          <td>Jolie</td>
+                          <td>@angelinajolie</td>
+                          <td>@angelinajolie</td>
+                        </tr>
+                        <tr>
+                          <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
+                            <TrashIcon class="text-danger w-4 h-4 p-0" />
+                          </td>
+                          <td>Brad</td>
+                          <td>Pitt</td>
+                          <td>@angelinajolie</td>
+                          <td>@bradpitt</td>
+                        </tr>
+                        <tr>
+                          <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
+                            <TrashIcon class="text-danger w-4 h-4 p-0" />
+                          </td>
+                          <td>Charlie</td>
+                          <td>Hunnam</td>
+                          <td>@angelinajolie</td>
+                          <td>@charliehunnam</td>
+                        </tr>
+                        <tr>
+                          <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
+                            <TrashIcon class="text-danger w-4 h-4 p-0" />
+                          </td>
+                          <td>Angelina</td>
+                          <td>Jolie</td>
+                          <td>@angelinajolie</td>
+                          <td>@angelinajolie</td>
+                        </tr>
+                        <tr>
+                          <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
+                            <TrashIcon class="text-danger w-4 h-4 p-0" />
+                          </td>
+                          <td>Brad</td>
+                          <td>Pitt</td>
+                          <td>@angelinajolie</td>
+                          <td>@bradpitt</td>
+                        </tr>
+                        <tr>
+                          <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
+                            <TrashIcon class="text-danger w-4 h-4 p-0" />
+                          </td>
+                          <td>Charlie</td>
+                          <td>Hunnam</td>
+                          <td>@angelinajolie</td>
                           <td>@charliehunnam</td>
                         </tr>
                       </tbody>
                     </table>
                   </div>
+                  <ChevronDownIcon class="animate-bounce col-span-12 mt-1 mb-[-20px] block mx-auto" />
                 </div>
               </div>
             </div>
-            <!-- END: Personal Information -->
+            <!-- END: Detail Information -->
           </div>
         </ModalBody>
         <ModalFooter class="text-right">
@@ -393,3 +504,11 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+table thead th:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+}
+</style>
