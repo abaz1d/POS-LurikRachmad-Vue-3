@@ -11,7 +11,7 @@
       <div class="grid grid-cols-6 mb-3 h-15">
 
         <div class="col text-center"><b>INVOICE</b></div>
-        <div class="col text-center"><b>TANGGAL KELUAR</b></div>
+        <div class="col text-center"><b>TANGGAL PEJUALAN</b></div>
         <div class="col text-center"><b>TOTAL HARGA</b></div>
         <div class="col text-center"><b>TOTAL BAYAR</b></div>
         <div class="col text-center"><b>TOTAL KEMBALIAN</b></div>
@@ -21,8 +21,8 @@
     </div>
     <div class="mt-6">
       <AccordionGroupTable>
-        <BarangKeluarItem v-for="(barangKeluar, index) in barangKeluars" :key="barangKeluar.no_invoice"
-          :id_awal="barangKeluars[0].no_invoice" :barangKeluar="barangKeluar" :no="index + 1"
+        <PenjualanItem v-for="(penjualan, index) in penjualans" :key="penjualan.no_invoice"
+          :id_awal="penjualans[0].no_invoice" :penjualan="penjualan" :no="index + 1"
           @openDeleteModal="openDeleteModal" @openInvoice="openInvoice" />
       </AccordionGroupTable>
     </div>
@@ -42,7 +42,7 @@
         <button type="button" @click="deleteConfirmationModal = false" class="btn btn-outline-secondary w-24 mr-1">
           Cancel
         </button>
-        <button type="button" class="btn btn-danger w-24" @click="deleteBarangKeluar()">
+        <button type="button" class="btn btn-danger w-24" @click="deletePenjualan()">
           Delete
         </button>
       </div>
@@ -79,36 +79,36 @@
       </div>
     </ModalHeader>
     <ModalBody>
-      <PrintInvoice :prints="BarangKeluar.prints" :no_invoice="no_invoice" :total_harga_jual="total_harga_jual"
+      <PrintInvoice :prints="Penjualan.prints" :no_invoice="no_invoice" :total_harga_jual="total_harga_jual"
         :total_bayar_jual="total_bayar_jual" :kembalian_jual="kembalian_jual" />
     </ModalBody>
   </Modal>
 </template>
 
 <script>
-import { useBarangKeluarStore } from "../../stores/barang-keluar";
-import BarangKeluarItem from "./BarangKeluarItem.vue";
+import { usePenjualanStore } from "../../stores/penjualan";
+import PenjualanItem from "./PenjualanItem.vue";
 import PrintInvoice from "./PrintInvoice.vue";
 import { currencyFormatter } from "../../utils/helper";
 
 export default {
   setup() {
-    const BarangKeluar = useBarangKeluarStore();
+    const Penjualan = usePenjualanStore();
     const currencyFormat = currencyFormatter;
 
     return {
-      BarangKeluar,
+      Penjualan,
       currencyFormat
     };
   },
   props: {
-    barangKeluars: {
+    penjualans: {
       type: Object,
       required: true,
     },
   },
   components: {
-    BarangKeluarItem,
+    PenjualanItem,
     PrintInvoice
   },
   data() {
@@ -135,7 +135,7 @@ export default {
       this.no_invoice = no_invoice;
       this.deleteConfirmationModal = true;
     },
-    deleteBarangKeluar() { },
+    deletePenjualan() { },
   },
   created() {
     setTimeout(() => (this.alert = false), 10000);

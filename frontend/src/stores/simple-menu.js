@@ -49,20 +49,20 @@ export const useSimpleMenuStore = defineStore("simpleMenu", {
         icon: "FileTextIcon",
         pageName: "simple-menu-laporan",
         title: "Laporan",
-        subMenu: [
-          {
-            icon: "HomeIcon",
-            pageName: "simple-menu-page-2",
-            title: "Page 2",
-            subMenu: [
-              {
-                icon: "HomeIcon",
-                pageName: "simple-menu-page-2",
-                title: "Page 2",
-              },
-            ]
-          },
-        ]
+        // subMenu: [
+        //   {
+        //     icon: "HomeIcon",
+        //     pageName: "simple-menu-page-2",
+        //     title: "Page 2",
+        //     subMenu: [
+        //       {
+        //         icon: "HomeIcon",
+        //         pageName: "simple-menu-page-2",
+        //         title: "Page 2",
+        //       },
+        //     ]
+        //   },
+        // ]
       },
       {
         icon: "SlidersIcon",
@@ -75,7 +75,7 @@ export const useSimpleMenuStore = defineStore("simpleMenu", {
             title: "Barang",
           },
           {
-            icon: "HomeIcon",
+            icon: "TentIcon",
             pageName: "simple-menu-outlet",
             title: "Outlet",
           },

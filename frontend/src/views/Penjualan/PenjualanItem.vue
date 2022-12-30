@@ -1,32 +1,32 @@
 <template>
-  <AccordionItemTable @click="detailShow(barangKeluar.no_invoice)" class="mt-2 mb-2 min-w-max">
+  <AccordionItemTable @click="detailShow(penjualan.no_invoice)" class="mt-2 mb-2 min-w-max">
     <AccordionTable
       class="border border-b-0 border-gray-200 rounded-t-xl focus:border-4 focus:border-blue-200 dark:focus:border-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-800 group/item hover:stroke-sky-500 grid grid-cols-6 gap-2 md:pr-1 min-w-max">
 
       <div class="col min-w-max text-center mb-2">
         <a href="javascript:void(0)"
-          class="underline decoration-dotted m-2">{{ barangKeluar.no_invoice }}</a>
+          class="underline decoration-dotted m-2">{{ penjualan.no_invoice }}</a>
 
       </div>
 
       <div class="col min-w-max text-center">
         {{
-            dateFormat(barangKeluar.tanggal_penjualan).format("DD MMM YYYY HH:SS")
+            dateFormat(penjualan.tanggal_penjualan).format("DD MMM YYYY HH:SS")
         }}
       </div>
       <div class="col min-w-max text-center">
         {{
-            currencyFormat.format(barangKeluar.total_harga_jual)
+            currencyFormat.format(penjualan.total_harga_jual)
         }}
       </div>
       <div class="col min-w-max text-center">
         {{
-            currencyFormat.format(barangKeluar.total_bayar_jual)
+            currencyFormat.format(penjualan.total_bayar_jual)
         }}
       </div>
       <div class="col min-w-max text-center">
        
-          {{ currencyFormat.format(barangKeluar.kembalian_jual) }}
+          {{ currencyFormat.format(penjualan.kembalian_jual) }}
      
       </div>
 
@@ -46,7 +46,7 @@
             <CheckSquareIcon class="w-4 h-4 mr-1" /> Edit
           </button>
           <button class="flex items-center text-danger" type="button"
-            @click="$emit('openDeleteModal', barangKeluar.no_invoice)">
+            @click="$emit('openDeleteModal', penjualan.no_invoice)">
             <Trash2Icon class="w-4 h-4 mr-1" /> Delete
           </button>
         </div>
@@ -58,16 +58,16 @@
     <AccordionPanelTable
       class="col-span-3 text-slate-600 dark:text-slate-500 leading-relaxed border-r-4 border-b-4 border-l-4 border-b-0 border-blue-200 dark:border-blue-800 rounded-b-lg pb-2 mb-2 min-w-max">
       <div class="mr-2 ml-2 overflow-auto">
-        <h2 class="md:text-center text-left m-2" @click="$emit('openInvoice', barangKeluar.no_invoice, barangKeluar.total_harga_jual, barangKeluar.total_bayar_jual, barangKeluar.kembalian_jual)">
+        <h2 class="md:text-center text-left m-2" @click="$emit('openInvoice', penjualan.no_invoice, penjualan.total_harga_jual, penjualan.total_bayar_jual, penjualan.kembalian_jual)">
           Tabel Detail
           <a href="javascript:void(0)" class="text-danger">{{
-              barangKeluar.no_invoice
+              penjualan.no_invoice
           }}</a>
           <PrinterIcon class="w-4 h-4 ml-2 inline-block cursor-pointer" />
         </h2>
 
         <TabelDetailList 
-        :details="BarangKeluar.details"
+        :details="Penjualan.details"
         />
       </div>
       <!-- </tr> -->
@@ -78,18 +78,18 @@
 </template>
 
 <script>
-import { useBarangKeluarStore } from "../../stores/barang-keluar";
+import { usePenjualanStore } from "../../stores/penjualan";
 import { currencyFormatter } from "../../utils/helper";
 import moment from "moment";
 import TabelDetailList from "./TabelDetailList.vue";
 
 export default {
   setup() {
-    const BarangKeluar = useBarangKeluarStore();
+    const Penjualan = usePenjualanStore();
     const currencyFormat = currencyFormatter;
     const dateFormat = moment;
     return {
-      BarangKeluar,
+      Penjualan,
       currencyFormat,
       dateFormat,
     };
@@ -99,7 +99,7 @@ export default {
   },
   emits: ["openDeleteModal", "openInvoice"],
   props: {
-    barangKeluar: {
+    penjualan: {
       type: Object,
       required: true,
     },
@@ -113,12 +113,12 @@ export default {
     };
   },
   methods: {
-    deleteBarangKeluar() { },
-    updateBarangKeluar() { },
+    deletePenjualan() { },
+    updatePenjualan() { },
 
     detailShow(no_invoice) {
       try {
-        this.BarangKeluar.readDetail(no_invoice).then(
+        this.Penjualan.readDetail(no_invoice).then(
           () => (this.isVarian = !this.isVarian)
         );
       } catch (error) {
@@ -128,7 +128,7 @@ export default {
   },
   components: { TabelDetailList },
   async beforeMount() {
-    await this.BarangKeluar.readDetail(this.id_awal);
+    await this.Penjualan.readDetail(this.id_awal);
   },
 };
 </script>

@@ -202,14 +202,14 @@
                             class="block text-sm font-medium text-gray-700"
                             >Kategori Barang</label
                           >
-                          <select
+                          <TomSelect
                             v-model="kategoriBarangVarian"
                             id="kategoriBarang"
-                            class="form-select mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                            class="mt-1 w-full"
                             aria-label="Default select example"
                             required
                           >
-                            <option value="" disabled>
+                            <option value="kosong" disabled>
                               &gt-- Pilih Barang --&lt
                             </option>
                             <option
@@ -220,7 +220,7 @@
                             >
                               {{ barang.id_barang }} - {{ barang.nama_barang }}
                             </option>
-                          </select>
+                          </TomSelect>
                         </div>
 
                         <div class="col-span-6 sm:col-span-3">
@@ -229,14 +229,14 @@
                             class="block text-sm font-medium text-gray-700"
                             >Kategori Gudang</label
                           >
-                          <select
+                          <TomSelect
                             v-model="kategoriGudangVarian"
                             id="kategoriGudang"
-                            class="form-select mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                            class="mt-1 w-full"
                             aria-label="Default select example"
                             required
                           >
-                            <option value="" disabled>
+                            <option value="kosong" disabled>
                               &gt-- Pilih Gudang --&lt
                             </option>
                             <option
@@ -247,7 +247,7 @@
                             >
                               {{ gudang.id_gudang }} - {{ gudang.nama_gudang }}
                             </option>
-                          </select>
+                          </TomSelect>
                         </div>
 
                         <div class="col-span-6 sm:col-span-3 mb-0">
@@ -272,14 +272,14 @@
                             class="block text-sm font-medium text-gray-700"
                             >Satuan Varian</label
                           >
-                          <select
+                          <TomSelect
                             v-model="satuanVarian"
                             id="satuanVarian"
-                            class="form-select mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                            class="mt-1 w-full"
                             aria-label="Default select example"
                             required
                           >
-                            <option value="" disabled>
+                            <option value="kosong" disabled>
                               &gt-- Pilih Satuan --&lt
                             </option>
                             <option
@@ -290,7 +290,7 @@
                             >
                               {{ satuan.id_satuan }} - {{ satuan.nama_satuan }}
                             </option>
-                          </select>
+                          </TomSelect>
                         </div>
 
                         <div class="col-span-6 sm:col-span-3">
@@ -606,10 +606,10 @@ export default {
       hargaBeliVarian: "",
       hargaJualVarian: "",
       idBarang: "",
-      kategoriGudangVarian: "",
-      satuanVarian: "",
+      kategoriGudangVarian: "kosong",
+      satuanVarian: "kosong",
       idVarian: "",
-      kategoriBarangVarian: "",
+      kategoriBarangVarian: "kosong",
       namaVarian: "",
       stokVarian: "",
 

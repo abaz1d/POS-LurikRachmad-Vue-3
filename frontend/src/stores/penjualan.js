@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { request } from "../utils/api";
 
-export const useBarangKeluarStore = defineStore({
+export const usePenjualanStore = defineStore({
   id: "barang-keluar",
   state: () => ({
     rawItems: [],

@@ -18,6 +18,7 @@ import Penjualan from "../views/Penjualan/Main.vue";
 import Pembelian from "../views/Pembelian/Main.vue";
 import Return from "../views/Return/Main.vue";
 import StokGlobal from "../views/StokGlobal/Main.vue";
+import Laporan from "../views/Laporan/Main.vue";
 
 const routes = [
   {
@@ -88,6 +89,11 @@ const routes = [
         path: "pembelian",
         name: "top-menu-pembelian",
         component: Pembelian,
+      },
+      {
+        path: "laporan",
+        name: "top-menu-laporan",
+        component: Laporan,
       },
     ],
   },
@@ -160,6 +166,11 @@ const routes = [
         name: "side-menu-pembelian",
         component: Pembelian,
       },
+      {
+        path: "laporan",
+        name: "side-menu-laporan",
+        component: Laporan,
+      },
     ],
   },
   {
@@ -230,6 +241,11 @@ const routes = [
         path: "pembelian",
         name: "simple-menu-pembelian",
         component: Pembelian,
+      },
+      {
+        path: "laporan",
+        name: "simple-menu-laporan",
+        component: Laporan,
       },
     ],
   },

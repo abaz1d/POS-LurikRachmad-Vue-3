@@ -49,21 +49,21 @@ export const useSideMenuStore = defineStore("sideMenu", {
         icon: "FileTextIcon",
         pageName: "side-menu-laporan",
         title: "Laporan",
-        subMenu: [
-          {
-            icon: "HomeIcon",
-            pageName: "side-menu-page-2",
-            title: "Page 2",
-            subMenu: [
-              {
-                icon: "HomeIcon",
-                pageName: "side-menu-page-2",
-                title: "Page 2",
+        // subMenu: [
+        //   {
+        //     icon: "HomeIcon",
+        //     pageName: "side-menu-page-2",
+        //     title: "Page 2",
+        //     subMenu: [
+        //       {
+        //         icon: "HomeIcon",
+        //         pageName: "side-menu-page-2",
+        //         title: "Page 2",
                 
-              },
-            ]
-          },
-        ]
+        //       },
+        //     ]
+        //   },
+        // ]
       },
       {
         icon: "SlidersIcon",
@@ -81,7 +81,7 @@ export const useSideMenuStore = defineStore("sideMenu", {
             title: "Pelanggan",
           },
           {
-            icon: "HomeIcon",
+            icon: "TentIcon",
             pageName: "side-menu-outlet",
             title: "Outlet",
           },
