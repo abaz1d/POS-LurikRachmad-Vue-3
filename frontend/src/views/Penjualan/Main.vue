@@ -113,46 +113,60 @@
 
           <div class="grid grid-cols-12 gap-2">
 
-            <div class="col-span-12 lg:col-span-8 2xl:col-span-9">
+            <div class="col-span-12 lg:col-span-7 2xl:col-span-8">
               <!-- BEGIN: Display Information -->
               <div class="intro-y box">
                 <div class="p-5">
                   <div class="flex flex-col-reverse xl:flex-row flex-col">
                     <div class="flex-1 mt-6 xl:mt-0">
                       <div class="grid grid-cols-12 gap-x-5">
-                        <div class="col-span-9 mb-2">
-                          <label for="pos-form-1" class="form-label">Nama Satuan</label>
-                          <input id="pos-form-1" type="text" class="form-control flex-1"
-                            placeholder="Masukan Nama Satuan" required />
+                        <div class="col-span-9 mb-5">
+                          <label for="pos-form-1" class="form-label">ID Barang/Item</label>
+                          <div class="flex w-full">
+                            <div
+                              class="z-30 rounded-l w-10 flex items-center justify-center bg-gray-100 border text-gray-600 dark:bg-dark-1 dark:border-dark-4 -mr-1 cursor-pointer">
+                              <CameraIcon class="w-4 h-4" />
+                            </div>
+                            <TomSelect v-model="select" class="w-full">
+                              <option value="1">Leonardo DiCaprio</option>
+                              <option value="2">Johnny Deep</option>
+                              <option value="3">Robert Downey, Jr</option>
+                              <option value="4">Samuel L. Jackson</option>
+                              <option value="5">Morgan Freeman</option>
+                            </TomSelect>
+                          </div>
+                          <div class="form-help">
+                            * Klik Kamera untuk scan barcode.
+                          </div>
                         </div>
-                        <div class="col-span-3 mb-2">
+                        <div class="col-span-3 mb-5">
                           <label for="pos-form-1" class="form-label">Nama Satuan</label>
                           <input id="pos-form-1" type="text" class="form-control flex-1"
                             placeholder="Masukan Nama Satuan" required />
                         </div>
 
-                        <div class="col-span-6 mb-2">
+                        <div class="col-span-6 mb-5">
                           <label for="pos-form-1" class="form-label">Nama Satuan</label>
                           <input id="pos-form-1" type="text" class="form-control flex-1"
                             placeholder="Masukan Nama Satuan" required />
                         </div>
-                        <div class="col-span-6 mb-2">
+                        <div class="col-span-6 mb-5">
                           <label for="pos-form-1" class="form-label">Nama Satuan</label>
                           <input id="pos-form-1" type="text" class="form-control flex-1"
                             placeholder="Masukan Nama Satuan" required />
                         </div>
 
-                        <div class="col-span-4 mb-2">
+                        <div class="col-span-4 mb-5">
                           <label for="pos-form-1" class="form-label">Nama Satuan</label>
                           <input id="pos-form-1" type="text" class="form-control flex-1"
                             placeholder="Masukan Nama Satuan" required />
                         </div>
-                        <div class="col-span-4 mb-2">
+                        <div class="col-span-4 mb-5">
                           <label for="pos-form-1" class="form-label">Nama Satuan</label>
                           <input id="pos-form-1" type="text" class="form-control flex-1"
                             placeholder="Masukan Nama Satuan" required />
                         </div>
-                        <div class="col-span-4 mb-2">
+                        <div class="col-span-4 mb-5">
                           <label for="pos-form-1" class="form-label">Nama Satuan</label>
                           <input id="pos-form-1" type="text" class="form-control flex-1"
                             placeholder="Masukan Nama Satuan" required />
@@ -169,7 +183,7 @@
             </div>
 
             <!-- BEGIN: Profile Menu -->
-            <div class="col-span-12 lg:col-span-4 2xl:col-span-3 flex lg:block flex-col-reverse">
+            <div class="col-span-12 lg:col-span-5 2xl:col-span-4 flex lg:block flex-col-reverse">
               <div class="intro-y box">
 
                 <div class="box flex p-5">
@@ -201,7 +215,7 @@
 
             <!-- BEGIN: Personal Information -->
             <div class="col-span-12 flex-col-reverse">
-              <div class="intro-y box mt-5">
+              <div class="intro-y box">
                 <div class="flex items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400">
                   <h2 class="font-medium text-base mr-auto">Personal Information</h2>
                 </div>
