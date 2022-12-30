@@ -8,7 +8,7 @@
         class="btn btn-primary shadow-md mb-3 mr-2 pr-5"
         @click="openAddModal()"
       >
-        <PlusIcon class="w-4 h-4 mr-2" /> New Product
+      <PlusIcon class="w-4 h-4 mr-2" /> <p class="hidden xl:block mr-1">Produk</p> Baru
       </button>
 
       <!-- BEGIN: Modal Content -->
@@ -449,7 +449,7 @@
         <option>25</option>
         <option>100</option>
       </select>
-      <div class="search hidden sm:block mt-0 mb-3">
+      <div class="search hidden xl:block mt-0 mb-3">
         <input
           type="text"
           class="form-control w-56 box pr-10"
@@ -457,7 +457,7 @@
         />
         <SearchIcon class="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0" />
       </div>
-      <a class="notification sm:hidden mt-0 mb-3">
+      <a class="notification xl:hidden mt-0 mb-3">
         <!-- <SearchIcon class="notification__icon dark:text-slate-500" /> -->
         <form action="" class="justify-center shadow-none bg-white box h-10">
           <input
@@ -469,11 +469,11 @@
           />
         </form>
       </a>
-      <div class="hidden md:block mx-auto text-slate-500">
+      <div class="hidden 2xl:block mx-auto text-slate-500">
         Showing 1 to 10 of 150 entries
       </div>
       <div class="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
-        <nav class="w-full sm:w-auto sm:mr-auto tems-center justify-center">
+        <nav class="w-full sm:w-auto sm:mr-auto mr-0 tems-center justify-center">
           <ul class="pagination">
             <li class="page-item">
               <a class="page-link" href="#">
