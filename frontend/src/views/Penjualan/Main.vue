@@ -464,6 +464,7 @@
             <AccordionItem>
                 <Accordion>
                   <p class="text-center">Total Harga, Bayar & Kembalian</p>
+                  <small><p  class="text-center text-sm">&gt Klik untuk selengkapnya &lt</p></small>
                   <div class="grid grid-cols-12 mt-2">
                     <div class="col-span-4 text-sm border-x-2 border-t-2">
                       <p class="text-center">Final</p>
