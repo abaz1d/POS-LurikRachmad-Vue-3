@@ -9,23 +9,28 @@
 
       <!-- BEGIN: Modal Content -->
       <Modal size="modal-xl" backdrop="static" :show="addModal" @hidden="addModal = false">
-        <ModalHeader>
-          <h2 class="hidden sm:block font-medium text-base mr-auto">Transaksi Baru</h2>
-          <div class="bg-slate-200 rounded-md p-2 sm:-mr-40 mx-auto">
-            <div class="font-medium sm:text-xl text-sm">
+        <ModalHeader class="sticky top-0 relative z-50 bg-white rounded-md border-b-2">
+          <h2 class="hidden lg:block font-medium text-base mr-auto">Transaksi Baru</h2>
+          <div class="lg:-mr-40 mx-auto mt-2">
+            <div class="bg-slate-200 rounded-md p-2 font-medium lg:text-xl text-sm px-2">
               <p class="text-right text-black">INV-20220905-S25</p>
             </div>
+            <p class="text-center bg-primary text-white rounded-md w-24 mx-auto lg:-mt-14 -mt-12 lg:mb-8 mb-6">NO
+              INVOICE</p>
           </div>
-          <div class="bg-slate-200 rounded-md p-2 sm:mr-0 mx-auto">
-            <div class="font-medium sm:text-xl text-sm">
+
+          <div class="lg:mr-0 mx-auto mt-2">
+            <div class="bg-slate-200 rounded-md p-2 font-medium lg:text-xl text-sm px-2">
               <p class="text-right text-black">05 Sep 2022 10:45</p>
             </div>
+            <p class="text-center bg-primary text-white rounded-md w-24 mx-auto lg:-mt-14 -mt-12 lg:mb-8 mb-6">WAKTU</p>
           </div>
+
         </ModalHeader>
         <ModalBody>
           <div class="grid grid-cols-12 gap-2">
 
-            <div class="col-span-12 sm:col-span-8">
+            <div class="col-span-12 lg:col-span-8">
               <!-- BEGIN: Display Item -->
               <div class="intro-y box">
                 <div class="p-2">
@@ -104,15 +109,15 @@
             </div>
 
             <!-- BEGIN: Display Total Harga -->
-            <div class="col-span-12 sm:col-span-4 flex lg:block flex-col-reverse">
+            <div class="lg:block hidden col-span-4">
               <div class="intro-y box">
 
-                <div class="box flex p-2">
+                <div class="box flex p-2 ">
                   <input type="text" class="form-control py-3 px-4 w-full bg-slate-100 border-slate-200/60 pr-10"
                     placeholder="Use coupon code..." />
                   <button class="btn btn-primary ml-2">Apply</button>
                 </div>
-                <div class="box p-2 mt-2">
+                <div class="box p-2 py-5 mt-2">
                   <!-- <div class="flex">
                     <div class="mr-auto">Subtotal</div>
                     <div class="font-medium">$250</div>
@@ -323,7 +328,7 @@
                 <div class="flex items-center px-5 py-2 border-b border-slate-200/60 dark:border-darkmode-400">
                   <h2 class="font-medium text-base mr-auto">Detail Penjualan</h2>
                 </div>
-                <div class="px-5 py-2">
+                <div class="px-2 py-5">
                   <div class="col-span-12 overflow-auto w-full h-56">
                     <table class="table table-hover mt-2">
                       <thead class="table-light">
@@ -454,7 +459,78 @@
             <!-- END: Detail Penjualan -->
           </div>
         </ModalBody>
-        <ModalFooter class="text-right">
+        <ModalFooter class="text-right sticky bottom-0 relative z-50 bg-white rounded-md sm:border-t-2 border-t-4 btm sm:btm-">
+          <AccordionGroup class="block lg:hidden mb-5">
+            <AccordionItem>
+                <Accordion>
+                  <p class="text-center">Total Harga, Bayar & Kembalian</p>
+                  <div class="grid grid-cols-12 mt-2">
+                    <div class="col-span-4 text-sm border-x-2 border-t-2">
+                      <p class="text-center">Final</p>
+                    </div>
+                    <div class="col-span-4 text-sm border-x-2 border-t-2">
+                      <p class="text-center">Bayar</p>
+                    </div>
+                    <div class="col-span-4 text-sm border-x-2 border-t-2">
+                      <p class="text-center">Kembalian</p>
+                    </div>
+
+                    <div class="col-span-4 text-sm border-2">
+                      <p class="text-right mr-1">Rp.17.000</p>
+                    </div>
+                    <div class="col-span-4 text-sm border-2">
+                      <p class="text-right mr-1">Rp.20.000</p>
+                    </div>
+                    <div class="col-span-4 text-sm border-2">
+                      <p class="text-right mr-1">Rp.3.000</p>
+                    </div>
+                  </div>
+                </Accordion>
+                <AccordionPanel class="text-slate-600 dark:text-slate-500 leading-relaxed">
+                  <ChevronDownIcon class="animate-bounce block mx-auto" />
+                  <div class="flex lg:block flex-col-reverse">
+                    <div class="intro-y box">
+
+                      <div class="box flex p-2">
+                        <input type="text" class="form-control py-3 px-4 w-full bg-slate-100 border-slate-200/60 pr-10"
+                          placeholder="Use coupon code..." />
+                        <button class="btn btn-primary ml-2">Apply</button>
+                      </div>
+                      <div class="box p-2 mt-2">
+                        <div class="flex">
+                          <div class="mr-auto font-medium text-base">Total Harga</div>
+                        </div>
+                        <div class="bg-slate-200 rounded-md p-2">
+                          <div class="font-medium text-xl">
+                            <p class="text-right text-black">Rp.22.000</p>
+                          </div>
+                        </div>
+
+                        <div class="flex mt-4 pt-4 border-t border-slate-200/60 dark:border-darkmode-400">
+                          <div class="mr-auto font-medium text-base">Total Bayar</div>
+                        </div>
+                        <div class="input-group bg-slate-200 rounded-md border-2 border-slate-200/60 mr-0">
+                          <div class="input-group-text my-auto text-xl">
+                            <p class="text-black">Rp.</p>
+                          </div>
+                          <input type="number" class="form-control flex-1 font-medium text-xl text-right"
+                            placeholder="Nominal Uang" required />
+                        </div>
+
+                        <div class="flex mt-1 pt-4">
+                          <div class="mr-auto font-medium text-base">Kembalian</div>
+                        </div>
+                        <div class="bg-slate-200 rounded-md p-2">
+                          <div class="font-medium text-xl">
+                            <p class="text-right text-black">Rp.22.0000</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </AccordionPanel>
+              </AccordionItem>
+          </AccordionGroup>
           <button type="button" @click="addModal = false" class="btn btn-outline-secondary w-32 mr-1">
             Cancel
           </button>
@@ -591,9 +667,16 @@ export default {
 </script>
 
 <style scoped>
+
 table thead th:first-child {
   position: sticky;
   left: 0;
   z-index: 2;
+}
+
+.btm {
+  -webkit-box-shadow: 0px -4px 3px rgba(205, 205, 205, 0.75);
+  -moz-box-shadow: 0px -4px 3px rgba(185, 185, 185, 0.75);
+  box-shadow: 0px -4px 3px rgba(175, 175, 175, 0.75);
 }
 </style>
