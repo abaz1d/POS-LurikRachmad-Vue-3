@@ -12,7 +12,7 @@
         <ModalHeader>
           <h2 class="font-medium text-base mr-auto">Tambah Satuan</h2>
         </ModalHeader>
-        <ModalBody class="intro-y grid grid-cols-12 gap-2">
+        <ModalBody>
           <!-- <form @submit.prevent="addSatuan" id="addSatuanForm" class="col-span-8 intro-y grid grid-cols-12 gap-2">
             <div class="col-span-9 mb-2">
               <label for="pos-form-1" class="form-label">Nama Satuan</label>
@@ -110,6 +110,139 @@
               </tbody>
             </table>
           </div> -->
+
+          <div class="grid grid-cols-12 gap-2">
+
+            <div class="col-span-12 lg:col-span-8 2xl:col-span-9">
+              <!-- BEGIN: Display Information -->
+              <div class="intro-y box">
+                <div class="p-5">
+                  <div class="flex flex-col-reverse xl:flex-row flex-col">
+                    <div class="flex-1 mt-6 xl:mt-0">
+                      <div class="grid grid-cols-12 gap-x-5">
+                        <div class="col-span-9 mb-2">
+                          <label for="pos-form-1" class="form-label">Nama Satuan</label>
+                          <input id="pos-form-1" type="text" class="form-control flex-1"
+                            placeholder="Masukan Nama Satuan" required />
+                        </div>
+                        <div class="col-span-3 mb-2">
+                          <label for="pos-form-1" class="form-label">Nama Satuan</label>
+                          <input id="pos-form-1" type="text" class="form-control flex-1"
+                            placeholder="Masukan Nama Satuan" required />
+                        </div>
+
+                        <div class="col-span-6 mb-2">
+                          <label for="pos-form-1" class="form-label">Nama Satuan</label>
+                          <input id="pos-form-1" type="text" class="form-control flex-1"
+                            placeholder="Masukan Nama Satuan" required />
+                        </div>
+                        <div class="col-span-6 mb-2">
+                          <label for="pos-form-1" class="form-label">Nama Satuan</label>
+                          <input id="pos-form-1" type="text" class="form-control flex-1"
+                            placeholder="Masukan Nama Satuan" required />
+                        </div>
+
+                        <div class="col-span-4 mb-2">
+                          <label for="pos-form-1" class="form-label">Nama Satuan</label>
+                          <input id="pos-form-1" type="text" class="form-control flex-1"
+                            placeholder="Masukan Nama Satuan" required />
+                        </div>
+                        <div class="col-span-4 mb-2">
+                          <label for="pos-form-1" class="form-label">Nama Satuan</label>
+                          <input id="pos-form-1" type="text" class="form-control flex-1"
+                            placeholder="Masukan Nama Satuan" required />
+                        </div>
+                        <div class="col-span-4 mb-2">
+                          <label for="pos-form-1" class="form-label">Nama Satuan</label>
+                          <input id="pos-form-1" type="text" class="form-control flex-1"
+                            placeholder="Masukan Nama Satuan" required />
+                        </div>
+                      </div>
+                      <button type="button" class="btn btn-primary w-20 mt-3">
+                        Save
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- END: Display Information -->
+            </div>
+
+            <!-- BEGIN: Profile Menu -->
+            <div class="col-span-12 lg:col-span-4 2xl:col-span-3 flex lg:block flex-col-reverse">
+              <div class="intro-y box">
+
+                <div class="box flex p-5">
+                  <input type="text" class="form-control py-3 px-4 w-full bg-slate-100 border-slate-200/60 pr-10"
+                    placeholder="Use coupon code..." />
+                  <button class="btn btn-primary ml-2">Apply</button>
+                </div>
+                <div class="box p-5 mt-5">
+                  <div class="flex">
+                    <div class="mr-auto">Subtotal</div>
+                    <div class="font-medium">$250</div>
+                  </div>
+                  <div class="flex mt-4">
+                    <div class="mr-auto">Discount</div>
+                    <div class="font-medium text-danger">-$20</div>
+                  </div>
+                  <div class="flex mt-4">
+                    <div class="mr-auto">Tax</div>
+                    <div class="font-medium">15%</div>
+                  </div>
+                  <div class="flex mt-4 pt-4 border-t border-slate-200/60 dark:border-darkmode-400">
+                    <div class="mr-auto font-medium text-base">Total Charge</div>
+                    <div class="font-medium text-base">$220</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- END: Profile Menu -->
+
+            <!-- BEGIN: Personal Information -->
+            <div class="col-span-12 flex-col-reverse">
+              <div class="intro-y box mt-5">
+                <div class="flex items-center p-5 border-b border-slate-200/60 dark:border-darkmode-400">
+                  <h2 class="font-medium text-base mr-auto">Personal Information</h2>
+                </div>
+                <div class="p-5">
+                  <div class="col-span-12">
+                    <table class="table mt-5">
+                      <thead class="table-light">
+                        <tr>
+                          <th class="whitespace-nowrap">#</th>
+                          <th class="whitespace-nowrap">First Name</th>
+                          <th class="whitespace-nowrap">Last Name</th>
+                          <th class="whitespace-nowrap">Username</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>1</td>
+                          <td>Angelina</td>
+                          <td>Jolie</td>
+                          <td>@angelinajolie</td>
+                        </tr>
+                        <tr>
+                          <td>2</td>
+                          <td>Brad</td>
+                          <td>Pitt</td>
+                          <td>@bradpitt</td>
+                        </tr>
+                        <tr>
+                          <td>3</td>
+                          <td>Charlie</td>
+                          <td>Hunnam</td>
+                          <td>@charliehunnam</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- END: Personal Information -->
+          </div>
         </ModalBody>
         <ModalFooter class="text-right">
           <button type="button" @click="addModal = false" class="btn btn-outline-secondary w-32 mr-1">
