@@ -10,118 +10,31 @@
       <!-- BEGIN: Modal Content -->
       <Modal size="modal-xl" backdrop="static" :show="addModal" @hidden="addModal = false">
         <ModalHeader>
-          <h2 class="font-medium text-base mr-auto">Tambah Satuan</h2>
-        </ModalHeader>
-        <ModalBody>
-          <!-- <form @submit.prevent="addSatuan" id="addSatuanForm" class="col-span-8 intro-y grid grid-cols-12 gap-2">
-            <div class="col-span-9 mb-2">
-              <label for="pos-form-1" class="form-label">Nama Satuan</label>
-              <input id="pos-form-1" type="text" class="form-control flex-1" placeholder="Masukan Nama Satuan"
-                required />
-            </div>
-            <div class="col-span-3 mb-2">
-              <label for="pos-form-1" class="form-label">Nama Satuan</label>
-              <input id="pos-form-1" type="text" class="form-control flex-1" placeholder="Masukan Nama Satuan"
-                required />
-            </div>
-
-            <div class="col-span-6 mb-2">
-              <label for="pos-form-1" class="form-label">Nama Satuan</label>
-              <input id="pos-form-1" type="text" class="form-control flex-1" placeholder="Masukan Nama Satuan"
-                required />
-            </div>
-            <div class="col-span-6 mb-2">
-              <label for="pos-form-1" class="form-label">Nama Satuan</label>
-              <input id="pos-form-1" type="text" class="form-control flex-1" placeholder="Masukan Nama Satuan"
-                required />
-            </div>
-
-            <div class="col-span-4 mb-2">
-              <label for="pos-form-1" class="form-label">Nama Satuan</label>
-              <input id="pos-form-1" type="text" class="form-control flex-1" placeholder="Masukan Nama Satuan"
-                required />
-            </div>
-            <div class="col-span-4 mb-2">
-              <label for="pos-form-1" class="form-label">Nama Satuan</label>
-              <input id="pos-form-1" type="text" class="form-control flex-1" placeholder="Masukan Nama Satuan"
-                required />
-            </div>
-            <div class="col-span-4 mb-2">
-              <label for="pos-form-1" class="form-label">Nama Satuan</label>
-              <input id="pos-form-1" type="text" class="form-control flex-1" placeholder="Masukan Nama Satuan"
-                required />
-            </div>
-          </form>
-          <div class="col-span-4">
-      
-            <div class="box flex p-5 mt-5">
-              <input type="text" class="form-control py-3 px-4 w-full bg-slate-100 border-slate-200/60 pr-10"
-                placeholder="Use coupon code..." />
-              <button class="btn btn-primary ml-2">Apply</button>
-            </div>
-            <div class="box p-5 mt-5">
-              <div class="flex">
-                <div class="mr-auto">Subtotal</div>
-                <div class="font-medium">$250</div>
-              </div>
-              <div class="flex mt-4">
-                <div class="mr-auto">Discount</div>
-                <div class="font-medium text-danger">-$20</div>
-              </div>
-              <div class="flex mt-4">
-                <div class="mr-auto">Tax</div>
-                <div class="font-medium">15%</div>
-              </div>
-              <div class="flex mt-4 pt-4 border-t border-slate-200/60 dark:border-darkmode-400">
-                <div class="mr-auto font-medium text-base">Total Charge</div>
-                <div class="font-medium text-base">$220</div>
-              </div>
+          <h2 class="hidden sm:block font-medium text-base mr-auto">Transaksi Baru</h2>
+          <div class="bg-slate-200 rounded-md p-2 sm:-mr-40 mx-auto">
+            <div class="font-medium sm:text-xl text-sm">
+              <p class="text-right text-black">INV-20220905-S25</p>
             </div>
           </div>
-          <div class="col-span-12">
-            <table class="table mt-5">
-              <thead class="table-light">
-                <tr>
-                  <th class="whitespace-nowrap">#</th>
-                  <th class="whitespace-nowrap">First Name</th>
-                  <th class="whitespace-nowrap">Last Name</th>
-                  <th class="whitespace-nowrap">Username</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>Angelina</td>
-                  <td>Jolie</td>
-                  <td>@angelinajolie</td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Brad</td>
-                  <td>Pitt</td>
-                  <td>@bradpitt</td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>Charlie</td>
-                  <td>Hunnam</td>
-                  <td>@charliehunnam</td>
-                </tr>
-              </tbody>
-            </table>
-          </div> -->
-
+          <div class="bg-slate-200 rounded-md p-2 sm:mr-0 mx-auto">
+            <div class="font-medium sm:text-xl text-sm">
+              <p class="text-right text-black">05 Sep 2022 10:45</p>
+            </div>
+          </div>
+        </ModalHeader>
+        <ModalBody>
           <div class="grid grid-cols-12 gap-2">
 
-            <div class="col-span-12 lg:col-span-8 2xl:col-span-9">
+            <div class="col-span-12 sm:col-span-8">
               <!-- BEGIN: Display Item -->
               <div class="intro-y box">
-                <div class="p-5">
+                <div class="p-2">
                   <div class="flex flex-col-reverse xl:flex-row flex-col">
                     <div class="flex-1 mt-0">
-                      <div class="grid grid-cols-12 gap-x-3 sm:gap-y-2">
-                        <div class="col-span-9 mb-5">
-                          <label for="pos-form-1" class="form-label">ID Barang/Item</label>
+                      <div class="grid grid-cols-12 gap-x-2 sm:gap-x-3 sm:gap-y-2">
+                        <div class="sm:col-span-9 col-span-12 mb-5">
+                          <label for="pos-form-1" class="form-label">ID Barang/Item <p class="sm:hidden form-label">&
+                              Stok</p></label>
                           <div class="flex w-full">
                             <div
                               class="z-30 rounded-l w-10 flex items-center justify-center bg-gray-100 hover:bg-gray-300 border text-gray-600 dark:bg-dark-1 dark:border-dark-4 -mr-1 cursor-pointer">
@@ -139,38 +52,46 @@
                             * Pilih atau Klik Kamera untuk scan barcode.
                           </div>
                         </div>
-                        <div class="col-span-3 mb-5">
+                        <div class="hidden sm:block col-span-3 mb-5">
                           <label for="pos-form-1" class="form-label">Stok Tersisa</label>
                           <input id="pos-form-1" type="text" class="form-control flex-1"
                             placeholder="Masukan Stok Tersisa" readonly />
                         </div>
 
-                        <div class="col-span-6 mb-5">
+                        <div class="hidden sm:block col-span-6 mb-5">
                           <label for="pos-form-1" class="form-label">Nama Barang</label>
                           <input id="pos-form-1" type="text" class="form-control flex-1"
                             placeholder="Masukan Nama Barang" readonly />
                         </div>
-                        <div class="col-span-6 mb-5">
+                        <div class="hidden sm:block col-span-6 mb-5">
                           <label for="pos-form-1" class="form-label">Nama Varian</label>
                           <input id="pos-form-1" type="text" class="form-control flex-1"
                             placeholder="Masukan Nama Varian" readonly />
                         </div>
 
-                        <div class="col-span-4 mb-5">
+                        <div class="sm:hidden col-span-12 mb-5">
+                          <label for="pos-form-1" class="form-label">Nama Barang & Varian</label>
+                          <input id="pos-form-1" type="text" class="form-control flex-1"
+                            placeholder="Masukan Nama Barang & Varian" readonly />
+                        </div>
+
+                        <div class="col-span-5 sm:col-span-4 mb-5">
                           <label for="pos-form-1" class="form-label">Harga Item</label>
                           <input id="pos-form-1" type="text" class="form-control flex-1"
                             placeholder="Masukan Harga Item" readonly />
                         </div>
-                        <div class="col-span-4 mb-5">
+                        <XIcon class="sm:hidden m-auto col-span-2" />
+                        <div class="col-span-5 sm:col-span-4 mb-5">
                           <label for="pos-form-1" class="form-label">Qty</label>
                           <input id="pos-form-1" type="text" class="form-control flex-1" placeholder="Masukan Qty"
                             required />
                         </div>
-                        <div class="col-span-4 mb-5">
+                        <div class="col-span-12 sm:col-span-4 mb-5">
                           <label for="pos-form-1" class="form-label">Total Harga</label>
                           <input id="pos-form-1" type="text" class="form-control flex-1"
                             placeholder="Masukan Total Harga" readonly />
                         </div>
+
                       </div>
                       <button type="button" class="btn btn-primary w-20 mt-3 sm:mt-5">
                         Tambah
@@ -183,15 +104,15 @@
             </div>
 
             <!-- BEGIN: Display Total Harga -->
-            <div class="col-span-12 lg:col-span-4 2xl:col-span-3 flex lg:block flex-col-reverse">
+            <div class="col-span-12 sm:col-span-4 flex lg:block flex-col-reverse">
               <div class="intro-y box">
 
-                <div class="box flex p-5">
+                <div class="box flex p-2">
                   <input type="text" class="form-control py-3 px-4 w-full bg-slate-100 border-slate-200/60 pr-10"
                     placeholder="Use coupon code..." />
                   <button class="btn btn-primary ml-2">Apply</button>
                 </div>
-                <div class="box p-5 mt-2">
+                <div class="box p-2 mt-2">
                   <!-- <div class="flex">
                     <div class="mr-auto">Subtotal</div>
                     <div class="font-medium">$250</div>
@@ -208,7 +129,9 @@
                     <div class="mr-auto font-medium text-base">Total Harga</div>
                   </div>
                   <div class="bg-slate-200 rounded-md p-2">
-                    <div class="font-medium text-xl"><p class="text-right text-black">Rp.22.000</p> </div>
+                    <div class="font-medium text-xl">
+                      <p class="text-right text-black">Rp.22.000</p>
+                    </div>
                   </div>
 
                   <div class="flex mt-4 pt-4 border-t border-slate-200/60 dark:border-darkmode-400">
@@ -216,7 +139,9 @@
                   </div>
                   <div class="input-group bg-slate-200 rounded-md border-2 border-slate-200/60 mr-0">
                     <!-- <div class="font-medium text-xl"><p class="text-right">$220</p> </div> -->
-                    <div class="input-group-text my-auto text-xl"><p class="text-black">Rp.</p></div>
+                    <div class="input-group-text my-auto text-xl">
+                      <p class="text-black">Rp.</p>
+                    </div>
                     <input type="number" class="form-control flex-1 font-medium text-xl text-right"
                       placeholder="Nominal Uang" required />
                   </div>
@@ -225,14 +150,174 @@
                     <div class="mr-auto font-medium text-base">Kembalian</div>
                   </div>
                   <div class="bg-slate-200 rounded-md p-2">
-                    <div class="font-medium text-xl"><p class="text-right text-black">Rp.22.0000</p> </div>
+                    <div class="font-medium text-xl">
+                      <p class="text-right text-black">Rp.22.0000</p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
             <!-- END: Display Total Harga -->
 
-            <!-- BEGIN: Detail Information -->
+
+            <!-- <AccordionGroup class="sm:hidden col-span-12 accordion-boxed">
+              <AccordionItem>
+                <Accordion >
+                  <p class="text-center">Tambahkan Barang</p>
+                </Accordion>
+                <AccordionPanel class="text-slate-600 dark:text-slate-500 leading-relaxed">
+                  <ChevronDownIcon class="animate-bounce block mx-auto" />
+                  <div class="">
+                    <div class="intro-y box">
+                      <div class="p-2">
+                        <div class="flex flex-col-reverse xl:flex-row flex-col">
+                          <div class="flex-1 mt-0">
+                            <div class="grid grid-cols-12 gap-x-2 sm:gap-x-3 sm:gap-y-2">
+                              <div class="sm:col-span-9 col-span-12 mb-5">
+                                <label for="pos-form-1" class="form-label">ID Barang/Item <p
+                                    class="sm:hidden form-label">&
+                                    Stok</p></label>
+                                <div class="flex w-full">
+                                  <div
+                                    class="z-30 rounded-l w-10 flex items-center justify-center bg-gray-100 hover:bg-gray-300 border text-gray-600 dark:bg-dark-1 dark:border-dark-4 -mr-1 cursor-pointer">
+                                    <CameraIcon class="w-4 h-4" />
+                                  </div>
+                                  <TomSelect v-model="select" class="w-full">
+                                    <option value="1">Leonardo DiCaprio</option>
+                                    <option value="2">Johnny Deep</option>
+                                    <option value="3">Robert Downey, Jr</option>
+                                    <option value="4">Samuel L. Jackson</option>
+                                    <option value="5">Morgan Freeman</option>
+                                  </TomSelect>
+                                </div>
+                                <div class="form-help">
+                                  * Pilih atau Klik Kamera untuk scan barcode.
+                                </div>
+                              </div>
+                              <div class="hidden sm:block col-span-3 mb-5">
+                                <label for="pos-form-1" class="form-label">Stok Tersisa</label>
+                                <input id="pos-form-1" type="text" class="form-control flex-1"
+                                  placeholder="Masukan Stok Tersisa" readonly />
+                              </div>
+
+                              <div class="hidden sm:block col-span-6 mb-5">
+                                <label for="pos-form-1" class="form-label">Nama Barang</label>
+                                <input id="pos-form-1" type="text" class="form-control flex-1"
+                                  placeholder="Masukan Nama Barang" readonly />
+                              </div>
+                              <div class="hidden sm:block col-span-6 mb-5">
+                                <label for="pos-form-1" class="form-label">Nama Varian</label>
+                                <input id="pos-form-1" type="text" class="form-control flex-1"
+                                  placeholder="Masukan Nama Varian" readonly />
+                              </div>
+
+                              <div class="sm:hidden col-span-12 mb-5">
+                                <label for="pos-form-1" class="form-label">Nama Barang & Varian</label>
+                                <input id="pos-form-1" type="text" class="form-control flex-1"
+                                  placeholder="Masukan Nama Barang & Varian" readonly />
+                              </div>
+
+                              <div class="col-span-5 sm:col-span-4 mb-5">
+                                <label for="pos-form-1" class="form-label">Harga Item</label>
+                                <input id="pos-form-1" type="text" class="form-control flex-1"
+                                  placeholder="Masukan Harga Item" readonly />
+                              </div>
+                              <XIcon class="sm:hidden m-auto col-span-2" />
+                              <div class="col-span-5 sm:col-span-4 mb-5">
+                                <label for="pos-form-1" class="form-label">Qty</label>
+                                <input id="pos-form-1" type="text" class="form-control flex-1" placeholder="Masukan Qty"
+                                  required />
+                              </div>
+                              <div class="col-span-12 sm:col-span-4 mb-5">
+                                <label for="pos-form-1" class="form-label">Total Harga</label>
+                                <input id="pos-form-1" type="text" class="form-control flex-1"
+                                  placeholder="Masukan Total Harga" readonly />
+                              </div>
+
+                            </div>
+                            <button type="button" class="btn btn-primary w-20 mt-3 sm:mt-5">
+                              Tambah
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </AccordionPanel>
+              </AccordionItem>
+              <AccordionItem>
+                <Accordion>
+                  <p class="text-center">Total Harga, Bayar & Kembalian</p>
+                  <div class="grid grid-cols-12 mt-2">
+                    <div class="col-span-4 text-sm border-x-2 border-t-2">
+                      <p class="text-center">Final</p>
+                    </div>
+                    <div class="col-span-4 text-sm border-x-2 border-t-2">
+                      <p class="text-center">Bayar</p>
+                    </div>
+                    <div class="col-span-4 text-sm border-x-2 border-t-2">
+                      <p class="text-center">Kembalian</p>
+                    </div>
+
+                    <div class="col-span-4 text-sm border-2">
+                      <p class="text-right mr-1">Rp.17.000</p>
+                    </div>
+                    <div class="col-span-4 text-sm border-2">
+                      <p class="text-right mr-1">Rp.20.000</p>
+                    </div>
+                    <div class="col-span-4 text-sm border-2">
+                      <p class="text-right mr-1">Rp.3.000</p>
+                    </div>
+                  </div>
+                </Accordion>
+                <AccordionPanel class="text-slate-600 dark:text-slate-500 leading-relaxed">
+                  <ChevronDownIcon class="animate-bounce block mx-auto" />
+                  <div class="flex lg:block flex-col-reverse">
+                    <div class="intro-y box">
+
+                      <div class="box flex p-2">
+                        <input type="text" class="form-control py-3 px-4 w-full bg-slate-100 border-slate-200/60 pr-10"
+                          placeholder="Use coupon code..." />
+                        <button class="btn btn-primary ml-2">Apply</button>
+                      </div>
+                      <div class="box p-2 mt-2">
+                        <div class="flex">
+                          <div class="mr-auto font-medium text-base">Total Harga</div>
+                        </div>
+                        <div class="bg-slate-200 rounded-md p-2">
+                          <div class="font-medium text-xl">
+                            <p class="text-right text-black">Rp.22.000</p>
+                          </div>
+                        </div>
+
+                        <div class="flex mt-4 pt-4 border-t border-slate-200/60 dark:border-darkmode-400">
+                          <div class="mr-auto font-medium text-base">Total Bayar</div>
+                        </div>
+                        <div class="input-group bg-slate-200 rounded-md border-2 border-slate-200/60 mr-0">
+                          <div class="input-group-text my-auto text-xl">
+                            <p class="text-black">Rp.</p>
+                          </div>
+                          <input type="number" class="form-control flex-1 font-medium text-xl text-right"
+                            placeholder="Nominal Uang" required />
+                        </div>
+
+                        <div class="flex mt-1 pt-4">
+                          <div class="mr-auto font-medium text-base">Kembalian</div>
+                        </div>
+                        <div class="bg-slate-200 rounded-md p-2">
+                          <div class="font-medium text-xl">
+                            <p class="text-right text-black">Rp.22.0000</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </AccordionPanel>
+              </AccordionItem>
+            </AccordionGroup> -->
+
+
+            <!-- BEGIN: Detail Penjualan -->
             <div class="col-span-12 flex-col-reverse">
               <div class="intro-y box">
                 <div class="flex items-center px-5 py-2 border-b border-slate-200/60 dark:border-darkmode-400">
@@ -366,7 +451,7 @@
                 </div>
               </div>
             </div>
-            <!-- END: Detail Information -->
+            <!-- END: Detail Penjualan -->
           </div>
         </ModalBody>
         <ModalFooter class="text-right">
