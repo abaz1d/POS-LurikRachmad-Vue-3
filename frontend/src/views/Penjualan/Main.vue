@@ -9,10 +9,10 @@
 
       <!-- BEGIN: Modal Content -->
       <Modal size="modal-xl" backdrop="static" :show="addModal" @hidden="addModal = false">
-        <ModalHeader class="sticky top-0 relative z-50 bg-white rounded-md border-b-2">
+        <ModalHeader class="relative top-0 z-50 bg-white rounded-md border-b-2">
           <h2 class="hidden lg:block font-medium text-base mr-auto">Transaksi Baru</h2>
-          <div class="lg:-mr-40 mx-auto mt-2">
-            <div class="bg-slate-200 rounded-md p-2 font-medium lg:text-xl text-sm px-2">
+          <div class="lg:-mr-48 mx-auto mt-2">
+            <div class="bg-slate-200 rounded-md p-2 font-medium lg:text-base text-sm px-2">
               <p class="text-right text-black">INV-20220905-S25</p>
             </div>
             <p class="text-center bg-primary text-white rounded-md w-24 mx-auto lg:-mt-14 -mt-12 lg:mb-8 mb-6">NO
@@ -20,15 +20,15 @@
           </div>
 
           <div class="lg:mr-0 mx-auto mt-2">
-            <div class="bg-slate-200 rounded-md p-2 font-medium lg:text-xl text-sm px-2">
+            <div class="bg-slate-200 rounded-md p-2 font-medium lg:text-base text-sm px-2">
               <p class="text-right text-black">05 Sep 2022 10:45</p>
             </div>
             <p class="text-center bg-primary text-white rounded-md w-24 mx-auto lg:-mt-14 -mt-12 lg:mb-8 mb-6">WAKTU</p>
           </div>
 
         </ModalHeader>
-        <ModalBody>
-          <div class="grid grid-cols-12 gap-2">
+        <ModalBody class="overflow-x-hidden overflow-y-auto h-3/4">
+          <div class="grid grid-cols-12 gap-1 -mt-3">
 
             <div class="col-span-12 lg:col-span-8">
               <!-- BEGIN: Display Item -->
@@ -36,7 +36,7 @@
                 <div class="p-2">
                   <div class="flex flex-col-reverse xl:flex-row flex-col">
                     <div class="flex-1 mt-0">
-                      <div class="grid grid-cols-12 gap-x-2 sm:gap-x-3 sm:gap-y-2">
+                      <div class="grid grid-cols-12 gap-x-2 sm:gap-x-3">
                         <div class="sm:col-span-9 col-span-12 mb-5">
                           <label for="pos-form-1" class="form-label">ID Barang/Item <p class="sm:hidden form-label">&
                               Stok</p></label>
@@ -98,7 +98,7 @@
                         </div>
 
                       </div>
-                      <button type="button" class="btn btn-primary w-20 mt-3 sm:mt-5">
+                      <button type="button" class="btn btn-primary w-20 mt-3">
                         Tambah
                       </button>
                     </div>
@@ -117,19 +117,7 @@
                     placeholder="Use coupon code..." />
                   <button class="btn btn-primary ml-2">Apply</button>
                 </div>
-                <div class="box p-2 py-5 mt-2">
-                  <!-- <div class="flex">
-                    <div class="mr-auto">Subtotal</div>
-                    <div class="font-medium">$250</div>
-                  </div>
-                  <div class="flex mt-4">
-                    <div class="mr-auto">Diskon</div>
-                    <div class="font-medium text-danger">-$20</div>
-                  </div>
-                  <div class="flex mt-4">
-                    <div class="mr-auto">Pajak</div>
-                    <div class="font-medium">15%</div>
-                  </div> -->
+                <div class="box p-2 mt-2">
                   <div class="flex">
                     <div class="mr-auto font-medium text-base">Total Harga</div>
                   </div>
@@ -328,7 +316,7 @@
                 <div class="flex items-center px-5 py-2 border-b border-slate-200/60 dark:border-darkmode-400">
                   <h2 class="font-medium text-base mr-auto">Detail Penjualan</h2>
                 </div>
-                <div class="px-2 py-5">
+                <div class="px-2">
                   <div class="col-span-12 overflow-auto w-full h-56">
                     <table class="table table-hover mt-2">
                       <thead class="table-light">
@@ -459,7 +447,7 @@
             <!-- END: Detail Penjualan -->
           </div>
         </ModalBody>
-        <ModalFooter class="text-right sticky bottom-0 relative z-50 bg-white rounded-md sm:border-t-2 border-t-4 btm sm:btm-">
+        <ModalFooter class="text-right bottom-0 relative z-50 bg-white rounded-md sm:border-t-2 border-t-4 btm sm:btm-">
           <AccordionGroup class="block lg:hidden mb-5">
             <AccordionItem>
                 <Accordion>
