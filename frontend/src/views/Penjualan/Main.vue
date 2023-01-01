@@ -582,9 +582,6 @@
                 <RewindIcon class="w-4 h-4" />
               </a>
             </li>
-            <!-- <li class="page-item">
-              <a class="page-link" href="#">...</a>
-            </li> -->
             <li class="page-item active">
               <!-- <a class="page-link" href="#">2</a> -->
               <input type="number" class="form-control" id="page_number" value="1" />
@@ -593,9 +590,6 @@
               <!-- <a class="page-link" href="#">3</a> -->
               <input type="number" class="form-control" id="total_pages" disabled />
             </li>
-            <!-- <li class="page-item">
-              <a class="page-link" href="#">...</a>
-            </li> -->
             <li class="page-item">
               <a class="page-link" href="#">
                 <FastForwardIcon class="w-4 h-4" />
