@@ -2,7 +2,7 @@
   <h2 class="intro-y text-lg font-medium mt-10">List Penjualan</h2>
   <div class="grid grid-cols-12 gap-6 mt-5">
     <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
-      <button class="btn btn-primary shadow-md mr-2 mb-3 pr-5" @click="addModal = true">
+      <button class="btn btn-primary shadow-md mr-2 mb-3 pr-5" @click="addModal = true; startTransaction()">
         <PlusIcon class="w-4 h-4 mr-2" />
         <p class="hidden xl:block mr-1">Transaksi</p> Baru
       </button>
@@ -119,7 +119,7 @@
                           </div>
 
                         </div>
-                        <button type="button" class="btn btn-primary w-20 mt-3">
+                        <button type="button" @click="detailForm()" class="btn btn-primary w-20 mt-3">
                           Tambah
                         </button>
                       </div>
@@ -507,7 +507,7 @@ export default {
     item_select(e) {
       // console.log("ora", e);
       this.Penjualan.readDetailItem(e).then((data) => {
-        console.log('data.data', data);
+        // console.log('data.data', data);
         this.nama_barang_select = data.nama_barang,
           this.nama_varian_select = data.nama_varian,
           this.nama_campur_select = `${data.nama_barang} - ${data.nama_varian} | ${data.stok_varian}`,
@@ -522,7 +522,7 @@ export default {
       const qty = newValue
       const harga_item_select = this.harga_item_select
       const stok = this.stok
-      console.log('qty', newValue, oldValue, this.harga_item_select, this.stok);
+      // console.log('qty', newValue, oldValue, this.harga_item_select, this.stok);
       if (newValue > stok) {
         alert("Stok tersisa hanya " + stok);
         this.qty_select = oldValue;
@@ -532,7 +532,17 @@ export default {
       } else {
         this.total_harga_select = harga_item_select * qty
       }
-    }
+    },
+    total_bayar_global(newValue, oldValue) {
+      const total_bayar_global = newValue
+      const total_harga_global = this.total_harga_global
+      if (newValue === "") {
+        alert("Total Bayar tidak boleh kosong atau minus");
+        this.total_bayar_global = oldValue;
+      } else {
+        this.kembalian = total_bayar_global - total_harga_global
+      }
+    },
   },
   components: {
     PenjualanList,
@@ -560,7 +570,24 @@ export default {
       kembalian: 0,
     };
   },
-  methods: {},
+  methods: {
+    startTransaction() {
+      this.Penjualan.startTransaction().then((data) => {
+        console.log('data.data', data);
+        this.no_invoice = data.no_invoice;
+        this.waktu = data.tanggal_penjualan;
+      })
+      console.log('start transactions');
+    },
+    detailForm() {
+      this.Penjualan.addDetailPenjualan(
+        this.no_invoice,
+        this.item_select,
+        this.qty_select
+
+      )
+    }
+  },
   async mounted() {
     await this.Penjualan.readItem();
   },
