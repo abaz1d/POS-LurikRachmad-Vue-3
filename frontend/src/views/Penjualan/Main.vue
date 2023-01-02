@@ -625,10 +625,6 @@ import { ref } from "vue";
 
 const addModal = ref(false);
 
-// const deleteRecords = async () => {
-//     try {
-
-//     } catch (error) { }
 export default {
   setup() {
     const Penjualan = usePenjualanStore();
