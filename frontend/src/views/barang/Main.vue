@@ -733,18 +733,6 @@ export default {
 </script>
 
 <style scoped>
-.imagePreview {
-  width: 100px;
-  height: 100px;
-  margin: auto;
-  text-align: center;
-  padding: 18px 15px 15px 15px;
-  background-position: center center;
-  background-color: #fff;
-  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.2);
-  border: 2px solid #d0d3d4;
-  border-radius: 5px 5px 5px 5px;
-}
 
 .imgUp {
   margin-bottom: 5px;
@@ -758,7 +746,4 @@ export default {
   background-color: #c7c8c8;
 }
 
-.modal .modal-dialog.modal-xl {
-  width: 1200px;
-}
 </style>

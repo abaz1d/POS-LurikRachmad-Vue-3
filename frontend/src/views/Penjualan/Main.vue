@@ -13,512 +13,379 @@
           <h2 class="hidden lg:block font-medium text-base mr-auto">Transaksi Baru</h2>
           <div class="lg:-mr-48 mx-auto mt-2">
             <div class="bg-slate-200 rounded-md p-2 font-medium lg:text-base text-sm px-2">
-              <p class="text-right text-black">INV-20220905-S25</p>
+              <p class="text-right text-black">{{ no_invoice }}</p>
             </div>
-            <p class="text-center bg-primary text-white rounded-md w-24 mx-auto lg:-mt-14 -mt-12 lg:mb-8 mb-6">NO
+            <p class="text-center bg-primary text-white rounded-md w-24 mx-auto lg:-mt-[52px] -mt-12 lg:mb-8 mb-6">NO
               INVOICE</p>
           </div>
 
           <div class="lg:mr-0 mx-auto mt-2">
             <div class="bg-slate-200 rounded-md p-2 font-medium lg:text-base text-sm px-2">
-              <p class="text-right text-black">05 Sep 2022 10:45</p>
+              <p class="text-right text-black">{{ moment(waktu).format("DD MMM YYYY HH:SS") }}</p>
             </div>
-            <p class="text-center bg-primary text-white rounded-md w-24 mx-auto lg:-mt-14 -mt-12 lg:mb-8 mb-6">WAKTU</p>
+            <p class="text-center bg-primary text-white rounded-md w-24 mx-auto lg:-mt-[52px] -mt-12 lg:mb-8 mb-6">WAKTU
+            </p>
           </div>
 
         </ModalHeader>
-        <ModalBody class="overflow-x-hidden overflow-y-auto h-3/4">
-          <div class="grid grid-cols-12 gap-1 -mt-3">
+        <ModalBody class="">
+          <div class="overflow-auto sm:overflow-hidden mx-0 sm:h-3/4 h-80">
+            <div class="grid grid-cols-12 gap-1 -mt-3">
 
-            <div class="col-span-12 lg:col-span-8">
-              <!-- BEGIN: Display Item -->
-              <div class="intro-y box">
-                <div class="p-2">
-                  <div class="flex flex-col-reverse xl:flex-row flex-col">
-                    <div class="flex-1 mt-0">
-                      <div class="grid grid-cols-12 gap-x-2 sm:gap-x-3">
-                        <div class="sm:col-span-9 col-span-12 mb-5">
-                          <label for="pos-form-1" class="form-label">ID Barang/Item <p class="sm:hidden form-label">&
-                              Stok</p></label>
-                          <div class="flex w-full">
-                            <div
-                              class="z-30 rounded-l w-10 flex items-center justify-center bg-gray-100 hover:bg-gray-300 border text-gray-600 dark:bg-dark-1 dark:border-dark-4 -mr-1 cursor-pointer">
-                              <CameraIcon class="w-4 h-4" />
+              <div class="col-span-12 lg:col-span-8">
+                <!-- BEGIN: Display Item -->
+                <div class="intro-y box">
+                  <div class="p-2">
+                    <div class="flex flex-col-reverse xl:flex-row flex-col">
+                      <div class="flex-1 mt-0">
+                        <div class="grid grid-cols-12 gap-x-2 sm:gap-x-3">
+                          <div class="sm:col-span-9 col-span-12 mb-5">
+                            <label for="pos-form-1" class="form-label">ID Barang/Item <p class="sm:hidden form-label">&
+                                Stok</p></label>
+                            <div class="flex w-full">
+                              <div
+                                class="z-30 rounded-l w-10 flex items-center justify-center bg-gray-100 hover:bg-gray-300 border text-gray-600 dark:bg-dark-1 dark:border-dark-4 -mr-1 cursor-pointer">
+                                <CameraIcon class="w-4 h-4" />
+                              </div>
+                              <TomSelect v-model="item_select" class="w-full" required>
+                                <option value="kosong" disabled>
+                                  &gt-- Pilih Items --&lt
+                                </option>
+                                <option v-for="varian in Penjualan.varians" :key="varian.id_barang" :varian="varian"
+                                  :value="varian.id_varian">
+                                  {{ varian.id_barang }} - {{ varian.nama_barang }} | {{ varian.id_varian }} - {{
+    varian.nama_varian
+}}
+                                </option>
+                              </TomSelect>
                             </div>
-                            <TomSelect v-model="select" class="w-full">
-                              <option value="1">Leonardo DiCaprio</option>
-                              <option value="2">Johnny Deep</option>
-                              <option value="3">Robert Downey, Jr</option>
-                              <option value="4">Samuel L. Jackson</option>
-                              <option value="5">Morgan Freeman</option>
-                            </TomSelect>
-                          </div>
-                          <div class="form-help">
-                            * Pilih atau Klik Kamera untuk scan barcode.
-                          </div>
-                        </div>
-                        <div class="hidden sm:block col-span-3 mb-5">
-                          <label for="pos-form-1" class="form-label">Stok Tersisa</label>
-                          <input id="pos-form-1" type="text" class="form-control flex-1"
-                            placeholder="Masukan Stok Tersisa" readonly />
-                        </div>
-
-                        <div class="hidden sm:block col-span-6 mb-5">
-                          <label for="pos-form-1" class="form-label">Nama Barang</label>
-                          <input id="pos-form-1" type="text" class="form-control flex-1"
-                            placeholder="Masukan Nama Barang" readonly />
-                        </div>
-                        <div class="hidden sm:block col-span-6 mb-5">
-                          <label for="pos-form-1" class="form-label">Nama Varian</label>
-                          <input id="pos-form-1" type="text" class="form-control flex-1"
-                            placeholder="Masukan Nama Varian" readonly />
-                        </div>
-
-                        <div class="sm:hidden col-span-12 mb-5">
-                          <label for="pos-form-1" class="form-label">Nama Barang & Varian</label>
-                          <input id="pos-form-1" type="text" class="form-control flex-1"
-                            placeholder="Masukan Nama Barang & Varian" readonly />
-                        </div>
-
-                        <div class="col-span-5 sm:col-span-4 mb-5">
-                          <label for="pos-form-1" class="form-label">Harga Item</label>
-                          <input id="pos-form-1" type="text" class="form-control flex-1"
-                            placeholder="Masukan Harga Item" readonly />
-                        </div>
-                        <XIcon class="sm:hidden m-auto col-span-2" />
-                        <div class="col-span-5 sm:col-span-4 mb-5">
-                          <label for="pos-form-1" class="form-label">Qty</label>
-                          <input id="pos-form-1" type="text" class="form-control flex-1" placeholder="Masukan Qty"
-                            required />
-                        </div>
-                        <div class="col-span-12 sm:col-span-4 mb-5">
-                          <label for="pos-form-1" class="form-label">Total Harga</label>
-                          <input id="pos-form-1" type="text" class="form-control flex-1"
-                            placeholder="Masukan Total Harga" readonly />
-                        </div>
-
-                      </div>
-                      <button type="button" class="btn btn-primary w-20 mt-3">
-                        Tambah
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- END: Display Item -->
-            </div>
-
-            <!-- BEGIN: Display Total Harga -->
-            <div class="lg:block hidden col-span-4">
-              <div class="intro-y box">
-
-                <div class="box flex p-2 ">
-                  <input type="text" class="form-control py-3 px-4 w-full bg-slate-100 border-slate-200/60 pr-10"
-                    placeholder="Use coupon code..." />
-                  <button class="btn btn-primary ml-2">Apply</button>
-                </div>
-                <div class="box p-2 mt-2">
-                  <div class="flex">
-                    <div class="mr-auto font-medium text-base">Total Harga</div>
-                  </div>
-                  <div class="bg-slate-200 rounded-md p-2">
-                    <div class="font-medium text-xl">
-                      <p class="text-right text-black">Rp.22.000</p>
-                    </div>
-                  </div>
-
-                  <div class="flex mt-4 pt-4 border-t border-slate-200/60 dark:border-darkmode-400">
-                    <div class="mr-auto font-medium text-base">Total Bayar</div>
-                  </div>
-                  <div class="input-group bg-slate-200 rounded-md border-2 border-slate-200/60 mr-0">
-                    <!-- <div class="font-medium text-xl"><p class="text-right">$220</p> </div> -->
-                    <div class="input-group-text my-auto text-xl">
-                      <p class="text-black">Rp.</p>
-                    </div>
-                    <input type="number" class="form-control flex-1 font-medium text-xl text-right"
-                      placeholder="Nominal Uang" required />
-                  </div>
-
-                  <div class="flex mt-1 pt-4">
-                    <div class="mr-auto font-medium text-base">Kembalian</div>
-                  </div>
-                  <div class="bg-slate-200 rounded-md p-2">
-                    <div class="font-medium text-xl">
-                      <p class="text-right text-black">Rp.22.0000</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- END: Display Total Harga -->
-
-
-            <!-- <AccordionGroup class="sm:hidden col-span-12 accordion-boxed">
-              <AccordionItem>
-                <Accordion >
-                  <p class="text-center">Tambahkan Barang</p>
-                </Accordion>
-                <AccordionPanel class="text-slate-600 dark:text-slate-500 leading-relaxed">
-                  <ChevronDownIcon class="animate-bounce block mx-auto" />
-                  <div class="">
-                    <div class="intro-y box">
-                      <div class="p-2">
-                        <div class="flex flex-col-reverse xl:flex-row flex-col">
-                          <div class="flex-1 mt-0">
-                            <div class="grid grid-cols-12 gap-x-2 sm:gap-x-3 sm:gap-y-2">
-                              <div class="sm:col-span-9 col-span-12 mb-5">
-                                <label for="pos-form-1" class="form-label">ID Barang/Item <p
-                                    class="sm:hidden form-label">&
-                                    Stok</p></label>
-                                <div class="flex w-full">
-                                  <div
-                                    class="z-30 rounded-l w-10 flex items-center justify-center bg-gray-100 hover:bg-gray-300 border text-gray-600 dark:bg-dark-1 dark:border-dark-4 -mr-1 cursor-pointer">
-                                    <CameraIcon class="w-4 h-4" />
-                                  </div>
-                                  <TomSelect v-model="select" class="w-full">
-                                    <option value="1">Leonardo DiCaprio</option>
-                                    <option value="2">Johnny Deep</option>
-                                    <option value="3">Robert Downey, Jr</option>
-                                    <option value="4">Samuel L. Jackson</option>
-                                    <option value="5">Morgan Freeman</option>
-                                  </TomSelect>
-                                </div>
-                                <div class="form-help">
-                                  * Pilih atau Klik Kamera untuk scan barcode.
-                                </div>
-                              </div>
-                              <div class="hidden sm:block col-span-3 mb-5">
-                                <label for="pos-form-1" class="form-label">Stok Tersisa</label>
-                                <input id="pos-form-1" type="text" class="form-control flex-1"
-                                  placeholder="Masukan Stok Tersisa" readonly />
-                              </div>
-
-                              <div class="hidden sm:block col-span-6 mb-5">
-                                <label for="pos-form-1" class="form-label">Nama Barang</label>
-                                <input id="pos-form-1" type="text" class="form-control flex-1"
-                                  placeholder="Masukan Nama Barang" readonly />
-                              </div>
-                              <div class="hidden sm:block col-span-6 mb-5">
-                                <label for="pos-form-1" class="form-label">Nama Varian</label>
-                                <input id="pos-form-1" type="text" class="form-control flex-1"
-                                  placeholder="Masukan Nama Varian" readonly />
-                              </div>
-
-                              <div class="sm:hidden col-span-12 mb-5">
-                                <label for="pos-form-1" class="form-label">Nama Barang & Varian</label>
-                                <input id="pos-form-1" type="text" class="form-control flex-1"
-                                  placeholder="Masukan Nama Barang & Varian" readonly />
-                              </div>
-
-                              <div class="col-span-5 sm:col-span-4 mb-5">
-                                <label for="pos-form-1" class="form-label">Harga Item</label>
-                                <input id="pos-form-1" type="text" class="form-control flex-1"
-                                  placeholder="Masukan Harga Item" readonly />
-                              </div>
-                              <XIcon class="sm:hidden m-auto col-span-2" />
-                              <div class="col-span-5 sm:col-span-4 mb-5">
-                                <label for="pos-form-1" class="form-label">Qty</label>
-                                <input id="pos-form-1" type="text" class="form-control flex-1" placeholder="Masukan Qty"
-                                  required />
-                              </div>
-                              <div class="col-span-12 sm:col-span-4 mb-5">
-                                <label for="pos-form-1" class="form-label">Total Harga</label>
-                                <input id="pos-form-1" type="text" class="form-control flex-1"
-                                  placeholder="Masukan Total Harga" readonly />
-                              </div>
-
+                            <div class="form-help">
+                              * Pilih atau Klik Kamera untuk scan barcode.
                             </div>
-                            <button type="button" class="btn btn-primary w-20 mt-3 sm:mt-5">
-                              Tambah
-                            </button>
                           </div>
+                          <div class="hidden sm:block col-span-3 mb-5">
+                            <label for="pos-form-1" class="form-label">Stok Tersisa</label>
+                            <input v-model="stok" id="pos-form-1" type="text" class="form-control flex-1"
+                              placeholder="Masukan Stok Tersisa" readonly />
+                          </div>
+
+                          <div class="hidden sm:block col-span-6 mb-5">
+                            <label for="pos-form-1" class="form-label">Nama Barang</label>
+                            <!-- <input id="pos-form-1" type="text" class="form-control flex-1"
+                              placeholder="Masukan Nama Barang" readonly /> -->
+                            <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
+                              <p>{{ nama_barang_select }}</p>
+                            </div>
+                          </div>
+                          <div class="hidden sm:block col-span-6 mb-5">
+                            <label for="pos-form-1" class="form-label">Nama Varian</label>
+                            <!-- <input id="pos-form-1" type="text" class="form-control flex-1"
+                              placeholder="Masukan Nama Varian" readonly /> -->
+                            <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
+                              <p>{{ nama_varian_select }}</p>
+                            </div>
+                          </div>
+
+                          <div class="sm:hidden col-span-12 mb-5">
+                            <label for="pos-form-1" class="form-label">Nama Barang & Varian</label>
+                            <!-- <input id="pos-form-1" type="text" class="form-control flex-1"
+                              placeholder="Masukan Nama Barang & Varian" readonly /> -->
+                            <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
+                              <p>{{ nama_campur_select }}</p>
+                            </div>
+                          </div>
+
+                          <div class="col-span-5 sm:col-span-4 mb-5">
+                            <label for="pos-form-1" class="form-label">Harga Item</label>
+                            <!-- <input id="pos-form-1" type="text" class="form-control flex-1"
+                              placeholder="Masukan Harga Item" readonly v-model="harga_item_select" /> -->
+                            <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
+                              <p>{{ currencyFormatter.format(harga_item_select) }}</p>
+                            </div>
+                          </div>
+                          <XIcon class="sm:hidden m-auto col-span-2" />
+                          <div class="col-span-5 sm:col-span-4 mb-5">
+                            <label for="pos-form-1" class="form-label">Qty</label>
+                            <input id="pos-form-1" type="text" class="form-control flex-1" placeholder="Masukan Qty"
+                              required v-model="qty_select" :disabled="qty_select == 0" />
+                          </div>
+                          <div class="col-span-12 sm:col-span-4 mb-5">
+                            <label for="pos-form-1" class="form-label">Total Harga</label>
+                            <!-- <input id="pos-form-1" type="text" class="form-control flex-1"
+                              placeholder="Masukan Total Harga" readonly /> -->
+                            <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
+                              <p>{{ currencyFormatter.format(total_harga_select) }}</p>
+                            </div>
+                          </div>
+
                         </div>
+                        <button type="button" class="btn btn-primary w-20 mt-3">
+                          Tambah
+                        </button>
                       </div>
                     </div>
                   </div>
-                </AccordionPanel>
-              </AccordionItem>
-              <AccordionItem>
-                <Accordion>
-                  <p class="text-center">Total Harga, Bayar & Kembalian</p>
-                  <div class="grid grid-cols-12 mt-2">
-                    <div class="col-span-4 text-sm border-x-2 border-t-2">
-                      <p class="text-center">Final</p>
-                    </div>
-                    <div class="col-span-4 text-sm border-x-2 border-t-2">
-                      <p class="text-center">Bayar</p>
-                    </div>
-                    <div class="col-span-4 text-sm border-x-2 border-t-2">
-                      <p class="text-center">Kembalian</p>
-                    </div>
-
-                    <div class="col-span-4 text-sm border-2">
-                      <p class="text-right mr-1">Rp.17.000</p>
-                    </div>
-                    <div class="col-span-4 text-sm border-2">
-                      <p class="text-right mr-1">Rp.20.000</p>
-                    </div>
-                    <div class="col-span-4 text-sm border-2">
-                      <p class="text-right mr-1">Rp.3.000</p>
-                    </div>
-                  </div>
-                </Accordion>
-                <AccordionPanel class="text-slate-600 dark:text-slate-500 leading-relaxed">
-                  <ChevronDownIcon class="animate-bounce block mx-auto" />
-                  <div class="flex lg:block flex-col-reverse">
-                    <div class="intro-y box">
-
-                      <div class="box flex p-2">
-                        <input type="text" class="form-control py-3 px-4 w-full bg-slate-100 border-slate-200/60 pr-10"
-                          placeholder="Use coupon code..." />
-                        <button class="btn btn-primary ml-2">Apply</button>
-                      </div>
-                      <div class="box p-2 mt-2">
-                        <div class="flex">
-                          <div class="mr-auto font-medium text-base">Total Harga</div>
-                        </div>
-                        <div class="bg-slate-200 rounded-md p-2">
-                          <div class="font-medium text-xl">
-                            <p class="text-right text-black">Rp.22.000</p>
-                          </div>
-                        </div>
-
-                        <div class="flex mt-4 pt-4 border-t border-slate-200/60 dark:border-darkmode-400">
-                          <div class="mr-auto font-medium text-base">Total Bayar</div>
-                        </div>
-                        <div class="input-group bg-slate-200 rounded-md border-2 border-slate-200/60 mr-0">
-                          <div class="input-group-text my-auto text-xl">
-                            <p class="text-black">Rp.</p>
-                          </div>
-                          <input type="number" class="form-control flex-1 font-medium text-xl text-right"
-                            placeholder="Nominal Uang" required />
-                        </div>
-
-                        <div class="flex mt-1 pt-4">
-                          <div class="mr-auto font-medium text-base">Kembalian</div>
-                        </div>
-                        <div class="bg-slate-200 rounded-md p-2">
-                          <div class="font-medium text-xl">
-                            <p class="text-right text-black">Rp.22.0000</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </AccordionPanel>
-              </AccordionItem>
-            </AccordionGroup> -->
-
-
-            <!-- BEGIN: Detail Penjualan -->
-            <div class="col-span-12 flex-col-reverse">
-              <div class="intro-y box">
-                <div class="flex items-center px-5 py-2 border-b border-slate-200/60 dark:border-darkmode-400">
-                  <h2 class="font-medium text-base mr-auto">Detail Penjualan</h2>
                 </div>
-                <div class="px-2">
-                  <div class="col-span-12 overflow-auto w-full h-56">
-                    <table class="table table-hover mt-2">
-                      <thead class="table-light">
-                        <tr>
-                          <th class="sticky top-0 left-0 w-5 bg-slate-200">#</th>
-                          <th class="sticky top-0 whitespace-nowrap bg-slate-200">ID & Nama Varian</th>
-                          <th class="sticky top-0 whitespace-nowrap bg-slate-200">QTY</th>
-                          <th class="sticky top-0 whitespace-nowrap bg-slate-200">Harga Satuan</th>
-                          <th class="sticky top-0 whitespace-nowrap bg-slate-200">Total Harga</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer hover:bg-slate-500">
-                            <TrashIcon class="text-danger w-4 h-4 p-0" />
-                          </td>
-                          <td>Angelina</td>
-                          <td>Jolie</td>
-                          <td>@angelinajolie</td>
-                          <td>@angelinajolie</td>
-                        </tr>
-                        <tr>
-                          <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
-                            <TrashIcon class="text-danger w-4 h-4 p-0" />
-                          </td>
-                          <td>Brad</td>
-                          <td>Pitt</td>
-                          <td>@angelinajolie</td>
-                          <td>@bradpitt</td>
-                        </tr>
-                        <tr>
-                          <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
-                            <TrashIcon class="text-danger w-4 h-4 p-0" />
-                          </td>
-                          <td>Charlie</td>
-                          <td>Hunnam</td>
-                          <td>@angelinajolie</td>
-                          <td>@charliehunnam</td>
-                        </tr>
-                        <tr>
-                          <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
-                            <TrashIcon class="text-danger w-4 h-4 p-0" />
-                          </td>
-                          <td>Angelina</td>
-                          <td>Jolie</td>
-                          <td>@angelinajolie</td>
-                          <td>@angelinajolie</td>
-                        </tr>
-                        <tr>
-                          <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
-                            <TrashIcon class="text-danger w-4 h-4 p-0" />
-                          </td>
-                          <td>Brad</td>
-                          <td>Pitt</td>
-                          <td>@angelinajolie</td>
-                          <td>@bradpitt</td>
-                        </tr>
-                        <tr>
-                          <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
-                            <TrashIcon class="text-danger w-4 h-4 p-0" />
-                          </td>
-                          <td>Charlie</td>
-                          <td>Hunnam</td>
-                          <td>@angelinajolie</td>
-                          <td>@charliehunnam</td>
-                        </tr>
-                        <tr>
-                          <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
-                            <TrashIcon class="text-danger w-4 h-4 p-0" />
-                          </td>
-                          <td>Angelina</td>
-                          <td>Jolie</td>
-                          <td>@angelinajolie</td>
-                          <td>@angelinajolie</td>
-                        </tr>
-                        <tr>
-                          <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
-                            <TrashIcon class="text-danger w-4 h-4 p-0" />
-                          </td>
-                          <td>Brad</td>
-                          <td>Pitt</td>
-                          <td>@angelinajolie</td>
-                          <td>@bradpitt</td>
-                        </tr>
-                        <tr>
-                          <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
-                            <TrashIcon class="text-danger w-4 h-4 p-0" />
-                          </td>
-                          <td>Charlie</td>
-                          <td>Hunnam</td>
-                          <td>@angelinajolie</td>
-                          <td>@charliehunnam</td>
-                        </tr>
-                        <tr>
-                          <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
-                            <TrashIcon class="text-danger w-4 h-4 p-0" />
-                          </td>
-                          <td>Angelina</td>
-                          <td>Jolie</td>
-                          <td>@angelinajolie</td>
-                          <td>@angelinajolie</td>
-                        </tr>
-                        <tr>
-                          <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
-                            <TrashIcon class="text-danger w-4 h-4 p-0" />
-                          </td>
-                          <td>Brad</td>
-                          <td>Pitt</td>
-                          <td>@angelinajolie</td>
-                          <td>@bradpitt</td>
-                        </tr>
-                        <tr>
-                          <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
-                            <TrashIcon class="text-danger w-4 h-4 p-0" />
-                          </td>
-                          <td>Charlie</td>
-                          <td>Hunnam</td>
-                          <td>@angelinajolie</td>
-                          <td>@charliehunnam</td>
-                        </tr>
-                      </tbody>
-                    </table>
+                <!-- END: Display Item -->
+              </div>
+
+              <!-- BEGIN: Display Total Harga -->
+              <div class="lg:block hidden col-span-4">
+                <div class="intro-y box">
+
+                  <div class="box flex p-2 ">
+                    <input type="text" class="form-control py-3 px-4 w-full bg-slate-100 border-slate-200/60 pr-10"
+                      placeholder="Use coupon code..." />
+                    <button class="btn btn-primary ml-2">Apply</button>
                   </div>
-                  <ChevronDownIcon class="animate-bounce col-span-12 mt-1 mb-[-20px] block mx-auto" />
+                  <div class="box p-2 mt-2">
+                    <div class="flex">
+                      <div class="mr-auto font-medium text-base">Total Harga</div>
+                    </div>
+                    <div class="bg-slate-200 rounded-md p-2">
+                      <div class="font-medium text-xl">
+                        <p class="text-right text-black">{{ currencyFormatter.format(total_harga_global) }}</p>
+                      </div>
+                    </div>
+
+                    <div class="flex mt-4 pt-4 border-t border-slate-200/60 dark:border-darkmode-400">
+                      <div class="mr-auto font-medium text-base">Total Bayar</div>
+                    </div>
+                    <div class="input-group bg-slate-200 rounded-md border-2 border-slate-200/60 mr-0">
+                      <div class="input-group-text my-auto text-xl">
+                        <p class="text-black">Rp.</p>
+                      </div>
+                      <input v-model="total_bayar_global" type="number"
+                        class="form-control flex-1 font-medium text-xl text-right" placeholder="Nominal Uang"
+                        required />
+                    </div>
+
+                    <div class="flex mt-1 pt-4">
+                      <div class="mr-auto font-medium text-base">Kembalian</div>
+                    </div>
+                    <div class="bg-slate-200 rounded-md p-2">
+                      <div class="font-medium text-xl">
+                        <p class="text-right text-black">{{ currencyFormatter.format(kembalian) }}</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
+              <!-- END: Display Total Harga -->
+
+              <!-- BEGIN: Detail Penjualan -->
+              <div class="col-span-12 flex-col-reverse">
+                <div class="intro-y box">
+                  <div class="flex items-center px-5 py-2 border-b border-slate-200/60 dark:border-darkmode-400">
+                    <h2 class="font-medium text-base mr-auto">Detail Penjualan</h2>
+                  </div>
+                  <div class="px-2">
+                    <div class="col-span-12 overflow-auto w-full h-56">
+                      <table class="table table-hover mt-2">
+                        <thead class="table-light">
+                          <tr>
+                            <th class="sticky top-0 left-0 w-5 bg-slate-200">#</th>
+                            <th class="sticky top-0 whitespace-nowrap bg-slate-200">ID & Nama Varian</th>
+                            <th class="sticky top-0 whitespace-nowrap bg-slate-200">QTY</th>
+                            <th class="sticky top-0 whitespace-nowrap bg-slate-200">Harga Satuan</th>
+                            <th class="sticky top-0 whitespace-nowrap bg-slate-200">Total Harga</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer hover:bg-slate-500">
+                              <TrashIcon class="text-danger w-4 h-4 p-0" />
+                            </td>
+                            <td>Angelina</td>
+                            <td>Jolie</td>
+                            <td>@angelinajolie</td>
+                            <td>@angelinajolie</td>
+                          </tr>
+                          <tr>
+                            <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
+                              <TrashIcon class="text-danger w-4 h-4 p-0" />
+                            </td>
+                            <td>Brad</td>
+                            <td>Pitt</td>
+                            <td>@angelinajolie</td>
+                            <td>@bradpitt</td>
+                          </tr>
+                          <tr>
+                            <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
+                              <TrashIcon class="text-danger w-4 h-4 p-0" />
+                            </td>
+                            <td>Charlie</td>
+                            <td>Hunnam</td>
+                            <td>@angelinajolie</td>
+                            <td>@charliehunnam</td>
+                          </tr>
+                          <tr>
+                            <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
+                              <TrashIcon class="text-danger w-4 h-4 p-0" />
+                            </td>
+                            <td>Angelina</td>
+                            <td>Jolie</td>
+                            <td>@angelinajolie</td>
+                            <td>@angelinajolie</td>
+                          </tr>
+                          <tr>
+                            <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
+                              <TrashIcon class="text-danger w-4 h-4 p-0" />
+                            </td>
+                            <td>Brad</td>
+                            <td>Pitt</td>
+                            <td>@angelinajolie</td>
+                            <td>@bradpitt</td>
+                          </tr>
+                          <tr>
+                            <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
+                              <TrashIcon class="text-danger w-4 h-4 p-0" />
+                            </td>
+                            <td>Charlie</td>
+                            <td>Hunnam</td>
+                            <td>@angelinajolie</td>
+                            <td>@charliehunnam</td>
+                          </tr>
+                          <tr>
+                            <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
+                              <TrashIcon class="text-danger w-4 h-4 p-0" />
+                            </td>
+                            <td>Angelina</td>
+                            <td>Jolie</td>
+                            <td>@angelinajolie</td>
+                            <td>@angelinajolie</td>
+                          </tr>
+                          <tr>
+                            <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
+                              <TrashIcon class="text-danger w-4 h-4 p-0" />
+                            </td>
+                            <td>Brad</td>
+                            <td>Pitt</td>
+                            <td>@angelinajolie</td>
+                            <td>@bradpitt</td>
+                          </tr>
+                          <tr>
+                            <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
+                              <TrashIcon class="text-danger w-4 h-4 p-0" />
+                            </td>
+                            <td>Charlie</td>
+                            <td>Hunnam</td>
+                            <td>@angelinajolie</td>
+                            <td>@charliehunnam</td>
+                          </tr>
+                          <tr>
+                            <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
+                              <TrashIcon class="text-danger w-4 h-4 p-0" />
+                            </td>
+                            <td>Angelina</td>
+                            <td>Jolie</td>
+                            <td>@angelinajolie</td>
+                            <td>@angelinajolie</td>
+                          </tr>
+                          <tr>
+                            <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
+                              <TrashIcon class="text-danger w-4 h-4 p-0" />
+                            </td>
+                            <td>Brad</td>
+                            <td>Pitt</td>
+                            <td>@angelinajolie</td>
+                            <td>@bradpitt</td>
+                          </tr>
+                          <tr>
+                            <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
+                              <TrashIcon class="text-danger w-4 h-4 p-0" />
+                            </td>
+                            <td>Charlie</td>
+                            <td>Hunnam</td>
+                            <td>@angelinajolie</td>
+                            <td>@charliehunnam</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <ChevronDownIcon class="animate-bounce col-span-12 mt-1 mb-[-20px] block mx-auto" />
+                  </div>
+                </div>
+              </div>
+              <!-- END: Detail Penjualan -->
             </div>
-            <!-- END: Detail Penjualan -->
           </div>
         </ModalBody>
         <ModalFooter class="text-right bottom-0 relative z-50 bg-white rounded-md sm:border-t-2 border-t-4 btm sm:btm-">
           <AccordionGroup class="block lg:hidden mb-5">
             <AccordionItem>
-                <Accordion>
-                  <p class="text-center">Total Harga, Bayar & Kembalian</p>
-                  <small><p  class="text-center text-sm">&gt Klik untuk selengkapnya &lt</p></small>
-                  <div class="grid grid-cols-12 mt-2">
-                    <div class="col-span-4 text-sm border-x-2 border-t-2">
-                      <p class="text-center">Final</p>
-                    </div>
-                    <div class="col-span-4 text-sm border-x-2 border-t-2">
-                      <p class="text-center">Bayar</p>
-                    </div>
-                    <div class="col-span-4 text-sm border-x-2 border-t-2">
-                      <p class="text-center">Kembalian</p>
-                    </div>
-
-                    <div class="col-span-4 text-sm border-2">
-                      <p class="text-right mr-1">Rp.17.000</p>
-                    </div>
-                    <div class="col-span-4 text-sm border-2">
-                      <p class="text-right mr-1">Rp.20.000</p>
-                    </div>
-                    <div class="col-span-4 text-sm border-2">
-                      <p class="text-right mr-1">Rp.3.000</p>
-                    </div>
+              <Accordion>
+                <p class="text-center">Total Harga, Bayar & Kembalian</p>
+                <small>
+                  <p class="text-center text-sm">&gt Klik untuk buka/ tutup &lt</p>
+                </small>
+                <div class="grid grid-cols-12 mt-2">
+                  <div class="col-span-4 text-sm border-x-2 border-t-2">
+                    <p class="text-center">Total Harga</p>
                   </div>
-                </Accordion>
-                <AccordionPanel class="text-slate-600 dark:text-slate-500 leading-relaxed">
-                  <ChevronDownIcon class="animate-bounce block mx-auto" />
-                  <div class="flex lg:block flex-col-reverse">
-                    <div class="intro-y box">
+                  <div class="col-span-4 text-sm border-x-2 border-t-2">
+                    <p class="text-center">Total Bayar</p>
+                  </div>
+                  <div class="col-span-4 text-sm border-x-2 border-t-2">
+                    <p class="text-center">Kembalian</p>
+                  </div>
 
-                      <div class="box flex p-2">
-                        <input type="text" class="form-control py-3 px-4 w-full bg-slate-100 border-slate-200/60 pr-10"
-                          placeholder="Use coupon code..." />
-                        <button class="btn btn-primary ml-2">Apply</button>
+                  <div class="col-span-4 text-sm border-2">
+                    <p class="text-right mr-1">{{ currencyFormatter.format(total_harga_global) }}</p>
+                  </div>
+                  <div class="col-span-4 text-sm border-2">
+                    <p class="text-right mr-1">{{ currencyFormatter.format(total_bayar_global) }}</p>
+                  </div>
+                  <div class="col-span-4 text-sm border-2">
+                    <p class="text-right mr-1">{{ currencyFormatter.format(kembalian) }}</p>
+                  </div>
+                </div>
+              </Accordion>
+              <AccordionPanel class="text-slate-600 dark:text-slate-500 leading-relaxed">
+                <ChevronDownIcon class="animate-bounce block mx-auto" />
+                <div class="flex lg:block flex-col-reverse">
+                  <div class="intro-y box">
+
+                    <div class="box flex p-2">
+                      <input type="text" class="form-control py-3 px-4 w-full bg-slate-100 border-slate-200/60 pr-10"
+                        placeholder="Use coupon code..." />
+                      <button class="btn btn-primary ml-2">Apply</button>
+                    </div>
+                    <div class="box p-2 mt-2">
+                      <div class="flex">
+                        <div class="mr-auto font-medium text-base">Total Harga</div>
                       </div>
-                      <div class="box p-2 mt-2">
-                        <div class="flex">
-                          <div class="mr-auto font-medium text-base">Total Harga</div>
-                        </div>
-                        <div class="bg-slate-200 rounded-md p-2">
-                          <div class="font-medium text-xl">
-                            <p class="text-right text-black">Rp.22.000</p>
-                          </div>
-                        </div>
-
-                        <div class="flex mt-4 pt-4 border-t border-slate-200/60 dark:border-darkmode-400">
-                          <div class="mr-auto font-medium text-base">Total Bayar</div>
-                        </div>
-                        <div class="input-group bg-slate-200 rounded-md border-2 border-slate-200/60 mr-0">
-                          <div class="input-group-text my-auto text-xl">
-                            <p class="text-black">Rp.</p>
-                          </div>
-                          <input type="number" class="form-control flex-1 font-medium text-xl text-right"
-                            placeholder="Nominal Uang" required />
-                        </div>
-
-                        <div class="flex mt-1 pt-4">
-                          <div class="mr-auto font-medium text-base">Kembalian</div>
-                        </div>
-                        <div class="bg-slate-200 rounded-md p-2">
-                          <div class="font-medium text-xl">
-                            <p class="text-right text-black">Rp.22.0000</p>
-                          </div>
+                      <div class="bg-slate-200 rounded-md p-2">
+                        <div class="font-medium text-xl">
+                          <p class="text-right text-black">{{ currencyFormatter.format(total_harga_global) }}</p>
                         </div>
                       </div>
+
+                      <div class="flex mt-4 pt-4 border-t border-slate-200/60 dark:border-darkmode-400">
+                        <div class="mr-auto font-medium text-base">Total Bayar</div>
+                      </div>
+                      <div class="input-group bg-slate-200 rounded-md border-2 border-slate-200/60 mr-0">
+                        <div class="input-group-text my-auto text-xl">
+                          <p class="text-black">Rp.</p>
+                        </div>
+                        <input v-model="total_bayar_global" type="number"
+                          class="form-control flex-1 font-medium text-xl text-right" placeholder="Nominal Uang"
+                          required />
+                      </div>
+
+                      <div class="flex mt-1 pt-4">
+                        <div class="mr-auto font-medium text-base">Kembalian</div>
+                      </div>
+                      <div class="bg-slate-200 rounded-md p-2">
+                        <div class="font-medium text-xl">
+                          <p class="text-right text-black">{{ currencyFormatter.format(kembalian) }}</p>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </AccordionPanel>
-              </AccordionItem>
+                </div>
+              </AccordionPanel>
+            </AccordionItem>
           </AccordionGroup>
           <button type="button" @click="addModal = false" class="btn btn-outline-secondary w-32 mr-1">
             Cancel
@@ -606,12 +473,9 @@
     </div>
     <!-- BEGIN: Data List -->
     <div class="intro-y col-span-12 overflow-auto 2xl:overflow-visible">
-      <PenjualanList :penjualans="Penjualan.items" />
+      <PenjualanList :penjualans="Penjualan.penjualans" />
     </div>
     <!-- END: Data List -->
-    <!-- BEGIN: Pagination -->
-
-    <!-- END: Pagination -->
   </div>
   <!-- BEGIN: Delete Confirmation Modal -->
 
@@ -620,15 +484,55 @@
 
 <script>
 import { usePenjualanStore } from "../../stores/penjualan";
+import { currencyFormatter } from "../../utils/helper";
 import PenjualanList from "./PenjualanList.vue";
+import moment from "moment";
 import { ref } from "vue";
+import { watch } from "vue";
 
 const addModal = ref(false);
 
 export default {
   setup() {
     const Penjualan = usePenjualanStore();
-    return { Penjualan };
+
+    return {
+      Penjualan,
+      moment,
+      currencyFormatter,
+      watch
+    };
+  },
+  watch: {
+    item_select(e) {
+      // console.log("ora", e);
+      this.Penjualan.readDetailItem(e).then((data) => {
+        console.log('data.data', data);
+        this.nama_barang_select = data.nama_barang,
+          this.nama_varian_select = data.nama_varian,
+          this.nama_campur_select = `${data.nama_barang} - ${data.nama_varian} | ${data.stok_varian}`,
+
+          this.harga_item_select = data.harga_jual_varian,
+          this.stok = data.stok_varian,
+          this.qty_select = 1,
+          this.total_harga_select = data.harga_jual_varian
+      })
+    },
+    qty_select(newValue, oldValue) {
+      const qty = newValue
+      const harga_item_select = this.harga_item_select
+      const stok = this.stok
+      console.log('qty', newValue, oldValue, this.harga_item_select, this.stok);
+      if (newValue > stok) {
+        alert("Stok tersisa hanya " + stok);
+        this.qty_select = oldValue;
+      } else if (newValue === "") {
+        alert("Minimal Qty harus 1");
+        this.qty_select = 1;
+      } else {
+        this.total_harga_select = harga_item_select * qty
+      }
+    }
   },
   components: {
     PenjualanList,
@@ -636,26 +540,45 @@ export default {
   data() {
     return {
       addModal,
+
+      no_invoice: "-",
+      waktu: "",
+
+      item_select: "kosong",
+      stok: 0,
+      nama_barang_select: "-",
+      nama_varian_select: "-",
+      nama_campur_select: "-",
+
+      qty_select: 0,
+
+      harga_item_select: 0,
+      total_harga_select: 0,
+
+      total_harga_global: 0,
+      total_bayar_global: 0,
+      kembalian: 0,
     };
   },
   methods: {},
-  mounted() {
-    this.Penjualan.readItem();
+  async mounted() {
+    await this.Penjualan.readItem();
   },
 };
 </script>
 
 <style scoped>
-
 table thead th:first-child {
   position: sticky;
   left: 0;
   z-index: 2;
 }
 
-.btm {
-  -webkit-box-shadow: 0px -4px 3px rgba(205, 205, 205, 0.75);
-  -moz-box-shadow: 0px -4px 3px rgba(185, 185, 185, 0.75);
-  box-shadow: 0px -4px 3px rgba(175, 175, 175, 0.75);
+@media (max-width: 1024px) {
+  .btm {
+    -webkit-box-shadow: 0px -4px 3px rgba(205, 205, 205, 0.75);
+    -moz-box-shadow: 0px -4px 3px rgba(185, 185, 185, 0.75);
+    box-shadow: 0px -4px 3px rgba(175, 175, 175, 0.75);
+  }
 }
 </style>

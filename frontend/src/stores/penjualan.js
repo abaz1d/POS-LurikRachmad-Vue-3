@@ -4,12 +4,14 @@ import { request } from "../utils/api";
 export const usePenjualanStore = defineStore({
   id: "barang-keluar",
   state: () => ({
-    rawItems: [],
+    rawVarians: [],
+    rawPenjualans: [],
     rawDetails: [],
     rawPrints: [],
   }),
   getters: {
-    items: (state) => state.rawItems,
+    varians: (state) => state.rawVarians,
+    penjualans: (state) => state.rawPenjualans,
     details: (state) => state.rawDetails,
     prints: (state) => state.rawPrints
   },
@@ -17,20 +19,21 @@ export const usePenjualanStore = defineStore({
     async readItem() {
       const data = await request.get("penjualan");
       if (data.status >= 200 && data.status < 300) {
-        this.rawItems = data.data.penjualan;
+        this.rawVarians = data.data.varian;
+        this.rawPenjualans = data.data.penjualan;
         this.rawDetails = data.data.detailsj;
-        // console.log('data', data.data)
-        // console.log('rawItems', this.rawItems)
-        // return this.rawItems
+        //console.log('data', data.data.varian)
+        // console.log('rawPenjualans', this.rawPenjualans)
+        // return this.rawPenjualans
       }
     },
     async addItem() {
       const id_satuan = Date.now();
-      this.rawItems.push({ id_satuan });
+      this.rawPenjualans.push({ id_satuan });
       try {
         const data = await request.post("penjualan/create");
 
-        this.rawItems = this.rawItems.map((item) => {
+        this.rawPenjualans = this.rawPenjualans.map((item) => {
           if (item.id_satuan === id_satuan) {
             return data.data;
           }
@@ -41,7 +44,7 @@ export const usePenjualanStore = defineStore({
       }
     },
     removeItem(id_satuan) {
-      this.rawItems = this.rawItems.filter(
+      this.rawPenjualans = this.rawPenjualans.filter(
         (item) => item.id_satuan !== id_satuan
       );
       request
@@ -57,7 +60,7 @@ export const usePenjualanStore = defineStore({
       let id_satuan = penjualan.id_satuan;
       let nama_satuan = penjualan.nama_satuan;
       let keterangan_satuan = penjualan.keterangan_satuan;
-      this.rawItems = this.rawItems.map((item) => {
+      this.rawPenjualans = this.rawPenjualans.map((item) => {
         if (item.id_satuan === id_satuan) {
           return penjualan;
         }
@@ -75,10 +78,20 @@ export const usePenjualanStore = defineStore({
       if (data.status >= 200 && data.status < 300) {
         this.rawDetails = data.data.detailsj;
         this.rawPrints = data.data.print.rows;
-        console.log('data.data', data.data, 'status', data.data.print.rows)
+        // console.log('data.data', data.data, 'status', data.data.print.rows)
         // console.log('this.rawVarians', this.rawVarians)
       }
     },
+
+    async readDetailItem(id_varian) {
+      const data = await request.get(`/penjualan/barang/${id_varian}`)
+      // .then((data) => {
+      //   // console.log('data.data', data.data);
+      //   return data.data
+      // })
+      // console.log('data.data', data.data);
+      return data.data
+    }
 
   },
 });

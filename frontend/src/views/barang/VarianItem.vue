@@ -43,10 +43,10 @@
     </td>
 
     <td>
-      {{ currencyFormat.format(varian.harga_beli_varian) }}
+      {{ currencyFormatter.format(varian.harga_beli_varian) }}
     </td>
     <td>
-      {{ currencyFormat.format(varian.harga_jual_varian) }}
+      {{ currencyFormatter.format(varian.harga_jual_varian) }}
     </td>
     <td class="table-report__action w-56">
       <div class="flex justify-center items-center">
@@ -93,9 +93,8 @@ export default {
   setup() {
     const Barang = useBarangStore();
     const { varians } = storeToRefs(Barang);
-    const currencyFormat = currencyFormatter;
 
-    return { Barang, varians, watch, currencyFormat };
+    return { Barang, varians, watch, currencyFormatter };
   },
   emits: ["openModalDel", "openModalEdit", "cekVarian"],
   components: {

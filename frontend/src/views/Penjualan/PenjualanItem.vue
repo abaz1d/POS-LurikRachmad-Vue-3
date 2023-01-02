@@ -11,22 +11,22 @@
 
       <div class="col min-w-max text-center">
         {{
-            dateFormat(penjualan.tanggal_penjualan).format("DD MMM YYYY HH:SS")
+            moment(penjualan.tanggal_penjualan).format("DD MMM YYYY HH:SS")
         }}
       </div>
       <div class="col min-w-max text-center">
         {{
-            currencyFormat.format(penjualan.total_harga_jual)
+            currencyFormatter.format(penjualan.total_harga_jual)
         }}
       </div>
       <div class="col min-w-max text-center">
         {{
-            currencyFormat.format(penjualan.total_bayar_jual)
+            currencyFormatter.format(penjualan.total_bayar_jual)
         }}
       </div>
       <div class="col min-w-max text-center">
        
-          {{ currencyFormat.format(penjualan.kembalian_jual) }}
+          {{ currencyFormatter.format(penjualan.kembalian_jual) }}
      
       </div>
 
@@ -86,12 +86,10 @@ import TabelDetailList from "./TabelDetailList.vue";
 export default {
   setup() {
     const Penjualan = usePenjualanStore();
-    const currencyFormat = currencyFormatter;
-    const dateFormat = moment;
     return {
       Penjualan,
-      currencyFormat,
-      dateFormat,
+      currencyFormatter,
+      moment,
     };
   },
   components: {
