@@ -42,7 +42,7 @@
         <button type="button" @click="deleteConfirmationModal = false" class="btn btn-outline-secondary w-24 mr-1">
           Cancel
         </button>
-        <button type="button" class="btn btn-danger w-24" @click="deletePenjualan()">
+        <button type="button" class="btn btn-danger w-24" @click="deletePenjualan(no_invoice)">
           Delete
         </button>
       </div>
@@ -135,7 +135,10 @@ export default {
       this.no_invoice = no_invoice;
       this.deleteConfirmationModal = true;
     },
-    deletePenjualan() { },
+    deletePenjualan(no_invoice) {
+      this.Penjualan.removePenjualan(no_invoice)
+        this.deleteConfirmationModal = false;
+     },
   },
   created() {
     setTimeout(() => (this.alert = false), 10000);

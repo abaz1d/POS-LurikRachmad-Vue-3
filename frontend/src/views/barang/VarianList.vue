@@ -425,7 +425,7 @@ export default {
           this.harga_jual = data.item.harga_jual_varian;
 
           this.isEdit = true;
-        });
+        }) .catch((e) => console.error(e));
       } catch (error) {
         console.log(error);
       }
@@ -459,7 +459,7 @@ export default {
           (this.urlPreview = null),
           (this.gambar_lama_preview = ""),
           (this.isEdit = false)
-        );
+        ) .catch((e) => console.error(e));
 
         // console.log('file',this.file)
       } catch (error) {

@@ -43,6 +43,7 @@
     "lucide-vue-next": "^0.104.0",
     "moment": "^2.29.4",
     "pinia": "^2.0.26",
+    "qs": "^6.11.0",
     "simplebar": "^5.3.6",
     "tabulator-tables": "^5.4.3",
     "tiny-slider": "^2.9.3",

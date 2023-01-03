@@ -11,7 +11,9 @@ export const useSupplierStore = defineStore({
   },
   actions: {
     async readItem() {
-      const data = await request.get("supplier");
+      const data = await request.get("supplier", {
+        timeout: 1000
+      });
       if (data.status >= 200 && data.status < 300) {
         this.rawItems =
           /*this.rawItems.concat(res.data.rows) res.data.rows*/ data.data;

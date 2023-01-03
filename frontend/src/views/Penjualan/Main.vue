@@ -9,7 +9,7 @@
 
       <!-- BEGIN: Modal Content -->
       <Modal size="modal-xl" backdrop="static" :show="addModal" @hidden="addModal = false">
-        <ModalHeader class="relative top-0 z-50 bg-white rounded-md border-b-2">
+        <ModalHeader class="relative top-0 z-50 rounded-md border-b-2">
           <h2 class="hidden lg:block font-medium text-base mr-auto">Transaksi Baru</h2>
           <div class="lg:-mr-48 mx-auto mt-2">
             <div class="bg-slate-200 rounded-md p-2 font-medium lg:text-base text-sm px-2">
@@ -74,7 +74,7 @@
                             <!-- <input id="pos-form-1" type="text" class="form-control flex-1"
                               placeholder="Masukan Nama Barang" readonly /> -->
                             <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
-                              <p>{{ nama_barang_select }}</p>
+                              <p class="text-black">{{ nama_barang_select }}</p>
                             </div>
                           </div>
                           <div class="hidden sm:block col-span-6 mb-5">
@@ -82,7 +82,7 @@
                             <!-- <input id="pos-form-1" type="text" class="form-control flex-1"
                               placeholder="Masukan Nama Varian" readonly /> -->
                             <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
-                              <p>{{ nama_varian_select }}</p>
+                              <p class="text-black">{{ nama_varian_select }}</p>
                             </div>
                           </div>
 
@@ -91,7 +91,7 @@
                             <!-- <input id="pos-form-1" type="text" class="form-control flex-1"
                               placeholder="Masukan Nama Barang & Varian" readonly /> -->
                             <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
-                              <p>{{ nama_campur_select }}</p>
+                              <p class="text-black">{{ nama_campur_select }}</p>
                             </div>
                           </div>
 
@@ -100,7 +100,7 @@
                             <!-- <input id="pos-form-1" type="text" class="form-control flex-1"
                               placeholder="Masukan Harga Item" readonly v-model="harga_item_select" /> -->
                             <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
-                              <p>{{ currencyFormatter.format(harga_item_select) }}</p>
+                              <p class="text-black">{{ currencyFormatter.format(harga_item_select) }}</p>
                             </div>
                           </div>
                           <XIcon class="sm:hidden m-auto col-span-2" />
@@ -114,12 +114,12 @@
                             <!-- <input id="pos-form-1" type="text" class="form-control flex-1"
                               placeholder="Masukan Total Harga" readonly /> -->
                             <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
-                              <p>{{ currencyFormatter.format(total_harga_select) }}</p>
+                              <p class="text-black">{{ currencyFormatter.format(total_harga_select) }}</p>
                             </div>
                           </div>
 
                         </div>
-                        <button type="button" @click="detailForm()" class="btn btn-primary w-20 mt-3">
+                        <button type="button" @click="addItem()" class="btn btn-primary w-20 mt-3" :disabled="qty_select == 0">
                           Tambah
                         </button>
                       </div>
@@ -192,113 +192,15 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer hover:bg-slate-500">
+                          <tr v-for="detail in Penjualan.penjualanDetail" :key="detail.id_barang" :detail="detail">
+                            <td @click="openModalRemove(detail)"
+                              class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer hover:bg-slate-500">
                               <TrashIcon class="text-danger w-4 h-4 p-0" />
                             </td>
-                            <td>Angelina</td>
-                            <td>Jolie</td>
-                            <td>@angelinajolie</td>
-                            <td>@angelinajolie</td>
-                          </tr>
-                          <tr>
-                            <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
-                              <TrashIcon class="text-danger w-4 h-4 p-0" />
-                            </td>
-                            <td>Brad</td>
-                            <td>Pitt</td>
-                            <td>@angelinajolie</td>
-                            <td>@bradpitt</td>
-                          </tr>
-                          <tr>
-                            <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
-                              <TrashIcon class="text-danger w-4 h-4 p-0" />
-                            </td>
-                            <td>Charlie</td>
-                            <td>Hunnam</td>
-                            <td>@angelinajolie</td>
-                            <td>@charliehunnam</td>
-                          </tr>
-                          <tr>
-                            <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
-                              <TrashIcon class="text-danger w-4 h-4 p-0" />
-                            </td>
-                            <td>Angelina</td>
-                            <td>Jolie</td>
-                            <td>@angelinajolie</td>
-                            <td>@angelinajolie</td>
-                          </tr>
-                          <tr>
-                            <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
-                              <TrashIcon class="text-danger w-4 h-4 p-0" />
-                            </td>
-                            <td>Brad</td>
-                            <td>Pitt</td>
-                            <td>@angelinajolie</td>
-                            <td>@bradpitt</td>
-                          </tr>
-                          <tr>
-                            <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
-                              <TrashIcon class="text-danger w-4 h-4 p-0" />
-                            </td>
-                            <td>Charlie</td>
-                            <td>Hunnam</td>
-                            <td>@angelinajolie</td>
-                            <td>@charliehunnam</td>
-                          </tr>
-                          <tr>
-                            <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
-                              <TrashIcon class="text-danger w-4 h-4 p-0" />
-                            </td>
-                            <td>Angelina</td>
-                            <td>Jolie</td>
-                            <td>@angelinajolie</td>
-                            <td>@angelinajolie</td>
-                          </tr>
-                          <tr>
-                            <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
-                              <TrashIcon class="text-danger w-4 h-4 p-0" />
-                            </td>
-                            <td>Brad</td>
-                            <td>Pitt</td>
-                            <td>@angelinajolie</td>
-                            <td>@bradpitt</td>
-                          </tr>
-                          <tr>
-                            <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
-                              <TrashIcon class="text-danger w-4 h-4 p-0" />
-                            </td>
-                            <td>Charlie</td>
-                            <td>Hunnam</td>
-                            <td>@angelinajolie</td>
-                            <td>@charliehunnam</td>
-                          </tr>
-                          <tr>
-                            <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
-                              <TrashIcon class="text-danger w-4 h-4 p-0" />
-                            </td>
-                            <td>Angelina</td>
-                            <td>Jolie</td>
-                            <td>@angelinajolie</td>
-                            <td>@angelinajolie</td>
-                          </tr>
-                          <tr>
-                            <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
-                              <TrashIcon class="text-danger w-4 h-4 p-0" />
-                            </td>
-                            <td>Brad</td>
-                            <td>Pitt</td>
-                            <td>@angelinajolie</td>
-                            <td>@bradpitt</td>
-                          </tr>
-                          <tr>
-                            <td class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer">
-                              <TrashIcon class="text-danger w-4 h-4 p-0" />
-                            </td>
-                            <td>Charlie</td>
-                            <td>Hunnam</td>
-                            <td>@angelinajolie</td>
-                            <td>@charliehunnam</td>
+                            <td>{{ detail.id_varian }} - {{ detail.nama_varian }}</td>
+                            <td>{{ detail.qty }}</td>
+                            <td>{{ currencyFormatter.format(detail.harga_detail_jual) }}</td>
+                            <td>{{ currencyFormatter.format(detail.total_harga_detail_jual) }}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -311,7 +213,7 @@
             </div>
           </div>
         </ModalBody>
-        <ModalFooter class="text-right bottom-0 relative z-50 bg-white rounded-md sm:border-t-2 border-t-4 btm sm:btm-">
+        <ModalFooter class="text-right bottom-0 relative z-50 rounded-md sm:border-t-2 border-t-4 btm sm:btm-">
           <AccordionGroup class="block lg:hidden mb-5">
             <AccordionItem>
               <Accordion>
@@ -387,10 +289,14 @@
               </AccordionPanel>
             </AccordionItem>
           </AccordionGroup>
+          <!-- <div class="object-right mr-1 my-3">
+            <input id="horizontal-form-3" class="form-check-input" type="checkbox" value="" />
+            <label class="form-check-label" for="horizontal-form-3">Data Telah Benar</label>
+          </div> -->
           <button type="button" @click="addModal = false" class="btn btn-outline-secondary w-32 mr-1">
             Cancel
           </button>
-          <button type="submit" form="addSatuanForm" class="btn btn-primary w-32">
+          <button type="button" @click="addPenjualan()" class="object-left btn btn-primary w-32" :disabled="total_bayar_global == 0 || total_bayar_global < total_harga_global">
             Simpan
           </button>
         </ModalFooter>
@@ -478,7 +384,26 @@
     <!-- END: Data List -->
   </div>
   <!-- BEGIN: Delete Confirmation Modal -->
+  <Modal :show="deleteConfirmationModal" @hidden="deleteConfirmationModal = false">
+    <ModalBody class="p-0">
+      <div class="p-5 text-center">
+        <XCircleIcon class="w-16 h-16 text-danger mx-auto mt-3" />
+        <div class="text-xl mt-5">Apakah Anda yakin akan menghapus <b> {{ itemDel.nama_varian }} </b> sebanyak <b> {{
+    itemDel.qty
+}}</b> ?</div>
 
+      </div>
+      <div class="px-5 pb-8 text-center">
+        <button type="button" @click="deleteConfirmationModal = false" class="btn btn-outline-secondary w-24 mr-1">
+          Cancel
+        </button>
+        <button type="button" class="btn btn-danger w-24"
+          @click="removeItem(itemDel.id_detail_jual, itemDel.no_invoice)">
+          Delete
+        </button>
+      </div>
+    </ModalBody>
+  </Modal>
   <!-- END: Delete Confirmation Modal -->
 </template>
 
@@ -491,6 +416,7 @@ import { ref } from "vue";
 import { watch } from "vue";
 
 const addModal = ref(false);
+const deleteConfirmationModal = ref(false);
 
 export default {
   setup() {
@@ -516,7 +442,7 @@ export default {
           this.stok = data.stok_varian,
           this.qty_select = 1,
           this.total_harga_select = data.harga_jual_varian
-      })
+      }) .catch((e) => console.error(e));
     },
     qty_select(newValue, oldValue) {
       const qty = newValue
@@ -543,6 +469,16 @@ export default {
         this.kembalian = total_bayar_global - total_harga_global
       }
     },
+    total_harga_global(newValue, oldValue) {
+      const total_bayar_global = this.total_bayar_global
+      const total_harga_global = newValue
+      if (newValue === "") {
+        alert("Total Harga tidak boleh kosong atau minus");
+        this.total_harga_global = oldValue;
+      } else {
+        this.kembalian = total_bayar_global - total_harga_global
+      }
+    }
   },
   components: {
     PenjualanList,
@@ -550,6 +486,7 @@ export default {
   data() {
     return {
       addModal,
+      deleteConfirmationModal,
 
       no_invoice: "-",
       waktu: "",
@@ -568,28 +505,65 @@ export default {
       total_harga_global: 0,
       total_bayar_global: 0,
       kembalian: 0,
+
+      itemDel: "",
     };
   },
   methods: {
     startTransaction() {
       this.Penjualan.startTransaction().then((data) => {
-        console.log('data.data', data);
         this.no_invoice = data.no_invoice;
         this.waktu = data.tanggal_penjualan;
       })
       console.log('start transactions');
     },
-    detailForm() {
+    addItem() {
       this.Penjualan.addDetailPenjualan(
         this.no_invoice,
         this.item_select,
         this.qty_select
+      ).then((data) => {
+        //console.log('data.data', this.stok, this.qty_select);
+        this.total_harga_global = data.total_harga_jual
+        this.stok = this.stok - this.qty_select
+        this.nama_campur_select = `${this.nama_barang_select} - ${this.nama_varian_select} | ${this.stok}`
+      }) .catch((e) => console.error(e));
+    },
+    openModalRemove(item) {
+      //console.log(item)
+      this.itemDel = item
+      this.deleteConfirmationModal = true
+    },
+    removeItem(id_detail_jual, no_invoice) {
+      this.Penjualan.removeItem(id_detail_jual, no_invoice).then((data) => {
+        this.stok = this.stok + parseInt(this.itemDel.qty)
+        this.nama_campur_select = `${this.nama_barang_select} - ${this.nama_varian_select} | ${this.stok}`
+        this.deleteConfirmationModal = false
+        // console.log('data',this.itemDel)
+        this.total_harga_global = parseFloat(data)
+      }) .catch((e) => console.error(e));
+    },
+    addPenjualan() {
+      const no_invoice = this.no_invoice
+      const total_harga_global = this.total_harga_global
+      const total_bayar_global = this.total_bayar_global
+      const kembalian = this.kembalian
+      console.log('data',this.Penjualan.penjualanDetail.length);
+      if (this.Penjualan.penjualanDetail.length !== 0 && this.total_bayar_global >= this.total_harga_global) {
+        this.Penjualan.addPenjualan(no_invoice, total_harga_global, total_bayar_global, kembalian).then((data) => {
+          this.addModal = false;
+        }) .catch((e) => console.error(e));
+      } else { alert("Detail Penjualan Tidak Bolehg Kosong")}
 
-      )
     }
   },
   async mounted() {
-    await this.Penjualan.readItem();
+    try {
+      await this.Penjualan.readItem();
+    } catch (error) {
+      console.error("Error: " + error)
+    }
+    
   },
 };
 </script>

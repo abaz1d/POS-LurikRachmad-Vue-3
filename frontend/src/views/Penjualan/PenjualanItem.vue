@@ -118,7 +118,7 @@ export default {
       try {
         this.Penjualan.readDetail(no_invoice).then(
           () => (this.isVarian = !this.isVarian)
-        );
+        ) .catch((e) => console.error(e));
       } catch (error) {
         alert(error);
       }
@@ -126,7 +126,12 @@ export default {
   },
   components: { TabelDetailList },
   async beforeMount() {
-    await this.Penjualan.readDetail(this.id_awal);
+    try {
+      await this.Penjualan.readDetail(this.id_awal);
+    } catch (error) {
+      console.log(error);
+    }
+  
   },
 };
 </script>
