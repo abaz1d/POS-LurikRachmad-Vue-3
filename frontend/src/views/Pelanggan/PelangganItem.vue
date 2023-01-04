@@ -1,10 +1,10 @@
 <template>
   <tr>
-    <td class="text-left w-40 mr-0">{{ pelanggan.id_pelanggan }}</td>
+    <td class="text-left min-w-max mr-0">{{ pelanggan.id_pelanggan }}</td>
     <td v-if="isEdit">
       <input class="form-control flex-1" type="text" v-model="namaPelanggan" />
     </td>
-    <td v-else class="text-center">{{ pelanggan.nama_pelanggan }}</td>
+    <td v-else class="text-center min-w-max">{{ pelanggan.nama_pelanggan }}</td>
     <td v-if="isEdit">
       <textarea
         class="form-control flex-1"
@@ -12,7 +12,7 @@
         v-model="alamatPelanggan"
       />
     </td>
-    <td v-else class="text-center">{{ pelanggan.alamat_pelanggan }}</td>
+    <td v-else class="text-center min-w-max">{{ pelanggan.alamat_pelanggan }}</td>
 
     <td v-if="isEdit">
       <input
@@ -21,7 +21,7 @@
         v-model="kontakPelanggan"
       />
     </td>
-    <td v-else class="text-center">{{ pelanggan.kontak_pelanggan }}</td>
+    <td v-else class="text-center min-w-max">{{ pelanggan.kontak_pelanggan }}</td>
 
     <td class="table-report__action w-56" v-if="isEdit">
       <div class="flex justify-center items-center">

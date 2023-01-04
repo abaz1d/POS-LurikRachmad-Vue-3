@@ -25,8 +25,8 @@ export const useSimpleMenuStore = defineStore("simpleMenu", {
           },
           {
             icon: "RepeatIcon",
-            pageName: "top-menu-return",
-            title: "Return",
+            pageName: "top-menu-retur",
+            title: "Retur",
           },
           {
             icon: "ChevronsUpIcon",

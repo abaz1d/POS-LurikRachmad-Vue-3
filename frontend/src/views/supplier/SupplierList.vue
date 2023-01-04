@@ -1,13 +1,13 @@
 <template>
-  <table class="table table-report -mt-2">
+  <table class="table table-report -mt-2 min-w-max">
     <thead>
       <tr>
-        <th class="whitespace-nowrap">ID</th>
-        <th class="text-center whitespace-nowrap">NAMA SUPPLIER</th>
-        <th class="text-center whitespace-nowrap">ALAMAT</th>
-        <th class="text-center whitespace-nowrap">TELEPON</th>
-        <th class="text-center whitespace-nowrap">EMAIL</th>
-        <th class="text-center whitespace-nowrap">ACTIONS</th>
+        <th class="min-w-max">ID</th>
+        <th class="text-center min-w-max">NAMA SUPPLIER</th>
+        <th class="text-center min-w-max">ALAMAT</th>
+        <th class="text-center min-w-max">TELEPON</th>
+        <th class="text-center min-w-max">EMAIL</th>
+        <th class="text-center min-w-max">ACTIONS</th>
       </tr>
     </thead>
     <tbody>

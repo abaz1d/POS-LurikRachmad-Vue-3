@@ -62,22 +62,35 @@ module.exports = function (db) {
             //const noInvoice = req.query.noInvoice ? req.query.noInvoice : rows.length > 0 ? rows[0].no_invoice : '';
             const noInvoice = req.query.noInvoice ? req.query.noInvoice : '';
             console.log(req.query.noInvoice, 'noInvoice')
-            const detailsb = await db.query('SELECT dp.*, v.nama_varian FROM pembelian_detail as dp LEFT JOIN varian as v ON dp.id_varian = v.id_varian WHERE dp.no_invoice = $1 ORDER BY dp.id_detail_beli', [noInvoice]);
-            const varianb = await db.query('SELECT var.*, b.id_barang, b.nama_barang FROM varian as var LEFT JOIN barang as b ON var.id_barang = b.id_barang ORDER BY var.id_barang');
-            const gudangb = await db.query('SELECT * FROM gudang ORDER BY id_gudang');
-            const supplierb = await db.query('SELECT * FROM supplier ORDER BY id_supplier');
-            const print2 = await db.query('SELECT dp.*,pe.*,v.nama_varian FROM pembelian_detail as dp LEFT JOIN varian as v ON dp.id_varian = v.id_varian LEFT JOIN pembelian as pe ON dp.no_invoice = pe.no_invoice WHERE dp.no_invoice = $1', [noInvoice]);
+            const details = await db.query('SELECT dp.*, v.nama_varian FROM pembelian_detail as dp LEFT JOIN varian as v ON dp.id_varian = v.id_varian WHERE dp.no_invoice = $1 ORDER BY dp.id_detail_beli', [noInvoice]);
+            const varian = await db.query('SELECT var.*, b.id_barang, b.nama_barang FROM varian as var LEFT JOIN barang as b ON var.id_barang = b.id_barang ORDER BY var.id_barang');
+            const gudang = await db.query('SELECT * FROM gudang ORDER BY id_gudang');
+            const supplier = await db.query('SELECT * FROM supplier ORDER BY id_supplier');
+            const print = await db.query('SELECT dp.*,pe.*,v.nama_varian FROM pembelian_detail as dp LEFT JOIN varian as v ON dp.id_varian = v.id_varian LEFT JOIN pembelian as pe ON dp.no_invoice = pe.no_invoice WHERE dp.no_invoice = $1', [noInvoice]);
             const totaljual = await db.query(`SELECT count(no_invoice) AS totaljual FROM penjualan`)
             const totalbeli = await db.query(`SELECT count(no_invoice) AS totalbeli FROM pembelian`)
             //console.log('print', print.rows[0].no_invoice)
-            res.render('pembelian/list', {
+            // res.render('pembelian/list', {
+            //     pembelian: rows,
+            //     currencyFormatter,
+            //     gudang: gudang.rows,
+            //     supplier: supplier.rows,
+            //     details: details.rows,
+            //     varian: varian.rows,
+            //     print,
+            //     query: req.query,
+            //     totaljual: totaljual.rows[0].totaljual,
+            //     totalbeli: totalbeli.rows[0].totalbeli,
+            //     user: req.session.user
+            // })
+            res.status(200).json({
                 pembelian: rows,
                 currencyFormatter,
-                gudangb: gudangb.rows,
-                supplierb: supplierb.rows,
-                detailsb: detailsb.rows,
-                varianb: varianb.rows,
-                print2,
+                gudang: gudang.rows,
+                supplier: supplier.rows,
+                details: details.rows,
+                varian: varian.rows,
+                print,
                 query: req.query,
                 totaljual: totaljual.rows[0].totaljual,
                 totalbeli: totalbeli.rows[0].totalbeli,
@@ -120,9 +133,9 @@ module.exports = function (db) {
         }
     });
     //v
-    router.post('/upjual', async function (req, res, next) {
+    router.post('/upbeli', async function (req, res, next) {
         try {
-            udatejual = await db.query('UPDATE pembelian SET id_gudang = $1, id_supplier = $2, total_harga_beli = $3, total_bayar_beli = $4, kembalian_beli = $5 WHERE no_invoice = $6 returning *', [req.body.gudangb, req.body.supplierb, req.body.total_harga_beli, req.body.total_bayar_beli, req.body.kembalian, req.body.no_invoice])
+            udatejual = await db.query('UPDATE pembelian SET id_gudang = $1, id_supplier = $2, id_outlet = $3, total_harga_beli = $4, total_bayar_beli = $5, kembalian_beli = $6 WHERE no_invoice = $7 returning *', [req.body.gudang, req.body.supplier, req.body.outlet, req.body.total_harga_beli, req.body.total_bayar_beli, req.body.kembalian, req.body.no_invoice])
             const { rows } = await db.query('SELECT * FROM pembelian WHERE no_invoice = $1', [req.body.no_invoice])
             res.json(rows)
         } catch (e) {

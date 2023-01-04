@@ -72,7 +72,7 @@ module.exports = function (db) {
             //     penjualan: rows,
             //     moment,
             //     currencyFormatter,
-            //     detailsj: details.rows,
+            //     details: details.rows,
             //     varian: varian.rows,
             //     print,
             //     query: req.query,
@@ -83,7 +83,7 @@ module.exports = function (db) {
             res.status(200).json({
                 penjualan: rows,
                 currencyFormatter,
-                detailsj: details.rows,
+                details: details.rows,
                 varian: varian.rows,
                 print,
                 query: req.query,

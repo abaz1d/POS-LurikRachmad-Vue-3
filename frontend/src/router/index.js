@@ -16,7 +16,7 @@ import Pelanggan from "../views/Pelanggan/Main.vue";
 import BarangMasuk from "../views/BarangMasuk/Main.vue";
 import Penjualan from "../views/Penjualan/Main.vue";
 import Pembelian from "../views/Pembelian/Main.vue";
-import Return from "../views/Return/Main.vue";
+import Retur from "../views/Retur/Main.vue";
 import StokGlobal from "../views/StokGlobal/Main.vue";
 import Laporan from "../views/Laporan/Main.vue";
 
@@ -76,9 +76,9 @@ const routes = [
         component: Penjualan,
       },
       {
-        path: "return",
-        name: "top-menu-return",
-        component: Return,
+        path: "retur",
+        name: "top-menu-retur",
+        component: Retur,
       },
       {
         path: "stok-global",
@@ -152,9 +152,9 @@ const routes = [
         component: Penjualan,
       },
       {
-        path: "return",
-        name: "side-menu-return",
-        component: Return,
+        path: "retur",
+        name: "side-menu-retur",
+        component: Retur,
       },
       {
         path: "stok-global",
@@ -228,9 +228,9 @@ const routes = [
         component: Penjualan,
       },
       {
-        path: "return",
-        name: "simple-menu-return",
-        component: Return,
+        path: "retur",
+        name: "simple-menu-retur",
+        component: Retur,
       },
       {
         path: "stok-global",

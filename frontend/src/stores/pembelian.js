@@ -2,73 +2,73 @@ import { defineStore } from "pinia";
 import { request } from "../utils/api";
 import qs from 'qs';
 
-export const usePenjualanStore = defineStore({
+export const usePembelianStore = defineStore({
   id: "barang-keluar",
   state: () => ({
     rawVarians: [],
-    rawPenjualans: [],
+    rawPembelians: [],
     rawDetails: [],
     rawPrints: [],
 
-    rawPenjualanDetail: [],
+    rawPembelianDetail: [],
   }),
   getters: {
     varians: (state) => state.rawVarians,
-    penjualans: (state) => state.rawPenjualans,
+    pembelians: (state) => state.rawPembelians,
     details: (state) => state.rawDetails,
     prints: (state) => state.rawPrints,
 
-    penjualanDetail: (state) => state.rawPenjualanDetail,
+    pembelianDetail: (state) => state.rawPembelianDetail,
   },
   actions: {
     async readItem() {
       try {
-        const data = await request.get("penjualan");
+        const data = await request.get("pembelian");
         if (data.status >= 200 && data.status < 300) {
           this.rawVarians = data.data.varian;
-          this.rawPenjualans = data.data.penjualan;
+          this.rawPembelians = data.data.pembelian;
           this.rawDetails = data.data.details;
           //console.log('data', data.data.varian)
-          // console.log('rawPenjualans', this.rawPenjualans)
-          // return this.rawPenjualans
+          // console.log('rawPembelians', this.rawPembelians)
+          // return this.rawPembelians
         }
       } catch (error) {
         console.error(error)
       }
 
     },
-    async addPenjualan(no_invoice, total_harga_global, total_bayar_global, kembalian) {
-      const tanggal_penjualan = Date.now();
-      const total_harga_jual = total_harga_global
-      const total_bayar_jual = total_bayar_global
-      // this.rawPenjualanDetail.push({ no_invoice, id_varian, qty });
-      // console.log('rawPenjualanDetail', this.rawPenjualanDetail)
-      this.rawPenjualans.push({ no_invoice, tanggal_penjualan, total_harga_jual, total_bayar_jual, kembalian })
+    async addPembelian(no_invoice, total_harga_global, total_bayar_global, kembalian) {
+      const tanggal_pembelian = Date.now();
+      const total_harga_beli = total_harga_global
+      const total_bayar_beli = total_bayar_global
+      // this.rawPembelianDetail.push({ no_invoice, id_varian, qty });
+      // console.log('rawPembelianDetail', this.rawPembelianDetail)
+      this.rawPembelians.push({ no_invoice, tanggal_pembelian, total_harga_beli, total_bayar_beli, kembalian })
       try {
-        const data = await request.post('penjualan/upjual', { no_invoice, total_harga_jual, total_bayar_jual, kembalian })
+        const data = await request.post('pembelian/upbeli', { no_invoice, total_harga_beli, total_bayar_beli, kembalian })
         if (data.status >= 200 && data.status < 300) {
 
-          this.rawPenjualans = this.rawPenjualans.map((item) => {
-            if (item.tanggal_penjualan == tanggal_penjualan) {
-              console.log('data', no_invoice, item.tanggal_penjualan, tanggal_penjualan, item.tanggal_penjualan === tanggal_penjualan)
+          this.rawPembelians = this.rawPembelians.map((item) => {
+            if (item.tanggal_pembelian == tanggal_pembelian) {
+              console.log('data', no_invoice, item.tanggal_pembelian, tanggal_pembelian, item.tanggal_pembelian === tanggal_pembelian)
               return data.data[0]
             }
             return item;
           });
           // return data.data
         }
-        //console.log('data',data.data, this.rawPenjualans)
+        //console.log('data',data.data, this.rawPembelians)
       } catch (e) {
         console.error(e);
       }
     },
 
-    removePenjualan(no_invoice) {
-      this.rawPenjualans = this.rawPenjualans.filter(
+    removePembelian(no_invoice) {
+      this.rawPembelians = this.rawPembelians.filter(
         (item) => item.no_invoice !== no_invoice
       );
       request
-        .get(`penjualan/delete/${no_invoice}`)
+        .get(`pembelian/delete/${no_invoice}`)
         .then((res) => {
           if (res.status >= 200 && res.status < 300) {
             // alert(`Sukses Hapus Data ${no_invoice}`)
@@ -76,15 +76,15 @@ export const usePenjualanStore = defineStore({
         })
         .catch((e) => console.error(e));
     },
-    async addDetailPenjualan(noInvoice, id_varian, qty) {
+    async addDetailPembelian(noInvoice, id_varian, qty) {
       const id = Date.now();
       const no_invoice = String(noInvoice)
-      // this.rawPenjualanDetail.push({ no_invoice, id_varian, qty });
-      // console.log('rawPenjualanDetail', this.rawPenjualanDetail)
+      // this.rawPembelianDetail.push({ no_invoice, id_varian, qty });
+      // console.log('rawPembelianDetail', this.rawPembelianDetail)
       try {
-        const data = await request.post('penjualan/additem', { no_invoice, id_varian, qty })
+        const data = await request.post('pembelian/additem', { no_invoice, id_varian, qty })
         if (data.status >= 200 && data.status < 300) {
-          this.readDetailPenjualan(noInvoice)
+          this.readDetailPembelian(noInvoice)
           return data.data
         }
         //console.log('data',data)
@@ -92,25 +92,25 @@ export const usePenjualanStore = defineStore({
         console.error(e);
       }
     },
-    async readDetailPenjualan(no_invoice) {
+    async readDetailPembelian(no_invoice) {
       try {
-        const data = await request.get(`/penjualan/details/${no_invoice}`)
+        const data = await request.get(`/pembelian/details/${no_invoice}`)
         //console.log('data', data.data)
-        this.rawPenjualanDetail = data.data;
-        //console.log('rawPenjualanDetail', this.rawPenjualanDetail, this.rawDetails)
+        this.rawPembelianDetail = data.data;
+        //console.log('rawPembelianDetail', this.rawPembelianDetail, this.rawDetails)
         return data.data;
       } catch (error) {
         console.error(error);
       }
     },
 
-    async removeItem(id_detail_jual, noInvoice) {
+    async removeItem(id_detail_beli, noInvoice) {
       try {
-        const data = await request.delete(`penjualan/delitem/${id_detail_jual}`, { data: { no_invoice: noInvoice } })
+        const data = await request.delete(`pembelian/delitem/${id_detail_beli}`, { data: { no_invoice: noInvoice } })
         if (data.status >= 200 && data.status < 300) {
           // console.log('dalam', data)
-          this.rawPenjualanDetail = this.rawPenjualanDetail.filter(
-            (item) => item.id_detail_jual !== id_detail_jual
+          this.rawPembelianDetail = this.rawPembelianDetail.filter(
+            (item) => item.id_detail_beli !== id_detail_beli
           );
           if (data.data[0].total !== null) {
             return data.data[0].total
@@ -123,17 +123,17 @@ export const usePenjualanStore = defineStore({
       }
 
     },
-    updateItem(penjualan) {
-      let id_varian = penjualan.id_varian;
-      let nama_satuan = penjualan.nama_satuan;
-      let keterangan_satuan = penjualan.keterangan_satuan;
-      this.rawPenjualans = this.rawPenjualans.map((item) => {
+    updateItem(pembelian) {
+      let id_varian = pembelian.id_varian;
+      let nama_satuan = pembelian.nama_satuan;
+      let keterangan_satuan = pembelian.keterangan_satuan;
+      this.rawPembelians = this.rawPembelians.map((item) => {
         if (item.id_varian === id_varian) {
-          return penjualan;
+          return pembelian;
         }
         return item;
       });
-      request.post(`penjualan/edit/${id_varian}`, {
+      request.post(`pembelian/edit/${id_varian}`, {
         nama_satuan,
         keterangan_satuan,
       });
@@ -142,10 +142,11 @@ export const usePenjualanStore = defineStore({
     // ---------------------------------------------------------------- Detail ----------------------------------------------------------------
     async readDetail(no_invoice) {
       try {
-        const data = await request.get(`penjualan?noInvoice=${no_invoice}`);
+        const data = await request.get(`pembelian?noInvoice=${no_invoice}`);
         if (data.status >= 200 && data.status < 300) {
           this.rawDetails = data.data.details;
           this.rawPrints = data.data.print.rows;
+          //console.log("rows", data.data)
           // console.log('data.data', data.data, 'status', data.data.print.rows)
           // console.log('this.rawVarians', this.rawVarians)
         }
@@ -157,7 +158,7 @@ export const usePenjualanStore = defineStore({
 
     async readDetailItem(id_varian) {
       try {
-        const data = await request.get(`/penjualan/barang/${id_varian}`)
+        const data = await request.get(`/pembelian/barang/${id_varian}`)
         // .then((data) => {
         //   // console.log('data.data', data.data);
         //   return data.data
@@ -174,7 +175,7 @@ export const usePenjualanStore = defineStore({
 
     async startTransaction() {
       try {
-        const data = await request.post('/penjualan/create')
+        const data = await request.post('/pembelian/create')
         //if (data.status >= 200 && data.status < 300) {
         // console.log('data.data', data.data);
         return data.data

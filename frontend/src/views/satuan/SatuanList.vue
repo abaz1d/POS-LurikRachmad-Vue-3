@@ -1,5 +1,5 @@
 <template>
-  <table class="table table-report -mt-2">
+  <table class="table table-report -mt-2 min-w-max">
     <thead>
       <tr>
         <th class="whitespace-nowrap">ID</th>
