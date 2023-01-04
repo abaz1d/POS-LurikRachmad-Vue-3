@@ -125,7 +125,7 @@ export default {
       try {
         this.Barang.readVarian(id_barang).then(
           () => (this.isVarian = !this.isVarian)
-        ).catch((e) => console.error(e));
+        ).catch((error) => console.error(error));
       } catch (error) {
         alert(error);
       }
@@ -144,7 +144,12 @@ export default {
   //      this.Barang.readVarian(this.id_awal)
   // },
   async beforeMount() {
-    await this.Barang.readVarian(this.id_awal);
+    try {
+      await this.Barang.readVarian(this.id_awal);
+    } catch (error) {
+   console.error(error)
+    }
+   
   },
 };
 </script>

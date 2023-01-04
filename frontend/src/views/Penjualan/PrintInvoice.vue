@@ -2,7 +2,7 @@
   <div class="intro-y box overflow-hidden mt-2">
     <div class="flex flex-col lg:flex-row pt-10 px-5 sm:px-20 sm:pt-20 lg:pb-20 text-center sm:text-left">
       <div class="font-semibold text-primary text-3xl">
-        {{ no_invoice }} <br />
+        {{ no_invoice_show }} <br />
         <div class="text-xl dark:text-secondary text-dark font-medium">
           {{ dateFormat(prints.map(
             item => {return item.tanggal_penjualan}
@@ -51,7 +51,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="print in prints" :key="print.no_invoice" :print="print">
+            <tr v-for="(print, index) in prints" :no="index + 1" :print="print">
               <td class="border-b dark:border-darkmode-400 mx-auto">
                 {{ print.nama_barang }} <b>{{ print.nama_varian }}</b>
               </td>
@@ -114,7 +114,7 @@ export default {
     prints: {
       type: Object,
     },
-    no_invoice: {
+    no_invoice_show: {
       type: String,
     },
     total_harga_jual: {

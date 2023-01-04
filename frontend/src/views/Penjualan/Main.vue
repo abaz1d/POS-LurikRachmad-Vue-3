@@ -44,7 +44,8 @@
                                 Stok</p></label>
                             <div class="flex w-full">
                               <div
-                                class="z-30 rounded-l w-10 flex items-center justify-center bg-gray-100 hover:bg-gray-300 border text-gray-600 dark:bg-dark-1 dark:border-dark-4 -mr-1 cursor-pointer">
+                                class="z-30 rounded-l w-10 flex items-center justify-center bg-gray-100 hover:bg-gray-300 border text-gray-600 dark:bg-dark-1 dark:border-dark-4 -mr-1 cursor-pointer"
+                                @click=" isModalScanner = true; renderQrScanner();">
                                 <CameraIcon class="w-4 h-4" />
                               </div>
                               <TomSelect v-model="item_select" class="w-full" required>
@@ -119,7 +120,8 @@
                           </div>
 
                         </div>
-                        <button type="button" @click="addItem()" class="btn btn-primary w-20 mt-3" :disabled="qty_select == 0">
+                        <button type="button" @click="addItem()" class="btn btn-primary w-20 mt-3"
+                          :disabled="qty_select == 0">
                           Tambah
                         </button>
                       </div>
@@ -296,7 +298,8 @@
           <button type="button" @click="addModal = false" class="btn btn-outline-secondary w-32 mr-1">
             Cancel
           </button>
-          <button type="button" @click="addPenjualan()" class="object-left btn btn-primary w-32" :disabled="total_bayar_global == 0 || total_bayar_global < total_harga_global">
+          <button type="button" @click="addPenjualan()" class="object-left btn btn-primary w-32"
+            :disabled="total_bayar_global == 0 || total_bayar_global < total_harga_global">
             Simpan
           </button>
         </ModalFooter>
@@ -405,10 +408,33 @@
     </ModalBody>
   </Modal>
   <!-- END: Delete Confirmation Modal -->
+  <Modal size="modal-xl" backdrop="static" :show="isModalScanner" @hidden="isModalScanner = false">
+    <ModalHeader>
+      <div class="text-center mt-2">
+        <h2 class="text-lg font-bold">QR Code Scanner</h2>
+      </div>
+    </ModalHeader>
+    <ModalBody class="px-5 py-10">
+      <div class="text-center">
+        <div class="mb-5">
+          <div class="intro-y justify-center flex mt-5">
+            <qrcode v-bind:qrbox="250" v-bind:fps="10" ref="qrScanner" @resultScan="resultScan" />
+          </div>
+        </div>
+        <button type="button" @click="
+  isModalScanner = false;
+closeQrScanner();
+          " class="btn btn-danger w-24">
+          Close
+        </button>
+      </div>
+    </ModalBody>
+  </Modal>
 </template>
 
 <script>
 import { usePenjualanStore } from "../../stores/penjualan";
+import qrcode from "../../components/qrcode/QrCode.vue";
 import { currencyFormatter } from "../../utils/helper";
 import PenjualanList from "./PenjualanList.vue";
 import moment from "moment";
@@ -417,6 +443,7 @@ import { watch } from "vue";
 
 const addModal = ref(false);
 const deleteConfirmationModal = ref(false);
+const isModalScanner = ref(false);
 
 export default {
   setup() {
@@ -442,7 +469,7 @@ export default {
           this.stok = data.stok_varian,
           this.qty_select = 1,
           this.total_harga_select = data.harga_jual_varian
-      }) .catch((e) => console.error(e));
+      }).catch((e) => console.error(e));
     },
     qty_select(newValue, oldValue) {
       const qty = newValue
@@ -482,11 +509,13 @@ export default {
   },
   components: {
     PenjualanList,
+    qrcode
   },
   data() {
     return {
       addModal,
       deleteConfirmationModal,
+      isModalScanner,
 
       no_invoice: "-",
       waktu: "",
@@ -511,11 +540,11 @@ export default {
   },
   methods: {
     startTransaction() {
-      this.Penjualan.startTransaction().then((data) => {
-        this.no_invoice = data.no_invoice;
-        this.waktu = data.tanggal_penjualan;
-      })
-      console.log('start transactions');
+      // this.Penjualan.startTransaction().then((data) => {
+      //   this.no_invoice = data.no_invoice;
+      //   this.waktu = data.tanggal_penjualan;
+      // })
+      // console.log('start transactions');
     },
     addItem() {
       this.Penjualan.addDetailPenjualan(
@@ -527,7 +556,7 @@ export default {
         this.total_harga_global = data.total_harga_jual
         this.stok = this.stok - this.qty_select
         this.nama_campur_select = `${this.nama_barang_select} - ${this.nama_varian_select} | ${this.stok}`
-      }) .catch((e) => console.error(e));
+      }).catch((e) => console.error(e));
     },
     openModalRemove(item) {
       //console.log(item)
@@ -541,21 +570,35 @@ export default {
         this.deleteConfirmationModal = false
         // console.log('data',this.itemDel)
         this.total_harga_global = parseFloat(data)
-      }) .catch((e) => console.error(e));
+      }).catch((e) => console.error(e));
     },
     addPenjualan() {
       const no_invoice = this.no_invoice
       const total_harga_global = this.total_harga_global
       const total_bayar_global = this.total_bayar_global
       const kembalian = this.kembalian
-      console.log('data',this.Penjualan.penjualanDetail.length);
+      console.log('data', this.Penjualan.penjualanDetail.length);
       if (this.Penjualan.penjualanDetail.length !== 0 && this.total_bayar_global >= this.total_harga_global) {
         this.Penjualan.addPenjualan(no_invoice, total_harga_global, total_bayar_global, kembalian).then((data) => {
           this.addModal = false;
-        }) .catch((e) => console.error(e));
-      } else { alert("Detail Penjualan Tidak Bolehg Kosong")}
+        }).catch((e) => console.error(e));
+      } else { alert("Detail Penjualan Tidak Boleh Kosong") }
 
-    }
+    },
+    renderQrScanner() {
+      this.$refs.qrScanner.renderQrScanner();
+      // console.log("qrScanner", this.$refs)
+    },
+    closeQrScanner() {
+      this.$refs.qrScanner.closeQrScanner();
+    },
+    resultScan(result) {
+      // ntar di concat ma it outlet
+      this.item_select = result;
+      //console.log("hasil", this.item_select)
+      this.isModalScanner = false;
+      this.$refs.qrScanner.closeQrScanner();
+    },
   },
   async mounted() {
     try {
@@ -563,7 +606,6 @@ export default {
     } catch (error) {
       console.error("Error: " + error)
     }
-    
   },
 };
 </script>

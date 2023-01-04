@@ -11,15 +11,20 @@ export const useSupplierStore = defineStore({
   },
   actions: {
     async readItem() {
-      const data = await request.get("supplier", {
-        timeout: 1000
-      });
-      if (data.status >= 200 && data.status < 300) {
-        this.rawItems =
-          /*this.rawItems.concat(res.data.rows) res.data.rows*/ data.data;
-        //console.log('rawItems', this.rawItems)
-        // return this.rawItems
+      try {
+        const data = await request.get("supplier", {
+          timeout: 1000
+        });
+        if (data.status >= 200 && data.status < 300) {
+          this.rawItems =
+            /*this.rawItems.concat(res.data.rows) res.data.rows*/ data.data;
+          //console.log('rawItems', this.rawItems)
+          // return this.rawItems
+        }
+      } catch (error) {
+        console.error(e);
       }
+
     },
     async addItem(
       nama_supplier,

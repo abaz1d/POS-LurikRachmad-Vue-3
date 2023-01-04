@@ -24,18 +24,18 @@ export const usePenjualanStore = defineStore({
     async readItem() {
       try {
         const data = await request.get("penjualan");
-      if (data.status >= 200 && data.status < 300) {
-        this.rawVarians = data.data.varian;
-        this.rawPenjualans = data.data.penjualan;
-        this.rawDetails = data.data.detailsj;
-        //console.log('data', data.data.varian)
-        // console.log('rawPenjualans', this.rawPenjualans)
-        // return this.rawPenjualans
-      }
+        if (data.status >= 200 && data.status < 300) {
+          this.rawVarians = data.data.varian;
+          this.rawPenjualans = data.data.penjualan;
+          this.rawDetails = data.data.detailsj;
+          //console.log('data', data.data.varian)
+          // console.log('rawPenjualans', this.rawPenjualans)
+          // return this.rawPenjualans
+        }
       } catch (error) {
         console.error(error)
       }
-      
+
     },
     async addPenjualan(no_invoice, total_harga_global, total_bayar_global, kembalian) {
       const tanggal_penjualan = Date.now();
@@ -98,6 +98,7 @@ export const usePenjualanStore = defineStore({
         //console.log('data', data.data)
         this.rawPenjualanDetail = data.data;
         //console.log('rawPenjualanDetail', this.rawPenjualanDetail, this.rawDetails)
+        return data.data;
       } catch (error) {
         console.error(error);
       }
@@ -140,33 +141,48 @@ export const usePenjualanStore = defineStore({
 
     // ---------------------------------------------------------------- Detail ----------------------------------------------------------------
     async readDetail(no_invoice) {
-      const data = await request.get(`penjualan?noInvoice=${no_invoice}`);
-      if (data.status >= 200 && data.status < 300) {
-        this.rawDetails = data.data.detailsj;
-        this.rawPrints = data.data.print.rows;
-        // console.log('data.data', data.data, 'status', data.data.print.rows)
-        // console.log('this.rawVarians', this.rawVarians)
+      try {
+        const data = await request.get(`penjualan?noInvoice=${no_invoice}`);
+        if (data.status >= 200 && data.status < 300) {
+          this.rawDetails = data.data.detailsj;
+          this.rawPrints = data.data.print.rows;
+          // console.log('data.data', data.data, 'status', data.data.print.rows)
+          // console.log('this.rawVarians', this.rawVarians)
+        }
+      } catch (error) {
+        console.error(error)
       }
+
     },
 
     async readDetailItem(id_varian) {
-      const data = await request.get(`/penjualan/barang/${id_varian}`)
-      // .then((data) => {
-      //   // console.log('data.data', data.data);
-      //   return data.data
-      // })
-      // console.log('data.data', data.data);
-      //if (data.status >= 200 && data.status < 300) {
-      return data.data
-      // }
+      try {
+        const data = await request.get(`/penjualan/barang/${id_varian}`)
+        // .then((data) => {
+        //   // console.log('data.data', data.data);
+        //   return data.data
+        // })
+        // console.log('data.data', data.data);
+        //if (data.status >= 200 && data.status < 300) {
+        return data.data
+        // }
+      } catch (error) {
+        console.error(error)
+      }
+
     },
 
     async startTransaction() {
-      const data = await request.post('/penjualan/create')
-      //if (data.status >= 200 && data.status < 300) {
-      // console.log('data.data', data.data);
-      return data.data
-      // }
+      try {
+        const data = await request.post('/penjualan/create')
+        //if (data.status >= 200 && data.status < 300) {
+        // console.log('data.data', data.data);
+        return data.data
+        // }
+      } catch (error) {
+        console.error(error)
+      }
+
     }
 
   },

@@ -29,20 +29,9 @@
           {{ currencyFormatter.format(penjualan.kembalian_jual) }}
      
       </div>
-
-      <div class="col min-w-max text-center" v-if="isEdit">
+      <div class="col min-w-max text-center">
         <div class="flex justify-center items-center">
-          <button class="flex items-center mr-3 text-primary" type="button" @click="">
-            <SaveIcon class="w-4 h-4 mr-1" /> Save
-          </button>
-          <button class="flex items-center text-danger" type="button" @click="isEdit = false">
-            <XIcon class="w-4 h-4 mr-1" /> Batal
-          </button>
-        </div>
-      </div>
-      <div class="col min-w-max text-center" v-else>
-        <div class="flex justify-center items-center">
-          <button class="flex items-center mr-3" type="button" @click="isEdit = true">
+          <button class="flex items-center mr-3" type="button" @click="$emit('openEditModal', penjualan)">
             <CheckSquareIcon class="w-4 h-4 mr-1" /> Edit
           </button>
           <button class="flex items-center text-danger" type="button"
@@ -95,7 +84,7 @@ export default {
   components: {
     TabelDetailList,
   },
-  emits: ["openDeleteModal", "openInvoice"],
+  emits: ["openDeleteModal", "openInvoice", "openEditModal"],
   props: {
     penjualan: {
       type: Object,
@@ -111,9 +100,6 @@ export default {
     };
   },
   methods: {
-    deletePenjualan() { },
-    updatePenjualan() { },
-
     detailShow(no_invoice) {
       try {
         this.Penjualan.readDetail(no_invoice).then(

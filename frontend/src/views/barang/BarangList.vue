@@ -57,8 +57,7 @@
           type="button"
           class="btn btn-danger w-24"
           @click="
-            (e) => {
-              e.preventDefault();
+            () => {
               deleteBarang(id_barang);
             }
           "

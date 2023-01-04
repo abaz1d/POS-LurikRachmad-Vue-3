@@ -13,12 +13,17 @@ export const useBarangStore = defineStore({
   },
   actions: {
     async readItem() {
-      const data = await request.get("barang");
+      try {
+        const data = await request.get("barang");
 
-      if (data.status >= 200 && data.status < 300) {
-        this.rawItems = data.data.barang;
-        this.rawVarians = data.data.varian;
+        if (data.status >= 200 && data.status < 300) {
+          this.rawItems = data.data.barang;
+          this.rawVarians = data.data.varian;
+        }
+      } catch (error) {
+        console.error(error);
       }
+
     },
 
     async addItem(nama_barang) {
@@ -35,8 +40,8 @@ export const useBarangStore = defineStore({
 
           return item;
         });
-      } catch (e) {
-        console.error(e);
+      } catch (error) {
+        console.error(error);
       }
     },
 
@@ -69,21 +74,31 @@ export const useBarangStore = defineStore({
     //---------------------------------------------------------------- Varian ----------------
 
     async readVarian(id_barang) {
-      const data = await request.get(`barang?id_barang=${id_barang}`);
-      if (data.status >= 200 && data.status < 300) {
-        this.rawVarians = data.data.varian;
-        // console.log('data.data', data.data)
-        // console.log('this.rawVarians', this.rawVarians)
+      try {
+        const data = await request.get(`barang?id_barang=${id_barang}`);
+        if (data.status >= 200 && data.status < 300) {
+          this.rawVarians = data.data.varian;
+          // console.log('data.data', data.data)
+          // console.log('this.rawVarians', this.rawVarians)
+        }
+      } catch (error) {
+        console.error(error);
       }
+
     },
 
     async addVarianGet() {
-      const data = await request.get("barang/addvarian");
-      if (data.status >= 200 && data.status < 300) {
-        return data.data;
-      } else {
-        console.log("error", data.status);
+      try {
+        const data = await request.get("barang/addvarian");
+        if (data.status >= 200 && data.status < 300) {
+          return data.data;
+        } else {
+          console.log("error", data.status);
+        }
+      } catch (error) {
+        console.error(error);
       }
+
     },
 
     async addVarian(varian) {
@@ -164,12 +179,17 @@ export const useBarangStore = defineStore({
     },
 
     async updateVarianGet(id_varian) {
-      const data = await request.get(`barang/editvar/${id_varian}`);
-      if (data.status >= 200 && data.status < 300) {
-        return data.data;
-      } else {
-        console.log("error", data.status);
+      try {
+        const data = await request.get(`barang/editvar/${id_varian}`);
+        if (data.status >= 200 && data.status < 300) {
+          return data.data;
+        } else {
+          console.log("error", data.status);
+        }
+      } catch (error) {
+        console.error(error);
       }
+
     },
 
     async updateVarian(varian) {
