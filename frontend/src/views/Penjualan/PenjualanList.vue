@@ -52,7 +52,7 @@
   <Modal size="modal-xl" :show="isInvoice" @hidden="isInvoice = false">
     <ModalHeader>
       <h2 class="font-medium text-base mr-auto">
-        Transaksi No Invoice <b>{{ no_invoice }}</b>
+        Transaksi No Invoice <b>{{ no_invoice_show }}</b>
       </h2>
 
       <div class="sm:w-auto flex mt-4 sm:mt-0 mr-0 ml-4 items-right">

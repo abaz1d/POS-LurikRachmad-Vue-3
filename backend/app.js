@@ -46,6 +46,8 @@ var barangRouter = require('./routes/barang')(pool);
 var penjualanRouter = require('./routes/penjualan')(pool);
 var pembelianRouter = require('./routes/pembelian')(pool);
 var usersRouter = require('./routes/users')(pool);
+var outletRouter = require('./routes/outlet')(pool);
+var pelangganRouter = require('./routes/pelanggan')(pool);
 
 //var produk = require('./routes/produk') (pool);
 
@@ -73,6 +75,9 @@ app.use('/barang', barangRouter);
 app.use('/penjualan', penjualanRouter);
 app.use('/pembelian', pembelianRouter);
 app.use('/users', usersRouter);
+app.use('/outlet', outletRouter);
+app.use('/pelanggan', pelangganRouter);
+
 
 //app.use('/produk', produk);
 

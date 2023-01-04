@@ -60,6 +60,7 @@ export const useSatuanStore = defineStore({
       let id_satuan = satuan.id_satuan;
       let nama_satuan = satuan.nama_satuan;
       let keterangan_satuan = satuan.keterangan_satuan;
+      console.log("id_satuan", satuan.id_satuan)
       this.rawItems = this.rawItems.map((item) => {
         if (item.id_satuan === id_satuan) {
           return satuan;
