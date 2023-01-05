@@ -257,7 +257,7 @@ export default {
       }
     },
   },
-  mounted() {
+  beforeCreate() {
     this.Supplier.readItem();
     // this.suppliers = this.Supplier.items
   },

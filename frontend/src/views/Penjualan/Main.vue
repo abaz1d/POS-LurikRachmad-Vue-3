@@ -600,12 +600,8 @@ export default {
       this.$refs.qrScanner.closeQrScanner();
     },
   },
-  async mounted() {
-    try {
-      await this.Penjualan.readItem();
-    } catch (error) {
-      console.error("Error: " + error)
-    }
+  beforeCreate() {
+    this.Penjualan.readItem();
   },
 };
 </script>

@@ -11,7 +11,7 @@
       <div class="grid grid-cols-6 mb-3 h-15">
 
         <div class="col text-center"><b>INVOICE</b></div>
-        <div class="col text-center"><b>TANGGAL PEJUALAN</b></div>
+        <div class="col text-center"><b>TANGGAL PEMBELIAN</b></div>
         <div class="col text-center"><b>TOTAL HARGA</b></div>
         <div class="col text-center"><b>TOTAL BAYAR</b></div>
         <div class="col text-center"><b>TOTAL KEMBALIAN</b></div>

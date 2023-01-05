@@ -28,7 +28,7 @@ export const usePembelianStore = defineStore({
           this.rawVarians = data.data.varian;
           this.rawPembelians = data.data.pembelian;
           this.rawDetails = data.data.details;
-          //console.log('data', data.data.varian)
+          console.log('data', data.data)
           // console.log('rawPembelians', this.rawPembelians)
           // return this.rawPembelians
         }

@@ -239,7 +239,7 @@ export default {
       }
     },
   },
-  mounted() {
+  beforeCreate() {
     this.Pelanggan.readItem();
     // this.pelanggans = this.Pelanggan.items
   },

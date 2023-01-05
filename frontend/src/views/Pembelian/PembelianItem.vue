@@ -111,13 +111,8 @@ export default {
     }
   },
   components: { TabelDetailList },
-  async beforeMount() {
-    try {
-      await this.Pembelian.readDetail(this.id_awal);
-    } catch (error) {
-      console.log(error);
-    }
-  
+  beforeCreate() {
+      this.Pembelian.readDetail(this.id_awal);
   },
 };
 </script>

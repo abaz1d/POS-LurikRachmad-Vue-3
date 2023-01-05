@@ -240,7 +240,7 @@ export default {
       }
     },
   },
-  mounted() {
+  beforeCreate() {
     this.Outlet.readItem();
     // this.outlets = this.Outlet.items
   },

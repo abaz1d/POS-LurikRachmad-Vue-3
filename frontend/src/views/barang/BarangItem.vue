@@ -24,9 +24,9 @@
       <div class="col mb-0" v-else>
         <div class="flex justify-center items-center">
           <button class="flex items-center mr-3" type="button" @click="
-  isEdit = true;
-isVarian = false;
-            ">
+            isEdit = true;
+          isVarian = false;
+          ">
             <CheckSquareIcon class="w-4 h-4 mr-1" /> Edit
           </button>
           <button class="flex items-center text-danger" type="button"
@@ -143,13 +143,9 @@ export default {
   //     console.log("centermt", this.id_awal)
   //      this.Barang.readVarian(this.id_awal)
   // },
-  async beforeMount() {
-    try {
-      await this.Barang.readVarian(this.id_awal);
-    } catch (error) {
-   console.error(error)
-    }
-   
+  beforeCreate() {
+    this.Barang.readVarian(this.id_awal);
+
   },
 };
 </script>

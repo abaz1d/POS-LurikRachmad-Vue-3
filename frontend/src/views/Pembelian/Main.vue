@@ -600,12 +600,8 @@ export default {
       this.$refs.qrScanner.closeQrScanner();
     },
   },
-  async mounted() {
-    try {
-      await this.Pembelian.readItem();
-    } catch (error) {
-      console.error("Error: " + error)
-    }
+  beforeCreate() {
+      this.Pembelian.readItem();
   },
 };
 </script>

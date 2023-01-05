@@ -222,7 +222,7 @@ export default {
       }
     },
   },
-  mounted() {
+  beforeCreate() {
     this.Satuan.readItem();
     // this.satuans = this.Satuan.items
   },
