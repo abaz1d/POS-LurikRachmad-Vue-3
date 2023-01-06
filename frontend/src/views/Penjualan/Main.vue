@@ -52,7 +52,7 @@
                                 <option value="kosong" disabled>
                                   &gt-- Pilih Items --&lt
                                 </option>
-                                <option v-for="varian in Penjualan.varians" :key="varian.id_barang" :varian="varian"
+                                <option v-for="varian in Penjualan.varians" :key="varian.id_varian" :varian="varian"
                                   :value="varian.id_varian">
                                   {{ varian.id_barang }} - {{ varian.nama_barang }} | {{ varian.id_varian }} - {{
     varian.nama_varian
@@ -382,7 +382,11 @@
     </div>
     <!-- BEGIN: Data List -->
     <div class="intro-y col-span-12 overflow-auto 2xl:overflow-visible">
-      <PenjualanList :penjualans="Penjualan.penjualans" />
+      <PenjualanList v-if="!isLoading" :penjualans="Penjualan.penjualans" />
+      <LoadingIcon v-if="isLoading" icon="three-dots" class="w-8 h-8" />
+      <Alert v-if="isError" class="alert-danger flex items-center mb-2">
+        <AlertOctagonIcon class="w-6 h-6 mr-2" /> Error loading penjualans: {{ this.error }}
+      </Alert>
     </div>
     <!-- END: Data List -->
   </div>
@@ -444,6 +448,8 @@ import { watch } from "vue";
 const addModal = ref(false);
 const deleteConfirmationModal = ref(false);
 const isModalScanner = ref(false);
+const isLoading = ref(false);
+const isError = ref(false);
 
 export default {
   setup() {
@@ -516,6 +522,8 @@ export default {
       addModal,
       deleteConfirmationModal,
       isModalScanner,
+      isLoading,
+      isError,
 
       no_invoice: "-",
       waktu: "",
@@ -600,8 +608,13 @@ export default {
       this.$refs.qrScanner.closeQrScanner();
     },
   },
-  beforeCreate() {
-    this.Penjualan.readItem();
+  created() {
+    this.isLoading = true
+    this.Penjualan.readItem().then(() => {
+      this.isLoading = false
+    }).catch((error) => {
+      this.error = true
+    });
   },
 };
 </script>

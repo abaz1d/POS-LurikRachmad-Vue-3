@@ -6,8 +6,8 @@
       class="block absolute stroke-2 stroke-red-500 bg-white rounded-full h-6 w-6 -right-3 -top-3 cursor-pointer" />
   </Alert>
 
-  <div class="block overflow-y-hidden overflow-x-auto mt-2 pt-4 md:min-w-min min-w-max">
-    <div class="bg-white dark:bg-slate-200 pt-3 rounded-t-lg dark:text-slate-800">
+  <div class="block overflow-y-hidden overflow-x-auto mt-2 pt-4">
+    <div class="bg-white dark:bg-slate-200 pt-3 rounded-t-lg dark:text-slate-800 md:min-w-min min-w-max">
       <div class="grid grid-cols-6 mb-3 h-15">
 
         <div class="col text-center"><b>INVOICE</b></div>
@@ -20,11 +20,15 @@
       <hr />
     </div>
     <div class="mt-6">
-      <AccordionGroupTable>
+      <AccordionGroupTable v-if="pembelians.length">
         <PembelianItem v-for="(pembelian, index) in pembelians" :id_awal="pembelians[0].no_invoice"
-          :pembelian="pembelian" :no="index + 1" @openDeleteModal="openDeleteModal" @openInvoice="openInvoice"
-          @openEditModal="openEditModal" />
+          :pembelian="pembelian" :no="index + 1" :key="pembelian.no_invoice" @openDeleteModal="openDeleteModal"
+          @openInvoice="openInvoice" @openEditModal="openEditModal" />
       </AccordionGroupTable>
+      <LoadingIcon v-if="pembelians.loading" icon="three-dots" class="w-8 h-8" />
+      <Alert v-if="pembelians.error" class="alert-danger flex items-center mb-2">
+        <AlertOctagonIcon class="w-6 h-6 mr-2" /> Error loading pembelians: {{ pembelians.error }}
+      </Alert>
     </div>
   </div>
 
@@ -121,18 +125,18 @@
                         <div class="flex w-full">
                           <div
                             class="z-30 rounded-l w-10 flex items-center justify-center bg-gray-100 hover:bg-gray-300 border text-gray-600 dark:bg-dark-1 dark:border-dark-4 -mr-1 cursor-pointer"
-                            @click=" isModalScanner = true; renderQrScanner();">
+                            @click="isModalScanner = true; renderQrScanner();">
                             <CameraIcon class="w-4 h-4" />
                           </div>
                           <TomSelect v-model="item_select" class="w-full" required>
                             <option value="kosong" disabled>
                               &gt-- Pilih Items --&lt
                             </option>
-                            <option v-for="varian in Pembelian.varians" :key="varian.id_barang" :varian="varian"
+                            <option v-for="varian in Pembelian.varians" :key="varian.id_varian" :varian="varian"
                               :value="varian.id_varian">
                               {{ varian.id_barang }} - {{ varian.nama_barang }} | {{ varian.id_varian }} - {{
-    varian.nama_varian
-}}
+                                varian.nama_varian
+                              }}
                             </option>
                           </TomSelect>
                         </div>
@@ -383,8 +387,8 @@
       <div class="p-5 text-center">
         <XCircleIcon class="w-16 h-16 text-danger mx-auto mt-3" />
         <div class="text-xl mt-5">Apakah Anda yakin akan menghapus <b> {{ itemDel.nama_varian }} </b> sebanyak <b> {{
-    itemDel.qty
-}}</b> ?</div>
+          itemDel.qty
+        }}</b> ?</div>
 
       </div>
       <div class="px-5 pb-8 text-center">
@@ -415,7 +419,7 @@
         <button type="button" @click="
   isModalScanner = false;
 closeQrScanner();
-          " class="btn btn-danger w-24">
+        " class="btn btn-danger w-24">
           Close
         </button>
       </div>

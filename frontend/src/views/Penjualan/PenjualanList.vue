@@ -20,11 +20,15 @@
       <hr />
     </div>
     <div class="mt-6">
-      <AccordionGroupTable>
+      <AccordionGroupTable v-if="penjualans.length">
         <PenjualanItem v-for="(penjualan, index) in penjualans" :id_awal="penjualans[0].no_invoice"
           :penjualan="penjualan" :no="index + 1" @openDeleteModal="openDeleteModal" @openInvoice="openInvoice"
           @openEditModal="openEditModal" />
       </AccordionGroupTable>
+      <LoadingIcon v-if="penjualans.loading" icon="three-dots" class="w-8 h-8" />
+      <Alert v-if="penjualans.error" class="alert-danger flex items-center mb-2">
+        <AlertOctagonIcon class="w-6 h-6 mr-2" /> Error loading penjualans: {{ penjualans.error }}
+      </Alert>
     </div>
   </div>
 
@@ -128,7 +132,7 @@
                             <option value="kosong" disabled>
                               &gt-- Pilih Items --&lt
                             </option>
-                            <option v-for="varian in Penjualan.varians" :key="varian.id_barang" :varian="varian"
+                            <option v-for="varian in Penjualan.varians" :key="varian.id_varian" :varian="varian"
                               :value="varian.id_varian">
                               {{ varian.id_barang }} - {{ varian.nama_barang }} | {{ varian.id_varian }} - {{
     varian.nama_varian

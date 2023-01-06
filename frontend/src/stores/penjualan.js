@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
 import { request } from "../utils/api";
-import qs from 'qs';
 
 export const usePenjualanStore = defineStore({
   id: "barang-keluar",
@@ -23,6 +22,9 @@ export const usePenjualanStore = defineStore({
   actions: {
     async readItem() {
       try {
+        this.rawVarians = { loading: true }
+        this.rawPenjualans = { loading: true }
+        this.rawDetails = { loading: true }
         const data = await request.get("penjualan");
         if (data.status >= 200 && data.status < 300) {
           this.rawVarians = data.data.varian;
@@ -34,6 +36,9 @@ export const usePenjualanStore = defineStore({
         }
       } catch (error) {
         console.error(error)
+        this.rawVarians = { error }
+        this.rawPenjualans = { error }
+        this.rawDetails = { error }
       }
 
     },
@@ -148,6 +153,7 @@ export const usePenjualanStore = defineStore({
           this.rawPrints = data.data.print.rows;
           // console.log('data.data', data.data, 'status', data.data.print.rows)
           // console.log('this.rawVarians', this.rawVarians)
+          return this.rawDetails
         }
       } catch (error) {
         console.error(error)

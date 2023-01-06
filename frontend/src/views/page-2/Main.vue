@@ -1,210 +1,448 @@
 <template>
-  <form action="" class="relative mx-auto w-max items-center justify-center">
-    <input type="search"
-      class="peer cursor-pointer relative z-10 h-12 w-12 rounded-full border bg-transparent pl-12 outline-none focus:w-full focus:cursor-text focus:pl-16 focus:pr-4 search__input form-control border-transparent" />
-    <!-- <svg xmlns="http://www.w3.org/2000/svg"
-      class="absolute inset-y-0 my-auto h-8 w-12 border-r border-transparent stroke-gray-500 px-3.5 peer-focus:border-slate-300 peer-focus:stroke-slate-500"
-      fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-    </svg> -->
-    <SearchIcon class="absolute inset-y-0 my-auto h-8 w-12 px-3.5 mr-0 search__icon dark:text-slate-500" />
-  </form>
-
-  <div class="search hidden sm:block">
-    <input type="text" class="search__input form-control border-transparent" placeholder="Search..."
-      @focus="showSearchDropdown" @blur="hideSearchDropdown" />
-    <SearchIcon class="search__icon dark:text-slate-500" />
-  </div>
-
-  <div class="intro-y flex items-center mt-8">
-    <h2 class="text-lg font-medium mr-auto">Page 2</h2>
-  </div>
-  <!-- BEGIN: Page Layout -->
-  <div class="intro-y box p-5 mt-5">Example page 2</div>
-  <!-- END: Page Layout -->
-
-  <AccordionGroup>
-    <AccordionItem>
-      <Accordion>
-        OpenSSL Essentials: Working with SSL Certificates, Private Keys
-      </Accordion>
-      <AccordionPanel class="text-slate-600 dark:text-slate-500 leading-relaxed">
-        Lorem Ipsum is simply dummy text of the printing and typesetting
-        industry. Lorem Ipsum has been the industry's standard dummy text ever
-        since the 1500s, when an unknown printer took a galley of type and
-        scrambled it to make a type specimen book. It has survived not only five
-        centuries, but also the leap into electronic typesetting, remaining
-        essentially unchanged.
-      </AccordionPanel>
-    </AccordionItem>
-
-    <AccordionItem>
-      <Accordion>
-        Understanding IP Addresses, Subnets, and CIDR Notation
-      </Accordion>
-      <AccordionPanel class="text-slate-600 dark:text-slate-500 leading-relaxed">
-        Lorem Ipsum is simply dummy text of the printing and typesetting
-        industry. Lorem Ipsum has been the industry's standard dummy text ever
-        since the 1500s, when an unknown printer took a galley of type and
-        scrambled it to make a type specimen book. It has survived not only five
-        centuries, but also the leap into electronic typesetting, remaining
-        essentially unchanged.
-      </AccordionPanel>
-    </AccordionItem>
-    <AccordionItem>
-      <Accordion> How To Troubleshoot Common HTTP Error Codes </Accordion>
-      <AccordionPanel class="text-slate-600 dark:text-slate-500 leading-relaxed">
-        Lorem Ipsum is simply dummy text of the printing and typesetting
-        industry. Lorem Ipsum has been the industry's standard dummy text ever
-        since the 1500s, when an unknown printer took a galley of type and
-        scrambled it to make a type specimen book. It has survived not only five
-        centuries, but also the leap into electronic typesetting, remaining
-        essentially unchanged.
-      </AccordionPanel>
-    </AccordionItem>
-    <AccordionItem>
-      <Accordion> An Introduction to Securing your Linux VPS </Accordion>
-      <AccordionPanel class="text-slate-600 dark:text-slate-500 leading-relaxed">
-        Lorem Ipsum is simply dummy text of the printing and typesetting
-        industry. Lorem Ipsum has been the industry's standard dummy text ever
-        since the 1500s, when an unknown printer took a galley of type and
-        scrambled it to make a type specimen book. It has survived not only five
-        centuries, but also the leap into electronic typesetting, remaining
-        essentially unchanged.
-      </AccordionPanel>
-    </AccordionItem>
-
-    <!-- BEGIN: Modal Toggle -->
-    <div class="text-center">
-      <a href="javascript:;" @click="
-        isModal = true;
-      renderQrScanner();
-      " class="btn btn-primary">QR Scanner</a>
+  <div class="intro-y flex flex-col sm:flex-row items-center mt-8">
+    <h2 class="text-lg font-medium mr-auto">Tabulator</h2>
+    <div class="w-full sm:w-auto flex mt-4 sm:mt-0">
+      <button class="btn btn-primary shadow-md mr-2">Add New Product</button>
+      <Dropdown class="ml-auto sm:ml-0">
+        <DropdownToggle class="btn px-2 box">
+          <span class="w-5 h-5 flex items-center justify-center">
+            <PlusIcon class="w-4 h-4" />
+          </span>
+        </DropdownToggle>
+        <DropdownMenu class="w-40">
+          <DropdownContent>
+            <DropdownItem>
+              <FilePlusIcon class="w-4 h-4 mr-2" /> New Category
+            </DropdownItem>
+            <DropdownItem>
+              <UserPlusIcon class="w-4 h-4 mr-2" /> New Group
+            </DropdownItem>
+          </DropdownContent>
+        </DropdownMenu>
+      </Dropdown>
     </div>
-    <!-- END: Modal Toggle -->
-    <!-- BEGIN: Modal Content -->
-
-    <Modal size="modal-xl" backdrop="static" :show="isModal" @hidden="isModal = false">
-      <ModalHeader>
-        <div class="text-center mt-2">
-          <h2 class="text-lg font-bold">QR Code Scanner</h2>
+  </div>
+  <!-- BEGIN: HTML Table Data -->
+  <div class="intro-y box p-5 mt-5">
+    <div class="flex flex-col sm:flex-row sm:items-end xl:items-start">
+      <form id="tabulator-html-filter-form" class="xl:flex sm:mr-auto">
+        <div class="sm:flex items-center sm:mr-4">
+          <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2">Field</label>
+          <select id="tabulator-html-filter-field" v-model="filter.field"
+            class="form-select w-full sm:w-32 2xl:w-full mt-2 sm:mt-0 sm:w-auto">
+            <option value="no_invoice">No Invoice</option>
+            <option value="tanggal_penjualan">Tanggal Penjualan</option>
+            <option value="remaining_stock">Remaining Stock</option>
+          </select>
         </div>
-      </ModalHeader>
-      <ModalBody class="px-5 py-10">
-        <div class="text-center">
-          <div class="mb-5">
-            <div class="intro-y justify-center flex mt-5">
-              <qrcode v-bind:qrbox="250" v-bind:fps="10" ref="qrScanner" />
-            </div>
-          </div>
-          <button type="button" @click="
-            isModal = false;
-          closeQrScanner();
-          " class="btn btn-danger w-24">
-            Close
+        <div class="sm:flex items-center sm:mr-4 mt-2 xl:mt-0">
+          <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2">Type</label>
+          <select id="tabulator-html-filter-type" v-model="filter.type"
+            class="form-select w-full mt-2 sm:mt-0 sm:w-auto">
+            <option value="like" selected>like</option>
+            <option value="=">=</option>
+            <option value="<">&lt;</option>
+            <option value="<=">&lt;=</option>
+            <option value=">">></option>
+            <option value=">=">>=</option>
+            <option value="!=">!=</option>
+          </select>
+        </div>
+        <div class="sm:flex items-center sm:mr-4 mt-2 xl:mt-0">
+          <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2">Value</label>
+          <input id="tabulator-html-filter-value" v-model="filter.value" type="text"
+            class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0" placeholder="Search..." />
+        </div>
+        <div class="mt-2 xl:mt-0">
+          <button id="tabulator-html-filter-go" type="button" class="btn btn-primary w-full sm:w-16" @click="onFilter">
+            Go
+          </button>
+          <button id="tabulator-html-filter-reset" type="button"
+            class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1" @click="onResetFilter">
+            Reset
           </button>
         </div>
-      </ModalBody>
-    </Modal>
-    <!-- END: Modal Content -->
-    <button type="button" @click="Satuan.readItem" class="btn btn-primary w-24">
-      Close
-    </button>
-    <li v-for="item in Satuan.items" :key="item.id_satuan">
-      {{ item.id_satuan }} - {{ item.nama_satuan }}
-    </li>
-    <AccordionItem>
-      <Accordion>
-        OpenSSL Essentials: Working with SSL Certificates, Private Keys
-        <svg data-accordion-icon class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd"
-            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-            clip-rule="evenodd"></path>
-        </svg>
-      </Accordion>
-      <AccordionPanel class="text-slate-600 dark:text-slate-500 leading-relaxed">
-        Lorem Ipsum is simply dummy text of the printing and typesetting
-        industry. Lorem Ipsum has been the industry's standard dummy text ever
-        since the 1500s, when an unknown printer took a galley of type and
-        scrambled it to make a type specimen book. It has survived not only five
-        centuries, but also the leap into electronic typesetting, remaining
-        essentially unchanged.
-      </AccordionPanel>
-    </AccordionItem>
-  </AccordionGroup>
-
-  <Alert class="animate-bounce alert-primary mb-2">
-    Awesome simple alert
-    <XCircleIcon
-      class="absolute stroke-2 stroke-red-500 bg-white rounded-full h-6 w-6 -right-3 -top-3 cursor-pointer" />
-  </Alert>
-
-
-  <div class="table w-full ...">
-    <div class="table-header-group ...">
-      <div class="table-row">
-        <div class="table-cell text-left ...">Song</div>
-        <div class="table-cell text-left ...">Artist</div>
-        <div class="table-cell text-left ...">Year</div>
+      </form>
+      <div class="flex mt-5 sm:mt-0">
+        <button id="tabulator-print" class="btn btn-outline-secondary w-1/2 sm:w-auto mr-2" @click="onPrint">
+          <PrinterIcon class="w-4 h-4 mr-2" /> Print
+        </button>
+        <Dropdown class="w-1/2 sm:w-auto">
+          <DropdownToggle class="btn btn-outline-secondary w-full sm:w-auto">
+            <FileTextIcon class="w-4 h-4 mr-2" /> Export
+            <ChevronDownIcon class="w-4 h-4 ml-auto sm:ml-2" />
+          </DropdownToggle>
+          <DropdownMenu class="w-40">
+            <DropdownContent>
+              <DropdownItem @click="onExportCsv">
+                <FileTextIcon class="w-4 h-4 mr-2" /> Export CSV
+              </DropdownItem>
+              <DropdownItem @click="onExportJson">
+                <FileTextIcon class="w-4 h-4 mr-2" /> Export JSON
+              </DropdownItem>
+              <DropdownItem @click="onExportXlsx">
+                <FileTextIcon class="w-4 h-4 mr-2" /> Export XLSX
+              </DropdownItem>
+              <DropdownItem @click="onExportHtml">
+                <FileTextIcon class="w-4 h-4 mr-2" /> Export HTML
+              </DropdownItem>
+            </DropdownContent>
+          </DropdownMenu>
+        </Dropdown>
       </div>
     </div>
-    <div class="table-row-group">
-      <div class="table-row">
-        <div class="table-cell ...">The Sliding Mr. Bones (Next Stop, Pottersville)</div>
-        <div class="table-cell ...">Malcolm Lockyer</div>
-        <div class="table-cell ...">1961</div>
-      </div>
-      <div class="table-row">
-        <div class="table-cell ...">Witchy Woman</div>
-        <div class="table-cell ...">The Eagles</div>
-        <div class="table-cell ...">1972</div>
-      </div>
-      <div class="table-row">
-        <div class="table-cell ...">Shining Star</div>
-        <div class="table-cell ...">Earth, Wind, and Fire</div>
-        <div class="table-cell ...">1975</div>
-      </div>
+    <div class="overflow-x-auto scrollbar-hidden">
+      <div id="tabulator" ref="tableRef" class="mt-5 table-report table-report--tabulator"></div>
     </div>
   </div>
+  <!-- END: HTML Table Data -->
 </template>
 
-<script>
-import qrcode from "../../components/qrcode/QrCode.vue";
-import { ref } from "vue";
-import { useSatuanStore } from "../../stores/satuan";
+<script setup>
+import $ from "jquery";
+import { usePenjualanStore } from "../../stores/penjualan";
+import { ref, reactive, onMounted, } from "vue";
+import xlsx from "xlsx";
+import { createIcons, icons } from "lucide";
+import { TabulatorFull as Tabulator } from 'tabulator-tables';
+import dom from "@left4code/tw-starter/dist/js/dom";
 
-const isModal = ref(false);
-// const haha = ref(true)
+const tableRef = ref();
+const tabulator = ref();
+const filter = reactive({
+  field: "no_invoice",
+  type: "like",
+  value: "",
+});
+var subTable
+var data2 = [];
 
-export default {
-  setup() {
-    const Satuan = useSatuanStore();
-    return { Satuan };
-  },
-  components: {
-    qrcode,
-  },
-  data() {
-    return {
-      isModal,
-    };
-  },
-  methods: {
-    renderQrScanner() {
-      this.$refs.qrScanner.renderQrScanner();
-      // console.log("qrScanner", this.$refs)
+const Penjualan = usePenjualanStore();
+
+const initTabulator = () => {
+  tabulator.value = new Tabulator(tableRef.value, {
+    // ajaxURL: "https://dummy-data.left4code.com",
+    // ajaxFiltering: true,
+    // ajaxSorting: true,
+    printAsHtml: true,
+    printStyled: true,
+    data: Penjualan.penjualans,
+    pagination: "remote",
+    paginationSize: 10,
+    paginationSizeSelector: [10, 20, 30, 40],
+    layout: "fitColumns",
+    responsiveLayout: "collapse",
+    placeholder: "No matching records found",
+    columns: [
+      {
+        title: "Hide Sub", headerSort: false, cellClick: function (e, row, formatterParams) {
+          const id = row.getData().id;
+          $(".subTable" + id + "").toggle();
+        }
+      },
+      {
+        formatter: "responsiveCollapse",
+        width: 40,
+        minWidth: 30,
+        hozAlign: "center",
+        resizable: false,
+        headerSort: false,
+      },
+
+      // For HTML table
+      {
+        title: "INVOICE",
+        minWidth: 200,
+        responsive: 0,
+        field: "no_invoice",
+        vertAlign: "middle",
+        print: false,
+        download: false,
+        formatter(cell) {
+          return `<div>
+                <div class="font-medium whitespace-nowrap">${cell.getData().no_invoice
+            }</div>
+              </div>`;
+        },
+      },
+      {
+        title: "TANGGAL PEJUALAN",
+        headerHozAlign: "center",
+        minWidth: 200,
+        field: "tanggal_penjualan",
+        hozAlign: "center",
+        vertAlign: "middle",
+        print: false,
+        download: false,
+        formatter(cell) {
+          return `<div>
+                <div class="font-medium whitespace-nowrap">${cell.getData().tanggal_penjualan
+            }</div>
+              </div>`;
+        },
+      },
+      {
+        title: "TOTAL HARGA",
+        minWidth: 200,
+        headerHozAlign: "center",
+        field: "total_harga_jual",
+        hozAlign: "right",
+        vertAlign: "middle",
+        print: false,
+        download: false,
+        formatter(cell) {
+          return `<div>
+                <div class="font-medium whitespace-nowrap">${cell.getData().total_harga_jual
+            }</div>
+              </div>`;
+        },
+      },
+      {
+        title: "TOTAL BAYAR",
+        minWidth: 200,
+        headerHozAlign: "center",
+        field: "total_bayar_jual",
+        hozAlign: "right",
+        vertAlign: "middle",
+        print: false,
+        download: false,
+        formatter(cell) {
+          return `<div>
+                <div class="font-medium whitespace-nowrap">${cell.getData().total_bayar_jual
+            }</div>
+              </div>`;
+        },
+      },
+      {
+        title: "KEMBALIAN",
+        headerHozAlign: "center",
+        minWidth: 200,
+        field: "kembalian_jual",
+        hozAlign: "right",
+        vertAlign: "middle",
+        print: false,
+        download: false,
+      },
+      {
+        title: "ACTIONS",
+        headerHozAlign: "center",
+        minWidth: 200,
+        field: "actions",
+        responsive: 1,
+        hozAlign: "center",
+        vertAlign: "middle",
+        print: false,
+        download: false,
+        formatter(cell) {
+          const a = dom(`<div class="flex lg:justify-center items-center">
+                <a onclick="console.log('edit')" class="flex items-center mr-3" href="javascript:;">
+                  <i data-lucide="check-square" class="w-4 h-4 mr-1"></i> Edit
+                </a>
+                <a onclick="console.log('hapus')" class="flex items-center text-danger" href="javascript:;">
+                  <i data-lucide="trash-2" class="w-4 h-4 mr-1"></i> Delete
+                </a>
+              </div>`);
+          dom(a).on("click", function () {
+            // On click actions
+            //console.log("click", cell.getData().no_invoice)
+          });
+
+          return a[0];
+        },
+      },
+
+      // For print format
+      {
+        title: "INVOICE",
+        field: "no_invoice",
+        visible: false,
+        print: true,
+        download: true,
+      },
+      {
+        title: "TANGGAL PENJUALAN",
+        field: "tanggal_penjualan",
+        visible: false,
+        print: true,
+        download: true,
+      },
+      {
+        title: "TOTAL HARGA",
+        field: "total_harga_jual",
+        visible: false,
+        print: true,
+        download: true,
+      },
+      {
+        title: "TOTAL BAYAR",
+        field: "total_bayar_jual",
+        visible: false,
+        print: true,
+        download: true,
+      },
+      {
+        title: "KEMBALIAN",
+        field: "kembalian_jual",
+        visible: false,
+        print: true,
+        download: true,
+      },
+    ],
+    rowFormatter: function (row, e) {
+      //create and style holder elements
+      var holderEl = document.createElement("div");
+      var tableEl = document.createElement("div");
+      holderEl.style.display = "none"
+
+      const id = row.getData().no_invoice;
+
+      holderEl.style.boxSizing = "border-box";
+      holderEl.style.padding = "10px 10px 10px 10px";
+      holderEl.style.borderTop = "1px solid #333";
+      holderEl.style.borderBotom = "1px solid #333";
+      holderEl.style.background = "#ddd";
+      holderEl.setAttribute('class', "subTable" + id + "");
+
+
+      tableEl.style.border = "1px solid #333";
+      tableEl.style.display = "none"
+      tableEl.setAttribute('class', "subTable" + id + "");
+
+      holderEl.appendChild(tableEl);
+
+      row.getElement().appendChild(holderEl);
+
+      subTable = new Tabulator(tableEl, {
+        layout: "fitColumns",
+        data: data2,
+        columns: [
+          {
+            title: "ID",
+            headerHozAlign: "center",
+            minWidth: 200,
+            field: "id_varian",
+            hozAlign: "right",
+            vertAlign: "middle",
+            print: false,
+            download: false,
+          },
+          {
+            title: "Nama",
+            field: "nama_varian"
+          },
+          {
+            title: "Qty",
+            field: "qty"
+          },
+        ]
+      })
     },
-    closeQrScanner() {
-      this.$refs.qrScanner.closeQrScanner();
-    },
-  },
-  mounted() {
-    this.Satuan.readItem();
-  },
+  });
+  tabulator.value.on("renderComplete", function () {
+    //subTable.redraw();
+    createIcons({
+      icons,
+      "stroke-width": 1.5,
+      nameAttr: "data-lucide",
+
+    });
+  });
+  tabulator.value.on("rowClick", async function (e, row) {
+    //e - the tap event object
+    //row - row component
+    const id = row.getData().no_invoice;
+    try {
+      
+      await Penjualan.readDetail(id).then(
+        (data) => {
+          subTable.replaceData(data)
+          tabulator.value.redraw();
+          data2 = data
+          console.log("row1", subTable.getData());
+         
+        }).catch((e) => console.error(e));
+    } catch (error) {
+      alert(error);
+    }
+    $(".subTable" + id + "").toggle();
+    console.log("row2", tabulator.value);
+  });
 };
-</script>
 
+
+
+// tabulator.value = new Tabulator(tableRef.value, {
+//   data: Penjualan.penjualans, //link data to table
+//   reactiveData: true, //enable data reactivity
+//   columns: [], //define table columns
+// });
+
+// Redraw table onresize
+const reInitOnResizeWindow = () => {
+  window.addEventListener("resize", () => {
+    tabulator.value.redraw();
+    createIcons({
+      icons,
+      "stroke-width": 1.5,
+      nameAttr: "data-lucide",
+    });
+  });
+};
+
+// Filter function
+const onFilter = () => {
+  tabulator.value.setFilter(filter.field, filter.type, filter.value);
+};
+
+// On reset filter
+const onResetFilter = () => {
+  filter.field = "no_invoice";
+  filter.type = "like";
+  filter.value = "";
+  onFilter();
+};
+
+// Export
+const onExportCsv = () => {
+  tabulator.value.download("csv", "data.csv");
+};
+
+const onExportJson = () => {
+  tabulator.value.download("json", "data.json");
+};
+
+const onExportXlsx = () => {
+  const win = window;
+  win.XLSX = xlsx;
+  tabulator.value.download("xlsx", "data.xlsx", {
+    sheetName: "Products",
+  });
+};
+
+const onExportHtml = () => {
+  tabulator.value.download("html", "data.html", {
+    style: true,
+  });
+};
+
+// Print
+const onPrint = () => {
+  tabulator.value.print();
+};
+
+// onMounted(() => {
+//   initTabulator();
+//   reInitOnResizeWindow();
+// });
+
+onMounted(() => {
+  Penjualan.readItem().then(() => {
+    initTabulator();
+    reInitOnResizeWindow();
+  }).catch((error) => {
+  });
+});
+</script>
 <style scoped>
 
 </style>

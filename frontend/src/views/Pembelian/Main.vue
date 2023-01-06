@@ -52,7 +52,7 @@
                                 <option value="kosong" disabled>
                                   &gt-- Pilih Items --&lt
                                 </option>
-                                <option v-for="varian in Pembelian.varians" :key="varian.id_barang" :varian="varian"
+                                <option v-for="varian in Pembelian.varians" :key="varian.id_varian" :varian="varian"
                                   :value="varian.id_varian">
                                   {{ varian.id_barang }} - {{ varian.nama_barang }} | {{ varian.id_varian }} - {{
     varian.nama_varian
@@ -600,7 +600,7 @@ export default {
       this.$refs.qrScanner.closeQrScanner();
     },
   },
-  beforeCreate() {
+  created() {
       this.Pembelian.readItem();
   },
 };

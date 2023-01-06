@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
 import { request } from "../utils/api";
-import qs from 'qs';
 
 export const usePembelianStore = defineStore({
   id: "barang-keluar",
@@ -23,17 +22,23 @@ export const usePembelianStore = defineStore({
   actions: {
     async readItem() {
       try {
+        this.rawVarians = { loading: true }
+        this.rawPembelians = { loading: true }
+        this.rawDetails = { loading: true }
         const data = await request.get("pembelian");
         if (data.status >= 200 && data.status < 300) {
           this.rawVarians = data.data.varian;
           this.rawPembelians = data.data.pembelian;
           this.rawDetails = data.data.details;
-          console.log('data', data.data)
+          // console.log('data', data.data)
           // console.log('rawPembelians', this.rawPembelians)
           // return this.rawPembelians
         }
       } catch (error) {
         console.error(error)
+        this.rawVarians = { error }
+        this.rawPembelians = { error }
+        this.rawDetails = { error }
       }
 
     },
@@ -97,7 +102,7 @@ export const usePembelianStore = defineStore({
         const data = await request.get(`/pembelian/details/${no_invoice}`)
         //console.log('data', data.data)
         this.rawPembelianDetail = data.data;
-        //console.log('rawPembelianDetail', this.rawPembelianDetail, this.rawDetails)
+        //console.log('rawPembelianDetail', data.data)
         return data.data;
       } catch (error) {
         console.error(error);
