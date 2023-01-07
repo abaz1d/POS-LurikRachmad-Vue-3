@@ -129,10 +129,7 @@
     </div>
   </div>
 
-  <Modal
-    :show="deleteConfirmationModal"
-    @hidden="deleteConfirmationModal = false"
-  >
+  <Modal :show="deleteConfirmationModal" @hidden="deleteConfirmationModal = false">
     <ModalBody class="p-0">
       <div class="p-5 text-center">
         <XCircleIcon class="w-16 h-16 text-danger mx-auto mt-3" />
@@ -143,23 +140,15 @@
         </div>
       </div>
       <div class="px-5 pb-8 text-center">
-        <button
-          type="button"
-          @click="deleteConfirmationModal = false"
-          class="btn btn-outline-secondary w-24 mr-1"
-        >
+        <button type="button" @click="deleteConfirmationModal = false" class="btn btn-outline-secondary w-24 mr-1">
           Batal
         </button>
-        <button
-          type="button"
-          class="btn btn-danger w-24"
-          @click="
-            (e) => {
-              e.preventDefault();
-              deleteSatuan(id_satuan);
-            }
-          "
-        >
+        <button type="button" class="btn btn-danger w-24" @click="
+  (e) => {
+    e.preventDefault();
+    deleteSatuan(id_satuan);
+  }
+        ">
           Hapus
         </button>
       </div>
@@ -269,7 +258,8 @@ export default {
           // For HTML table
           {
             title: "ID SATUAN",
-            minWidth: 200,
+            // minWidth: 200,
+            maxWidth: 200,
             responsive: 0,
             field: "id_satuan",
             vertAlign: "middle",
@@ -300,12 +290,16 @@ export default {
           },
           {
             title: "KETERANGAN SATUAN",
-            minWidth: 200,
+            minWidth: 250,
             headerHozAlign: "center",
             field: "keterangan_satuan",
             hozAlign: "right",
             vertAlign: "middle",
             print: false,
+            editor: "textarea",
+            editable: false, cellDblClick: function (e, cell) {
+              cell.edit(true);
+            },
             download: false,
             formatter(cell) {
               return `<div>
@@ -326,27 +320,23 @@ export default {
             download: false,
             formatter(cell) {
               const a = dom(`<div class="flex lg:justify-center items-center">
-                <a onclick="console.log('edit',cell.getData().id_satuan, cell.getData().nama_satuan)" class="flex items-center mr-3" href="javascript:;">
+                <a id="edit" class="flex items-center mr-3" href="javascript:;">
                   <i data-lucide="check-square" class="w-4 h-4 mr-1"></i> Edit
                 </a>
-                <a onclick="openModal(cell.id_satuan, cell.nama_satuan)" class="flex items-center text-danger" href="javascript:;">
+                <a id="delete" class="flex items-center text-danger" href="javascript:;">
                   <i data-lucide="trash-2" class="w-4 h-4 mr-1"></i> Delete
                 </a>
               </div>`);
-              const b = dom(`<div class="flex lg:justify-center items-center">
-                <a onclick="console.log('edit',cell.getData().id_satuan, cell.getData().nama_satuan)" class="flex items-center mr-3" href="javascript:;">
-                  <i data-lucide="check-square" class="w-4 h-4 mr-1"></i> Edit
-                </a>
-                <a onclick="openModal(cell.id_satuan, cell.nama_satuan)" class="flex items-center text-danger" href="javascript:;">
-                  <i data-lucide="trash-2" class="w-4 h-4 mr-1"></i> Delete
-                </a>
-              </div>`);
-              dom(a).on("click", function () {
+              dom(a).on("click", "a", function (e) {
                 // On click actions
-                //console.log("click", cell.getData().id_satuan)
+                if (e.id === "edit") {
+                  alert("edit" + cell.getData().id_satuan);
+                } else {
+                  alert("delete" + cell.getData().id_satuan);
+                }
               });
+              return a[0]
 
-              return a[0] & b[0];
             },
           },
 
@@ -382,6 +372,10 @@ export default {
           nameAttr: "data-lucide",
 
         });
+      });
+      this.tabulator.on("cellEdited", function (cell) {
+        //cell - cell component
+        console.log("aku cengar cengir", cell.getData())
       });
     },
     reInitOnResizeWindow() {
@@ -443,9 +437,9 @@ export default {
     });
     // this.satuans = this.Satuan.items
   },
-  mounted() {
-    this.initTabulator();
-    this.reInitOnResizeWindow();
-  }
+  // mounted() {
+  //   this.initTabulator();
+  //   this.reInitOnResizeWindow();
+  // }
 };
 </script>

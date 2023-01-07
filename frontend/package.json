@@ -30,7 +30,6 @@
     "@vuelidate/core": "^2.0.0-alpha.12",
     "@vuelidate/validators": "^2.0.0-alpha.11",
     "axios": "^1.2.0",
-    "bootstrap": "^5.2.3",
     "chart.js": "^3.7.1",
     "dayjs": "^1.10.4",
     "dotenv": "^16.0.3",
