@@ -58,7 +58,7 @@ export const useSupplierStore = defineStore({
         console.error(e);
       }
     },
-    removeItem(id_supplier) {
+    async removeItem(id_supplier) {
       this.rawItems = this.rawItems.filter(
         (item) => item.id_supplier !== id_supplier
       );
@@ -71,7 +71,8 @@ export const useSupplierStore = defineStore({
         })
         .catch((e) => console.error(e));
     },
-    updateItem(supplier) {
+    async updateItem(supplier) {
+      //console.log(`Updating` ,supplier.id_supplier)
       let id_supplier = supplier.id_supplier;
       let nama_supplier = supplier.nama_supplier;
       let alamat_supplier = supplier.alamat_supplier;
@@ -88,7 +89,7 @@ export const useSupplierStore = defineStore({
         alamat_supplier,
         telepon_supplier,
         email_supplier,
-      });
+      }).catch((e) => console.error(e));
     },
   },
 });

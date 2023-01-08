@@ -151,9 +151,19 @@ export const usePenjualanStore = defineStore({
         if (data.status >= 200 && data.status < 300) {
           this.rawDetails = data.data.details;
           this.rawPrints = data.data.print.rows;
+
+          this.rawDetails.map((detail) => {
+            this.rawPenjualans = this.rawPenjualans.map((penjualan) => {
+              if (detail.no_invoice === penjualan.no_invoice) {
+                return { ...penjualan, serviceHistory: this.rawDetails }
+              }
+              return penjualan
+            })
+            return detail
+          })
           // console.log('data.data', data.data, 'status', data.data.print.rows)
           // console.log('this.rawVarians', this.rawVarians)
-          return this.rawDetails
+          return this.rawPenjualans
         }
       } catch (error) {
         console.error(error)

@@ -43,7 +43,7 @@ export const useSatuanStore = defineStore({
         console.error(e);
       }
     },
-    removeItem(id_satuan) {
+    async removeItem(id_satuan) {
       this.rawItems = this.rawItems.filter(
         (item) => item.id_satuan !== id_satuan
       );
@@ -56,7 +56,7 @@ export const useSatuanStore = defineStore({
         })
         .catch((e) => console.error(e));
     },
-    updateItem(satuan) {
+    async updateItem(satuan) {
       let id_satuan = satuan.id_satuan;
       let nama_satuan = satuan.nama_satuan;
       let keterangan_satuan = satuan.keterangan_satuan;
@@ -70,7 +70,7 @@ export const useSatuanStore = defineStore({
       request.post(`satuan/edit/${id_satuan}`, {
         nama_satuan,
         keterangan_satuan,
-      });
+      }).catch((e) => console.error(e));
     },
   },
 });

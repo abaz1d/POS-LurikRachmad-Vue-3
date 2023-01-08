@@ -55,7 +55,7 @@ export const useOutletStore = defineStore({
         console.error(e);
       }
     },
-    removeItem(id_outlet) {
+    async removeItem(id_outlet) {
       this.rawItems = this.rawItems.filter(
         (item) => item.id_outlet !== id_outlet
       );
@@ -68,7 +68,7 @@ export const useOutletStore = defineStore({
         })
         .catch((e) => console.error(e));
     },
-    updateItem(outlet) {
+    async updateItem(outlet) {
       let id_outlet = outlet.id_outlet;
       let nama_outlet = outlet.nama_outlet;
       let alamat_outlet = outlet.alamat_outlet;
@@ -83,7 +83,7 @@ export const useOutletStore = defineStore({
         nama_outlet,
         alamat_outlet,
         kontak_outlet,
-      });
+      }) .catch((e) => console.error(e));
     },
   },
 });

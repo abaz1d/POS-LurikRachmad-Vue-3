@@ -118,12 +118,100 @@ var subTable
 var data2 = [];
 
 const Penjualan = usePenjualanStore();
+//create row popup contents
+// var rowPopupFormatter = function(e, row, onRendered){
+//     var data = [{
+//             "id_detail_jual": 279,
+//             "no_invoice": "INV-20230103-S172",
+//             "id_varian": "VR-0040",
+//             "qty": 1,
+//             "harga_detail_jual": "2000.00",
+//             "total_harga_detail_jual": "2000.00",
+//             "nama_varian": "Coba 2"
+//         },
+//         {
+//             "id_detail_jual": 279,
+//             "no_invoice": "INV-20230103-S172",
+//             "id_varian": "VR-0040",
+//             "qty": 1,
+//             "harga_detail_jual": "2000.00",
+//             "total_harga_detail_jual": "2000.00",
+//             "nama_varian": "Coba 2"
+//         }]
+//     container = document.createElement("div"),
+//     contents = "<strong style='font-size:1.2em;'>Row Details</strong><br/><ul style='padding:0;  margin-top:10px; margin-bottom:0;'>";
+//     contents += "<li><strong>Name:</strong> " + data[0].id_varian + "</li>";
+//     contents += "<li><strong>Gender:</strong> " + data[0].qty + "</li>";
+//     contents += "<li><strong>Favourite Colour:</strong> " + data[0].total_harga_detail_jual + "</li>";
+//     contents += "</ul>";
+
+//     container.innerHTML = contents;
+
+//     return container;
+// };
+// var krowPopupFormatter = function(e, row, onRendered){
+//     var data = [{
+//             "id_detail_jual": 279,
+//             "no_invoice": "INV-20230103-S172",
+//             "id_varian": "VR-0040",
+//             "qty": 1,
+//             "harga_detail_jual": "2000.00",
+//             "total_harga_detail_jual": "2000.00",
+//             "nama_varian": "Coba 2"
+//         },
+//         {
+//             "id_detail_jual": 279,
+//             "no_invoice": "INV-20230103-S172",
+//             "id_varian": "VR-0040",
+//             "qty": 1,
+//             "harga_detail_jual": "2000.00",
+//             "total_harga_detail_jual": "2000.00",
+//             "nama_varian": "Coba 2"
+//         }]
+//     container = new Tabulator(tableEl, {
+//         layout: "fitColumns",
+//         data: data,
+//         columns: [
+//           {
+//             formatter: "responsiveCollapse",
+//             width: 40,
+//             minWidth: 30,
+//             hozAlign: "center",
+//             resizable: false,
+//             headerSort: false,
+//           },
+//           {
+//             title: "ID",
+//             headerHozAlign: "center",
+//             minWidth: 200,
+//             field: "id_varian",
+//             hozAlign: "right",
+//             vertAlign: "middle",
+//             print: false,
+//             download: false,
+//           },
+//           {
+//             title: "Nama",
+//             field: "nama_varian"
+//           },
+//           {
+//             title: "Qty",
+//             field: "qty"
+//           },
+//         ]
+//       })
+
+//     return container;
+// };
+
+
 
 const initTabulator = () => {
   tabulator.value = new Tabulator(tableRef.value, {
     // ajaxURL: "https://dummy-data.left4code.com",
     // ajaxFiltering: true,
     // ajaxSorting: true,
+    //rowClickPopup:rowPopupFormatter, //add click popup to row
     printAsHtml: true,
     printStyled: true,
     data: Penjualan.penjualans,
@@ -134,12 +222,6 @@ const initTabulator = () => {
     responsiveLayout: "collapse",
     placeholder: "No matching records found",
     columns: [
-      {
-        title: "Hide Sub", headerSort: false, cellClick: function (e, row, formatterParams) {
-          const id = row.getData().id;
-          $(".subTable" + id + "").toggle();
-        }
-      },
       {
         formatter: "responsiveCollapse",
         width: 40,
@@ -235,10 +317,10 @@ const initTabulator = () => {
         download: false,
         formatter(cell) {
           const a = dom(`<div class="flex lg:justify-center items-center">
-                <a onclick="console.log('edit')" class="flex items-center mr-3" href="javascript:;">
+                <a id="edit" class="flex items-center mr-3" href="javascript:;">
                   <i data-lucide="check-square" class="w-4 h-4 mr-1"></i> Edit
                 </a>
-                <a onclick="console.log('hapus')" class="flex items-center text-danger" href="javascript:;">
+                <a id="delete" class="flex items-center text-danger" href="javascript:;">
                   <i data-lucide="trash-2" class="w-4 h-4 mr-1"></i> Delete
                 </a>
               </div>`);
@@ -314,8 +396,16 @@ const initTabulator = () => {
 
       subTable = new Tabulator(tableEl, {
         layout: "fitColumns",
-        data: data2,
+        data: row.getData().serviceHistory,
         columns: [
+          {
+            formatter: "responsiveCollapse",
+            width: 40,
+            minWidth: 30,
+            hozAlign: "center",
+            resizable: false,
+            headerSort: false,
+          },
           {
             title: "ID",
             headerHozAlign: "center",
@@ -350,22 +440,32 @@ const initTabulator = () => {
   tabulator.value.on("rowClick", async function (e, row) {
     //e - the tap event object
     //row - row component
+    var rowIndex = tabulator.value.getRowPosition(row)
     const id = row.getData().no_invoice;
     try {
-      
+
       await Penjualan.readDetail(id).then(
         (data) => {
-          subTable.replaceData(data)
-          tabulator.value.redraw();
-          data2 = data
-          console.log("row1", subTable.getData());
+          // row.update({"details": data});
+          // //tabulator.value.updateRow(1, { no_invoice: id, details: data })
+          console.log("row1", data, tabulator.value.getData());
+          tabulator.value.replaceData(data)
+          //tabulator.value.redraw();
+          //subTable.redraw();
+          //data2 = data
+          // //tabulator.value.addRow({}, true);
+
+          
          
+
         }).catch((e) => console.error(e));
+        setTimeout(() => ($(".subTable" + id + "").toggle()), 1000);
+          
+          console.log("row2",tabulator.value.getData(), subTable.getData());
     } catch (error) {
       alert(error);
     }
-    $(".subTable" + id + "").toggle();
-    console.log("row2", tabulator.value);
+
   });
 };
 

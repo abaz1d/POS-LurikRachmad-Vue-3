@@ -1,59 +1,50 @@
 <template>
   <div class="intro-y flex flex-col sm:flex-row items-center mt-8">
-    <h2 class="text-lg font-medium mr-auto">Tabulator</h2>
+    <h2 class="text-lg font-medium mr-auto">Satuan</h2>
     <div class="w-full sm:w-auto flex mt-4 sm:mt-0">
-      <button class="btn btn-primary shadow-md mb-3 mr-2 pr-5" @click="addModal = true">
+      <button class="btn btn-primary shadow-md mb-3 mr-2 pr-5" @click="modal_utama = true">
         <PlusIcon class="w-4 h-4 mr-2" />
         <p class="hidden xl:block mr-1">Satuan</p> Baru
       </button>
 
       <!-- BEGIN: Modal Content -->
-      <Modal :show="addModal" @hidden="addModal = false">
+      <Modal backdrop="static" :show="modal_utama" @hidden="modal_utama = false">
         <ModalHeader>
-          <h2 class="font-medium text-base mr-auto">Tambah Satuan</h2>
+          <h2 class="font-medium text-base mr-auto">
+            <p class="mx-auto" v-if="isEdit">Edit Satuan {{ id_satuan }}</p>
+            <p class="mx-auto" v-else>Tambah Satuan</p>
+          </h2>
         </ModalHeader>
         <ModalBody class="grid grid-cols-12 gap-4 gap-y-3">
-          <form @submit.prevent="addSatuan" id="addSatuanForm" class="col-span-12">
+          <form @submit.prevent="isEdit ? updateSatuan() : addSatuan()" id="satuanForm" class="col-span-12">
             <div class="col-span-12 mb-5">
               <label for="pos-form-1" class="form-label">Nama Satuan</label>
               <input id="pos-form-1" type="text" class="form-control flex-1" placeholder="Masukan Nama Satuan"
-                v-model="inputNamaSatuan" required />
+                v-model="nama_satuan" required />
             </div>
             <div class="col-span-12">
               <label for="pos-form-5" class="form-label">Keterangan Satuan</label>
               <textarea id="pos-form-5" class="form-control" placeholder="Masukan Keterangan Satuan"
-                v-model="inputKeteranganSatuan" required />
+                v-model="keterangan_satuan" required />
               <small class="text-grey-800 text-xs">Contoh : Digunakan untuk mewakili satuan stok ketersediaan
                 barang dalam bentuk benda padat</small>
             </div>
           </form>
         </ModalBody>
         <ModalFooter class="text-right">
-          <button type="button" @click="addModal = false" class="btn btn-outline-secondary w-32 mr-1">
+          <button type="button"
+            @click="modal_utama = false; id_satuan = ''; nama_satuan = ''; keterangan_satuan = ''; isEdit = false;"
+            class="btn btn-outline-secondary w-32 mr-1">
             Cancel
           </button>
-          <button type="submit" form="addSatuanForm" class="btn btn-primary w-32">
+          <button type="submit" form="satuanForm" class="btn btn-primary w-32">
             Simpan
           </button>
         </ModalFooter>
       </Modal>
-      <Dropdown class="ml-auto sm:ml-0">
-        <DropdownToggle class="btn px-2 box">
-          <span class="w-5 h-5 flex items-center justify-center">
-            <PlusIcon class="w-4 h-4" />
-          </span>
-        </DropdownToggle>
-        <DropdownMenu class="w-40">
-          <DropdownContent>
-            <DropdownItem>
-              <FilePlusIcon class="w-4 h-4 mr-2" /> New Category
-            </DropdownItem>
-            <DropdownItem>
-              <UserPlusIcon class="w-4 h-4 mr-2" /> New Group
-            </DropdownItem>
-          </DropdownContent>
-        </DropdownMenu>
-      </Dropdown>
+      <a href="" class="ml-auto sm:ml-0 btn px-2 h-10 box flex items-center text-primary">
+        <RefreshCcwIcon class="w-4 h-4 sm:mr-3 sm:m-0 m-2" /><p class="sm:block hidden">Reload Data</p> 
+      </a>
     </div>
   </div>
   <!-- BEGIN: HTML Table Data -->
@@ -159,17 +150,22 @@
 
 <script>
 import { useSatuanStore } from "../../stores/satuan";
-import SatuanList from "./SatuanList.vue";
+// import SatuanList from "./SatuanList.vue";
 import { ref, reactive } from "vue";
 import xlsx from "xlsx";
 import { createIcons, icons } from "lucide";
 import { TabulatorFull as Tabulator } from 'tabulator-tables';
 import dom from "@left4code/tw-starter/dist/js/dom";
+import moment from "moment";
 
 // const Satuan = useSatuanStore();
-const addModal = ref(false);
-const inputNamaSatuan = ref("");
-const inputKeteranganSatuan = ref("");
+const modal_utama = ref(false);
+const id_satuan = ref("");
+const nama_satuan = ref("");
+const keterangan_satuan = ref("");
+const deleteConfirmationModal = ref(false);
+const isEdit = ref(false);
+
 // const tableRef = ref("");
 const tabulator = ref();
 const filter = reactive({
@@ -178,56 +174,74 @@ const filter = reactive({
   value: "",
 });
 
+
+
 export default {
   setup() {
     const Satuan = useSatuanStore();
-    return { Satuan };
+    return { Satuan, moment, };
   },
-  components: {
-    SatuanList,
-  },
+  // components: {
+  //   SatuanList,
+  // },
   data() {
     return {
-      deleteConfirmationModal: false,
-      id_satuan: "",
-      nama_satuan: "",
+      deleteConfirmationModal,
+      id_satuan,
+      nama_satuan,
 
-      addModal,
-      inputNamaSatuan,
-      inputKeteranganSatuan,
+      modal_utama,
+      keterangan_satuan,
       //tableRef,
       tabulator,
-      filter
+      filter,
+      isEdit
     };
   },
   methods: {
     addSatuan() {
       try {
-        // console.log("addSatuan", inputNamaSatuan.value, inputKeteranganSatuan.value)
-        this.Satuan.addItem(inputNamaSatuan.value, inputKeteranganSatuan.value).then(() => {
-          this.addModal = false;
+        // console.log("addSatuan", nama_satuan.value, keterangan_satuan.value)
+        this.Satuan.addItem(nama_satuan.value, keterangan_satuan.value).then(() => {
+          this.modal_utama = false;
           this.initTabulator();
         })
-        inputNamaSatuan.value = "";
-        inputKeteranganSatuan.value = "";
+        nama_satuan.value = "";
+        keterangan_satuan.value = "";
 
       } catch (error) {
         alert("Gagal Tambah Data", error);
       }
     },
+    updateSatuan() {
+      try {
+        this.Satuan.updateItem({
+          id_satuan: this.id_satuan,
+          nama_satuan: this.nama_satuan,
+          keterangan_satuan: this.keterangan_satuan,
+        }).then(() => {
+          this.initTabulator();
+          this.isEdit = false;
+          this.modal_utama = false;
+          this.id_satuan = ""
+          this.nama_satuan = ""
+          this.keterangan_satuan = ""
+        });
 
-    openModal(id_satuan, nama_satuan) {
-      // console.log(id_satuan, nama_satuan, 'emit')
-      this.nama_satuan = nama_satuan;
-      this.id_satuan = id_satuan;
-      this.deleteConfirmationModal = true;
+      } catch (error) {
+        alert(`Gagal Update data ${id_satuan}`, error);
+      }
     },
     deleteSatuan(id_satuan) {
       try {
-        this.Satuan.removeItem(id_satuan);
-        this.deleteConfirmationModal = false;
+        this.Satuan.removeItem(id_satuan).then(() => {
+          this.initTabulator();
+          this.deleteConfirmationModal = false;
+          this.id_satuan = "";
+          this.nama_satuan = "";
+        });
       } catch (error) {
-        alert(`Gagal Delete Satuan ${id_satuan}`, error);
+        alert(`Gagal Delete Satuan ${id_satuan}` + error);
       }
     },
 
@@ -236,15 +250,18 @@ export default {
         // ajaxURL: "https://dummy-data.left4code.com",
         // ajaxFiltering: true,
         // ajaxSorting: true,
+        //ajaxLoaderLoading:"<span>Loading Data</span>",
         printAsHtml: true,
         printStyled: true,
+        printHeader: `<h1 class='text-2xl p-2 m-2 text-center border-y-2 border-black'>Tabel Satuan<h1>`,
+        printFooter: `<h2 class='p-2 m-2 text-center mt-4'>${moment(Date.now()).format("DD MMM YYYY HH:SS")}<h2>`,
         data: this.Satuan.items,
         pagination: "remote",
         paginationSize: 10,
-        paginationSizeSelector: [10, 20, 30, 40],
+        paginationSizeSelector: [10, 20, 30, 40, 50],
         layout: "fitColumns",
         responsiveLayout: "collapse",
-        placeholder: "No matching records found",
+        placeholder: "Tida ada Data di temukan",
         columns: [
           {
             formatter: "responsiveCollapse",
@@ -280,6 +297,10 @@ export default {
             hozAlign: "center",
             vertAlign: "middle",
             print: false,
+            editor: "input",
+            editable: false, cellDblClick: function (e, cell) {
+              cell.edit(true);
+            },
             download: false,
             formatter(cell) {
               return `<div>
@@ -290,10 +311,10 @@ export default {
           },
           {
             title: "KETERANGAN SATUAN",
-            minWidth: 250,
+            minWidth: 500,
             headerHozAlign: "center",
             field: "keterangan_satuan",
-            hozAlign: "right",
+            hozAlign: "center",
             vertAlign: "middle",
             print: false,
             editor: "textarea",
@@ -327,12 +348,21 @@ export default {
                   <i data-lucide="trash-2" class="w-4 h-4 mr-1"></i> Delete
                 </a>
               </div>`);
+              // const func = deleteConfirmationModal
               dom(a).on("click", "a", function (e) {
                 // On click actions
                 if (e.id === "edit") {
-                  alert("edit" + cell.getData().id_satuan);
+                  //alert("edit" + cell.getData().id_satuan);
+                  id_satuan.value = cell.getData().id_satuan
+                  nama_satuan.value = cell.getData().nama_satuan
+                  keterangan_satuan.value = cell.getData().keterangan_satuan
+                  isEdit.value = true
+                  modal_utama.value = true
                 } else {
-                  alert("delete" + cell.getData().id_satuan);
+                  id_satuan.value = cell.getData().id_satuan
+                  nama_satuan.value = cell.getData().nama_satuan
+                  deleteConfirmationModal.value = true
+                  //console.log("hapus", id_satuan.value, nama_satuan.value)
                 }
               });
               return a[0]
@@ -375,7 +405,12 @@ export default {
       });
       this.tabulator.on("cellEdited", function (cell) {
         //cell - cell component
-        console.log("aku cengar cengir", cell.getData())
+        id_satuan.value = cell.getData().id_satuan
+        nama_satuan.value = cell.getData().nama_satuan
+        keterangan_satuan.value = cell.getData().keterangan_satuan
+        isEdit.value = true
+        modal_utama.value = true
+        // console.log("aku cengar cengir", cell.getData(), this.Satuan.items)
       });
     },
     reInitOnResizeWindow() {

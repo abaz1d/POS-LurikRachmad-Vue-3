@@ -55,7 +55,7 @@ export const usePelangganStore = defineStore({
         console.error(e);
       }
     },
-    removeItem(id_pelanggan) {
+    async removeItem(id_pelanggan) {
       this.rawItems = this.rawItems.filter(
         (item) => item.id_pelanggan !== id_pelanggan
       );
@@ -68,7 +68,7 @@ export const usePelangganStore = defineStore({
         })
         .catch((e) => console.error(e));
     },
-    updateItem(pelanggan) {
+    async updateItem(pelanggan) {
       let id_pelanggan = pelanggan.id_pelanggan;
       let nama_pelanggan = pelanggan.nama_pelanggan;
       let alamat_pelanggan = pelanggan.alamat_pelanggan;
@@ -83,7 +83,7 @@ export const usePelangganStore = defineStore({
         nama_pelanggan,
         alamat_pelanggan,
         kontak_pelanggan,
-      });
+      }) .catch((e) => console.error(e));
     },
   },
 });

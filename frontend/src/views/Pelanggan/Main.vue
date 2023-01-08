@@ -1,247 +1,524 @@
 <template>
-  <h2 class="intro-y text-lg font-medium mt-10">Data Pelanggan</h2>
-  <div class="grid grid-cols-12 gap-6 mt-5">
-    <div
-      class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2"
-    >
-      <button
-        class="btn btn-primary shadow-md mb-3 mr-2 pr-5"
-        @click="addModal = true"
-      >
-      <PlusIcon class="w-4 h-4 mr-2" /> <p class="hidden xl:block mr-1">Pelanggan</p> Baru
+  <div class="intro-y flex flex-col sm:flex-row items-center mt-8">
+    <h2 class="text-lg font-medium mr-auto">Pelanggan</h2>
+    <div class="w-full sm:w-auto flex mt-4 sm:mt-0">
+      <button class="btn btn-primary shadow-md mb-3 mr-2 pr-5" @click="modal_utama = true">
+        <PlusIcon class="w-4 h-4 mr-2" />
+        <p class="hidden xl:block mr-1">Pelanggan</p> Baru
       </button>
-
       <!-- BEGIN: Modal Content -->
-      <Modal backdrop="static" :show="addModal" @hidden="addModal = false">
+      <Modal backdrop="static" :show="modal_utama" @hidden="modal_utama = false">
         <ModalHeader>
-          <h2 class="font-medium text-base mr-auto">Tambah Pelanggan</h2>
+          <h2 class="font-medium text-base mr-auto">
+            <p class="mx-auto" v-if="isEdit">Edit Pelanggan {{ id_pelanggan }}</p>
+            <p class="mx-auto" v-else>Tambah Pelanggan</p>
+          </h2>
         </ModalHeader>
         <ModalBody class="grid grid-cols-12 gap-4 gap-y-3">
-          <form
-            @submit.prevent="addPelanggan"
-            id="addPelangganForm"
-            class="col-span-12"
-          >
+          <form @submit.prevent="isEdit ? updatePelanggan() : addPelanggan()" id="pelangganForm" class="col-span-12">
             <div class="col-span-12 mb-5">
-              <label for="pos-form-1" class="form-label mb-1"
-                >Nama Pelanggan</label
-              >
-              <input
-                id="pos-form-1"
-                type="text"
-                class="form-control flex-1"
-                placeholder="Masukan Nama Pelanggan"
-                v-model="inputNamaPelanggan"
-                required
-              />
+              <label for="pos-form-1" class="form-label mb-1">Nama Pelanggan</label>
+              <input id="pos-form-1" type="text" class="form-control flex-1" placeholder="Masukan Nama Pelanggan"
+                v-model="nama_pelanggan" required />
             </div>
             <div class="col-span-12 mb-5">
-              <label for="pos-form-5" class="form-label mb-1"
-                >Alamat Pelanggan</label
-              >
-              <textarea
-                id="pos-form-5"
-                class="form-control"
-                placeholder="Masukan Alamat Pelanggan"
-                v-model="inputAlamatPelanggan"
-                required
-              />
+              <label for="pos-form-5" class="form-label mb-1">Alamat Pelanggan</label>
+              <textarea id="pos-form-5" class="form-control" placeholder="Masukan Alamat Pelanggan"
+                v-model="alamat_pelanggan" required />
             </div>
             <div class="col-span-12 mb-5">
-              <label for="pos-form-1" class="form-label mb-1"
-                >Kontak Pelanggan</label
-              >
-              <input
-                id="pos-form-1"
-                type="number"
-                class="form-control flex-1"
-                placeholder="Masukan Kontak Pelanggan"
-                v-model="inputKontakPelanggan"
-                required
-              />
+              <label for="pos-form-1" class="form-label mb-1">Telepon Pelanggan</label>
+              <input id="pos-form-1" type="number" class="form-control flex-1" placeholder="Masukan Telepon Pelanggan"
+                v-model="kontak_pelanggan" required />
             </div>
           </form>
         </ModalBody>
         <ModalFooter class="text-right">
-          <button
-            type="button"
-            @click="addModal = false"
-            class="btn btn-outline-secondary w-32 mr-1"
-          >
+          <button type="button"
+            @click="modal_utama = false; id_pelanggan = ''; nama_pelanggan = ''; alamat_pelanggan = ''; kontak_pelanggan = ''; isEdit = false;"
+            class="btn btn-outline-secondary w-32 mr-1">
             Cancel
           </button>
-          <button
-            type="submit"
-            form="addPelangganForm"
-            class="btn btn-primary w-32"
-          >
+          <button type="submit" form="pelangganForm" class="btn btn-primary w-32">
             Simpan
           </button>
         </ModalFooter>
       </Modal>
-      <Dropdown>
-        <DropdownToggle class="btn px-2 box mt-0 mb-3 mr-2">
-          <span class="w-5 h-5 flex items-center justify-center">
-            <UploadIcon class="w-4 h-4" />
-          </span>
-        </DropdownToggle>
-        <DropdownMenu class="w-40">
-          <DropdownContent>
-            <DropdownItem>
-              <PrinterIcon class="w-4 h-4 mr-2" /> Print
-            </DropdownItem>
-            <DropdownItem>
-              <FileTextIcon class="w-4 h-4 mr-2" /> Export to Excel
-            </DropdownItem>
-            <DropdownItem>
-              <FileTextIcon class="w-4 h-4 mr-2" /> Export to PDF
-            </DropdownItem>
-          </DropdownContent>
-        </DropdownMenu>
-      </Dropdown>
-      <select class="w-20 form-select box mt-0 mb-3 mr-2 sm:mt-0">
-        <option>10</option>
-        <option>25</option>
-        <option>25</option>
-        <option>100</option>
-      </select>
-      <div class="search hidden xl:block mt-0 mb-3">
-        <input
-          type="text"
-          class="form-control w-56 box pr-10"
-          placeholder="Search..."
-        />
-        <SearchIcon class="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0" />
-      </div>
-      <a class="notification xl:hidden mt-0 mb-3">
-        <!-- <SearchIcon class="notification__icon dark:text-slate-500" /> -->
-        <form action="" class="justify-center shadow-none bg-white box h-10">
-          <input
-            type="search"
-            class="peer shadow-none cursor-pointer relative z-10 h-10 w-10 box border bg-transparent dark:bg-transparent dark:text-white pl-9 outline-none focus:w-full focus:cursor-text focus:pl-16 focus:pr-4 search__input form-control border-transparent"
-          />
-          <SearchIcon
-            class="absolute inset-y-0 my-auto h-8 w-12 px-3.5 dark:stroke-white"
-          />
-        </form>
+      <a href="" class="ml-auto sm:ml-0 btn px-2 h-10 box flex items-center text-primary">
+        <RefreshCcwIcon class="w-4 h-4 sm:mr-3 sm:m-0 m-2" /><p class="sm:block hidden">Reload Data</p> 
       </a>
-      <div class="hidden 2xl:block mx-auto text-slate-500">
-        Showing 1 to 10 of 150 entries
-      </div>
-      <div class="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
-        <nav class="w-full sm:w-auto sm:mr-auto mr-0 tems-center justify-center">
-          <ul class="pagination">
-            <li class="page-item">
-              <a class="page-link" href="#">
-                <SkipBackIcon class="w-4 h-4" />
-              </a>
-            </li>
-            <li class="page-item">
-              <a class="page-link" href="#">
-                <RewindIcon class="w-4 h-4" />
-              </a>
-            </li>
-            <!-- <li class="page-item">
-              <a class="page-link" href="#">...</a>
-            </li> -->
-            <li class="page-item active">
-              <!-- <a class="page-link" href="#">2</a> -->
-              <input
-                type="number"
-                class="form-control"
-                id="page_number"
-                value="1"
-              />
-            </li>
-            <li class="page-item">
-              <!-- <a class="page-link" href="#">3</a> -->
-              <input
-                type="number"
-                class="form-control"
-                id="total_pages"
-                disabled
-              />
-            </li>
-            <!-- <li class="page-item">
-              <a class="page-link" href="#">...</a>
-            </li> -->
-            <li class="page-item">
-              <a class="page-link" href="#">
-                <FastForwardIcon class="w-4 h-4" />
-              </a>
-            </li>
-            <li class="page-item">
-              <a class="page-link" href="#">
-                <SkipForwardIcon class="w-4 h-4" />
-              </a>
-            </li>
-          </ul>
-        </nav>
-      </div>
     </div>
-    <!-- BEGIN: Data List -->
-    <div class="intro-y col-span-12 overflow-auto lg:overflow-visible">
-      <PelangganList :pelanggans="Pelanggan.items" />
-    </div>
-    <!-- END: Data List -->
-    <!-- BEGIN: Pagination -->
-    <!-- END: Pagination -->
   </div>
+  <!-- BEGIN: HTML Table Data -->
+  <div class="intro-y box p-5 mt-5">
+    <div class="flex flex-col sm:flex-row sm:items-end xl:items-start">
+      <form id="tabulator-html-filter-form" class="xl:flex sm:mr-auto">
+        <div class="sm:flex items-center sm:mr-4">
+          <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2">Field</label>
+          <select id="tabulator-html-filter-field" v-model="filter.field"
+            class="form-select w-full sm:w-32 2xl:w-full mt-2 sm:mt-0 sm:w-auto">
+            <option value="id_pelanggan">ID Pelanggan</option>
+            <option value="nama_pelanggan">Nama Pelanggan</option>
+            <option value="alamat_pelanggan">Alamat Pelanggan</option>
+            <option value="kontak_pelanggan">Telepon Pelanggan</option>
+          </select>
+        </div>
+        <div class="sm:flex items-center sm:mr-4 mt-2 xl:mt-0">
+          <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2">Type</label>
+          <select id="tabulator-html-filter-type" v-model="filter.type"
+            class="form-select w-full mt-2 sm:mt-0 sm:w-auto">
+            <option value="like" selected>like</option>
+            <option value="=">=</option>
+            <option value="<">&lt;</option>
+            <option value="<=">&lt;=</option>
+            <option value=">">></option>
+            <option value=">=">>=</option>
+            <option value="!=">!=</option>
+          </select>
+        </div>
+        <div class="sm:flex items-center sm:mr-4 mt-2 xl:mt-0">
+          <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2">Value</label>
+          <input id="tabulator-html-filter-value" v-model="filter.value" type="text"
+            class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0" placeholder="Search..." />
+        </div>
+        <div class="mt-2 xl:mt-0">
+          <button id="tabulator-html-filter-go" type="button" class="btn btn-primary w-full sm:w-16" @click="onFilter">
+            Go
+          </button>
+          <button id="tabulator-html-filter-reset" type="button"
+            class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1" @click="onResetFilter">
+            Reset
+          </button>
+        </div>
+      </form>
+      <div class="flex mt-5 sm:mt-0">
+        <button id="tabulator-print" class="btn btn-outline-secondary w-1/2 sm:w-auto mr-2" @click="onPrint">
+          <PrinterIcon class="w-4 h-4 mr-2" /> Print
+        </button>
+        <Dropdown class="w-1/2 sm:w-auto">
+          <DropdownToggle class="btn btn-outline-secondary w-full sm:w-auto">
+            <FileTextIcon class="w-4 h-4 mr-2" /> Export
+            <ChevronDownIcon class="w-4 h-4 ml-auto sm:ml-2" />
+          </DropdownToggle>
+          <DropdownMenu class="w-40">
+            <DropdownContent>
+              <DropdownItem @click="onExportCsv">
+                <FileTextIcon class="w-4 h-4 mr-2" /> Export CSV
+              </DropdownItem>
+              <!-- <DropdownItem @click="onExportJson">
+                <FileTextIcon class="w-4 h-4 mr-2" /> Export JSON
+              </DropdownItem> -->
+              <DropdownItem @click="onExportXlsx">
+                <FileTextIcon class="w-4 h-4 mr-2" /> Export XLSX
+              </DropdownItem>
+              <!-- <DropdownItem @click="onExportHtml">
+                <FileTextIcon class="w-4 h-4 mr-2" /> Export HTML
+              </DropdownItem> -->
+            </DropdownContent>
+          </DropdownMenu>
+        </Dropdown>
+      </div>
+    </div>
+    <div class="overflow-x-auto scrollbar-hidden">
+      <div id="tabulator" ref="tableRef" class="mt-5 table-report table-report--tabulator"></div>
+    </div>
+  </div>
+
+  <Modal :show="deleteConfirmationModal" @hidden="deleteConfirmationModal = false">
+    <ModalBody class="p-0">
+      <div class="p-5 text-center">
+        <XCircleIcon class="w-16 h-16 text-danger mx-auto mt-3" />
+        <div class="text-3xl mt-5">Apakah Anda Yakin ?</div>
+        <div class="text-slate-500 mt-2">
+          Anda yakin ingin menghapus data <b>{{ nama_pelanggan }}</b> ? <br />Data
+          yang telah dihapus tidak bisa kembali.
+        </div>
+      </div>
+      <div class="px-5 pb-8 text-center">
+        <button type="button" @click="deleteConfirmationModal = false" class="btn btn-outline-secondary w-24 mr-1">
+          Batal
+        </button>
+        <button type="button" class="btn btn-danger w-24" @click="
+  (e) => {
+    e.preventDefault();
+    deletePelanggan(id_pelanggan);
+  }
+        ">
+          Hapus
+        </button>
+      </div>
+    </ModalBody>
+  </Modal>
+  <!-- END: HTML Table Data -->
 </template>
 
 <script>
 import { usePelangganStore } from "../../stores/pelanggan";
-import PelangganList from "./PelangganList.vue";
-import { ref } from "vue";
+// import PelangganList from "./PelangganList.vue";
+import { ref, reactive } from "vue";
+import xlsx from "xlsx";
+import { createIcons, icons } from "lucide";
+import { TabulatorFull as Tabulator } from 'tabulator-tables';
+import dom from "@left4code/tw-starter/dist/js/dom";
+import moment from "moment";
 
 // const Pelanggan = usePelangganStore();
-const addModal = ref(false);
-const inputNamaPelanggan = ref("");
-const inputAlamatPelanggan = ref("");
-const inputKontakPelanggan = ref("");
-// const pelanggans = ref('')
+const modal_utama = ref(false);
+const id_pelanggan = ref("");
+const nama_pelanggan = ref("");
+const alamat_pelanggan = ref("");
+const kontak_pelanggan = ref();
+const deleteConfirmationModal = ref(false);
+const isEdit = ref(false);
 
-// onMounted(() => {
-//     this.Pelanggan.readItem()
-// })
+// const tableRef = ref("");
+const tabulator = ref();
+const filter = reactive({
+  field: "id_pelanggan",
+  type: "like",
+  value: "",
+});
+
+
 
 export default {
   setup() {
     const Pelanggan = usePelangganStore();
-    return { Pelanggan };
+    return { Pelanggan, moment, };
   },
-  components: {
-    PelangganList,
-  },
+  // components: {
+  //   PelangganList,
+  // },
   data() {
     return {
-      addModal,
-      inputNamaPelanggan,
-      inputAlamatPelanggan,
-      inputKontakPelanggan,
+      deleteConfirmationModal,
+      id_pelanggan,
+      nama_pelanggan,
+
+      modal_utama,
+      alamat_pelanggan,
+      kontak_pelanggan,
+
+      //tableRef,
+      tabulator,
+      filter,
+      isEdit
     };
   },
   methods: {
     addPelanggan() {
       try {
-        // console.log("addPelanggan", inputNamaPelanggan.value, inputAlamatPelanggan.value)
+        // console.log("addPelanggan", nama_pelanggan.value, alamat_pelanggan.value)
         this.Pelanggan.addItem(
-          inputNamaPelanggan.value,
-          inputAlamatPelanggan.value,
-          inputKontakPelanggan.value,
-        );
-        inputNamaPelanggan.value = "";
-        inputAlamatPelanggan.value = "";
-        inputKontakPelanggan.value = "";
-        this.addModal = false;
+          nama_pelanggan.value,
+          alamat_pelanggan.value,
+          kontak_pelanggan.value,
+        ).then(() => {
+          this.modal_utama = false;
+          this.initTabulator();
+        })
+        nama_pelanggan.value = "";
+        alamat_pelanggan.value = "";
+        kontak_pelanggan.value = "";
+
       } catch (error) {
-        alert("Gagal Tambah Data", error);
+        alert("Gagal Tambah Data" + error);
       }
     },
+    updatePelanggan() {
+      try {
+        this.Pelanggan.updateItem({
+          id_pelanggan: this.id_pelanggan,
+          nama_pelanggan: this.nama_pelanggan,
+          alamat_pelanggan: this.alamat_pelanggan,
+          kontak_pelanggan: this.kontak_pelanggan,
+        }).then(() => {
+          this.initTabulator();
+          this.isEdit = false;
+          this.modal_utama = false;
+          this.id_pelanggan = ""
+          this.nama_pelanggan = ""
+          this.alamat_pelanggan = ""
+          this.kontak_pelanggan = ""
+        });
+        //console.log("update", this.id_pelanggan, this.nama_pelanggan, this.alamat_pelanggan, this.kontak_pelanggan,
+
+      } catch (error) {
+        alert(`Gagal Update data ${id_pelanggan}` + error);
+      }
+    },
+    deletePelanggan(id_pelanggan) {
+      try {
+        this.Pelanggan.removeItem(id_pelanggan).then(() => {
+          this.initTabulator();
+          this.deleteConfirmationModal = false;
+          this.id_pelanggan = "";
+          this.nama_pelanggan = "";
+        });
+      } catch (error) {
+        alert(`Gagal Delete Pelanggan ${id_pelanggan}` + error);
+      }
+    },
+
+    initTabulator() {
+      this.tabulator = new Tabulator(this.$refs.tableRef, {
+        // ajaxURL: "https://dummy-data.left4code.com",
+        // ajaxFiltering: true,
+        // ajaxSorting: true,
+        //ajaxLoaderLoading:"<span>Loading Data</span>",
+        printAsHtml: true,
+        printStyled: true,
+        printHeader: `<h1 class='text-2xl p-2 m-2 text-center border-y-2 border-black'>Tabel Pelanggan<h1>`,
+        printFooter: `<h2 class='p-2 m-2 text-center mt-4'>${moment(Date.now()).format("DD MMM YYYY HH:SS")}<h2>`,
+        data: this.Pelanggan.items,
+        pagination: "remote",
+        paginationSize: 10,
+        paginationSizeSelector: [10, 20, 30, 40, 50],
+        layout: "fitColumns",
+        responsiveLayout: "collapse",
+        placeholder: "Tida ada Data di temukan",
+        columns: [
+          {
+            formatter: "responsiveCollapse",
+            width: 40,
+            minWidth: 30,
+            hozAlign: "center",
+            resizable: false,
+            headerSort: false,
+          },
+
+          // For HTML table
+          {
+            title: "ID SUPPLIER",
+            // minWidth: 200,
+            maxWidth: 145,
+            responsive: 0,
+            field: "id_pelanggan",
+            vertAlign: "middle",
+            print: false,
+            download: false,
+            formatter(cell) {
+              return `<div>
+                <div class="font-medium whitespace-nowrap">${cell.getData().id_pelanggan
+                }</div>
+              </div>`;
+            },
+          },
+          {
+            title: "NAMA SUPPLIER",
+            headerHozAlign: "center",
+            minWidth: 200,
+            field: "nama_pelanggan",
+            hozAlign: "center",
+            vertAlign: "middle",
+            print: false,
+            editor: "input",
+            editable: false, cellDblClick: function (e, cell) {
+              cell.edit(true);
+            },
+            download: false,
+            formatter(cell) {
+              return `<div>
+                <div class="font-medium whitespace-nowrap">${cell.getData().nama_pelanggan
+                }</div>
+              </div>`;
+            },
+          },
+          {
+            title: "ALAMAT",
+            minWidth: 500,
+            headerHozAlign: "center",
+            field: "alamat_pelanggan",
+            hozAlign: "center",
+            vertAlign: "middle",
+            print: false,
+            editor: "textarea",
+            editable: false, cellDblClick: function (e, cell) {
+              cell.edit(true);
+            },
+            download: false,
+            formatter(cell) {
+              return `<div>
+                <div class="font-medium whitespace-nowrap">${cell.getData().alamat_pelanggan
+                }</div>
+              </div>`;
+            },
+          },
+          {
+            title: "TELEPON",
+            headerHozAlign: "center",
+            minWidth: 200,
+            field: "kontak_pelanggan",
+            hozAlign: "center",
+            vertAlign: "middle",
+            print: false,
+            editor: "input",
+            editable: false, cellDblClick: function (e, cell) {
+              cell.edit(true);
+            },
+            download: false,
+            formatter(cell) {
+              return `<div>
+                <div class="font-medium whitespace-nowrap">${cell.getData().kontak_pelanggan
+                }</div>
+              </div>`;
+            },
+          },
+          {
+            title: "ACTIONS",
+            headerHozAlign: "center",
+            minWidth: 200,
+            field: "actions",
+            responsive: 1,
+            hozAlign: "center",
+            vertAlign: "middle",
+            print: false,
+            download: false,
+            formatter(cell) {
+              const a = dom(`<div class="flex lg:justify-center items-center">
+                <a id="edit" class="flex items-center mr-3" href="javascript:;">
+                  <i data-lucide="check-square" class="w-4 h-4 mr-1"></i> Edit
+                </a>
+                <a id="delete" class="flex items-center text-danger" href="javascript:;">
+                  <i data-lucide="trash-2" class="w-4 h-4 mr-1"></i> Delete
+                </a>
+              </div>`);
+              // const func = deleteConfirmationModal
+              dom(a).on("click", "a", function (e) {
+                // On click actions
+                if (e.id === "edit") {
+                  //alert("edit" + cell.getData().id_pelanggan);
+                  id_pelanggan.value = cell.getData().id_pelanggan
+                  nama_pelanggan.value = cell.getData().nama_pelanggan
+                  alamat_pelanggan.value = cell.getData().alamat_pelanggan
+                  kontak_pelanggan.value = cell.getData().kontak_pelanggan
+                  isEdit.value = true
+                  modal_utama.value = true
+                } else {
+                  id_pelanggan.value = cell.getData().id_pelanggan
+                  nama_pelanggan.value = cell.getData().nama_pelanggan
+                  deleteConfirmationModal.value = true
+                  //console.log("hapus", id_pelanggan.value, nama_pelanggan.value)
+                }
+              });
+              return a[0]
+
+            },
+          },
+
+          // For print format
+          {
+            title: "ID SUPPLIER",
+            field: "id_pelanggan",
+            visible: false,
+            print: true,
+            download: true,
+          },
+          {
+            title: "NAMA SUPPLIER",
+            field: "nama_pelanggan",
+            visible: false,
+            print: true,
+            download: true,
+          },
+          {
+            title: "ALAMAT",
+            field: "alamat_pelanggan",
+            visible: false,
+            print: true,
+            download: true,
+          },
+          {
+            title: "TELEPON",
+            field: "kontak_pelanggan",
+            visible: false,
+            print: true,
+            download: true,
+          },
+        ],
+      });
+      this.tabulator.on("renderComplete", function () {
+        //subTable.redraw();
+        createIcons({
+          icons,
+          "stroke-width": 1.5,
+          nameAttr: "data-lucide",
+
+        });
+      });
+      this.tabulator.on("cellEdited", function (cell) {
+        //cell - cell component
+        id_pelanggan.value = cell.getData().id_pelanggan
+        nama_pelanggan.value = cell.getData().nama_pelanggan
+        alamat_pelanggan.value = cell.getData().alamat_pelanggan
+        kontak_pelanggan.value = cell.getData().kontak_pelanggan
+        isEdit.value = true
+        modal_utama.value = true
+        // console.log("aku cengar cengir", cell.getData(), this.Pelanggan.items)
+      });
+    },
+    reInitOnResizeWindow() {
+      window.addEventListener("resize", () => {
+        this.tabulator.redraw();
+        createIcons({
+          icons,
+          "stroke-width": 1.5,
+          nameAttr: "data-lucide",
+        });
+      });
+    },
+    onFilter() {
+      this.tabulator.setFilter(this.filter.field, this.filter.type, this.filter.value);
+    },
+
+    onResetFilter() {
+      this.filter.field = "id_pelanggan";
+      this.filter.type = "like";
+      this.filter.value = "";
+      this.onFilter();
+    },
+
+    // Export
+    onExportCsv() {
+      this.tabulator.download("csv", "data.csv");
+    },
+
+    onExportJson() {
+      this.tabulator.download("json", "data.json");
+    },
+
+    onExportXlsx() {
+      const win = window;
+      win.XLSX = xlsx;
+      this.tabulator.download("xlsx", "data.xlsx", {
+        sheetName: "Data Pelanggan",
+      });
+    },
+
+    onExportHtml() {
+      this.tabulator.download("html", "data.html", {
+        style: true,
+      });
+    },
+
+    // Print
+    onPrint() {
+      this.tabulator.print();
+    },
+
   },
   beforeCreate() {
-    this.Pelanggan.readItem();
+    this.Pelanggan.readItem().then(() => {
+      this.initTabulator();
+      this.reInitOnResizeWindow();
+    }).catch((error) => {
+      alert(error)
+    });
     // this.pelanggans = this.Pelanggan.items
   },
+  // mounted() {
+  //   this.initTabulator();
+  //   this.reInitOnResizeWindow();
+  // }
 };
 </script>
