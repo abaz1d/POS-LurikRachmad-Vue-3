@@ -32,7 +32,7 @@ export const usePenjualanStore = defineStore({
           this.rawDetails = data.data.details;
           //console.log('data', data.data.varian)
           // console.log('rawPenjualans', this.rawPenjualans)
-          // return this.rawPenjualans
+        return this.rawPenjualans
         }
       } catch (error) {
         console.error(error)
@@ -60,7 +60,7 @@ export const usePenjualanStore = defineStore({
             }
             return item;
           });
-          // return data.data
+          return this.rawPenjualans
         }
         //console.log('data',data.data, this.rawPenjualans)
       } catch (e) {
