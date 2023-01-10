@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { request } from "../utils/api";
 
 export const usePenjualanStore = defineStore({
-  id: "barang-keluar",
+  id: "penjualan",
   state: () => ({
     rawVarians: [],
     rawPenjualans: [],
@@ -22,9 +22,6 @@ export const usePenjualanStore = defineStore({
   actions: {
     async readItem() {
       try {
-        this.rawVarians = { loading: true }
-        this.rawPenjualans = { loading: true }
-        this.rawDetails = { loading: true }
         const data = await request.get("penjualan");
         if (data.status >= 200 && data.status < 300) {
           this.rawVarians = data.data.varian;
@@ -32,6 +29,7 @@ export const usePenjualanStore = defineStore({
           this.rawDetails = data.data.details;
           //console.log('data', data.data.varian)
           // console.log('rawPenjualans', this.rawPenjualans)
+          //console.log('jual')
         return this.rawPenjualans
         }
       } catch (error) {

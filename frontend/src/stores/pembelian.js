@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { request } from "../utils/api";
 
 export const usePembelianStore = defineStore({
-  id: "barang-keluar",
+  id: "pembelian",
   state: () => ({
     rawVarians: [],
     rawPembelians: [],
@@ -22,9 +22,6 @@ export const usePembelianStore = defineStore({
   actions: {
     async readItem() {
       try {
-        this.rawVarians = { loading: true }
-        this.rawPembelians = { loading: true }
-        this.rawDetails = { loading: true }
         const data = await request.get("pembelian");
         if (data.status >= 200 && data.status < 300) {
           this.rawVarians = data.data.varian;
@@ -32,7 +29,9 @@ export const usePembelianStore = defineStore({
           this.rawDetails = data.data.details;
           // console.log('data', data.data)
           // console.log('rawPembelians', this.rawPembelians)
-          // return this.rawPembelians
+          //console.log('beli')
+          return this.rawPembelians
+
         }
       } catch (error) {
         console.error(error)
@@ -151,9 +150,17 @@ export const usePembelianStore = defineStore({
         if (data.status >= 200 && data.status < 300) {
           this.rawDetails = data.data.details;
           this.rawPrints = data.data.print.rows;
-          //console.log("rows", data.data)
-          // console.log('data.data', data.data, 'status', data.data.print.rows)
-          // console.log('this.rawVarians', this.rawVarians)
+
+          this.rawDetails.map((detail) => {
+            this.rawPembelians = this.rawPembelians.map((pembelian) => {
+              if (detail.no_invoice === pembelian.no_invoice) {
+                return { ...pembelian, serviceHistory: this.rawDetails }
+              }
+              return pembelian
+            })
+            return detail
+          })
+          return this.rawPembelians
         }
       } catch (error) {
         console.error(error)

@@ -8,12 +8,12 @@
       </button>
       <!-- BEGIN: Modal Content -->
       <Modal size="modal-xl" backdrop="static" :show="modal_utama" @hidden="modal_utama = false">
-        <ModalHeader class="relative top-0 z-50 rounded-md border-b-2">
+        <ModalHeader class="border-b-2">
           <h2 class="font-medium text-base mr-auto">
             <p class="mx-auto" v-if="isEdit">Edit Penjualan {{ no_invoice }}</p>
             <p class="mx-auto" v-else>Tambah Penjualan</p>
           </h2>
-          <div class="lg:-mr-48 mx-auto mt-2">
+          <!-- <div class="lg:-mr-48 mx-auto mt-2">
             <div class="bg-slate-200 rounded-md p-2 font-medium lg:text-base text-sm px-2">
               <p class="text-right text-black">{{ no_invoice }}</p>
             </div>
@@ -27,6 +27,23 @@
             </div>
             <p class="text-center bg-primary text-white rounded-md w-24 mx-auto lg:-mt-[52px] -mt-12 lg:mb-8 mb-6">WAKTU
             </p>
+          </div> -->
+
+          <div class="sm:w-auto flex mt-3 mr-0 ml-4 items-right">
+            <div class="mr-2 m-auto">
+              <div class="bg-slate-200 rounded-md p-2 font-medium lg:text-base text-sm px-2">
+                <p class="text-right text-black">{{ no_invoice }}</p>
+              </div>
+              <p class="text-center bg-primary text-white rounded-md w-24 mx-auto lg:-mt-[52px] -mt-12 lg:mb-8 mb-6">NO
+                INVOICE</p>
+            </div>
+            <div class="mr-2 m-auto">
+              <div class="bg-slate-200 rounded-md p-2 font-medium lg:text-base text-sm px-2">
+              <p class="text-right text-black">{{ moment(waktu).format("DD MMM YYYY HH:SS") }}</p>
+            </div>
+            <p class="text-center bg-primary text-white rounded-md w-24 mx-auto lg:-mt-[52px] -mt-12 lg:mb-8 mb-6">WAKTU
+            </p>
+            </div>
           </div>
 
         </ModalHeader>
@@ -384,7 +401,7 @@
       </div>
     </div>
     <div class="overflow-x-auto scrollbar-hidden">
-      <div id="tabulator" ref="tableRef" class="mt-5 table-report table-report--tabulator"></div>
+      <div id="tabulator" ref="tableJualRef" class="mt-5 table-report table-report--tabulator"></div>
     </div>
   </div>
   <!-- END: HTML Table Data -->
@@ -436,12 +453,23 @@ closeQrScanner();
       </div>
     </ModalBody>
   </Modal>
+
+  <!-- BEGIN: Basic Non Sticky Notification Content -->
+  <Notification refKey="basicNonStickyNotification" :options="{
+    duration: 10000,
+  }" class="flex flex-col sm:flex-row hover:animate-none md:animate-bounce animate-pulse ">
+    <div class="font-medium">Klik 2 kali pada salah satu baris tabel untuk melihat detail transaksi!</div>
+  </Notification>
+  <!-- END: Basic Non Sticky Notification Content -->
+
+
+
 </template>
 
 <script setup>
 import $ from "jquery";
 import { usePenjualanStore } from "../../stores/penjualan";
-import { ref, reactive, onMounted, watch } from "vue";
+import { ref, provide, reactive, onMounted, onBeforeUnmount, watch } from "vue";
 import xlsx from "xlsx";
 import { createIcons, icons } from "lucide";
 import { TabulatorFull as Tabulator } from 'tabulator-tables';
@@ -457,7 +485,7 @@ const deleteConfirmationModal = ref(false);
 const isEdit = ref(false);
 const isModalScanner = ref(false);
 const qrScanner = ref()
-const tableRef = ref();
+const tableJualRef = ref();
 const tabulator = ref();
 const filter = reactive({
   field: "no_invoice",
@@ -466,7 +494,7 @@ const filter = reactive({
 });
 var subTable
 const index_select = ref(0)
-const data_utama = ref([])
+const data_jual = ref([])
 
 const no_invoice = ref("-");
 const waktu = ref("");
@@ -488,11 +516,22 @@ const kembalian = ref(0);
 
 const itemDel = ref("");
 
+// Basic non sticky notification
+const basicNonStickyNotification = ref();
+provide("bind[basicNonStickyNotification]", (el) => {
+  // Binding
+  basicNonStickyNotification.value = el;
+});
+const basicNonStickyNotificationToggle = () => {
+  // Show notification
+  basicNonStickyNotification.value.showToast();
+};
+
 const startTransaction = () => {
-  Penjualan.startTransaction().then((data) => {
-    no_invoice.value = data.no_invoice;
-    waktu.value = data.tanggal_penjualan;
-  })
+  // Penjualan.startTransaction().then((data) => {
+  //   no_invoice.value = data.no_invoice;
+  //   waktu.value = data.tanggal_penjualan;
+  // })
   console.log('start transactions');
 };
 
@@ -529,21 +568,6 @@ const removeItem = (id_detail_jual, no_invoice) => {
   });
 }
 
-const addPenjualan = () => {
-  const no_invoice_now = no_invoice.value
-  const total_harga_global_now = total_harga_global.value
-  const total_bayar_global_now = total_bayar_global.value
-  const kembalian_now = kembalian.value
-  console.log('data', Penjualan.penjualanDetail.length);
-  if (Penjualan.penjualanDetail.length !== 0 && total_bayar_global.value >= total_harga_global.value) {
-    Penjualan.addPenjualan(no_invoice_now, total_harga_global_now, total_bayar_global_now, kembalian_now).then((data) => {
-      modal_utama.value = false;
-    }).catch((e) => {
-      alert("Error Tambah" + e)
-    });
-  } else { alert("Tambah Detail Penjualan Tidak Boleh Kosong") }
-}
-
 const simpanPenjualan = () => {
   const no_invoice_now = no_invoice.value
   const total_harga_global_now = total_harga_global.value
@@ -566,7 +590,7 @@ const simpanPenjualan = () => {
       // tabulator.value.clearData()
       // tabulator.value.setData(data);
       initTabulator()
-   
+
 
     }).catch((e) => {
       alert("Simpan Error: " + e)
@@ -580,7 +604,7 @@ const deletePenjualan = (no_invoice) => {
   initTabulator();
   deleteConfirmationModal.value = false;
 }
-defineExpose({ qrScanner })
+//defineExpose({ qrScanner })
 
 const renderQrScanner = () => {
   //qrScanner.renderQrScanner();
@@ -714,7 +738,7 @@ template.innerHTML = '<div style="display:inline-block;" class="d-flex flex-row"
 const dataLoaderLoading = template.content.firstChild;
 
 const initTabulator = () => {
-  tabulator.value = new Tabulator(tableRef.value, {
+  tabulator.value = new Tabulator(tableJualRef.value, {
     data: Penjualan.penjualans,
     dataLoaderLoading: dataLoaderLoading,
     printHeader: `<h1 class='text-2xl p-2 m-2 text-center border-y-2 border-black'>Tabel Penjualan<h1>`,
@@ -727,9 +751,20 @@ const initTabulator = () => {
     paginationSizeSelector: [10, 20, 30, 40, 50, 100],
     layout: "fitColumns",
     responsiveLayout: "collapse",
-    placeholder: "No matching records found",
+    placeholder: "Tida ada Data di temukan",
     columnDefaults: {
       resizable: true,
+      tooltip: function (e, cell, onRendered) {
+        //e - mouseover event
+        //cell - cell component
+        //onRendered - onRendered callback registration function
+
+        var el = document.createElement("div");
+        el.style.backgroundColor = "white smoke";
+        el.innerText = cell.getColumn().getField() + " - " + cell.getValue(); //return cells "field - value";
+
+        return el;
+      },
     },
     columns: [
       {
@@ -743,6 +778,37 @@ const initTabulator = () => {
 
       // For HTML table
       {
+        width: 40,
+        print: false,
+        download: false,
+        align: "center",
+        formatter(cell) {
+          const a = dom(`<div class="flex lg:justify-center items-center">
+                <a id="edit" class="flex items-center mr-3" href="javascript:;">
+                  <i data-lucide="printer" class="w-4 h-4 mr-1"></i> 
+                </a>
+              </div>`);
+          dom(a).on("click", function (e) {
+
+          });
+
+          return a[0];
+        }, cellClick: function (e, cell) {
+          alert("Print");
+
+          // //filter table to just this row
+          // table.Filter(function (data) {
+          //   return data.id == cell.getData().id;
+          // });
+
+          // //print the table
+          // table.print();
+
+          // //clear the filter
+          // table.clearFilter();
+        }
+      },
+      {
         title: "INVOICE",
         minWidth: 200,
         responsive: 0,
@@ -752,13 +818,12 @@ const initTabulator = () => {
         download: false,
         formatter(cell) {
           return `<div>
-                <div class="font-medium whitespace-nowrap">${cell.getData().no_invoice
-            }</div>
+                <div class="font-medium whitespace-nowrap">${cell.getData().no_invoice}</div>
               </div>`;
         },
       },
       {
-        title: "TANGGAL PEJUALAN",
+        title: "TANGGAL PENJUALAN",
         headerHozAlign: "center",
         minWidth: 200,
         field: "tanggal_penjualan",
@@ -845,7 +910,7 @@ const initTabulator = () => {
               //alert("edit " + cell.getData());
               const penjualan = cell.getData()
               console.log("openEditModal", cell.getRow());
-              index_select.value = cell._cell.row.getPosition()
+              //index_select.value = cell._cell.row.getPosition()
 
               no_invoice.value = penjualan.no_invoice;
               waktu.value = penjualan.tanggal_penjualan;
@@ -900,7 +965,7 @@ const initTabulator = () => {
         download: true,
         formatter(cell) {
           return `<div>
-                <div class="font-medium whitespace-nowrap">${currencyFormatter.format(cell.getData().total_harga_jual)
+                <div class="font-medium whitespace-nowrap">${currencyFormatter.format(parseFloat(cell.getData().total_harga_jual))
             }</div>
               </div>`;
         },
@@ -1145,15 +1210,17 @@ const onPrint = () => {
   tabulator.value.print();
 };
 
-onMounted(() => {
-  Penjualan.readItem().then((data) => {
-    data_utama.value = data
+onMounted(async function () {
+  try {
+    const data = await Penjualan.readItem()
     initTabulator();
     reInitOnResizeWindow();
-  }).catch((error) => {
+    basicNonStickyNotificationToggle();
+  } catch (error) {
     alert("onMounted" + error)
-  });
+  }
 });
+
 </script>
 <style scoped>
 table thead th:first-child {
