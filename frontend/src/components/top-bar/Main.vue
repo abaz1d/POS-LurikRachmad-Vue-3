@@ -74,7 +74,7 @@
             >
               <div class="w-8 h-8 image-fit">
                 <img
-                  alt="Midone Tailwind HTML Admin Template"
+                  alt="Lurik Rachmad HTML"
                   class="rounded-full"
                   :src="faker.photos[0]"
                 />
@@ -96,7 +96,7 @@
           >
             <div class="w-8 h-8 image-fit">
               <img
-                alt="Midone Tailwind HTML Admin Template"
+                alt="Lurik Rachmad HTML"
                 class="rounded-full"
                 :src="faker.images[0]"
               />
@@ -132,7 +132,7 @@
           >
             <div class="w-12 h-12 flex-none image-fit mr-1">
               <img
-                alt="Midone Tailwind HTML Admin Template"
+                alt="Lurik Rachmad HTML"
                 class="rounded-full"
                 :src="faker.photos[0]"
               />
@@ -166,7 +166,7 @@
         class="w-8 h-8 rounded-full overflow-hidden shadow-lg image-fit zoom-in"
       >
         <img
-          alt="Midone Tailwind HTML Admin Template"
+          alt="Lurik Rachmad HTML"
           :src="$f()[9].photos[0]"
         />
       </DropdownToggle>

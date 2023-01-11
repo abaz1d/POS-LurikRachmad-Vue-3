@@ -8,7 +8,7 @@
       >
         <div class="-intro-x lg:mr-20">
           <img
-            alt="Midone Tailwind HTML Admin Template"
+            alt="Lurik Rachmad HTML"
             class="h-48 lg:h-auto"
             src="@/assets/images/error-illustration.svg"
           />

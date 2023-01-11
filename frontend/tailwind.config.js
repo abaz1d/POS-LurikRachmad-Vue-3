@@ -86,6 +86,7 @@ module.exports = {
       },
       fontFamily: {
         roboto: ["Roboto"],
+        philosopher: ["Philosopher"],
       },
       container: {
         center: true,

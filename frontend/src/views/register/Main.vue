@@ -7,15 +7,15 @@
         <div class="hidden xl:flex flex-col min-h-screen">
           <a href="" class="-intro-x flex items-center pt-5">
             <img
-              alt="Midone Tailwind HTML Admin Template"
+              alt="Lurik Rachmad HTML"
               class="w-6"
               src="@/assets/images/logo.svg"
             />
-            <span class="text-white text-lg ml-3"> Rubick </span>
+            <span class="font-philosopher text-white text-lg ml-3"><b> Lurik Rachmad </b> </span>
           </a>
           <div class="my-auto">
             <img
-              alt="Midone Tailwind HTML Admin Template"
+              alt="Lurik Rachmad HTML"
               class="-intro-x w-1/2 -mt-16"
               src="@/assets/images/illustration.svg"
             />

@@ -100,7 +100,7 @@
             <div v-for="(faker, fakerKey) in $_.take($f(), 5)" :key="fakerKey" class="intro-x">
               <div class="box px-5 py-3 mb-3 flex items-center zoom-in">
                 <div class="w-10 h-10 flex-none image-fit rounded-full overflow-hidden">
-                  <img alt="Midone Tailwind HTML Admin Template" :src="faker.photos[0]" />
+                  <img alt="Lurik Rachmad HTML" :src="faker.photos[0]" />
                 </div>
                 <div class="ml-4 mr-auto">
                   <div class="font-medium">
@@ -133,7 +133,7 @@
             <div v-for="(faker, fakerKey) in $_.take($f(), 5)" :key="fakerKey" class="intro-x">
               <div class="box px-5 py-3 mb-3 flex items-center zoom-in">
                 <div class="w-10 h-10 flex-none image-fit rounded-full overflow-hidden">
-                  <img alt="Midone Tailwind HTML Admin Template" :src="faker.photos[0]" />
+                  <img alt="Lurik Rachmad HTML" :src="faker.photos[0]" />
                 </div>
                 <div class="ml-4 mr-auto">
                   <div class="font-medium">

@@ -1,413 +1,358 @@
 <template>
-  <h2 class="intro-y text-lg font-medium mt-10">List Pembelian</h2>
-  <div class="grid grid-cols-12 gap-6 mt-5">
-    <div class="intro-y col-span-12 flex flex-wrap sm:flex-nowrap items-center mt-2">
-      <button class="btn btn-primary shadow-md mr-2 mb-3 pr-5" @click="addModal = true; startTransaction()">
+  <div class="intro-y flex flex-col sm:flex-row items-center mt-8">
+    <h2 class="text-lg font-medium mr-auto">Produk</h2>
+    <div class="w-full sm:w-auto flex mt-4 sm:mt-0">
+      <button class="btn btn-primary shadow-md mb-3 mr-2 pr-5" @click="openAddModal()">
         <PlusIcon class="w-4 h-4 mr-2" />
-        <p class="hidden xl:block mr-1">Transaksi</p> Baru
+        <p class="hidden xl:block mr-1">Produk</p> Baru
       </button>
 
       <!-- BEGIN: Modal Content -->
-      <Modal size="modal-xl" backdrop="static" :show="addModal" @hidden="addModal = false">
-        <ModalHeader class="relative top-0 z-50 rounded-md border-b-2">
-          <h2 class="hidden lg:block font-medium text-base mr-auto">Transaksi Baru</h2>
-          <div class="lg:-mr-48 mx-auto mt-2">
-            <div class="bg-slate-200 rounded-md p-2 font-medium lg:text-base text-sm px-2">
-              <p class="text-right text-black">{{ no_invoice }}</p>
-            </div>
-            <p class="text-center bg-primary text-white rounded-md w-24 mx-auto lg:-mt-[52px] -mt-12 lg:mb-8 mb-6">NO
-              INVOICE</p>
-          </div>
-
-          <div class="lg:mr-0 mx-auto mt-2">
-            <div class="bg-slate-200 rounded-md p-2 font-medium lg:text-base text-sm px-2">
-              <p class="text-right text-black">{{ moment(waktu).format("DD MMM YYYY HH:SS") }}</p>
-            </div>
-            <p class="text-center bg-primary text-white rounded-md w-24 mx-auto lg:-mt-[52px] -mt-12 lg:mb-8 mb-6">WAKTU
-            </p>
-          </div>
-
+      <Modal :show="modal_utama" @hidden="modal_utama = false">
+        <ModalHeader>
+          <h2 class="font-medium text-base mr-auto">Tambah Produk</h2>
+          <button type="button" @click="modal_utama = false"
+            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
+            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd"
+                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                clip-rule="evenodd"></path>
+            </svg>
+            <span class="sr-only">Close modal</span>
+          </button>
         </ModalHeader>
-        <ModalBody class="">
-          <div class="overflow-auto sm:overflow-hidden mx-0 sm:h-3/4 h-80">
-            <div class="grid grid-cols-12 gap-1 -mt-3">
-
-              <div class="col-span-12 lg:col-span-8">
-                <!-- BEGIN: Display Item -->
-                <div class="intro-y box">
-                  <div class="p-2">
-                    <div class="flex flex-col-reverse xl:flex-row flex-col">
-                      <div class="flex-1 mt-0">
-                        <div class="grid grid-cols-12 gap-x-2 sm:gap-x-3">
-                          <div class="sm:col-span-9 col-span-12 mb-5">
-                            <label for="pos-form-1" class="form-label">ID Barang/Item <p class="sm:hidden form-label">&
-                                Stok</p></label>
-                            <div class="flex w-full">
-                              <div
-                                class="z-30 rounded-l w-10 flex items-center justify-center bg-gray-100 hover:bg-gray-300 border text-gray-600 dark:bg-dark-1 dark:border-dark-4 -mr-1 cursor-pointer"
-                                @click=" isModalScanner = true; renderQrScanner();">
-                                <CameraIcon class="w-4 h-4" />
-                              </div>
-                              <TomSelect v-model="item_select" class="w-full" required>
-                                <option value="kosong" disabled>
-                                  &gt-- Pilih Items --&lt
-                                </option>
-                                <option v-for="varian in Pembelian.varians" :key="varian.id_varian" :varian="varian"
-                                  :value="varian.id_varian">
-                                  {{ varian.id_barang }} - {{ varian.nama_barang }} | {{ varian.id_varian }} - {{
-    varian.nama_varian
-}}
-                                </option>
-                              </TomSelect>
-                            </div>
-                            <div class="form-help">
-                              * Pilih atau Klik Kamera untuk scan barcode.
-                            </div>
-                          </div>
-                          <div class="hidden sm:block col-span-3 mb-5">
-                            <label for="pos-form-1" class="form-label">Stok Tersisa</label>
-                            <input v-model="stok" id="pos-form-1" type="text" class="form-control flex-1"
-                              placeholder="Masukan Stok Tersisa" readonly />
-                          </div>
-
-                          <div class="hidden sm:block col-span-6 mb-5">
-                            <label for="pos-form-1" class="form-label">Nama Barang</label>
-                            <!-- <input id="pos-form-1" type="text" class="form-control flex-1"
-                              placeholder="Masukan Nama Barang" readonly /> -->
-                            <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
-                              <p class="text-black">{{ nama_barang_select }}</p>
-                            </div>
-                          </div>
-                          <div class="hidden sm:block col-span-6 mb-5">
-                            <label for="pos-form-1" class="form-label">Nama Varian</label>
-                            <!-- <input id="pos-form-1" type="text" class="form-control flex-1"
-                              placeholder="Masukan Nama Varian" readonly /> -->
-                            <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
-                              <p class="text-black">{{ nama_varian_select }}</p>
-                            </div>
-                          </div>
-
-                          <div class="sm:hidden col-span-12 mb-5">
-                            <label for="pos-form-1" class="form-label">Nama Barang & Varian</label>
-                            <!-- <input id="pos-form-1" type="text" class="form-control flex-1"
-                              placeholder="Masukan Nama Barang & Varian" readonly /> -->
-                            <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
-                              <p class="text-black">{{ nama_campur_select }}</p>
-                            </div>
-                          </div>
-
-                          <div class="col-span-5 sm:col-span-4 mb-5">
-                            <label for="pos-form-1" class="form-label">Harga Item</label>
-                            <!-- <input id="pos-form-1" type="text" class="form-control flex-1"
-                              placeholder="Masukan Harga Item" readonly v-model="harga_item_select" /> -->
-                            <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
-                              <p class="text-black">{{ currencyFormatter.format(harga_item_select) }}</p>
-                            </div>
-                          </div>
-                          <XIcon class="sm:hidden m-auto col-span-2" />
-                          <div class="col-span-5 sm:col-span-4 mb-5">
-                            <label for="pos-form-1" class="form-label">Qty</label>
-                            <input id="pos-form-1" type="text" class="form-control flex-1" placeholder="Masukan Qty"
-                              required v-model="qty_select" :disabled="qty_select == 0" />
-                          </div>
-                          <div class="col-span-12 sm:col-span-4 mb-5">
-                            <label for="pos-form-1" class="form-label">Total Harga</label>
-                            <!-- <input id="pos-form-1" type="text" class="form-control flex-1"
-                              placeholder="Masukan Total Harga" readonly /> -->
-                            <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
-                              <p class="text-black">{{ currencyFormatter.format(total_harga_select) }}</p>
+        <ModalBody class="grid grid-cols-12">
+          <div class="text-center col-span-6">
+            <button class="btn btn-primary" @click="modalBarang = true">
+              Tambah Barang
+            </button>
+            <Modal backdrop="static" :show="modalBarang" @hidden="modalBarang = false">
+              <ModalHeader>
+                <h2 class="font-medium text-base mr-auto">Tambah Barang</h2>
+                <button type="button" @click="modalBarang = false"
+                  class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                  <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd"
+                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                      clip-rule="evenodd"></path>
+                  </svg>
+                  <span class="sr-only">Close modal</span>
+                </button>
+              </ModalHeader>
+              <ModalBody class="grid grid-cols-12 gap-4 gap-y-3">
+                <form @submit.prevent="isEdit ? updateBarang() : addBarang()" id="addBarangForm" class="col-span-12">
+                  <div class="col-span-12 mb-5">
+                    <label v-if="isEdit" for="pos-form-1" class="form-label">ID Barang</label>
+                    <input v-if="isEdit" id="pos-form-1" type="text" class="form-control flex-1"
+                      placeholder="Masukan Nama Barang" v-model="inputIdBarang" readonly />
+                    <label for="pos-form-1" class="form-label">Nama Barang</label>
+                    <input id="pos-form-1" type="text" class="form-control flex-1" placeholder="Masukan Nama Barang"
+                      v-model="inputNamaBarang" required />
+                  </div>
+                </form>
+              </ModalBody>
+              <ModalFooter class="text-right">
+                <button type="button" @click="resetModal" class="btn btn-outline-secondary w-32 mr-1">
+                  Cancel
+                </button>
+                <button type="submit" form="addBarangForm" class="btn btn-primary w-32">
+                  Simpan
+                </button>
+              </ModalFooter>
+            </Modal>
+          </div>
+          <div class="text-center col-span-6">
+            <button class="btn btn-pending" @click="modalVarian = true">
+              Tambah Varian
+            </button>
+            <Modal backdrop="static" size="modal-xl" :show="modalVarian" @hidden="modalVarian = false">
+              <ModalHeader>
+                <h2 class="font-medium text-base mr-auto">Tambah Varian</h2>
+                <button type="button" @click="resetFormVarian"
+                  class="btn btn-outline-danger inline-block hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                  <RefreshCwIcon class="mr-2" />Reset Form
+                </button>
+              </ModalHeader>
+              <ModalBody class="">
+                <form @submit.prevent="!isEdit ? addVarian() : updateVarian()" id="addVarianForm">
+                  <div class="overflow-hidden shadow sm:rounded-md">
+                    <div class="bg-white px-4 py-5 sm:p-6">
+                      <div class="grid grid-cols-6 gap-6">
+                        <div class="col-span-6 sm:col-span-3 form-switch mb-0">
+                          <label for="inputIdVarian" class="block text-sm font-medium text-gray-700">ID Varian |
+                            <input id="ScanID" class="form-check-input" type="checkbox" v-model="checkedID" /></label>
+                          <div class="input-group">
+                            <input type="text" id="inputIdVarian"
+                              class="form-control mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                              :placeholder="
+                                checkedID
+                                  ? 'Ketik / Scan ID'
+                                  : 'Auto Generate ID'
+                              " v-model="ScanIDVarian" :readonly="!checkedID" />
+                            <div v-if="checkedID"
+                              class="camera inline-flex items-center rounded-r-md border border-l-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500 mt-1"
+                              @click="
+  isModalScanner = true;
+renderQrScanner();
+                              ">
+                              <component is="CameraIcon" />
                             </div>
                           </div>
-
+                          <small v-if="!checkedID" class="text-grey-800 text-xs ml-2 mt-0">
+                            * Untuk manambah ID Manual cek pada checkbox.
+                          </small>
+                          <small v-else class="text-grey-800 text-xs ml-2 mt-0">
+                            * Tekan lambang Kamera untuk scan
+                            <b>Barcode / ID</b></small>
                         </div>
-                        <button type="button" @click="addItem()" class="btn btn-primary w-20 mt-3"
-                          :disabled="qty_select == 0">
-                          Tambah
-                        </button>
+
+                        <div class="col-span-6 sm:col-span-3 mb-0">
+                          <label for="inputNamaVarian" class="block text-sm font-medium text-gray-700 mb-2">Nama
+                            Varian</label>
+                          <input id="inputNamaVarian" type="text"
+                            class="form-control flex-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            placeholder="Masukan Nama Varian" v-model="inputNamaVarian" required />
+                        </div>
+
+                        <div class="col-span-6 sm:col-span-3">
+                          <label for="kategoriBarang" class="block text-sm font-medium text-gray-700">Kategori
+                            Barang</label>
+                          <!-- <TomSelect v-model="kategoriBarangVarian" id="kategoriBarang" class="mt-1 w-full"
+                            aria-label="Default select example" required>
+                            <option value="kosong" disabled>
+                              &gt-- Pilih Barang --&lt
+                            </option>
+                            <option v-for="barang in data.barang" :key="barang.id_barang" :barang="barang"
+                              :value="barang.id_barang">
+                              {{ barang.id_barang }} - {{ barang.nama_barang }}
+                            </option>
+                          </TomSelect> -->
+                        </div>
+
+                        <div class="col-span-6 sm:col-span-3">
+                          <label for="kategoriGudang" class="block text-sm font-medium text-gray-700">Kategori
+                            Gudang</label>
+                          <!-- <TomSelect v-model="kategoriGudangVarian" id="kategoriGudang" class="mt-1 w-full"
+                            aria-label="Default select example" required>
+                            <option value="kosong" disabled>
+                              &gt-- Pilih Gudang --&lt
+                            </option>
+                            <option v-for="gudang in data.gudang" :key="gudang.id_gudang" :gudang="gudang"
+                              :value="gudang.id_gudang">
+                              {{ gudang.id_gudang }} - {{ gudang.nama_gudang }}
+                            </option>
+                          </TomSelect> -->
+                        </div>
+
+                        <div class="col-span-6 sm:col-span-3 mb-0">
+                          <label for="stokVarian" class="block text-sm font-medium text-gray-700">Stok Varian</label>
+                          <input id="stokVarian" type="text"
+                            class="form-control flex-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            placeholder="Masukan Stok Varian" v-model="stokVarian" required />
+                        </div>
+
+                        <div class="col-span-6 sm:col-span-3">
+                          <label for="satuanVarian" class="block text-sm font-medium text-gray-700">Satuan
+                            Varian</label>
+                          <!-- <TomSelect v-model="satuanVarian" id="satuanVarian" class="mt-1 w-full"
+                            aria-label="Default select example" required>
+                            <option value="kosong" disabled>
+                              &gt-- Pilih Satuan --&lt
+                            </option>
+                            <option v-for="satuan in data.satuan" :key="satuan.id_satuan" :satuan="satuan"
+                              :value="satuan.id_satuan">
+                              {{ satuan.id_satuan }} - {{ satuan.nama_satuan }}
+                            </option>
+                          </TomSelect> -->
+                        </div>
+
+                        <div class="col-span-6 sm:col-span-3">
+                          <label for="hargaBeliVarian" class="block text-sm font-medium text-gray-700">Harga Beli
+                            Varian</label>
+                          <input id="hargaBeliVarian" type="text"
+                            class="form-control flex-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            placeholder="Masukan Harga Beli Varian" v-model="hargaBeliVarian" required />
+                        </div>
+
+                        <div class="col-span-6 sm:col-span-3">
+                          <label for="hargaJualVarian" class="block text-sm font-medium text-gray-700">Harga Jual
+                            Varian</label>
+                          <input id="hargaJualVarian" type="text"
+                            class="form-control flex-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            placeholder="Masukan Harga Jual Varian" v-model="hargaJualVarian" required />
+                        </div>
+
+                        <div class="col-span-6 sm:col-span-6">
+                          <label class="block text-sm font-medium text-gray-700">Gambar Varian</label>
+                          <div
+                            class="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
+                            <div class="space-y-1 text-center">
+                              <svg v-if="url == null || ''" class="mx-auto h-12 w-12 text-gray-400"
+                                stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                <path
+                                  d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                              </svg>
+
+                              <div v-else class="col-span-5 md:col-span-2 relative image-fit cursor-pointer zoom-in"
+                                style="height: 9rem">
+                                <img class="imgUp rounded-md" alt="Midone - HTML Admin Template" :src="url" />
+                                <Tippy content="Remove this image?" @click="url = null"
+                                  class="tooltip w-5 h-5 flex items-center justify-center absolute rounded-full text-white bg-danger right-0 top-0 -mr-2 -mt-2">
+                                  <XIcon class="w-4 h-4" />
+                                </Tippy>
+                              </div>
+                              <div @click="this.$refs.gambarBaru.click()">
+                                <div class="flex text-sm text-gray-600">
+                                  <label for="gambarBaru"
+                                    class="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500">
+                                    <span>Upload a file</span>
+                                    <input id="gambarBaru" ref="gambarBaru" @change="previewImage" name="file-upload"
+                                      type="file" class="sr-only" />
+                                  </label>
+                                  <p class="pl-1">or drag and drop</p>
+                                </div>
+                                <p class="text-xs text-gray-500">
+                                  PNG, JPG, GIF up to 10MB
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <!-- END: Display Item -->
-              </div>
-
-              <!-- BEGIN: Display Total Harga -->
-              <div class="lg:block hidden col-span-4">
-                <div class="intro-y box">
-
-                  <div class="box flex p-2 ">
-                    <input type="text" class="form-control py-3 px-4 w-full bg-slate-100 border-slate-200/60 pr-10"
-                      placeholder="Use coupon code..." />
-                    <button class="btn btn-primary ml-2">Apply</button>
-                  </div>
-                  <div class="box p-2 mt-2">
-                    <div class="flex">
-                      <div class="mr-auto font-medium text-base">Total Harga</div>
-                    </div>
-                    <div class="bg-slate-200 rounded-md p-2">
-                      <div class="font-medium text-xl">
-                        <p class="text-right text-black">{{ currencyFormatter.format(total_harga_global) }}</p>
-                      </div>
-                    </div>
-
-                    <div class="flex mt-4 pt-4 border-t border-slate-200/60 dark:border-darkmode-400">
-                      <div class="mr-auto font-medium text-base">Total Bayar</div>
-                    </div>
-                    <div class="input-group bg-slate-200 rounded-md border-2 border-slate-200/60 mr-0">
-                      <div class="input-group-text my-auto text-xl">
-                        <p class="text-black">Rp.</p>
-                      </div>
-                      <input v-model="total_bayar_global" type="number"
-                        class="form-control flex-1 font-medium text-xl text-right" placeholder="Nominal Uang"
-                        required />
-                    </div>
-
-                    <div class="flex mt-1 pt-4">
-                      <div class="mr-auto font-medium text-base">Kembalian</div>
-                    </div>
-                    <div class="bg-slate-200 rounded-md p-2">
-                      <div class="font-medium text-xl">
-                        <p class="text-right text-black">{{ currencyFormatter.format(kembalian) }}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- END: Display Total Harga -->
-
-              <!-- BEGIN: Detail Pembelian -->
-              <div class="col-span-12 flex-col-reverse">
-                <div class="intro-y box">
-                  <div class="flex items-center px-5 py-2 border-b border-slate-200/60 dark:border-darkmode-400">
-                    <h2 class="font-medium text-base mr-auto">Detail Pembelian</h2>
-                  </div>
-                  <div class="px-2">
-                    <div class="col-span-12 overflow-auto w-full h-56">
-                      <table class="table table-hover mt-2">
-                        <thead class="table-light">
-                          <tr>
-                            <th class="sticky top-0 left-0 w-5 bg-slate-200">#</th>
-                            <th class="sticky top-0 whitespace-nowrap bg-slate-200">ID & Nama Varian</th>
-                            <th class="sticky top-0 whitespace-nowrap bg-slate-200">QTY</th>
-                            <th class="sticky top-0 whitespace-nowrap bg-slate-200">Harga Satuan</th>
-                            <th class="sticky top-0 whitespace-nowrap bg-slate-200">Total Harga</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr v-for="detail in Pembelian.pembelianDetail" :key="detail.id_barang" :detail="detail">
-                            <td @click="openModalRemove(detail)"
-                              class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer hover:bg-slate-500">
-                              <TrashIcon class="text-danger w-4 h-4 p-0" />
-                            </td>
-                            <td>{{ detail.id_varian }} - {{ detail.nama_varian }}</td>
-                            <td>{{ detail.qty }}</td>
-                            <td>{{ currencyFormatter.format(detail.harga_detail_beli) }}</td>
-                            <td>{{ currencyFormatter.format(detail.total_harga_detail_beli) }}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                    <ChevronDownIcon class="animate-bounce col-span-12 mt-1 mb-[-20px] block mx-auto" />
-                  </div>
-                </div>
-              </div>
-              <!-- END: Detail Pembelian -->
-            </div>
+                </form>
+              </ModalBody>
+              <ModalFooter class="text-right">
+                <button type="button" @click="modalVarian = false" class="btn btn-outline-secondary w-32 mr-1">
+                  Cancel
+                </button>
+                <button type="submit" form="addVarianForm" class="btn btn-primary w-32">
+                  Simpan
+                </button>
+              </ModalFooter>
+            </Modal>
           </div>
         </ModalBody>
-        <ModalFooter class="text-right bottom-0 relative z-50 rounded-md sm:border-t-2 border-t-4 btm sm:btm-">
-          <AccordionGroup class="block lg:hidden mb-5">
-            <AccordionItem>
-              <Accordion>
-                <p class="text-center">Total Harga, Bayar & Kembalian</p>
-                <small>
-                  <p class="text-center text-sm">&gt Klik untuk buka/ tutup &lt</p>
-                </small>
-                <div class="grid grid-cols-12 mt-2">
-                  <div class="col-span-4 text-sm border-x-2 border-t-2">
-                    <p class="text-center">Total Harga</p>
-                  </div>
-                  <div class="col-span-4 text-sm border-x-2 border-t-2">
-                    <p class="text-center">Total Bayar</p>
-                  </div>
-                  <div class="col-span-4 text-sm border-x-2 border-t-2">
-                    <p class="text-center">Kembalian</p>
-                  </div>
-
-                  <div class="col-span-4 text-sm border-2">
-                    <p class="text-right mr-1">{{ currencyFormatter.format(total_harga_global) }}</p>
-                  </div>
-                  <div class="col-span-4 text-sm border-2">
-                    <p class="text-right mr-1">{{ currencyFormatter.format(total_bayar_global) }}</p>
-                  </div>
-                  <div class="col-span-4 text-sm border-2">
-                    <p class="text-right mr-1">{{ currencyFormatter.format(kembalian) }}</p>
-                  </div>
-                </div>
-              </Accordion>
-              <AccordionPanel class="text-slate-600 dark:text-slate-500 leading-relaxed">
-                <ChevronDownIcon class="animate-bounce block mx-auto" />
-                <div class="flex lg:block flex-col-reverse">
-                  <div class="intro-y box">
-
-                    <div class="box flex p-2">
-                      <input type="text" class="form-control py-3 px-4 w-full bg-slate-100 border-slate-200/60 pr-10"
-                        placeholder="Use coupon code..." />
-                      <button class="btn btn-primary ml-2">Apply</button>
-                    </div>
-                    <div class="box p-2 mt-2">
-                      <div class="flex">
-                        <div class="mr-auto font-medium text-base">Total Harga</div>
-                      </div>
-                      <div class="bg-slate-200 rounded-md p-2">
-                        <div class="font-medium text-xl">
-                          <p class="text-right text-black">{{ currencyFormatter.format(total_harga_global) }}</p>
-                        </div>
-                      </div>
-
-                      <div class="flex mt-4 pt-4 border-t border-slate-200/60 dark:border-darkmode-400">
-                        <div class="mr-auto font-medium text-base">Total Bayar</div>
-                      </div>
-                      <div class="input-group bg-slate-200 rounded-md border-2 border-slate-200/60 mr-0">
-                        <div class="input-group-text my-auto text-xl">
-                          <p class="text-black">Rp.</p>
-                        </div>
-                        <input v-model="total_bayar_global" type="number"
-                          class="form-control flex-1 font-medium text-xl text-right" placeholder="Nominal Uang"
-                          required />
-                      </div>
-
-                      <div class="flex mt-1 pt-4">
-                        <div class="mr-auto font-medium text-base">Kembalian</div>
-                      </div>
-                      <div class="bg-slate-200 rounded-md p-2">
-                        <div class="font-medium text-xl">
-                          <p class="text-right text-black">{{ currencyFormatter.format(kembalian) }}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </AccordionPanel>
-            </AccordionItem>
-          </AccordionGroup>
-          <!-- <div class="object-right mr-1 my-3">
-            <input id="horizontal-form-3" class="form-check-input" type="checkbox" value="" />
-            <label class="form-check-label" for="horizontal-form-3">Data Telah Benar</label>
-          </div> -->
-          <button type="button" @click="addModal = false" class="btn btn-outline-secondary w-32 mr-1">
+        <ModalFooter class="text-right">
+          <!-- <button type="button" @click="modal_utama = false" class="btn btn-outline-secondary w-32 mr-1">
             Cancel
           </button>
-          <button type="button" @click="addPembelian()" class="object-left btn btn-primary w-32"
-            :disabled="total_bayar_global == 0 || total_bayar_global < total_harga_global">
-            Simpan
-          </button>
+          <button type="submit" form="addSatuanForm" class="btn btn-primary w-32">Simpan</button> -->
         </ModalFooter>
       </Modal>
-      <Dropdown>
-        <DropdownToggle class="btn px-2 box mt-0 mb-3 mr-2">
-          <span class="w-5 h-5 flex items-center justify-center">
-            <UploadIcon class="w-4 h-4" />
-          </span>
-        </DropdownToggle>
-        <DropdownMenu class="w-40">
-          <DropdownContent>
-            <DropdownItem>
-              <PrinterIcon class="w-4 h-4 mr-2" /> Print
-            </DropdownItem>
-            <DropdownItem>
-              <FileTextIcon class="w-4 h-4 mr-2" /> Export to Excel
-            </DropdownItem>
-            <DropdownItem>
-              <FileTextIcon class="w-4 h-4 mr-2" /> Export to PDF
-            </DropdownItem>
-          </DropdownContent>
-        </DropdownMenu>
-      </Dropdown>
-      <select class="w-20 form-select box mt-0 mb-3 mr-2 sm:mt-0">
-        <option>10</option>
-        <option>25</option>
-        <option>25</option>
-        <option>100</option>
-      </select>
-      <div class="search hidden xl:block mt-0 mb-3">
-        <input type="text" class="form-control w-56 box pr-10" placeholder="Search..." />
-        <SearchIcon class="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0" />
-      </div>
-      <a class="notification xl:hidden mt-0 mb-3">
-        <!-- <SearchIcon class="notification__icon dark:text-slate-500" /> -->
-        <form action="" class="justify-center shadow-none bg-white box h-10">
-          <input type="search"
-            class="peer shadow-none cursor-pointer relative z-10 h-10 w-10 box border bg-transparent dark:bg-transparent dark:text-white pl-9 outline-none focus:w-full focus:cursor-text focus:pl-16 focus:pr-4 search__input form-control border-transparent" />
-          <SearchIcon class="absolute inset-y-0 my-auto h-8 w-12 px-3.5 dark:stroke-white" />
-        </form>
+      <a href="" class="ml-auto sm:ml-0 btn px-2 h-10 box flex items-center text-primary">
+        <RefreshCcwIcon class="w-4 h-4 sm:mr-3 sm:m-0 m-2" />
+        <p class="sm:block hidden">Reload Data</p>
       </a>
-      <div class="hidden 2xl:block mx-auto text-slate-500">
-        Showing 1 to 10 of 150 entries
-      </div>
-      <div class="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
-        <nav class="w-full sm:w-auto sm:mr-auto mr-0 tems-center justify-center">
-          <ul class="pagination">
-            <li class="page-item">
-              <a class="page-link" href="#">
-                <SkipBackIcon class="w-4 h-4" />
-              </a>
-            </li>
-            <li class="page-item">
-              <a class="page-link" href="#">
-                <RewindIcon class="w-4 h-4" />
-              </a>
-            </li>
-            <li class="page-item active">
-              <!-- <a class="page-link" href="#">2</a> -->
-              <input type="number" class="form-control" id="page_number" value="1" />
-            </li>
-            <li class="page-item">
-              <!-- <a class="page-link" href="#">3</a> -->
-              <input type="number" class="form-control" id="total_pages" disabled />
-            </li>
-            <li class="page-item">
-              <a class="page-link" href="#">
-                <FastForwardIcon class="w-4 h-4" />
-              </a>
-            </li>
-            <li class="page-item">
-              <a class="page-link" href="#">
-                <SkipForwardIcon class="w-4 h-4" />
-              </a>
-            </li>
-          </ul>
-        </nav>
-      </div>
     </div>
-    <!-- BEGIN: Data List -->
-    <div class="intro-y col-span-12 overflow-auto 2xl:overflow-visible">
-      <PembelianList :pembelians="Pembelian.pembelians" />
-    </div>
-    <!-- END: Data List -->
   </div>
+  <!-- BEGIN: HTML Table Data -->
+  <div class="intro-y box p-5 mt-5">
+    <div class="flex flex-col sm:flex-row sm:items-end xl:items-start">
+      <form id="tabulator-html-filter-form" class="xl:flex sm:mr-auto">
+        <div class="sm:flex items-center sm:mr-4">
+          <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2">Field</label>
+          <select id="tabulator-html-filter-field" v-model="filter.field"
+            class="form-select w-full sm:w-32 2xl:w-full mt-2 sm:mt-0 sm:w-auto">
+            <option value="id_barang">No Invoice</option>
+            <option value="tanggal_penjualan">Tanggal Barang</option>
+            <option value="total_harga_jual">Total Harga Jual</option>
+            <option value="total_bayar_jual">Total Bayar Jual</option>
+            <option value="kembalian_jual">Kembalian</option>
+          </select>
+        </div>
+        <div class="sm:flex items-center sm:mr-4 mt-2 xl:mt-0">
+          <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2">Type</label>
+          <select id="tabulator-html-filter-type" v-model="filter.type"
+            class="form-select w-full mt-2 sm:mt-0 sm:w-auto">
+            <option value="like" selected>like</option>
+            <option value="=">=</option>
+            <option value="<">&lt;</option>
+            <option value="<=">&lt;=</option>
+            <option value=">">></option>
+            <option value=">=">>=</option>
+            <option value="!=">!=</option>
+          </select>
+        </div>
+        <div class="sm:flex items-center sm:mr-4 mt-2 xl:mt-0">
+          <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2">Value</label>
+          <input id="tabulator-html-filter-value" v-model="filter.value" type="text"
+            class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0" placeholder="Search..." />
+        </div>
+        <div class="mt-2 xl:mt-0">
+          <!-- <button id="tabulator-html-filter-go" type="button" class="btn btn-primary w-full sm:w-16" @click="onFilter">
+            Go
+          </button> -->
+          <button id="tabulator-html-filter-reset" type="button"
+            class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1" @click="onResetFilter">
+            Reset
+          </button>
+        </div>
+      </form>
+      <div class="flex mt-5 sm:mt-0">
+        <button id="tabulator-print" class="btn btn-outline-secondary w-1/2 sm:w-auto mr-2" @click="onPrint">
+          <PrinterIcon class="w-4 h-4 mr-2" /> Print
+        </button>
+        <Dropdown class="w-1/2 sm:w-auto">
+          <DropdownToggle class="btn btn-outline-secondary w-full sm:w-auto">
+            <UploadIcon class="w-4 h-4 mr-2" /> Export
+            <ChevronDownIcon class="w-4 h-4 ml-auto sm:ml-2" />
+          </DropdownToggle>
+          <DropdownMenu class="w-40">
+            <DropdownContent>
+              <DropdownItem @click="onExportCsv">
+                <FileTextIcon class="w-4 h-4 mr-2" /> Export CSV
+              </DropdownItem>
+              <!-- <DropdownItem @click="onExportJson">
+                <FileTextIcon class="w-4 h-4 mr-2" /> Export JSON
+              </DropdownItem> -->
+              <DropdownItem @click="onExportXlsx">
+                <FileTextIcon class="w-4 h-4 mr-2" /> Export XLSX
+              </DropdownItem>
+              <!-- <DropdownItem @click="onExportHtml">
+                <FileTextIcon class="w-4 h-4 mr-2" /> Export HTML
+              </DropdownItem> -->
+            </DropdownContent>
+          </DropdownMenu>
+        </Dropdown>
+      </div>
+    </div>
+    <div class="overflow-x-auto scrollbar-hidden">
+      <div id="tabulator" ref="tableRef" class="mt-5 table-report table-report--tabulator"></div>
+    </div>
+  </div>
+  <!-- END: HTML Table Data -->
   <!-- BEGIN: Delete Confirmation Modal -->
   <Modal :show="deleteConfirmationModal" @hidden="deleteConfirmationModal = false">
     <ModalBody class="p-0">
       <div class="p-5 text-center">
         <XCircleIcon class="w-16 h-16 text-danger mx-auto mt-3" />
-        <div class="text-xl mt-5">Apakah Anda yakin akan menghapus <b> {{ itemDel.nama_varian }} </b> sebanyak <b> {{
-    itemDel.qty
-}}</b> ?</div>
+        <div v-if="modal_utama" class="text-xl mt-5">Apakah Anda yakin akan menghapus Varian <b> {{
+          inputIdVarian
+        }} </b>?</div>
+
+        <div v-else class="text-xl mt-5">Apakah Anda yakin akan menghapus Barang <b> {{ inputIdBarang }} - {{
+          inputNamaBarang
+        }} </b> ?</div>
 
       </div>
       <div class="px-5 pb-8 text-center">
-        <button type="button" @click="deleteConfirmationModal = false" class="btn btn-outline-secondary w-24 mr-1">
+        <button type="button" @click="resetModal()" class="btn btn-outline-secondary w-24 mr-1">
           Cancel
         </button>
         <button type="button" class="btn btn-danger w-24"
-          @click="removeItem(itemDel.id_detail_beli, itemDel.no_invoice)">
+          @click="modal_utama ? removeItem() : deleteBarang(inputIdBarang)">
           Delete
         </button>
       </div>
     </ModalBody>
   </Modal>
   <!-- END: Delete Confirmation Modal -->
+
   <Modal size="modal-xl" backdrop="static" :show="isModalScanner" @hidden="isModalScanner = false">
     <ModalHeader>
       <div class="text-center mt-2">
@@ -424,188 +369,749 @@
         <button type="button" @click="
   isModalScanner = false;
 closeQrScanner();
-          " class="btn btn-danger w-24">
+        " class="btn btn-danger w-24">
           Close
         </button>
       </div>
     </ModalBody>
   </Modal>
+
+  <!-- BEGIN: Basic Non Sticky Notification Content -->
+  <Notification refKey="basicNonStickyNotification" :options="{
+    duration: 10000,
+  }" class="flex flex-col sm:flex-row hover:animate-none md:animate-bounce animate-pulse ">
+    <div class="font-medium">Klik 2 kali pada salah satu baris tabel untuk melihat detail transaksi!</div>
+  </Notification>
+  <!-- END: Basic Non Sticky Notification Content -->
 </template>
 
-<script>
-import { usePembelianStore } from "../../stores/pembelian";
+<script setup>
+import $ from "jquery";
+import { useBarangStore } from "../../stores/barang";
+import { ref, provide, reactive, onMounted, onBeforeUnmount, watch } from "vue";
+import xlsx from "xlsx";
+import { createIcons, icons } from "lucide";
+import { TabulatorFull as Tabulator } from 'tabulator-tables';
+import dom from "@left4code/tw-starter/dist/js/dom";
 import qrcode from "../../components/qrcode/QrCode.vue";
 import { currencyFormatter } from "../../utils/helper";
-import PembelianList from "./PembelianList.vue";
+import PrintInvoice from "./PrintInvoice.vue";
 import moment from "moment";
-import { ref } from "vue";
-import { watch } from "vue";
 
-const addModal = ref(false);
+const Barang = useBarangStore();
+
+const modal_utama = ref(false);
+const modalBarang = ref(false);
+const modalVarian = ref(false);
 const deleteConfirmationModal = ref(false);
+const isEdit = ref(false);
 const isModalScanner = ref(false);
+const qrScanner = ref()
+const tableRef = ref();
+const tabulator = ref();
+const filter = reactive({
+  field: "id_barang",
+  type: "like",
+  value: "",
+});
+var subTable
+// const isInvoice = ref(false)
+// const data_jual = ref([])
 
-export default {
-  setup() {
-    const Pembelian = usePembelianStore();
+const checkedID = ref(false);
+const inputIdBarang = ref("");
+const inputNamaBarang = ref("");
 
-    return {
-      Pembelian,
-      moment,
-      currencyFormatter,
-      watch
-    };
-  },
-  watch: {
-    item_select(e) {
-      // console.log("ora", e);
-      this.Pembelian.readDetailItem(e).then((data) => {
-        // console.log('data.data', data);
-        this.nama_barang_select = data.nama_barang,
-          this.nama_varian_select = data.nama_varian,
-          this.nama_campur_select = `${data.nama_barang} - ${data.nama_varian} | ${data.stok_varian}`,
+const inputIdVarian = ref("");
+const inputNamaVarian = ref("");
+const inputGambarVarian = ref("");
+const hargaBeliVarian = ref("");
+const hargaJualVarian = ref("");
+const kategoriGudangVarian = ref("kosong");
+const satuanVarian = ref("kosong");
+const kategoriBarangVarian = ref("kosong");
+const stokVarian = ref("");
 
-          this.harga_item_select = data.harga_beli_varian,
-          this.stok = data.stok_varian,
-          this.qty_select = 1,
-          this.total_harga_select = data.harga_beli_varian
-      }).catch((e) => console.error(e));
-    },
-    qty_select(newValue, oldValue) {
-      const qty = newValue
-      const harga_item_select = this.harga_item_select
-      const stok = this.stok
-      // console.log('qty', newValue, oldValue, this.harga_item_select, this.stok);
-      if (newValue > stok) {
-        alert("Stok tersisa hanya " + stok);
-        this.qty_select = oldValue;
-      } else if (newValue === "") {
-        alert("Minimal Qty harus 1");
-        this.qty_select = 1;
-      } else {
-        this.total_harga_select = harga_item_select * qty
-      }
-    },
-    total_bayar_global(newValue, oldValue) {
-      const total_bayar_global = newValue
-      const total_harga_global = this.total_harga_global
-      if (newValue === "") {
-        alert("Total Bayar tidak boleh kosong atau minus");
-        this.total_bayar_global = oldValue;
-      } else {
-        this.kembalian = total_bayar_global - total_harga_global
-      }
-    },
-    total_harga_global(newValue, oldValue) {
-      const total_bayar_global = this.total_bayar_global
-      const total_harga_global = newValue
-      if (newValue === "") {
-        alert("Total Harga tidak boleh kosong atau minus");
-        this.total_harga_global = oldValue;
-      } else {
-        this.kembalian = total_bayar_global - total_harga_global
-      }
-    }
-  },
-  components: {
-    PembelianList,
-    qrcode
-  },
-  data() {
-    return {
-      addModal,
-      deleteConfirmationModal,
-      isModalScanner,
+const data = ref([]);
 
-      no_invoice: "-",
-      waktu: "",
+const url = ref(null);
+const file = ref(null);
+const ScanIDVarian = ref("");
 
-      item_select: "kosong",
-      stok: 0,
-      nama_barang_select: "-",
-      nama_varian_select: "-",
-      nama_campur_select: "-",
-
-      qty_select: 0,
-
-      harga_item_select: 0,
-      total_harga_select: 0,
-
-      total_harga_global: 0,
-      total_bayar_global: 0,
-      kembalian: 0,
-
-      itemDel: "",
-    };
-  },
-  methods: {
-    startTransaction() {
-      // this.Pembelian.startTransaction().then((data) => {
-      //   this.no_invoice = data.no_invoice;
-      //   this.waktu = data.tanggal_pembelian;
-      // })
-      // console.log('start transactions');
-    },
-    addItem() {
-      this.Pembelian.addDetailPembelian(
-        this.no_invoice,
-        this.item_select,
-        this.qty_select
-      ).then((data) => {
-        //console.log('data.data', this.stok, this.qty_select);
-        this.total_harga_global = data.total_harga_beli
-        this.stok = this.stok - this.qty_select
-        this.nama_campur_select = `${this.nama_barang_select} - ${this.nama_varian_select} | ${this.stok}`
-      }).catch((e) => console.error(e));
-    },
-    openModalRemove(item) {
-      //console.log(item)
-      this.itemDel = item
-      this.deleteConfirmationModal = true
-    },
-    removeItem(id_detail_beli, no_invoice) {
-      this.Pembelian.removeItem(id_detail_beli, no_invoice).then((data) => {
-        this.stok = this.stok + parseInt(this.itemDel.qty)
-        this.nama_campur_select = `${this.nama_barang_select} - ${this.nama_varian_select} | ${this.stok}`
-        this.deleteConfirmationModal = false
-        // console.log('data',this.itemDel)
-        this.total_harga_global = parseFloat(data)
-      }).catch((e) => console.error(e));
-    },
-    addPembelian() {
-      const no_invoice = this.no_invoice
-      const total_harga_global = this.total_harga_global
-      const total_bayar_global = this.total_bayar_global
-      const kembalian = this.kembalian
-      console.log('data', this.Pembelian.pembelianDetail.length);
-      if (this.Pembelian.pembelianDetail.length !== 0 && this.total_bayar_global >= this.total_harga_global) {
-        this.Pembelian.addPembelian(no_invoice, total_harga_global, total_bayar_global, kembalian).then((data) => {
-          this.addModal = false;
-        }).catch((e) => console.error(e));
-      } else { alert("Detail Pembelian Tidak Boleh Kosong") }
-
-    },
-    renderQrScanner() {
-      this.$refs.qrScanner.renderQrScanner();
-      // console.log("qrScanner", this.$refs)
-    },
-    closeQrScanner() {
-      this.$refs.qrScanner.closeQrScanner();
-    },
-    resultScan(result) {
-      // ntar di concat ma it outlet
-      this.item_select = result;
-      //console.log("hasil", this.item_select)
-      this.isModalScanner = false;
-      this.$refs.qrScanner.closeQrScanner();
-    },
-  },
-  created() {
-      this.Pembelian.readItem();
-  },
+// Basic non sticky notification
+const basicNonStickyNotification = ref();
+provide("bind[basicNonStickyNotification]", (el) => {
+  // Binding
+  basicNonStickyNotification.value = el;
+});
+const basicNonStickyNotificationToggle = () => {
+  // Show notification
+  basicNonStickyNotification.value.showToast();
 };
-</script>
 
+const openAddModal = () => {
+  // Barang.startTransaction().then((data) => {
+  //   inputIdBarang.value = data.id_barang;
+  //   waktu.value = data.tanggal_penjualan;
+  // })
+  modal_utama.value = true;
+  console.log('new produk');
+};
+
+const addBarang = () => {
+  try {
+    // console.log("addSatuan", inputNamaBarang.value)
+    Barang.addItem(inputNamaBarang.value).then(() => {
+      resetModal();
+      initTabulator();
+    })
+  } catch (error) {
+    alert("Gagal Tambah Data", error);
+  }
+};
+const updateBarang = () => {
+  try {
+    Barang.updateItem({ id_barang: inputIdBarang.value, nama_barang: inputNamaBarang.value }).then(() => {
+      resetModal();
+      initTabulator();
+    });
+  } catch (error) {
+    alert(`Gagal Update data ${inputIdBarang.value}`, error);
+  }
+}
+
+const deleteBarang = () => {
+  try {
+    Barang.removeItem(inputIdBarang.value).then(() => {
+      resetModal();
+      initTabulator();
+    });
+  } catch (error) {
+    alert(`Gagal Delete Barang ${inputIdBarang.value}`, error);
+  }
+};
+
+const addVarian = () => {
+  try {
+    if (ScanIDVarian.value === "" || null) {
+      Barang.addVarian({
+        id_varian: inputIdVarian.value,
+        nama_varian: inputNamaVarian.value,
+        kategori_barang: kategoriBarangVarian.value,
+        stok_varian: parseInt(stokVarian.value),
+        harga_beli: parseInt(hargaBeliVarian.value),
+        satuan_varian: satuanVarian.value,
+        gudang: kategoriGudangVarian.value,
+
+        file: file.value,
+        harga_jual: parseInt(hargaJualVarian.value),
+      });
+    } else {
+      Barang.addVarian({
+        id_varian: ScanIDVarian.value,
+        nama_varian: inputNamaVarian.value,
+        kategori_barang: kategoriBarangVarian.value,
+        stok_varian: stokVarian.value,
+        harga_beli: hargaBeliVarian.value,
+        satuan_varian: satuanVarian.value,
+        gudang: kategoriGudangVarian.value,
+
+        file: file.value,
+        harga_jual: hargaJualVarian.value,
+      });
+    }
+    resetModal()
+  } catch (error) {
+    alert("Varian Tambah Data", error);
+  }
+};
+
+const updateVarian = () => {
+
+};
+
+const previewImage = (e) => {
+  file.value = e.target.files[0];
+  url.value = URL.createObjectURL(file.value);
+};
+
+const openModalRemove = (item) => {
+  //console.log(item)
+  itemDel.value = item
+  deleteConfirmationModal.value = true
+}
+
+const removeItem = (id_detail_jual, id_barang) => {
+  Barang.removeItem(id_detail_jual, id_barang).then((data) => {
+    stok.value = stok.value + parseInt(itemDel.value.qty)
+    nama_campur_select.value = `${nama_barang_select.value} - ${nama_varian_select.value} | ${stok.value}`
+    deleteConfirmationModal.value = false
+    // console.log('data', itemDel)
+    total_harga_global.value = parseFloat(data)
+  }).catch((e) => {
+    alert("removeItem" + e)
+  });
+}
+
+const simpanBarang = () => {
+  const no_invoice_now = inputIdBarang.value
+  const total_harga_global_now = total_harga_global.value
+  const total_bayar_global_now = total_bayar_global.value
+  const kembalian_now = kembalian.value
+
+  // tabulator.value.updateData([{
+  //   // id: index_select.value,
+  //   no_invoice_now,
+  //   tanggal_penjualan: Date.now(),
+  //   total_harga_jual: currencyFormatter.format(total_harga_global.value),
+  //   total_bayar_jual: currencyFormatter.format(total_bayar_global.value),
+  //   kembalian_now
+  // }]);
+  console.log('data', Barang.penjualanDetail.length);
+  if (Barang.penjualanDetail.length !== 0 && total_bayar_global.value >= total_harga_global.value) {
+    Barang.addBarang(no_invoice_now, total_harga_global_now, total_bayar_global_now, kembalian_now).then((data) => {
+      isEdit.value = false;
+      modal_utama.value = false;
+      // tabulator.value.clearData()
+      // tabulator.value.setData(data);
+      initTabulator()
+
+
+    }).catch((e) => {
+      alert("Simpan Error: " + e)
+    });
+  } else { alert("Simpan Detail Barang Tidak Boleh Kosong") }
+}
+
+
+//defineExpose({ qrScanner })
+
+const renderQrScanner = () => {
+  //qrScanner.renderQrScanner();
+  qrScanner.value.renderQrScanner();
+}
+
+const closeQrScanner = () => {
+  qrScanner.value.closeQrScanner();
+}
+
+const resultScan = (result) => {
+  // ntar di concat ma it outlet
+  item_select.value = result;
+  console.log("hasil", item_select)
+  isModalScanner.value = false;
+  qrScanner.value.closeQrScanner();
+}
+
+const resetModal = () => {
+  modal_utama.value = false
+  modalBarang.value = false
+  modalVarian.value = false
+  deleteConfirmationModal.value = false
+  isEdit.value = false
+  isModalScanner.value = false
+
+  checkedID.value = false;
+  inputIdBarang.value = "";
+  inputNamaBarang.value = "";
+
+  inputIdVarian.value = "";
+  inputNamaVarian.value = "";
+  inputGambarVarian.value = "";
+  hargaBeliVarian.value = "";
+  hargaJualVarian.value = "";
+  kategoriGudangVarian.value = "kosong";
+  satuanVarian.value = "kosong";
+  kategoriBarangVarian.value = "kosong";
+  stokVarian.value = "";
+
+  data.value = "";
+
+  url.value = null;
+  file.value = null;
+  ScanIDVarian.value = "";
+}
+
+
+watch(filter, async (newValue, oldValue) => {
+  try {
+    //console.log("filter: ", newValue)
+    onFilter()
+  } catch (error) {
+    alert("Gagal wtch filter" + error)
+  }
+})
+
+const template = document.createElement('template');
+template.innerHTML = '<div style="display:inline-block;" class="d-flex flex-row">' +
+  '<div>Loading... </div>' +
+  '<div class="ml-2 activity-sm" data-role="activity" data-type="atom" data-style="dark"></div>' +
+  '</div>';
+const dataLoaderLoading = template.content.firstChild;
+
+const initTabulator = () => {
+  tabulator.value = new Tabulator(tableRef.value, {
+    data: Barang.items,
+    dataLoaderLoading: dataLoaderLoading,
+    printHeader: `<h1 class='text-2xl p-2 m-2 text-center border-y-2 border-black'>Tabel Barang<h1>`,
+    printFooter: `<h2 class='p-2 m-2 text-center mt-4'>${moment(Date.now()).format("DD MMM YYYY HH:SS")}<h2>`,
+    printAsHtml: true,
+    printStyled: true,
+    height: "50vh",
+    pagination: "remote",
+    paginationSize: 10,
+    paginationSizeSelector: [10, 20, 30, 40, 50, 100],
+    layout: "fitColumns",
+    responsiveLayout: "collapse",
+    placeholder: "Tida ada Data di temukan",
+    columnDefaults: {
+      resizable: true,
+      tooltip: function (e, cell, onRendered) {
+        //e - mouseover event
+        //cell - cell component
+        //onRendered - onRendered callback registration function
+
+        var el = document.createElement("div");
+        el.style.backgroundColor = "white smoke";
+        el.innerText = cell.getColumn().getField() + " - " + cell.getValue(); //return cells "field - value";
+
+        return el;
+      },
+    },
+    columns: [
+      {
+        formatter: "responsiveCollapse",
+        width: 40,
+        minWidth: 30,
+        hozAlign: "center",
+        resizable: false,
+        headerSort: false,
+      },
+
+      // For HTML table
+      {
+        title: "ID BARANG",
+        minWidth: 200,
+        responsive: 0,
+        field: "id_barang",
+        vertAlign: "middle",
+        hozAlign: "left",
+        print: false,
+        download: false,
+        formatter(cell) {
+          return `<div>
+                <div class="font-medium whitespace-nowrap">${cell.getData().id_barang}</div>
+              </div>`;
+        },
+      },
+      {
+        title: "NAMA BARANG",
+        minWidth: 200,
+        responsive: 0,
+        field: "nama_barang",
+        vertAlign: "middle",
+        hozAlign: "center",
+        print: false,
+        download: false,
+        formatter(cell) {
+          return `<div>
+                <div class="font-medium whitespace-nowrap">${cell.getData().nama_barang}</div>
+              </div>`;
+        },
+      },
+      {
+        title: "ACTIONS",
+        headerHozAlign: "center",
+        minWidth: 200,
+        field: "actions",
+        responsive: 1,
+        hozAlign: "center",
+        vertAlign: "middle",
+        print: false,
+        download: false,
+        formatter(cell) {
+          const a = dom(`<div class="flex lg:justify-center items-center">
+                <a id="edit" class="flex items-center mr-3" href="javascript:;">
+                  <i data-lucide="check-square" class="w-4 h-4 mr-1"></i> Edit
+                </a>
+                <a id="delete" class="flex items-center text-danger" href="javascript:;">
+                  <i data-lucide="trash-2" class="w-4 h-4 mr-1"></i> Delete
+                </a>
+              </div>`);
+          dom(a).on("click", "a", function (e) {
+            if (e.id === "edit") {
+              //alert("edit " + cell.getData());
+              const barang = cell.getData()
+              console.log("openEditModal", cell.getRow());
+              inputIdBarang.value = barang.id_barang
+              inputNamaBarang.value = barang.nama_barang
+              isEdit.value = true;
+              modalBarang.value = true;
+              //modal_utama.value = true;
+
+            } else {
+              //alert("delete" + JSON.stringify(cell.getData().id_barang));
+              //const no_invoice_del = JSON.stringify(cell.getData().id_barang)
+              inputIdBarang.value = cell.getData().id_barang;
+              inputNamaBarang.value = cell.getData().nama_barang
+              deleteConfirmationModal.value = true;
+            }
+          });
+
+          return a[0];
+        },
+      },
+
+      // For print format
+      {
+        title: "ID BARANG",
+        field: "id_barang",
+        visible: false,
+        print: true,
+        download: true,
+      },
+      {
+        title: "NAMA BARANG",
+        field: "nama_barang",
+        visible: false,
+        print: true,
+        download: true,
+      },
+    ],
+    rowFormatter: function (row) {
+      //create and style holder elements
+      var holderEl = document.createElement("div");
+      var tableEl = document.createElement("div");
+      holderEl.style.display = "none"
+
+      const id = row.getData().id_barang;
+
+      holderEl.style.boxSizing = "border-box";
+      holderEl.style.padding = "10px 30px 10px 10px";
+      holderEl.style.borderTop = "1px solid #333";
+      holderEl.style.borderBotom = "1px solid #333";
+      holderEl.setAttribute('class', "subTable" + id + "");
+
+
+      tableEl.style.border = "1px solid #333";
+      tableEl.style.display = "none"
+      tableEl.setAttribute('class', "subTable" + id + "");
+
+      holderEl.appendChild(tableEl);
+
+      row.getElement().appendChild(holderEl);
+
+      subTable = new Tabulator(tableEl, {
+        printAsHtml: true,
+        printStyled: true,
+        layout: "fitColumns",
+        responsiveLayout: "collapse",
+        layout: "fitColumns",
+        data: row.getData().serviceHistory,
+        columns: [
+
+          // For HTML table
+          {
+            formatter: "responsiveCollapse",
+            width: 40,
+            minWidth: 30,
+            hozAlign: "center",
+            resizable: false,
+            headerSort: false,
+          },
+          {
+            title: "GAMBAR & ID",
+            minWidth: 100,
+            responsive: 0,
+            field: "id_varian",
+            hozAlign: "left",
+            vertAlign: "middle",
+            print: false,
+            download: false,
+            formatter(cell) {
+              return `<div>
+                <div class="font-medium whitespace-nowrap">${cell.getData().id_varian
+                }</div>
+              </div>`;
+            },
+          },
+          {
+            title: "NAMA BARANG",
+            minWidth: 100,
+            responsive: 0,
+            field: "nama_barang",
+            hozAlign: "center",
+            vertAlign: "middle",
+            print: false,
+            download: false,
+            formatter(cell) {
+              return `<div>
+                <div class="font-medium whitespace-nowrap">${cell.getData().nama_barang
+                }</div>
+              </div>`;
+            },
+          },
+          {
+            title: "NAMA VARIAN",
+            minWidth: 150,
+            responsive: 0,
+            field: "nama_varian",
+            hozAlign: "center",
+            vertAlign: "middle",
+            print: false,
+            download: false,
+            formatter(cell) {
+              return `<div>
+                <div class="font-medium whitespace-nowrap">${cell.getData().nama_varian
+                }</div>
+              </div>`;
+            },
+          },
+          {
+            title: "STOK",
+            minWidth: 50,
+            responsive: 0,
+            field: "stok_varian",
+            hozAlign: "center",
+            vertAlign: "middle",
+            print: false,
+            download: false,
+            formatter(cell) {
+              return `<div>
+                <div class="font-medium whitespace-nowrap">${cell.getData().stok_varian
+                }</div>
+              </div>`;
+            },
+          },
+          {
+            title: "SATUAN",
+            minWidth: 50,
+            headerHozAlign: "center",
+            field: "id_satuan",
+            hozAlign: "center",
+            vertAlign: "middle",
+            print: false,
+            download: false,
+            formatter(cell) {
+              return `<div>
+                <div class="font-medium whitespace-nowrap">${cell.getData().id_satuan
+                }</div>
+              </div>`;
+            },
+          },
+          {
+            title: "GUDANG",
+            minWidth: 50,
+            headerHozAlign: "center",
+            field: "id_gudang",
+            hozAlign: "center",
+            vertAlign: "middle",
+            print: false,
+            download: false,
+            formatter(cell) {
+              return `<div>
+                <div class="font-medium whitespace-nowrap">${cell.getData().id_gudang
+                }</div>
+              </div>`;
+            },
+          },
+          {
+            title: "HARGA BELI",
+            headerHozAlign: "center",
+            minWidth: 150,
+            field: "harga_beli_varian",
+            hozAlign: "right",
+            vertAlign: "middle",
+            print: false,
+            download: false,
+            formatter(cell) {
+              return `<div>
+                <div class="font-medium whitespace-nowrap">${currencyFormatter.format(cell.getData().harga_beli_varian)
+                }</div>
+              </div>`;
+            },
+          },
+          {
+            title: "HARGA JUAL",
+            minWidth: 150,
+            headerHozAlign: "center",
+            field: "harga_jual_varian",
+            hozAlign: "right",
+            vertAlign: "middle",
+            print: false,
+            download: false,
+            formatter(cell) {
+              return `<div>
+                <div class="font-medium whitespace-nowrap">${currencyFormatter.format(cell.getData().harga_jual_varian)
+                }</div>
+              </div>`;
+            },
+          },
+
+          // For print format
+          {
+            title: "ID VARIAN",
+            field: "id_varian",
+            visible: false,
+            print: true,
+            download: true,
+          },
+          {
+            title: "NAMA BARANG",
+            field: "nama_barang",
+            visible: false,
+            print: true,
+            download: true,
+          },
+          {
+            title: "NAMA VARIAN",
+            field: "nama_varian",
+            visible: false,
+            print: true,
+            download: true,
+          },
+          {
+            title: "STOK",
+            field: "stok_varian",
+            visible: false,
+            print: true,
+            download: true,
+          }, {
+            title: "SATUAN",
+            field: "id_satuan",
+            visible: false,
+            print: true,
+            download: true,
+          },
+          {
+            title: "GUDANG",
+            field: "id_gudang",
+            visible: false,
+            print: true,
+            download: true,
+          }, {
+            title: "HARGA BELI",
+            field: "harga_beli_varian",
+            visible: false,
+            print: true,
+            download: true,
+          },
+          {
+            title: "HARGA JUAL",
+            field: "harga_jual_varian",
+            visible: false,
+            print: true,
+            download: true,
+          },
+        ],
+      })
+    },
+  });
+  tabulator.value.on("renderComplete", function () {
+    //subTable.redraw();
+    createIcons({
+      icons,
+      "stroke-width": 1.5,
+      nameAttr: "data-lucide",
+
+    });
+  });
+  tabulator.value.on("rowDblClick", async function (e, row) {
+    const id = row.getData().id_barang;
+    try {
+
+      await Barang.readVarian(id).then(
+        (data) => {
+          tabulator.value.replaceData(data)
+          //console.log("rowClick", data);
+        }).catch((e) => {
+          throw e;
+        });
+      $(".subTable" + id + "").toggle();
+    } catch (error) {
+      alert("2click" + error);
+    }
+  });
+
+  tabulator.value.on("rowClick", function (e, row) {
+    const id = row.getData().id_barang;
+    $(".subTable" + id + "").hide();
+  });
+};
+
+// Redraw table onresize
+const reInitOnResizeWindow = () => {
+  window.addEventListener("resize", () => {
+    tabulator.value.redraw();
+    createIcons({
+      icons,
+      "stroke-width": 1.5,
+      nameAttr: "data-lucide",
+    });
+  });
+};
+
+// Filter function
+const onFilter = () => {
+  tabulator.value.setFilter(filter.field, filter.type, filter.value);
+};
+
+// On reset filter
+const onResetFilter = () => {
+  filter.field = "id_barang";
+  filter.type = "like";
+  filter.value = "";
+  onFilter();
+};
+
+// Export
+const onExportCsv = () => {
+  tabulator.value.download("csv", "data.csv");
+};
+
+const onExportJson = () => {
+  tabulator.value.download("json", "data.json");
+};
+
+const onExportXlsx = () => {
+  const win = window;
+  win.XLSX = xlsx;
+  tabulator.value.download("xlsx", "data.xlsx", {
+    sheetName: "Products",
+  });
+};
+
+const onExportHtml = () => {
+  tabulator.value.download("html", "data.html", {
+    style: true,
+  });
+};
+
+// Print
+const onPrint = () => {
+  tabulator.value.print();
+};
+
+onMounted(async function () {
+  try {
+    Barang.readItem().then(() => {
+      Barang.addVarianGet().then((varian) => {
+        data.value = varian;
+        initTabulator();
+        reInitOnResizeWindow();
+        basicNonStickyNotificationToggle();
+      }).catch((e) => {
+        throw e
+      })
+    }).catch((e) => {
+      throw e
+    });
+  } catch (error) {
+    alert("onMounted" + error)
+  }
+});
+
+</script>
 <style scoped>
 table thead th:first-child {
   position: sticky;
@@ -621,3 +1127,4 @@ table thead th:first-child {
   }
 }
 </style>
+

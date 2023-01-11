@@ -2,12 +2,11 @@
   <div class="intro-y box overflow-hidden mt-2">
     <div class="flex flex-col lg:flex-row pt-10 px-5 sm:px-20 sm:pt-20 lg:pb-20 text-center sm:text-left">
       <div class="font-semibold text-primary text-3xl">
-        {{ no_invoice_show }} <br />
+        {{ no_invoice }} <br />
         <div class="text-xl dark:text-secondary text-dark font-medium">
-          {{ dateFormat(prints.map(
-            item => {return item.tanggal_penjualan}
-          ).filter(
-            (item, index) => index === 0).toString()).format("DD MMM YYYY HH:SS") }}
+          {{
+            dateFormat(waktu).format("DD MMM YYYY HH:SS")
+          }}
         </div>
       </div>
       <div class="mt-20 lg:mt-0 lg:ml-auto lg:text-right">
@@ -77,13 +76,17 @@
           </div> -->
       <div class="sm:ml-auto grid grid-cols-2 sm:gap-4">
         <div class="text-lg text-slate-500 font-medium text-left sm:text-right">TOTAL : </div>
-        <div class="text-lg text-primary font-bold text-right">{{ currencyFormat.format(parseInt(total_harga_jual)) }}</div>
+        <div class="text-lg text-primary font-bold text-right">{{ currencyFormat.format(parseInt(total_harga_global)) }}
+        </div>
 
         <div class="text-lg text-slate-500 font-medium text-left sm:text-right">BAYAR : </div>
-        <div class="text-base text-primary font-bold text-right">{{ currencyFormat.format(parseInt(total_bayar_jual)) }}</div>
+        <div class="text-base text-primary font-bold text-right">{{
+          currencyFormat.format(parseInt(total_bayar_global))
+        }}</div>
 
         <div class="text-lg text-slate-500 font-medium text-left sm:text-right">KEMBALIAN : </div>
-        <div class="text-md text-primary font-bold text-right">{{ currencyFormat.format(parseInt(kembalian_jual)) }}</div>
+        <div class="text-md text-primary font-bold text-right">{{ currencyFormat.format(parseInt(kembalian)) }}
+        </div>
         <div class="col-span-2 text-right">* Termasuk pajak</div>
       </div>
     </div>
@@ -106,7 +109,7 @@ export default {
   },
   data() {
     return {
-     // no_invoice: this.prints[0].no_invoice,
+      // no_invoice: this.prints[0].no_invoice,
 
     }
   },
@@ -114,17 +117,20 @@ export default {
     prints: {
       type: Object,
     },
-    no_invoice_show: {
+    no_invoice: {
       type: String,
     },
-    total_harga_jual: {
+    waktu: {
       type: String,
     },
-    total_bayar_jual: {
-      type: String,
+    total_harga_global: {
+      type: Number,
     },
-    kembalian_jual: {
-      type: String,
+    total_bayar_global: {
+      type: Number,
+    },
+    kembalian: {
+      type: Number,
     }
   },
 

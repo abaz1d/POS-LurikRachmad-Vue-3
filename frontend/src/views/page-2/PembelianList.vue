@@ -56,33 +56,16 @@
   <Modal size="modal-xl" :show="isInvoice" @hidden="isInvoice = false">
     <ModalHeader>
       <h2 class="font-medium text-base mr-auto">
-        Transaksi No Invoice <b>{{ no_invoice_show }}</b>
-      </h2>
-
-      <div class="sm:w-auto flex mt-4 sm:mt-0 mr-0 ml-4 items-right">
         <button class="btn btn-primary shadow-md mr-2">
           <PrinterIcon class="w-4 h-4 mr-2" /> Print
         </button>
-        <div class="ml-2 m-auto">
+        Transaksi No Invoice <b>{{ no_invoice_show }}</b>
+      </h2>
+
+      <div @click="isInvoice = false" class="sm:w-auto flex mt-4 sm:mt-0 mr-0 ml-4 items-right">
+        <div class="ml-2 m-auto text-danger">
           <XIcon class="w-8 h-8 mx-auto" />
         </div>
-        <!-- <Dropdown class="mr-2 rounded border border-slate-500">
-          <DropdownToggle class="btn px-2 box">
-            <span class="w-5 h-5 flex items-center justify-center">
-              <ShareIcon class="w-4 h-4" />
-            </span>
-          </DropdownToggle>
-          <DropdownMenu class="w-40">
-            <DropdownContent>
-              <DropdownContent class="flex items-center justify-center">
-                <FileIcon class="w-4 h-4 mr-2" /> Export Word
-              </DropdownContent>
-              <DropdownContent class="flex items-center justify-center">
-                <FileIcon class="w-4 h-4 mr-2" /> Export PDF
-              </DropdownContent>
-            </DropdownContent>
-          </DropdownMenu>
-        </Dropdown> -->
       </div>
     </ModalHeader>
     <ModalBody>

@@ -8,10 +8,11 @@
       <nav class="side-nav side-nav--simple">
         <a href="" class="intro-x flex items-center pl-5 pt-4">
           <img
-            alt="Midone Tailwind HTML Admin Template"
-            class="w-6"
+            alt="Lurik Rachmad HTML"
+            class="w-6 block dark:hidden"
             src="@/assets/images/logo.svg"
           />
+          <img alt="Lurik Rachmad HTML" class="w-6 hidden dark:block" src="@/assets/images/logo-gold.svg" />
         </a>
         <div class="side-nav__devider my-6"></div>
         <ul>

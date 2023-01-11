@@ -9,24 +9,26 @@
       <!-- BEGIN: Modal Content -->
       <Modal size="modal-xl" backdrop="static" :show="modal_utama" @hidden="modal_utama = false">
         <ModalHeader class="relative top-0 z-50 rounded-md border-b-2">
-          <h2 class="font-medium text-base mr-auto">
+          <h2 class="hidden lg:block font-medium text-base mr-auto">
             <p class="mx-auto" v-if="isEdit">Edit Pembelian {{ no_invoice }}</p>
             <p class="mx-auto" v-else>Tambah Pembelian</p>
           </h2>
-          <div class="lg:-mr-48 mx-auto mt-2">
-            <div class="bg-slate-200 rounded-md p-2 font-medium lg:text-base text-sm px-2">
-              <p class="text-right text-black">{{ no_invoice }}</p>
+          <div class="sm:w-auto flex mt-3 mx-auto sm:mx-0 sm:mr-0 sm:ml-4 items-center sm:items-right">
+            <div class="mr-2 m-auto">
+              <div class="bg-slate-200 rounded-md p-2 font-medium lg:text-base text-sm px-2">
+                <p class="text-right text-black">{{ no_invoice }}</p>
+              </div>
+              <p class="text-center bg-primary text-white rounded-md w-24 mx-auto lg:-mt-[52px] -mt-12 lg:mb-8 mb-6">NO
+                INVOICE</p>
             </div>
-            <p class="text-center bg-primary text-white rounded-md w-24 mx-auto lg:-mt-[52px] -mt-12 lg:mb-8 mb-6">NO
-              INVOICE</p>
-          </div>
-
-          <div class="lg:mr-0 mx-auto mt-2">
-            <div class="bg-slate-200 rounded-md p-2 font-medium lg:text-base text-sm px-2">
-              <p class="text-right text-black">{{ moment(waktu).format("DD MMM YYYY HH:SS") }}</p>
+            <div class="mr-2 m-auto">
+              <div class="bg-slate-200 rounded-md p-2 font-medium lg:text-base text-sm px-2">
+                <p class="text-right text-black">{{ moment(waktu).format("DD MMM YYYY HH:SS") }}</p>
+              </div>
+              <p class="text-center bg-primary text-white rounded-md w-24 mx-auto lg:-mt-[52px] -mt-12 lg:mb-8 mb-6">
+                WAKTU
+              </p>
             </div>
-            <p class="text-center bg-primary text-white rounded-md w-24 mx-auto lg:-mt-[52px] -mt-12 lg:mb-8 mb-6">WAKTU
-            </p>
           </div>
 
         </ModalHeader>
@@ -444,6 +446,28 @@ closeQrScanner();
     <div class="font-medium">Klik 2 kali pada salah satu baris tabel untuk melihat detail transaksi!</div>
   </Notification>
   <!-- END: Basic Non Sticky Notification Content -->
+
+  <Modal backdrop="static" size="modal-xl" :show="isInvoice" @hidden="isInvoice = false">
+    <ModalHeader>
+      <h2 class="font-medium text-base mr-auto">
+        <button class="btn btn-primary shadow-md mr-2">
+          <PrinterIcon class="w-4 h-4 mr-2" /> Print
+        </button>
+         <b>{{ no_invoice }}</b>
+      </h2>
+
+      <div @click="resetModal()" class="sm:w-auto flex mt-4 sm:mt-0 mr-0 ml-4 items-right cursor-pointer">
+        <div class="ml-2 m-auto text-danger">
+          <XIcon class="w-8 h-8 mx-auto" />
+        </div>
+      </div>
+    </ModalHeader>
+    <ModalBody>
+      <PrintInvoice :prints="Pembelian.prints" :no_invoice="no_invoice" :waktu="waktu"
+        :total_harga_global="total_harga_global" :total_bayar_global="total_bayar_global" :kembalian="kembalian" />
+    </ModalBody>
+  </Modal>
+
 </template>
 
 <script setup>
@@ -456,6 +480,7 @@ import { TabulatorFull as Tabulator } from 'tabulator-tables';
 import dom from "@left4code/tw-starter/dist/js/dom";
 import qrcode from "../../components/qrcode/QrCode.vue";
 import { currencyFormatter } from "../../utils/helper";
+import PrintInvoice from "./PrintInvoice.vue";
 import moment from "moment";
 
 const Pembelian = usePembelianStore();
@@ -473,7 +498,7 @@ const filter = reactive({
   value: "",
 });
 var subTable
-const index_select = ref(0)
+const isInvoice = ref(false)
 const data_utama = ref([])
 
 const no_invoice = ref("-");
@@ -499,12 +524,12 @@ const itemDel = ref("");
 // Basic non sticky notification
 const basicNonStickyNotification = ref();
 provide("bind[basicNonStickyNotification]", (el) => {
-// Binding
-basicNonStickyNotification.value = el;
+  // Binding
+  basicNonStickyNotification.value = el;
 });
 const basicNonStickyNotificationToggle = () => {
-// Show notification
-basicNonStickyNotification.value.showToast();
+  // Show notification
+  basicNonStickyNotification.value.showToast();
 };
 
 
@@ -609,6 +634,7 @@ const resetModal = () => {
   deleteConfirmationModal.value = false;
   isEdit.value = false;
   isModalScanner.value = false;
+  isInvoice.value = false;
 
   no_invoice.value = "-"
   waktu.value = ""
@@ -751,7 +777,9 @@ const initTabulator = () => {
         width: 40,
         print: false,
         download: false,
-        align: "center",
+        tooltip: false,
+        hozAlign: "center",
+        vertAlign: "middle",
         formatter(cell) {
           const a = dom(`<div class="flex lg:justify-center items-center">
                 <a id="edit" class="flex items-center mr-3" href="javascript:;">
@@ -759,12 +787,26 @@ const initTabulator = () => {
                 </a>
               </div>`);
           dom(a).on("click", function (e) {
-            
+
           });
 
           return a[0];
         }, cellClick: function (e, cell) {
-          alert("Print");
+          //console.log("openInvoiceModal", Pembelian);
+          // alert("Print");
+          const pembelian = cell.getData()
+
+          Pembelian.readDetail(pembelian.no_invoice).then((data) => {
+            no_invoice.value = pembelian.no_invoice;
+            waktu.value = pembelian.tanggal_pembelian;
+            total_harga_global.value = parseFloat(pembelian.total_harga_beli);
+            total_bayar_global.value = parseFloat(pembelian.total_bayar_beli);
+            kembalian.value = parseFloat(pembelian.kembalian_beli);
+
+            isInvoice.value = true;
+          }).catch((e) => {
+            alert("gagal open invoice" + e);
+          });
 
           // //filter table to just this row
           // table.Filter(function (data) {
@@ -784,6 +826,7 @@ const initTabulator = () => {
         responsive: 0,
         field: "no_invoice",
         vertAlign: "middle",
+        hozAlign: "center",
         print: false,
         download: false,
         formatter(cell) {
@@ -881,17 +924,17 @@ const initTabulator = () => {
               //alert("edit " + cell.getData());
               const pembelian = cell.getData()
               //console.log("openEditModal", cell.getRow());
-              index_select.value = cell._cell.row.getPosition()
+              //index_select.value = cell._cell.row.getPosition()
 
-              no_invoice.value = pembelian.no_invoice;
-              waktu.value = pembelian.tanggal_pembelian;
-              total_harga_global.value = parseFloat(pembelian.total_harga_beli);
-              total_bayar_global.value = parseFloat(pembelian.total_bayar_beli);
-              kembalian.value = parseFloat(pembelian.kembalian_beli);
               Pembelian.readDetailPembelian(pembelian.no_invoice).then((data) => {
+                no_invoice.value = pembelian.no_invoice;
+                waktu.value = pembelian.tanggal_pembelian;
+                total_harga_global.value = parseFloat(pembelian.total_harga_beli);
+                total_bayar_global.value = parseFloat(pembelian.total_bayar_beli);
+                kembalian.value = parseFloat(pembelian.kembalian_beli);
+
                 isEdit.value = true;
                 modal_utama.value = true;
-
               }).catch((e) => {
                 alert("gagal open edit" + e);
               });
@@ -1004,6 +1047,7 @@ const initTabulator = () => {
             minWidth: 200,
             responsive: 0,
             field: "nama_varian",
+            hozAlign: "center",
             vertAlign: "middle",
             print: false,
             download: false,
@@ -1019,7 +1063,7 @@ const initTabulator = () => {
             headerHozAlign: "center",
             minWidth: 200,
             field: "harga_detail_beli",
-            hozAlign: "center",
+            hozAlign: "right",
             vertAlign: "middle",
             print: false,
             download: false,
@@ -1035,7 +1079,7 @@ const initTabulator = () => {
             minWidth: 200,
             headerHozAlign: "center",
             field: "qty",
-            hozAlign: "right",
+            hozAlign: "center",
             vertAlign: "middle",
             print: false,
             download: false,

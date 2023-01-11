@@ -12,11 +12,12 @@
           class="intro-x flex items-center pl-5 pt-4"
         >
           <img
-            alt="Midone Tailwind HTML Admin Template"
-            class="w-6"
+            alt="Lurik Rachmad HTML"
+            class="w-6 block dark:hidden"
             src="@/assets/images/logo.svg"
           />
-          <span class="hidden xl:block text-white text-lg ml-3"> Rubick </span>
+          <img alt="Lurik Rachmad HTML" class="w-6 hidden dark:block" src="@/assets/images/logo-gold.svg" />
+          <span class="font-philosopher hidden xl:block text-white dark:text-[#CDA562] text-lg ml-3"><b> Lurik Rachmad </b> </span>
         </router-link>
         <div class="side-nav__devider my-6"></div>
         <ul>

@@ -45,7 +45,7 @@ export const useBarangStore = defineStore({
       }
     },
 
-    removeItem(id_barang) {
+    async removeItem(id_barang) {
       this.rawItems = this.rawItems.filter(
         (item) => item.id_barang !== id_barang
       );
@@ -59,7 +59,7 @@ export const useBarangStore = defineStore({
         .catch((e) => console.error(e));
     },
 
-    updateItem(barang) {
+    async updateItem(barang) {
       let id_barang = barang.id_barang;
       let nama_barang = barang.nama_barang;
       this.rawItems = this.rawItems.map((item) => {
@@ -68,7 +68,7 @@ export const useBarangStore = defineStore({
         }
         return item;
       });
-      request.post(`barang/editbar/${id_barang}`, { nama_barang });
+      request.post(`barang/editbar/${id_barang}`, { nama_barang }).catch((e) => console.error(e));
     },
 
     //---------------------------------------------------------------- Varian ----------------
@@ -78,8 +78,20 @@ export const useBarangStore = defineStore({
         const data = await request.get(`barang?id_barang=${id_barang}`);
         if (data.status >= 200 && data.status < 300) {
           this.rawVarians = data.data.varian;
-          // console.log('data.data', data.data)
-          // console.log('this.rawVarians', this.rawVarians)
+
+          this.rawVarians.map((varian) => {
+            this.rawItems = this.rawItems.map((barang) => {
+              if (varian.id_barang === barang.id_barang) {
+                return { ...barang, serviceHistory: this.rawVarians }
+              }
+              return barang
+            })
+            return varian
+          })
+
+          console.log('data.data', data.data)
+          console.log('this.rawVarians', this.rawVarians)
+          return this.rawItems
         }
       } catch (error) {
         console.error(error);
