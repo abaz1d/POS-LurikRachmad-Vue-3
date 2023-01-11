@@ -303,7 +303,7 @@ export default {
           {
             title: "ID SUPPLIER",
             // minWidth: 200,
-            maxWidth: 145,
+            minWidth: 200,
             responsive: 0,
             field: "id_supplier",
             vertAlign: "middle",

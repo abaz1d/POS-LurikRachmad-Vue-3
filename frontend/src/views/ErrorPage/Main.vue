@@ -14,18 +14,18 @@
           />
         </div>
         <div class="text-white mt-10 lg:mt-0">
-          <div class="intro-x text-8xl font-medium">404</div>
-          <div class="intro-x text-xl lg:text-3xl font-medium mt-5">
-            Oops. This page has gone missing.
+          <div class="intro-x text-8xl font-medium font-philosopher text-white dark:text-[#CDA562]">404</div>
+          <div class="intro-x text-xl lg:text-3xl font-medium mt-5 font-philosopher text-white dark:text-[#CDA562]">
+            Halaman Tidak Ada
           </div>
-          <div class="intro-x text-lg mt-3">
-            You may have mistyped the address or the page may have moved.
+          <div class="intro-x text-lg mt-3 font-philosopher dark:text-[#CDA562] text-white">
+            Mohon maaf, halaman yang anda cari tidak di temukan.
           </div>
           <RouterLink to="/">
             <button
-              class="intro-x btn py-3 px-4 text-white border-white dark:border-darkmode-400 dark:text-slate-200 mt-10"
+              class="intro-x btn py-3 px-4 text-white border-white dark:border-darkmode-400 dark:text-slate-200 mt-10 font-philosopher dark:text-[#CDA562]"
             >
-              Back to Home
+              Kembali ke Dashboard
             </button>
           </RouterLink>
         </div>

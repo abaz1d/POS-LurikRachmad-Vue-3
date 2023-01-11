@@ -289,9 +289,9 @@ export default {
 
           // For HTML table
           {
-            title: "ID SUPPLIER",
+            title: "ID OUTLET",
             // minWidth: 200,
-            maxWidth: 145,
+            minWidth: 200,
             responsive: 0,
             field: "id_outlet",
             vertAlign: "middle",
@@ -305,7 +305,7 @@ export default {
             },
           },
           {
-            title: "NAMA SUPPLIER",
+            title: "NAMA OUTLET",
             headerHozAlign: "center",
             minWidth: 200,
             field: "nama_outlet",
@@ -408,14 +408,14 @@ export default {
 
           // For print format
           {
-            title: "ID SUPPLIER",
+            title: "ID OUTLET",
             field: "id_outlet",
             visible: false,
             print: true,
             download: true,
           },
           {
-            title: "NAMA SUPPLIER",
+            title: "NAMA OUTLET",
             field: "nama_outlet",
             visible: false,
             print: true,

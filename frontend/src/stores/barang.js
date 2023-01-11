@@ -225,7 +225,7 @@ export const useBarangStore = defineStore({
 
       //const headers = { "Content-Type": "application/x-www-form-urlencoded" };
       const headers = { "Content-Type": "multipart/form-data" };
-      console.log("varian update ", varian)
+      //console.log("varian update ", varian)
       try {
         if (file === "" || null) {
           const data = await request.post(

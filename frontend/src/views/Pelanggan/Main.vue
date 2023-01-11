@@ -289,9 +289,9 @@ export default {
 
           // For HTML table
           {
-            title: "ID SUPPLIER",
+            title: "ID PELANGGAN",
             // minWidth: 200,
-            maxWidth: 145,
+            minWidth: 200,
             responsive: 0,
             field: "id_pelanggan",
             vertAlign: "middle",
@@ -305,7 +305,7 @@ export default {
             },
           },
           {
-            title: "NAMA SUPPLIER",
+            title: "NAMA PELANGGAN",
             headerHozAlign: "center",
             minWidth: 200,
             field: "nama_pelanggan",
@@ -313,9 +313,9 @@ export default {
             vertAlign: "middle",
             print: false,
             editor: "input",
-            editable: false, cellDblClick: function (e, cell) {
-              cell.edit(true);
-            },
+            // editable: false, cellDblClick: function (e, cell) {
+            //   cell.edit(true);
+            // },
             download: false,
             formatter(cell) {
               return `<div>
@@ -408,14 +408,14 @@ export default {
 
           // For print format
           {
-            title: "ID SUPPLIER",
+            title: "ID PELANGGAN",
             field: "id_pelanggan",
             visible: false,
             print: true,
             download: true,
           },
           {
-            title: "NAMA SUPPLIER",
+            title: "NAMA PELANGGAN",
             field: "nama_pelanggan",
             visible: false,
             print: true,

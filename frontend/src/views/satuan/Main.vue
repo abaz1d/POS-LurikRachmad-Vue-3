@@ -276,7 +276,7 @@ export default {
           {
             title: "ID SATUAN",
             // minWidth: 200,
-            maxWidth: 200,
+            minWidth: 200,
             responsive: 0,
             field: "id_satuan",
             vertAlign: "middle",
