@@ -195,7 +195,7 @@ renderQrScanner();
 
                               <div v-else class="col-span-5 md:col-span-2 relative image-fit cursor-pointer zoom-in"
                                 style="height: 9rem">
-                                <img class="imgUp rounded-md" alt="Midone - HTML Admin Template" :src="url" />
+                                <img class="imgUp rounded-md" alt="Lurik Rachmad" :src="url" />
                                 <Tippy content="Remove this image?" @click="url = null"
                                   class="tooltip w-5 h-5 flex items-center justify-center absolute rounded-full text-white bg-danger right-0 top-0 -mr-2 -mt-2">
                                   <XIcon class="w-4 h-4" />
@@ -385,13 +385,13 @@ export default {
   data() {
     return {
       checkedID: false,
-      isVarianOpen: false,
+      // isVarianOpen: false,
       isModalScanner: false,
 
-      gambarVarian: "",
+      //gambarVarian: "",
       hargaBeliVarian: "",
       hargaJualVarian: "",
-      idBarang: "",
+      //idBarang: "",
       kategoriGudangVarian: "kosong",
       satuanVarian: "kosong",
       idVarian: "",
@@ -404,7 +404,7 @@ export default {
       url: null,
       file: null,
       ScanIDVarian: "",
-      publicPath: import.meta.env.VITE_APP_BASE_API,
+      //publicPath: import.meta.env.VITE_APP_BASE_API,
 
       addModal,
       addModalBarang,

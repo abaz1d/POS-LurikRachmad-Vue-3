@@ -89,8 +89,8 @@ export const useBarangStore = defineStore({
             return varian
           })
 
-          console.log('data.data', data.data)
-          console.log('this.rawVarians', this.rawVarians)
+          // console.log('data.data', data.data)
+          // console.log('this.rawVarians', this.rawVarians)
           return this.rawItems
         }
       } catch (error) {
@@ -174,7 +174,7 @@ export const useBarangStore = defineStore({
             formData,
             headers
           );
-          console.log("data", data);
+          //console.log("data", data);
           this.rawVarians = this.rawVarians.map((item) => {
             if (item.id_varian === varian.id_varian) {
               return data.data;
@@ -205,6 +205,8 @@ export const useBarangStore = defineStore({
     },
 
     async updateVarian(varian) {
+      const file = varian.file_baru
+      const gambar_lama = varian.gambarLama
       const formData = new FormData();
 
       formData.append("id_varian", varian.id_varian);
@@ -218,17 +220,19 @@ export const useBarangStore = defineStore({
 
       formData.append(
         "gambar_lama",
-        varian.gambar_lama.data.map((b) => String.fromCharCode(b)).join("")
+        gambar_lama.data.map((b) => String.fromCharCode(b)).join("")
       );
 
+      //const headers = { "Content-Type": "application/x-www-form-urlencoded" };
       const headers = { "Content-Type": "multipart/form-data" };
-
+      console.log("varian update ", varian)
       try {
-        if (varian.file === "" || null) {
+        if (file === "" || null) {
           const data = await request.post(
             `barang/editvar/${varian.id_varian}`,
             formData,
-            headers
+            headers,
+            { timeout: 3 }
           );
           if (data.status >= 200 && data.status < 300) {
             this.rawVarians = this.rawVarians.map((item) => {
@@ -239,12 +243,13 @@ export const useBarangStore = defineStore({
             });
           }
         } else {
-          formData.append("file", varian.file);
+          console.log("file_baru")
+          formData.append("file", file);
           const data = await request.post(
             `barang/editvar/${varian.id_varian}`,
             formData,
             headers,
-            { timeout: 2 }
+            { timeout: 3 }
           );
           if (data.status >= 200 && data.status < 300) {
             this.rawVarians = this.rawVarians.map((item) => {
@@ -256,7 +261,7 @@ export const useBarangStore = defineStore({
           }
         }
       } catch (error) {
-        console.error(error);
+        console.error("error edit varian",error);
       }
     },
 

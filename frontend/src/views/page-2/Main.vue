@@ -54,7 +54,7 @@
                 </form>
               </ModalBody>
               <ModalFooter class="text-right">
-                <button type="button" @click="resetModal" class="btn btn-outline-secondary w-32 mr-1">
+                <button type="button" @click="resetModal()" class="btn btn-outline-secondary w-32 mr-1">
                   Cancel
                 </button>
                 <button type="submit" form="addBarangForm" class="btn btn-primary w-32">
@@ -82,7 +82,8 @@
                       <div class="grid grid-cols-6 gap-6">
                         <div class="col-span-6 sm:col-span-3 form-switch mb-0">
                           <label for="inputIdVarian" class="block text-sm font-medium text-gray-700">ID Varian |
-                            <input id="ScanID" class="form-check-input" type="checkbox" v-model="checkedID" /></label>
+                            <input id="ScanID" class="form-check-input" type="checkbox" v-model="checkedID"
+                              :disabled="isEdit" /></label>
                           <div class="input-group">
                             <input type="text" id="inputIdVarian"
                               class="form-control mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
@@ -90,7 +91,7 @@
                                 checkedID
                                   ? 'Ketik / Scan ID'
                                   : 'Auto Generate ID'
-                              " v-model="ScanIDVarian" :readonly="!checkedID" />
+                              " v-model="inputIdVarian" :readonly="!checkedID" />
                             <div v-if="checkedID"
                               class="camera inline-flex items-center rounded-r-md border border-l-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500 mt-1"
                               @click="
@@ -101,11 +102,11 @@ renderQrScanner();
                             </div>
                           </div>
                           <small v-if="!checkedID" class="text-grey-800 text-xs ml-2 mt-0">
-                            * Untuk manambah ID Manual cek pada checkbox.
+                            {{ isEdit? "* ID Tidak bisa diedit.": "* Untuk manambah ID Manual cek pada checkbox." }}
                           </small>
                           <small v-else class="text-grey-800 text-xs ml-2 mt-0">
                             * Tekan lambang Kamera untuk scan
-                            <b>Barcode / ID</b></small>
+                            <b>Barcode / ID</b>.</small>
                         </div>
 
                         <div class="col-span-6 sm:col-span-3 mb-0">
@@ -119,7 +120,7 @@ renderQrScanner();
                         <div class="col-span-6 sm:col-span-3">
                           <label for="kategoriBarang" class="block text-sm font-medium text-gray-700">Kategori
                             Barang</label>
-                          <!-- <TomSelect v-model="kategoriBarangVarian" id="kategoriBarang" class="mt-1 w-full"
+                          <TomSelect v-model="kategoriBarangVarian" id="kategoriBarang" class="mt-1 w-full"
                             aria-label="Default select example" required>
                             <option value="kosong" disabled>
                               &gt-- Pilih Barang --&lt
@@ -128,13 +129,13 @@ renderQrScanner();
                               :value="barang.id_barang">
                               {{ barang.id_barang }} - {{ barang.nama_barang }}
                             </option>
-                          </TomSelect> -->
+                          </TomSelect>
                         </div>
 
                         <div class="col-span-6 sm:col-span-3">
                           <label for="kategoriGudang" class="block text-sm font-medium text-gray-700">Kategori
                             Gudang</label>
-                          <!-- <TomSelect v-model="kategoriGudangVarian" id="kategoriGudang" class="mt-1 w-full"
+                          <TomSelect v-model="kategoriGudangVarian" id="kategoriGudang" class="mt-1 w-full"
                             aria-label="Default select example" required>
                             <option value="kosong" disabled>
                               &gt-- Pilih Gudang --&lt
@@ -143,7 +144,7 @@ renderQrScanner();
                               :value="gudang.id_gudang">
                               {{ gudang.id_gudang }} - {{ gudang.nama_gudang }}
                             </option>
-                          </TomSelect> -->
+                          </TomSelect>
                         </div>
 
                         <div class="col-span-6 sm:col-span-3 mb-0">
@@ -156,7 +157,7 @@ renderQrScanner();
                         <div class="col-span-6 sm:col-span-3">
                           <label for="satuanVarian" class="block text-sm font-medium text-gray-700">Satuan
                             Varian</label>
-                          <!-- <TomSelect v-model="satuanVarian" id="satuanVarian" class="mt-1 w-full"
+                          <TomSelect v-model="satuanVarian" id="satuanVarian" class="mt-1 w-full"
                             aria-label="Default select example" required>
                             <option value="kosong" disabled>
                               &gt-- Pilih Satuan --&lt
@@ -165,7 +166,7 @@ renderQrScanner();
                               :value="satuan.id_satuan">
                               {{ satuan.id_satuan }} - {{ satuan.nama_satuan }}
                             </option>
-                          </TomSelect> -->
+                          </TomSelect>
                         </div>
 
                         <div class="col-span-6 sm:col-span-3">
@@ -189,8 +190,9 @@ renderQrScanner();
                           <div
                             class="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
                             <div class="space-y-1 text-center">
-                              <svg v-if="url == null || ''" class="mx-auto h-12 w-12 text-gray-400"
-                                stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                              <svg @click="this.$refs.gambarBaru.click()" v-if="url == null || ''"
+                                class="mx-auto h-12 w-12 text-gray-400 cursor-pointer" stroke="currentColor" fill="none"
+                                viewBox="0 0 48 48" aria-hidden="true">
                                 <path
                                   d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
                                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -198,13 +200,13 @@ renderQrScanner();
 
                               <div v-else class="col-span-5 md:col-span-2 relative image-fit cursor-pointer zoom-in"
                                 style="height: 9rem">
-                                <img class="imgUp rounded-md" alt="Midone - HTML Admin Template" :src="url" />
+                                <img class="imgUp rounded-md" alt="Lurik Rachmad" :src="url" />
                                 <Tippy content="Remove this image?" @click="url = null"
                                   class="tooltip w-5 h-5 flex items-center justify-center absolute rounded-full text-white bg-danger right-0 top-0 -mr-2 -mt-2">
                                   <XIcon class="w-4 h-4" />
                                 </Tippy>
                               </div>
-                              <div @click="this.$refs.gambarBaru.click()">
+                              <div>
                                 <div class="flex text-sm text-gray-600">
                                   <label for="gambarBaru"
                                     class="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500">
@@ -227,7 +229,7 @@ renderQrScanner();
                 </form>
               </ModalBody>
               <ModalFooter class="text-right">
-                <button type="button" @click="modalVarian = false" class="btn btn-outline-secondary w-32 mr-1">
+                <button type="button" @click="resetModal()" class="btn btn-outline-secondary w-32 mr-1">
                   Cancel
                 </button>
                 <button type="submit" form="addVarianForm" class="btn btn-primary w-32">
@@ -331,9 +333,9 @@ renderQrScanner();
     <ModalBody class="p-0">
       <div class="p-5 text-center">
         <XCircleIcon class="w-16 h-16 text-danger mx-auto mt-3" />
-        <div v-if="modal_utama" class="text-xl mt-5">Apakah Anda yakin akan menghapus Varian <b> {{
+        <div v-if="isVarian" class="text-xl mt-5">Apakah Anda yakin akan menghapus Varian <b> {{
           inputIdVarian
-        }} </b>?</div>
+        }} - {{ inputNamaVarian }} </b>?</div>
 
         <div v-else class="text-xl mt-5">Apakah Anda yakin akan menghapus Barang <b> {{ inputIdBarang }} - {{
           inputNamaBarang
@@ -345,7 +347,7 @@ renderQrScanner();
           Cancel
         </button>
         <button type="button" class="btn btn-danger w-24"
-          @click="modal_utama ? removeItem() : deleteBarang(inputIdBarang)">
+          @click="isVarian ? deleteVarian() : deleteBarang(inputIdBarang)">
           Delete
         </button>
       </div>
@@ -436,7 +438,11 @@ const data = ref([]);
 
 const url = ref(null);
 const file = ref(null);
-const ScanIDVarian = ref("");
+const isVarian = ref(false);
+const gambar_lama = ref("");
+const gambar_lama_preview = ref("");
+
+const publicPath = import.meta.env.VITE_APP_BASE_API;
 
 // Basic non sticky notification
 const basicNonStickyNotification = ref();
@@ -455,15 +461,15 @@ const openAddModal = () => {
   //   waktu.value = data.tanggal_penjualan;
   // })
   modal_utama.value = true;
-  console.log('new produk');
+  //console.log('new produk');
 };
 
 const addBarang = () => {
   try {
     // console.log("addSatuan", inputNamaBarang.value)
     Barang.addItem(inputNamaBarang.value).then(() => {
-      resetModal();
       initTabulator();
+      resetModal();
     })
   } catch (error) {
     alert("Gagal Tambah Data", error);
@@ -472,8 +478,8 @@ const addBarang = () => {
 const updateBarang = () => {
   try {
     Barang.updateItem({ id_barang: inputIdBarang.value, nama_barang: inputNamaBarang.value }).then(() => {
-      resetModal();
       initTabulator();
+      resetModal();
     });
   } catch (error) {
     alert(`Gagal Update data ${inputIdBarang.value}`, error);
@@ -483,8 +489,8 @@ const updateBarang = () => {
 const deleteBarang = () => {
   try {
     Barang.removeItem(inputIdBarang.value).then(() => {
-      resetModal();
       initTabulator();
+      resetModal();
     });
   } catch (error) {
     alert(`Gagal Delete Barang ${inputIdBarang.value}`, error);
@@ -493,9 +499,9 @@ const deleteBarang = () => {
 
 const addVarian = () => {
   try {
-    if (ScanIDVarian.value === "" || null) {
+    if (inputIdVarian.value === "" || null) {
       Barang.addVarian({
-        id_varian: inputIdVarian.value,
+        id_varian: '',
         nama_varian: inputNamaVarian.value,
         kategori_barang: kategoriBarangVarian.value,
         stok_varian: parseInt(stokVarian.value),
@@ -508,7 +514,7 @@ const addVarian = () => {
       });
     } else {
       Barang.addVarian({
-        id_varian: ScanIDVarian.value,
+        id_varian: inputIdVarian.value,
         nama_varian: inputNamaVarian.value,
         kategori_barang: kategoriBarangVarian.value,
         stok_varian: stokVarian.value,
@@ -520,6 +526,7 @@ const addVarian = () => {
         harga_jual: hargaJualVarian.value,
       });
     }
+    initTabulator()
     resetModal()
   } catch (error) {
     alert("Varian Tambah Data", error);
@@ -527,8 +534,39 @@ const addVarian = () => {
 };
 
 const updateVarian = () => {
+  try {
+    //console.log("Update Tambah Data", file.value);
+    Barang.updateVarian({
+      id_varian: inputIdVarian.value,
+      nama_varian: inputNamaVarian.value,
+      kategori_barang: kategoriBarangVarian.value,
+      stok_varian: parseInt(stokVarian.value),
+      harga_beli: parseInt(hargaBeliVarian.value),
+      harga_jual: parseInt(hargaJualVarian.value),
+      satuan_varian: satuanVarian.value,
+      gudang: kategoriGudangVarian.value,
 
+      gambarLama: gambar_lama.value,
+      file_baru: file.value
+
+    }).then(() => {
+      initTabulator();
+      resetModal();
+    });
+  } catch (error) {
+    alert("Varian Edit Data" + error);
+  }
 };
+
+const deleteVarian = () => {
+  // alert("delete" + inputIdVarian.value + inputNamaVarian.value)
+  Barang.removeVarian(inputIdVarian.value, inputNamaVarian.value).then((data) => {
+    initTabulator();
+    resetModal();
+  }).catch((e) => {
+    alert("removeVarian" + JSON.stringify(e))
+  });
+}
 
 const previewImage = (e) => {
   file.value = e.target.files[0];
@@ -539,18 +577,6 @@ const openModalRemove = (item) => {
   //console.log(item)
   itemDel.value = item
   deleteConfirmationModal.value = true
-}
-
-const removeItem = (id_detail_jual, id_barang) => {
-  Barang.removeItem(id_detail_jual, id_barang).then((data) => {
-    stok.value = stok.value + parseInt(itemDel.value.qty)
-    nama_campur_select.value = `${nama_barang_select.value} - ${nama_varian_select.value} | ${stok.value}`
-    deleteConfirmationModal.value = false
-    // console.log('data', itemDel)
-    total_harga_global.value = parseFloat(data)
-  }).catch((e) => {
-    alert("removeItem" + e)
-  });
 }
 
 const simpanBarang = () => {
@@ -567,7 +593,7 @@ const simpanBarang = () => {
   //   total_bayar_jual: currencyFormatter.format(total_bayar_global.value),
   //   kembalian_now
   // }]);
-  console.log('data', Barang.penjualanDetail.length);
+  //console.log('data', Barang.penjualanDetail.length);
   if (Barang.penjualanDetail.length !== 0 && total_bayar_global.value >= total_harga_global.value) {
     Barang.addBarang(no_invoice_now, total_harga_global_now, total_bayar_global_now, kembalian_now).then((data) => {
       isEdit.value = false;
@@ -596,9 +622,9 @@ const closeQrScanner = () => {
 }
 
 const resultScan = (result) => {
-  // ntar di concat ma it outlet
-  item_select.value = result;
-  console.log("hasil", item_select)
+  // ntar di concat ma id outlet
+  inputIdVarian.value = result;
+  console.log("hasil", inputIdVarian)
   isModalScanner.value = false;
   qrScanner.value.closeQrScanner();
 }
@@ -629,7 +655,9 @@ const resetModal = () => {
 
   url.value = null;
   file.value = null;
-  ScanIDVarian.value = "";
+  isVarian.value = false;
+  gambar_lama.value = "";
+  gambar_lama_preview.value = "";
 }
 
 
@@ -742,7 +770,7 @@ const initTabulator = () => {
             if (e.id === "edit") {
               //alert("edit " + cell.getData());
               const barang = cell.getData()
-              console.log("openEditModal", cell.getRow());
+              //console.log("openEditModal", cell.getRow());
               inputIdBarang.value = barang.id_barang
               inputNamaBarang.value = barang.nama_barang
               isEdit.value = true;
@@ -805,6 +833,8 @@ const initTabulator = () => {
         printAsHtml: true,
         printStyled: true,
         layout: "fitColumns",
+
+        rowHeight: "25px",
         responsiveLayout: "collapse",
         layout: "fitColumns",
         data: row.getData().serviceHistory,
@@ -829,9 +859,18 @@ const initTabulator = () => {
             print: false,
             download: false,
             formatter(cell) {
-              return `<div>
-                <div class="font-medium whitespace-nowrap">${cell.getData().id_varian
-                }</div>
+              return `<div class=" text-center p-auto">
+                <div class="mb-2">
+        <img
+          src="${getImgUrl(cell.getData().gambar_varian)}"
+          alt="${cell.getData().gambar_varian}"
+          data-action="zoom"
+          class="w-full rounded-md"
+        />
+      </div>
+      <div>
+        ${cell.getData().id_varian}
+      </div>
               </div>`;
             },
           },
@@ -947,6 +986,76 @@ const initTabulator = () => {
               </div>`;
             },
           },
+          {
+            title: "ACTIONS",
+            headerHozAlign: "center",
+            minWidth: 200,
+            field: "actions",
+            responsive: 1,
+            hozAlign: "center",
+            vertAlign: "middle",
+            print: false,
+            download: false,
+            formatter(cell) {
+              const a = dom(`<div class="flex lg:justify-center items-center">
+                <a id="edit" class="flex items-center mr-3" href="javascript:;">
+                  <i data-lucide="check-square" class="w-4 h-4 mr-1"></i> Edit
+                </a>
+                <a id="delete" class="flex items-center text-danger" href="javascript:;">
+                  <i data-lucide="trash-2" class="w-4 h-4 mr-1"></i> Delete
+                </a>
+              </div>`);
+              dom(a).on("click", "a", function (e) {
+                if (e.id === "edit") {
+                  //alert("edit " + JSON.stringify(cell.getData()));
+                  const varian = cell.getData()
+                  getImgUrl(varian.gambar_varian)
+                  // console.log("openEditModal", cell.getRow());
+                  // inputIdBarang.value = varian.id_barang
+                  // inputNamaBarang.value = varian.nama_barang
+                  // isEdit.value = true;
+                  // modalVarian.value = true;
+                  Barang.updateVarianGet(varian.id_varian).then((detail) => {
+                    //alert("edit " + JSON.stringify(varian.gambar_varian));
+                    data.value = detail
+
+                    //console.log("edit ", detail.item.gambar_varian, varian.gambar_varian);
+                    //previewImage(detail.item.gambar_varian)
+                    gambar_lama.value = detail.item.gambar_varian
+                    file.value = ''
+                    inputIdVarian.value = detail.item.id_varian
+                    inputNamaVarian.value = detail.item.nama_varian
+                    kategoriBarangVarian.value = detail.item.id_barang
+                    satuanVarian.value = detail.item.id_satuan
+                    kategoriGudangVarian.value = detail.item.id_gudang
+                    stokVarian.value = detail.item.stok_varian
+                    hargaBeliVarian.value = detail.item.harga_beli_varian
+                    hargaJualVarian.value = detail.item.harga_jual_varian
+
+                    isEdit.value = true;
+                    modalVarian.value = true;
+                  }).catch((e) => {
+                    alert("Error edit Get " + e);
+                  });
+
+                } else {
+                  //alert("delete" + JSON.stringify(cell.getData()));
+                  const varian = cell.getData();
+                  inputIdVarian.value = varian.id_varian;
+                  inputNamaVarian.value = varian.nama_varian;
+                  isVarian.value = true;
+                  deleteConfirmationModal.value = true;
+                  // gambar_lama.value = varian.gambar_varian
+                  //const no_invoice_del = JSON.stringify(cell.getData().id_barang)
+                  // inputIdBarang.value = cell.getData().id_barang;
+                  // inputNamaBarang.value = cell.getData().nama_barang
+                  // deleteConfirmationModal.value = true;
+                }
+              });
+
+              return a[0];
+            },
+          },
 
           // For print format
           {
@@ -1005,6 +1114,14 @@ const initTabulator = () => {
           },
         ],
       })
+      subTable.on("renderComplete", function () {
+        createIcons({
+          icons,
+          "stroke-width": 1.5,
+          nameAttr: "data-lucide",
+
+        });
+      });
     },
   });
   tabulator.value.on("renderComplete", function () {
@@ -1050,6 +1167,18 @@ const reInitOnResizeWindow = () => {
     });
   });
 };
+
+const getImgUrl = (gambar_varian) => {
+  // console.log('gambar_varian',gambar_varian.data)
+  var images = gambar_varian.data
+    .map((b) => String.fromCharCode(b))
+    .join("");
+  gambar_lama_preview.value = new URL(`${publicPath}gambar/${images}`).href;
+  if (isEdit) {
+    url.value = gambar_lama_preview.value
+  }
+  return gambar_lama_preview.value;
+}
 
 // Filter function
 const onFilter = () => {
@@ -1113,18 +1242,16 @@ onMounted(async function () {
 
 </script>
 <style scoped>
-table thead th:first-child {
-  position: sticky;
-  left: 0;
-  z-index: 2;
+.imgUp {
+  margin-bottom: 5px;
 }
 
-@media (max-width: 1024px) {
-  .btm {
-    -webkit-box-shadow: 0px -4px 3px rgba(205, 205, 205, 0.75);
-    -moz-box-shadow: 0px -4px 3px rgba(185, 185, 185, 0.75);
-    box-shadow: 0px -4px 3px rgba(175, 175, 175, 0.75);
-  }
+.camera {
+  cursor: pointer;
+}
+
+.camera :hover {
+  background-color: #c7c8c8;
 }
 </style>
 

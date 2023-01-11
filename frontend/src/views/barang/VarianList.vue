@@ -281,13 +281,13 @@
                       <img
                         v-if="urlPreview === null"
                         class="rounded-md"
-                        alt="Midone - HTML Admin Template"
+                        alt="Lurik Rachmad"
                         :src="gambar_lama_preview"
                       />
                       <img
                         v-else
                         class="rounded-md"
-                        alt="Midone - HTML Admin Template"
+                        alt="Lurik Rachmad"
                         :src="urlPreview"
                       />
                       <Tippy
@@ -441,8 +441,8 @@ export default {
           harga_beli: this.harga_beli,
           satuan_varian: this.satuan_varian,
           gudang: this.gudang,
-          gambar_lama: this.gambar_lama,
-          file: this.file,
+          gambarLlama: this.gambar_lama,
+          file_baru: this.file,
           harga_jual: this.harga_jual,
         }).then(
           () => (this.id_varian = ""),
