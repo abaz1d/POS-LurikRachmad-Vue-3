@@ -1,314 +1,12 @@
 <template>
-  <div class="intro-y flex flex-col sm:flex-row items-center mt-8">
-    <h2 class="text-lg font-medium mr-auto">Penjualan</h2>
+  <div class="intro-y flex flex-col sm:flex-row items-center mt-2">
+    <h2 class="text-lg font-medium mr-auto">Laporan Penjualan</h2>
     <div class="w-full sm:w-auto flex mt-4 sm:mt-0">
-      <button class="btn btn-primary shadow-md mb-3 mr-2 pr-5" @click="modal_utama = true; startTransaction()">
-        <PlusIcon class="w-4 h-4 mr-2" />
-        <p class="hidden xl:block mr-1">Penjualan</p> Baru
+      <button class="btn btn-primary shadow-md mb-3 mr-2 pr-5">
+        <PrinterIcon class="w-4 h-4 mr-2" />
+         Cetak <p class="hidden xl:block ml-1">Penjualan</p>
       </button>
-      <!-- BEGIN: Modal Content -->
-      <Modal size="modal-xl" backdrop="static" :show="modal_utama" @hidden="modal_utama = false">
-        <ModalHeader class="border-b-2">
-          <h2 class="hidden lg:block font-medium text-base mr-auto">
-            <p class="mx-auto" v-if="isEdit">Edit Penjualan {{ no_invoice }}</p>
-            <p class="mx-auto" v-else>Tambah Penjualan</p>
-          </h2>
-
-          <div class="sm:w-auto flex mt-3 mx-auto sm:mx-0 sm:mr-0 sm:ml-4 items-center sm:items-right">
-            <div class="mr-2 m-auto">
-              <div class="bg-slate-200 rounded-md p-2 font-medium lg:text-base text-sm px-2">
-                <p class="text-right text-black">{{ no_invoice }}</p>
-              </div>
-              <p class="text-center bg-primary text-white rounded-md w-24 mx-auto lg:-mt-[52px] -mt-12 lg:mb-8 mb-6">NO
-                INVOICE</p>
-            </div>
-            <div class="mr-2 m-auto">
-              <div class="bg-slate-200 rounded-md p-2 font-medium lg:text-base text-sm px-2">
-                <p class="text-right text-black">{{ moment(waktu).format("DD MMM YYYY HH:SS") }}</p>
-              </div>
-              <p class="text-center bg-primary text-white rounded-md w-24 mx-auto lg:-mt-[52px] -mt-12 lg:mb-8 mb-6">
-                WAKTU
-              </p>
-            </div>
-          </div>
-
-        </ModalHeader>
-        <ModalBody class="">
-          <div class="overflow-auto sm:overflow-hidden mx-0 sm:h-3/4 h-80">
-            <div class="grid grid-cols-12 gap-1 -mt-3">
-
-              <div class="col-span-12 lg:col-span-8">
-                <!-- BEGIN: Display Item -->
-                <div class="intro-y box">
-                  <div class="p-2">
-                    <div class="flex flex-col-reverse xl:flex-row flex-col">
-                      <div class="flex-1 mt-0">
-                        <div class="grid grid-cols-12 gap-x-2 sm:gap-x-3">
-                          <div class="sm:col-span-9 col-span-12 mb-5">
-                            <label for="pos-form-1" class="form-label">ID Barang/Item <p class="sm:hidden form-label">&
-                                Stok</p></label>
-                            <div class="flex w-full">
-                              <div
-                                class="z-30 rounded-l w-10 flex items-center justify-center bg-gray-100 hover:bg-gray-300 border text-gray-600 dark:bg-dark-1 dark:border-dark-4 -mr-1 cursor-pointer"
-                                @click="isModalScanner = true; renderQrScanner();">
-                                <CameraIcon class="w-4 h-4" />
-                              </div>
-                              <TomSelect v-model="item_select" class="w-full" required>
-                                <option value="kosong" disabled>
-                                  &gt-- Pilih Items --&lt
-                                </option>
-                                <option v-for="varian in Penjualan.varians" :key="varian.id_varian" :varian="varian"
-                                  :value="varian.id_varian">
-                                  {{ varian.id_barang }} - {{ varian.nama_barang }} | {{ varian.id_varian }} - {{
-                                    varian.nama_varian
-                                  }}
-                                </option>
-                              </TomSelect>
-                            </div>
-                            <div class="form-help">
-                              * Pilih atau Klik Kamera untuk scan barcode.
-                            </div>
-                          </div>
-                          <div class="hidden sm:block col-span-3 mb-5">
-                            <label for="pos-form-1" class="form-label">Stok Tersisa</label>
-                            <input v-model="stok" id="pos-form-1" type="text" class="form-control flex-1"
-                              placeholder="Masukan Stok Tersisa" readonly />
-                          </div>
-
-                          <div class="hidden sm:block col-span-6 mb-5">
-                            <label for="pos-form-1" class="form-label">Nama Barang</label>
-                            <!-- <input id="pos-form-1" type="text" class="form-control flex-1"
-                              placeholder="Masukan Nama Barang" readonly /> -->
-                            <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
-                              <p class="text-black">{{ nama_barang_select }}</p>
-                            </div>
-                          </div>
-                          <div class="hidden sm:block col-span-6 mb-5">
-                            <label for="pos-form-1" class="form-label">Nama Varian</label>
-                            <!-- <input id="pos-form-1" type="text" class="form-control flex-1"
-                              placeholder="Masukan Nama Varian" readonly /> -->
-                            <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
-                              <p class="text-black">{{ nama_varian_select }}</p>
-                            </div>
-                          </div>
-
-                          <div class="sm:hidden col-span-12 mb-5">
-                            <label for="pos-form-1" class="form-label">Nama Barang & Varian</label>
-                            <!-- <input id="pos-form-1" type="text" class="form-control flex-1"
-                              placeholder="Masukan Nama Barang & Varian" readonly /> -->
-                            <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
-                              <p class="text-black">{{ nama_campur_select }}</p>
-                            </div>
-                          </div>
-
-                          <div class="col-span-5 sm:col-span-4 mb-5">
-                            <label for="pos-form-1" class="form-label">Harga Item</label>
-                            <!-- <input id="pos-form-1" type="text" class="form-control flex-1"
-                              placeholder="Masukan Harga Item" readonly v-model="harga_item_select" /> -->
-                            <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
-                              <p class="text-black">{{ currencyFormatter.format(harga_item_select) }}</p>
-                            </div>
-                          </div>
-                          <XIcon class="sm:hidden m-auto col-span-2" />
-                          <div class="col-span-5 sm:col-span-4 mb-5">
-                            <label for="pos-form-1" class="form-label">Qty</label>
-                            <input id="pos-form-1" type="text" class="form-control flex-1" placeholder="Masukan Qty"
-                              required v-model="qty_select" :disabled="qty_select == 0" />
-                          </div>
-                          <div class="col-span-12 sm:col-span-4 mb-5">
-                            <label for="pos-form-1" class="form-label">Total Harga</label>
-                            <!-- <input id="pos-form-1" type="text" class="form-control flex-1"
-                              placeholder="Masukan Total Harga" readonly /> -->
-                            <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
-                              <p class="text-black">{{ currencyFormatter.format(total_harga_select) }}</p>
-                            </div>
-                          </div>
-
-                        </div>
-                        <button type="button" @click="addItem()" class="btn btn-primary w-20 mt-3"
-                          :disabled="qty_select == 0">
-                          Tambah
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- END: Display Item -->
-              </div>
-
-              <!-- BEGIN: Display Total Harga -->
-              <div class="lg:block hidden col-span-4">
-                <div class="intro-y box">
-
-                  <div class="box flex p-2 ">
-                    <input type="text" class="form-control py-3 px-4 w-full bg-slate-100 border-slate-200/60 pr-10"
-                      placeholder="Use coupon code..." />
-                    <button class="btn btn-primary ml-2">Apply</button>
-                  </div>
-                  <div class="box p-2 mt-2">
-                    <div class="flex">
-                      <div class="mr-auto font-medium text-base">Total Harga</div>
-                    </div>
-                    <div class="bg-slate-200 rounded-md p-2">
-                      <div class="font-medium text-xl">
-                        <p class="text-right text-black">{{ currencyFormatter.format(total_harga_global) }}</p>
-                      </div>
-                    </div>
-
-                    <div class="flex mt-4 pt-4 border-t border-slate-200/60 dark:border-darkmode-400">
-                      <div class="mr-auto font-medium text-base">Total Bayar</div>
-                    </div>
-                    <div class="input-group bg-slate-200 rounded-md border-2 border-slate-200/60 mr-0">
-                      <div class="input-group-text my-auto text-xl">
-                        <p class="text-black">Rp.</p>
-                      </div>
-                      <input v-model="total_bayar_global" type="number"
-                        class="form-control flex-1 font-medium text-xl text-right" placeholder="Nominal Uang"
-                        required />
-                    </div>
-
-                    <div class="flex mt-1 pt-4">
-                      <div class="mr-auto font-medium text-base">Kembalian</div>
-                    </div>
-                    <div class="bg-slate-200 rounded-md p-2">
-                      <div class="font-medium text-xl">
-                        <p class="text-right text-black">{{ currencyFormatter.format(kembalian) }}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- END: Display Total Harga -->
-
-              <!-- BEGIN: Detail Penjualan -->
-              <div class="col-span-12 flex-col-reverse">
-                <div class="intro-y box">
-                  <div class="flex items-center px-5 py-2 border-b border-slate-200/60 dark:border-darkmode-400">
-                    <h2 class="font-medium text-base mr-auto">Detail Penjualan</h2>
-                  </div>
-                  <div class="px-2">
-                    <div class="col-span-12 overflow-auto w-full h-56">
-                      <table class="table table-hover mt-2">
-                        <thead class="table-light">
-                          <tr>
-                            <th class="sticky top-0 left-0 w-5 bg-slate-200">#</th>
-                            <th class="sticky top-0 whitespace-nowrap bg-slate-200">ID & Nama Varian</th>
-                            <th class="sticky top-0 whitespace-nowrap bg-slate-200">QTY</th>
-                            <th class="sticky top-0 whitespace-nowrap bg-slate-200">Harga Satuan</th>
-                            <th class="sticky top-0 whitespace-nowrap bg-slate-200">Total Harga</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr v-for="detail in Penjualan.penjualanDetail" :key="detail.id_barang" :detail="detail">
-                            <td @click="openModalRemove(detail)"
-                              class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer hover:bg-slate-500">
-                              <TrashIcon class="text-danger w-4 h-4 p-0" />
-                            </td>
-                            <td>{{ detail.id_varian }} - {{ detail.nama_varian }}</td>
-                            <td>{{ detail.qty }}</td>
-                            <td>{{ currencyFormatter.format(detail.harga_detail_jual) }}</td>
-                            <td>{{ currencyFormatter.format(detail.total_harga_detail_jual) }}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                    <ChevronDownIcon class="animate-bounce col-span-12 mt-1 mb-[-20px] block mx-auto" />
-                  </div>
-                </div>
-              </div>
-              <!-- END: Detail Penjualan -->
-            </div>
-          </div>
-        </ModalBody>
-        <ModalFooter class="text-right bottom-0 relative z-50 rounded-md sm:border-t-2 border-t-4 btm sm:btm-">
-          <AccordionGroup class="block lg:hidden mb-5">
-            <AccordionItem>
-              <Accordion>
-                <p class="text-center">Total Harga, Bayar & Kembalian</p>
-                <small>
-                  <p class="text-center text-sm">&gt Klik untuk buka/ tutup &lt</p>
-                </small>
-                <div class="grid grid-cols-12 mt-2">
-                  <div class="col-span-4 text-sm border-x-2 border-t-2">
-                    <p class="text-center">Total Harga</p>
-                  </div>
-                  <div class="col-span-4 text-sm border-x-2 border-t-2">
-                    <p class="text-center">Total Bayar</p>
-                  </div>
-                  <div class="col-span-4 text-sm border-x-2 border-t-2">
-                    <p class="text-center">Kembalian</p>
-                  </div>
-
-                  <div class="col-span-4 text-sm border-2">
-                    <p class="text-right mr-1">{{ currencyFormatter.format(total_harga_global) }}</p>
-                  </div>
-                  <div class="col-span-4 text-sm border-2">
-                    <p class="text-right mr-1">{{ currencyFormatter.format(total_bayar_global) }}</p>
-                  </div>
-                  <div class="col-span-4 text-sm border-2">
-                    <p class="text-right mr-1">{{ currencyFormatter.format(kembalian) }}</p>
-                  </div>
-                </div>
-              </Accordion>
-              <AccordionPanel class="text-slate-600 dark:text-slate-500 leading-relaxed">
-                <ChevronDownIcon class="animate-bounce block mx-auto" />
-                <div class="flex lg:block flex-col-reverse">
-                  <div class="intro-y box">
-
-                    <div class="box flex p-2">
-                      <input type="text" class="form-control py-3 px-4 w-full bg-slate-100 border-slate-200/60 pr-10"
-                        placeholder="Use coupon code..." />
-                      <button class="btn btn-primary ml-2">Apply</button>
-                    </div>
-                    <div class="box p-2 mt-2">
-                      <div class="flex">
-                        <div class="mr-auto font-medium text-base">Total Harga</div>
-                      </div>
-                      <div class="bg-slate-200 rounded-md p-2">
-                        <div class="font-medium text-xl">
-                          <p class="text-right text-black">{{ currencyFormatter.format(total_harga_global) }}</p>
-                        </div>
-                      </div>
-
-                      <div class="flex mt-4 pt-4 border-t border-slate-200/60 dark:border-darkmode-400">
-                        <div class="mr-auto font-medium text-base">Total Bayar</div>
-                      </div>
-                      <div class="input-group bg-slate-200 rounded-md border-2 border-slate-200/60 mr-0">
-                        <div class="input-group-text my-auto text-xl">
-                          <p class="text-black">Rp.</p>
-                        </div>
-                        <input v-model="total_bayar_global" type="number"
-                          class="form-control flex-1 font-medium text-xl text-right" placeholder="Nominal Uang"
-                          required />
-                      </div>
-
-                      <div class="flex mt-1 pt-4">
-                        <div class="mr-auto font-medium text-base">Kembalian</div>
-                      </div>
-                      <div class="bg-slate-200 rounded-md p-2">
-                        <div class="font-medium text-xl">
-                          <p class="text-right text-black">{{ currencyFormatter.format(kembalian) }}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </AccordionPanel>
-            </AccordionItem>
-          </AccordionGroup>
-          <!-- <div class="object-right mr-1 my-3">
-            <input id="horizontal-form-3" class="form-check-input" type="checkbox" value="" />
-            <label class="form-check-label" for="horizontal-form-3">Data Telah Benar</label>
-          </div> -->
-          <button type="button" @click="modal_utama = false; resetModal()" class="btn btn-outline-secondary w-32 mr-1">
-            Cancel
-          </button>
-          <button type="button" @click="simpanPenjualan()" class="object-left btn btn-primary w-32"
-            :disabled="total_bayar_global == 0 || total_bayar_global < total_harga_global">
-            Simpan
-          </button>
-        </ModalFooter>
-      </Modal>
+      
       <a href="" class="ml-auto sm:ml-0 btn px-2 h-10 box flex items-center text-primary">
         <RefreshCcwIcon class="w-4 h-4 sm:mr-3 sm:m-0 m-2" />
         <p class="sm:block hidden">Reload Data</p>
@@ -316,7 +14,7 @@
     </div>
   </div>
   <!-- BEGIN: HTML Table Data -->
-  <div class="intro-y box p-5 mt-5">
+  <div class="intro-y box px-5 mt-3">
     <div class="flex flex-col sm:flex-row sm:items-end xl:items-start">
       <form id="tabulator-html-filter-form" class="xl:flex sm:mr-auto">
         <div class="sm:flex items-center sm:mr-4">
@@ -784,48 +482,12 @@ const initTabulator = () => {
 
       // For HTML table
       {
-        width: 40,
-        print: false,
-        tooltip: false,
-        download: false,
-        hozAlign: "center",
-        vertAlign: "middle",
-        formatter(cell) {
-          const a = dom(`<div class="flex lg:justify-center items-center ml-6">
-                <a id="edit" class="flex items-center mr-3" href="javascript:;">
-                  <i data-lucide="printer" class="w-4 h-4 mr-1"></i> 
-                </a>
-              </div>`);
-          dom(a).on("click", function (e) {
-
-          });
-
-          return a[0];
-        }, cellClick: function (e, cell) {
-          const penjualan = cell.getData()
-          console.log("openEditModal", cell.getRow());
-
-          Penjualan.readDetail(penjualan.no_invoice).then((data) => {
-            no_invoice.value = penjualan.no_invoice;
-            waktu.value = penjualan.tanggal_penjualan;
-            total_harga_global.value = parseFloat(penjualan.total_harga_jual);
-            total_bayar_global.value = parseFloat(penjualan.total_bayar_jual);
-            kembalian.value = parseFloat(penjualan.kembalian_jual);
-
-            isInvoice.value = true;
-
-          }).catch((e) => {
-            alert("gagal open invoice" + e);
-          });
-        }
-      },
-      {
         title: "INVOICE",
         minWidth: 200,
         responsive: 0,
         field: "no_invoice",
         vertAlign: "middle",
-        hozAlign: "center",
+        hozAlign: "left",
         print: false,
         download: false,
         formatter(cell) {
@@ -896,55 +558,6 @@ const initTabulator = () => {
                 <div class="font-medium whitespace-nowrap">${currencyFormatter.format(cell.getData().kembalian_jual)
             }</div>
               </div>`;
-        },
-      },
-      {
-        title: "ACTIONS",
-        headerHozAlign: "center",
-        minWidth: 200,
-        field: "actions",
-        responsive: 1,
-        hozAlign: "center",
-        vertAlign: "middle",
-        print: false,
-        download: false,
-        formatter(cell) {
-          const a = dom(`<div class="flex lg:justify-center items-center">
-                <a id="edit" class="flex items-center mr-3" href="javascript:;">
-                  <i data-lucide="check-square" class="w-4 h-4 mr-1"></i> Edit
-                </a>
-                <a id="delete" class="flex items-center text-danger" href="javascript:;">
-                  <i data-lucide="trash-2" class="w-4 h-4 mr-1"></i> Delete
-                </a>
-              </div>`);
-          dom(a).on("click", "a", function (e) {
-            if (e.id === "edit") {
-              //alert("edit " + cell.getData());
-              const penjualan = cell.getData()
-              console.log("openEditModal", cell.getRow());
-
-              Penjualan.readDetailPenjualan(penjualan.no_invoice).then((data) => {
-                no_invoice.value = penjualan.no_invoice;
-                waktu.value = penjualan.tanggal_penjualan;
-                total_harga_global.value = parseFloat(penjualan.total_harga_jual);
-                total_bayar_global.value = parseFloat(penjualan.total_bayar_jual);
-                kembalian.value = parseFloat(penjualan.kembalian_jual);
-
-                isEdit.value = true;
-                modal_utama.value = true;
-
-              }).catch((e) => {
-                alert("gagal open edit" + e);
-              });
-            } else {
-              //alert("delete" + JSON.stringify(cell.getData().no_invoice));
-              //const no_invoice_del = JSON.stringify(cell.getData().no_invoice)
-              no_invoice.value = cell.getData().no_invoice;
-              deleteConfirmationModal.value = true;
-            }
-          });
-
-          return a[0];
         },
       },
 
@@ -1227,7 +840,6 @@ onMounted(async function () {
     const data = await Penjualan.readItem()
     initTabulator();
     reInitOnResizeWindow();
-    basicNonStickyNotificationToggle();
   } catch (error) {
     alert("onMounted" + error)
   }

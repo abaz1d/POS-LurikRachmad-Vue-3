@@ -150,10 +150,12 @@
     </ModalBody>
   </Modal>
   <!-- END: HTML Table Data -->
+  <ModalDatabaseError ref="modalErrorRef" />
 </template>
 
 <script>
 import { useOutletStore } from "../../stores/outlet";
+import ModalDatabaseError from "@/components/modal-error/Main.vue";
 // import OutletList from "./OutletList.vue";
 import { ref, reactive } from "vue";
 import xlsx from "xlsx";
@@ -186,9 +188,9 @@ export default {
     const Outlet = useOutletStore();
     return { Outlet, moment, };
   },
-  // components: {
-  //   OutletList,
-  // },
+  components: {
+    ModalDatabaseError,
+  },
   data() {
     return {
       deleteConfirmationModal,
@@ -511,8 +513,11 @@ export default {
     this.Outlet.readItem().then(() => {
       this.initTabulator();
       this.reInitOnResizeWindow();
+      this.$refs.modalErrorRef.errorDatabaseModal = false;
     }).catch((error) => {
-      alert(error)
+      //alert(error)
+      this.$refs.modalErrorRef.errorDatabaseModal = true;
+      //console.log("error: " + this.$refs.modalErrorRef)
     });
     // this.outlets = this.Outlet.items
   },

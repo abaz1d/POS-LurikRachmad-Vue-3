@@ -6,10 +6,12 @@ export const useBarangStore = defineStore({
   state: () => ({
     rawItems: [],
     rawVarians: [],
+    rawDatas: [],
   }),
   getters: {
     items: (state) => state.rawItems,
     varians: (state) => state.rawVarians,
+    datas: (state) => state.rawDatas,
   },
   actions: {
     async readItem() {
@@ -103,6 +105,7 @@ export const useBarangStore = defineStore({
       try {
         const data = await request.get("barang/addvarian");
         if (data.status >= 200 && data.status < 300) {
+          this.rawDatas = data.data;
           return data.data;
         } else {
           console.log("error", data.status);

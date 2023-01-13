@@ -150,10 +150,13 @@
     </ModalBody>
   </Modal>
   <!-- END: HTML Table Data -->
+
+  <ModalDatabaseError ref="modalErrorRef" />
 </template>
 
 <script>
 import { usePelangganStore } from "../../stores/pelanggan";
+import ModalDatabaseError from "@/components/modal-error/Main.vue";
 // import PelangganList from "./PelangganList.vue";
 import { ref, reactive } from "vue";
 import xlsx from "xlsx";
@@ -186,9 +189,9 @@ export default {
     const Pelanggan = usePelangganStore();
     return { Pelanggan, moment, };
   },
-  // components: {
-  //   PelangganList,
-  // },
+  components: {
+    ModalDatabaseError,
+  },
   data() {
     return {
       deleteConfirmationModal,
@@ -511,8 +514,10 @@ export default {
     this.Pelanggan.readItem().then(() => {
       this.initTabulator();
       this.reInitOnResizeWindow();
+      this.$refs.modalErrorRef.errorDatabaseModal = false;
     }).catch((error) => {
-      alert(error)
+      //alert(error)
+      this.$refs.modalErrorRef.errorDatabaseModal = true;
     });
     // this.pelanggans = this.Pelanggan.items
   },

@@ -108,7 +108,8 @@
             <div class="intro-x">
               <div class="box px-5 py-3 mb-3 flex items-center zoom-in">
                 <div class="overflow-x-auto scrollbar-hidden">
-                  <div id="tabulatorProduk" ref="tableRefProduk" class="mt-2 table-report table-report--tabulator"></div>
+                  <div id="tabulatorProduk" ref="tableRefProduk" class="mt-2 table-report table-report--tabulator">
+                  </div>
                 </div>
               </div>
             </div>
@@ -127,7 +128,8 @@
             <div class="intro-x">
               <div class="box px-5 py-3 mb-3 flex items-center zoom-in">
                 <div class="overflow-x-auto scrollbar-hidden">
-                  <div id="tabulatorOutlet" ref="tableRefOutlet" class="mt-2 table-report table-report--tabulator"></div>
+                  <div id="tabulatorOutlet" ref="tableRefOutlet" class="mt-2 table-report table-report--tabulator">
+                  </div>
                 </div>
               </div>
             </div>
@@ -179,7 +181,8 @@
                     <div class="text-base font-medium truncate">
                       Lakukan Semuanya Sesuai Prosedur
                     </div>
-                    <div class="text-slate-400 mt-1"><b class="font-philosopher text-[#CDA562]">Lurik Rachmad - Sejak 1960</b></div>
+                    <div class="text-slate-400 mt-1"><b class="font-philosopher text-[#CDA562]">Lurik Rachmad - Sejak
+                        1960</b></div>
                     <div class="text-slate-500 text-justify mt-1">
                       Dalam menambah atau mengahpus data pastikan telah sesuai dengan prosedur yang telah dibuat
                       perusahaan.
@@ -189,7 +192,8 @@
                     <div class="text-base font-medium truncate">
                       Jangan Lupa Keluar Akun
                     </div>
-                    <div class="text-slate-400 mt-1"><b class="font-philosopher text-[#CDA562]">Lurik Rachmad - Sejak 1960</b></div>
+                    <div class="text-slate-400 mt-1"><b class="font-philosopher text-[#CDA562]">Lurik Rachmad - Sejak
+                        1960</b></div>
                     <div class="text-slate-500 text-justify mt-1">
                       Setelah selsai menggunakan aplikasi jangan lupa dan pastikan akun anda telah keluar dari aplikasi
                       untuk menjaga keamanan data perushaaan.
@@ -199,7 +203,8 @@
                     <div class="text-base font-medium truncate">
                       Laporkan Bug atau Erorr
                     </div>
-                    <div class="text-slate-400 mt-1"><b class="font-philosopher text-[#CDA562]">Lurik Rachmad - Sejak 1960</b></div>
+                    <div class="text-slate-400 mt-1"><b class="font-philosopher text-[#CDA562]">Lurik Rachmad - Sejak
+                        1960</b></div>
                     <div class="text-slate-500 text-justify mt-1">
                       Ketika menemukan bug atau erorr dalam aplikasi jangan lupa untuk melapor pada divisi yang terkait
                       untuk terus memperbaiki dan mengembangkan aplikasi agar lebih baik lagi.
@@ -215,77 +220,14 @@
             class="col-span-12 md:col-span-6 xl:col-span-12 2xl:col-span-12 xl:col-start-1 xl:row-start-2 2xl:col-start-auto 2xl:row-start-auto mt-0">
             <div class="intro-x flex items-center h-10">
               <h2 class="text-lg font-medium truncate mr-5">Kalender</h2>
-              <a href="" class="ml-auto text-primary truncate flex items-center">
-                <PlusIcon class="w-4 h-4 mr-1" /> Add New Schedules
-              </a>
+              <!-- <a href="javascript:void(0)" @click="addNewCal()" class="ml-auto text-primary truncate flex items-center">
+                <PlusIcon class="w-4 h-4 mr-1" /> Tambah Jadwal Baru
+              </a> -->
             </div>
             <div class="mt-5">
               <div class="intro-x box">
                 <div class="p-5">
-                  <div class="flex">
-                    <ChevronLeftIcon class="w-5 h-5 text-slate-500" />
-                    <div class="font-medium text-base mx-auto">April</div>
-                    <ChevronRightIcon class="w-5 h-5 text-slate-500" />
-                  </div>
-                  <div class="grid grid-cols-7 gap-4 mt-5 text-center">
-                    <div class="font-medium">Su</div>
-                    <div class="font-medium">Mo</div>
-                    <div class="font-medium">Tu</div>
-                    <div class="font-medium">We</div>
-                    <div class="font-medium">Th</div>
-                    <div class="font-medium">Fr</div>
-                    <div class="font-medium">Sa</div>
-                    <div class="py-0.5 rounded relative text-slate-500">29</div>
-                    <div class="py-0.5 rounded relative text-slate-500">30</div>
-                    <div class="py-0.5 rounded relative text-slate-500">31</div>
-                    <div class="py-0.5 rounded relative">1</div>
-                    <div class="py-0.5 rounded relative">2</div>
-                    <div class="py-0.5 rounded relative">3</div>
-                    <div class="py-0.5 rounded relative">4</div>
-                    <div class="py-0.5 rounded relative">5</div>
-                    <div class="py-0.5 bg-success/20 dark:bg-success/30 rounded relative">
-                      6
-                    </div>
-                    <div class="py-0.5 rounded relative">7</div>
-                    <div class="py-0.5 bg-primary text-white rounded relative">
-                      8
-                    </div>
-                    <div class="py-0.5 rounded relative">9</div>
-                    <div class="py-0.5 rounded relative">10</div>
-                    <div class="py-0.5 rounded relative">11</div>
-                    <div class="py-0.5 rounded relative">12</div>
-                    <div class="py-0.5 rounded relative">13</div>
-                    <div class="py-0.5 rounded relative">14</div>
-                    <div class="py-0.5 rounded relative">15</div>
-                    <div class="py-0.5 rounded relative">16</div>
-                    <div class="py-0.5 rounded relative">17</div>
-                    <div class="py-0.5 rounded relative">18</div>
-                    <div class="py-0.5 rounded relative">19</div>
-                    <div class="py-0.5 rounded relative">20</div>
-                    <div class="py-0.5 rounded relative">21</div>
-                    <div class="py-0.5 rounded relative">22</div>
-                    <div class="py-0.5 bg-pending/20 dark:bg-pending/30 rounded relative">
-                      23
-                    </div>
-                    <div class="py-0.5 rounded relative">24</div>
-                    <div class="py-0.5 rounded relative">25</div>
-                    <div class="py-0.5 rounded relative">26</div>
-                    <div class="py-0.5 bg-primary/10 dark:bg-primary/50 rounded relative">
-                      27
-                    </div>
-                    <div class="py-0.5 rounded relative">28</div>
-                    <div class="py-0.5 rounded relative">29</div>
-                    <div class="py-0.5 rounded relative">30</div>
-                    <div class="py-0.5 rounded relative text-slate-500">1</div>
-                    <div class="py-0.5 rounded relative text-slate-500">2</div>
-                    <div class="py-0.5 rounded relative text-slate-500">3</div>
-                    <div class="py-0.5 rounded relative text-slate-500">4</div>
-                    <div class="py-0.5 rounded relative text-slate-500">5</div>
-                    <div class="py-0.5 rounded relative text-slate-500">6</div>
-                    <div class="py-0.5 rounded relative text-slate-500">7</div>
-                    <div class="py-0.5 rounded relative text-slate-500">8</div>
-                    <div class="py-0.5 rounded relative text-slate-500">9</div>
-                  </div>
+                  <Calendar ref="fullCalender" />
                 </div>
                 <!-- <div class="border-t border-slate-200/60 p-5">
                   <div class="flex items-center">
@@ -318,13 +260,19 @@
   <!-- BEGIN: Basic Non Sticky Notification Content -->
   <Notification refKey="basicNonStickyNotification" :options="{
     duration: 10000,
-  }" class="flex flex-col sm:flex-row hover:animate-none md:animate-bounce animate-pulse ">
-    <div class="font-medium">Selamat Datang di Aplikasi Point of Sales <b class="font-philosopher text-2xl text-[#CDA562]">Lurik Rachmad</b></div>
+  }" class="flex flex-col sm:flex-row md:animate-bounce animate-pulse ">
+    <div class="font-medium">Selamat Datang di Aplikasi Point of Sales <b
+        class="font-philosopher text-2xl text-[#CDA562]">Lurik Rachmad</b></div>
   </Notification>
   <!-- END: Basic Non Sticky Notification Content -->
+
+  <ModalDatabaseError ref="modalErrorRef" />
 </template>
 
 <script setup>
+import Calendar from "@/components/calendar/Main.vue";
+import ModalDatabaseError from "@/components/modal-error/Main.vue";
+import dom from "@left4code/tw-starter/dist/js/dom";
 import { useDashboardStore } from "../../stores/dashboard";
 import { currencyFormatter } from "../../utils/helper";
 import { TabulatorFull as Tabulator } from 'tabulator-tables';
@@ -338,6 +286,8 @@ const tableRefProduk = ref();
 const tabulatorProduk = ref();
 const tableRefOutlet = ref();
 const tabulatorOutlet = ref();
+const modalErrorRef = ref();
+const fullCalender = ref();
 
 
 const template = document.createElement('template');
@@ -487,7 +437,7 @@ const initTabulatorOutlet = () => {
                 </div>
               </div>
             </div>`);
-            return a[0];
+          return a[0];
         },
       },
     ],
@@ -525,6 +475,75 @@ const getImgUrl = (gambar_varian) => {
 
   return image;
 }
+
+// const addNewCal = () => {
+//   [{
+//     "start": "2023-01-11T17:00:00.000Z",
+//     "end": "2023-01-12T17:00:00.000Z",
+//     "startStr": "2023-01-12",
+//     "endStr": "2023-01-13",
+//     "allDay": true,
+//     "jsEvent": {
+//         "isTrusted": true
+//     },
+//     "view": {
+//         "type": "dayGridMonth",
+//         "dateEnv": {
+//             "timeZone": "local",
+//             "canComputeOffset": true,
+//             "calendarSystem": {},
+//             "locale": {
+//                 "codeArg": "en",
+//                 "codes": [
+//                     "en"
+//                 ],
+//                 "week": {
+//                     "dow": 0,
+//                     "doy": 4
+//                 },
+//                 "simpleNumberFormat": {},
+//                 "options": {
+//                     "direction": "ltr",
+//                     "buttonText": {
+//                         "prev": "prev",
+//                         "next": "next",
+//                         "prevYear": "prev year",
+//                         "nextYear": "next year",
+//                         "year": "year",
+//                         "today": "today",
+//                         "month": "month",
+//                         "week": "week",
+//                         "day": "day",
+//                         "list": "list"
+//                     },
+//                     "weekText": "W",
+//                     "weekTextLong": "Week",
+//                     "closeHint": "Close",
+//                     "timeHint": "Time",
+//                     "eventHint": "Event",
+//                     "allDayText": "all-day",
+//                     "moreLinkText": "more",
+//                     "noEventsText": "No events to display",
+//                     "buttonHints": {
+//                         "prev": "Previous $0",
+//                         "next": "Next $0"
+//                     },
+//                     "viewHint": "$0 view",
+//                     "navLinkHint": "Go to $0"
+//                 }
+//             },
+//             "weekDow": 0,
+//             "weekDoy": 4,
+//             "weekText": "W",
+//             "weekTextLong": "Week",
+//             "cmdFormatter": null,
+//             "defaultSeparator": " - "
+//         }
+//     }
+// }]
+//   //console.log("cal", fullCalender.value);
+//   fullCalender.value.handleDateSelect()
+// }
 
 //----------------------------------------------------------------
 
@@ -565,8 +584,12 @@ onMounted(async function () {
     initTabulatorOutlet()
     reInitOnResizeWindow();
     basicNonStickyNotificationToggle();
+    modalErrorRef.value.errorDatabaseModal = false;
   } catch (error) {
-    alert("onMounted" + error)
+    // errorDatabaseModal.value = true;
+    //alert("onMounted" + error)
+    modalErrorRef.value.errorDatabaseModal = true;
+    // console.log("err", modalErrorRef.value.errorDatabaseModal)
   }
 });
 

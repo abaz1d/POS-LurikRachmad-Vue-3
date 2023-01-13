@@ -7,6 +7,7 @@ export const request = axios.create({
   // headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
 });
 
-// request.get('satuan')
-// .then(res => console.log('data',res.data.rows))
-// .catch(e => console.error(e))
+
+request.get('/')
+.then(res => console.log('Berhasil Terhubung Database'))
+.catch(e => console.log('Gagal Terhubung Database'))

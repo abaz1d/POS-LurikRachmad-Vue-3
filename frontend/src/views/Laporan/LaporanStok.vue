@@ -704,48 +704,6 @@ const initTabulator = () => {
               </div>`;
         },
       },
-      {
-        title: "ACTIONS",
-        headerHozAlign: "center",
-        minWidth: 200,
-        field: "actions",
-        responsive: 1,
-        hozAlign: "center",
-        vertAlign: "middle",
-        print: false,
-        download: false,
-        formatter(cell) {
-          const a = dom(`<div class="flex lg:justify-center items-center">
-                <a id="edit" class="flex items-center mr-3" href="javascript:;">
-                  <i data-lucide="check-square" class="w-4 h-4 mr-1"></i> Edit
-                </a>
-                <a id="delete" class="flex items-center text-danger" href="javascript:;">
-                  <i data-lucide="trash-2" class="w-4 h-4 mr-1"></i> Delete
-                </a>
-              </div>`);
-          dom(a).on("click", "a", function (e) {
-            if (e.id === "edit") {
-              //alert("edit " + cell.getData());
-              const barang = cell.getData()
-              //console.log("openEditModal", cell.getRow());
-              inputIdBarang.value = barang.id_barang
-              inputNamaBarang.value = barang.nama_barang
-              isEdit.value = true;
-              modalBarang.value = true;
-              //modal_utama.value = true;
-
-            } else {
-              //alert("delete" + JSON.stringify(cell.getData().id_barang));
-              //const no_invoice_del = JSON.stringify(cell.getData().id_barang)
-              inputIdBarang.value = cell.getData().id_barang;
-              inputNamaBarang.value = cell.getData().nama_barang
-              deleteConfirmationModal.value = true;
-            }
-          });
-
-          return a[0];
-        },
-      },
 
       // For print format
       {
@@ -943,76 +901,6 @@ const initTabulator = () => {
               </div>`;
             },
           },
-          {
-            title: "ACTIONS",
-            headerHozAlign: "center",
-            minWidth: 200,
-            field: "actions",
-            responsive: 1,
-            hozAlign: "center",
-            vertAlign: "middle",
-            print: false,
-            download: false,
-            formatter(cell) {
-              const a = dom(`<div class="flex lg:justify-center items-center">
-                <a id="edit" class="flex items-center mr-3" href="javascript:;">
-                  <i data-lucide="check-square" class="w-4 h-4 mr-1"></i> Edit
-                </a>
-                <a id="delete" class="flex items-center text-danger" href="javascript:;">
-                  <i data-lucide="trash-2" class="w-4 h-4 mr-1"></i> Delete
-                </a>
-              </div>`);
-              dom(a).on("click", "a", function (e) {
-                if (e.id === "edit") {
-                  //alert("edit " + JSON.stringify(cell.getData()));
-                  const varian = cell.getData()
-                  getImgUrl(varian.gambar_varian)
-                  // console.log("openEditModal", cell.getRow());
-                  // inputIdBarang.value = varian.id_barang
-                  // inputNamaBarang.value = varian.nama_barang
-                  // isEdit.value = true;
-                  // modalVarian.value = true;
-                  Barang.updateVarianGet(varian.id_varian).then((detail) => {
-                    //alert("edit " + JSON.stringify(varian.gambar_varian));
-                    data.value = detail
-
-                    //console.log("edit ", detail.item.gambar_varian, varian.gambar_varian);
-                    //previewImage(detail.item.gambar_varian)
-                    gambar_lama.value = detail.item.gambar_varian
-                    file.value = ''
-                    inputIdVarian.value = detail.item.id_varian
-                    inputNamaVarian.value = detail.item.nama_varian
-                    kategoriBarangVarian.value = detail.item.id_barang
-                    satuanVarian.value = detail.item.id_satuan
-                    kategoriGudangVarian.value = detail.item.id_gudang
-                    stokVarian.value = detail.item.stok_varian
-                    hargaBeliVarian.value = detail.item.harga_beli_varian
-                    hargaJualVarian.value = detail.item.harga_jual_varian
-
-                    isEdit.value = true;
-                    modalVarian.value = true;
-                  }).catch((e) => {
-                    alert("Error edit Get " + e);
-                  });
-
-                } else {
-                  //alert("delete" + JSON.stringify(cell.getData()));
-                  const varian = cell.getData();
-                  inputIdVarian.value = varian.id_varian;
-                  inputNamaVarian.value = varian.nama_varian;
-                  isVarian.value = true;
-                  deleteConfirmationModal.value = true;
-                  // gambar_lama.value = varian.gambar_varian
-                  //const no_invoice_del = JSON.stringify(cell.getData().id_barang)
-                  // inputIdBarang.value = cell.getData().id_barang;
-                  // inputNamaBarang.value = cell.getData().nama_barang
-                  // deleteConfirmationModal.value = true;
-                }
-              });
-
-              return a[0];
-            },
-          },
 
           // For print format
           {
@@ -1185,7 +1073,7 @@ onMounted(async function () {
         data.value = varian;
         initTabulator();
         reInitOnResizeWindow();
-        basicNonStickyNotificationToggle();
+        
         modalErrorRef.value.errorDatabaseModal = false;
         //console.log("Error: ", varian);
         
