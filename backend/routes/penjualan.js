@@ -97,6 +97,19 @@ module.exports = function (db) {
 
     });
     //v
+    
+
+    router.get('/laporan', async function (req, res, next) {
+        try {
+            const { rows } = await db.query('SELECT penjualan_detail.*, varian.nama_varian, penjualan.tanggal_penjualan, penjualan.total_harga_jual, penjualan.total_bayar_jual, penjualan.kembalian_jual FROM public.penjualan_detail LEFT JOIN penjualan ON penjualan_detail.no_invoice = penjualan.no_invoice LEFT JOIN varian ON penjualan_detail.id_varian = varian.id_varian ORDER BY id_detail_jual ASC')
+            //res.redirect(`/penjualan/show/${rows[0].no_invoice}`)
+            res.json(rows)
+        } catch (e) {
+            res.send(e)
+        }
+    });
+    //v
+
     router.post('/create', async function (req, res, next) {
         try {
             const { rows } = await db.query('INSERT INTO penjualan(total_harga_jual) VALUES(0) returning *')

@@ -8,6 +8,7 @@ export const usePenjualanStore = defineStore({
     rawPenjualans: [],
     rawDetails: [],
     rawPrints: [],
+    rawLaporans: [],
 
     rawPenjualanDetail: [],
   }),
@@ -16,10 +17,26 @@ export const usePenjualanStore = defineStore({
     penjualans: (state) => state.rawPenjualans,
     details: (state) => state.rawDetails,
     prints: (state) => state.rawPrints,
+    laporans: (state) => state.rawLaporans,
 
     penjualanDetail: (state) => state.rawPenjualanDetail,
   },
   actions: {
+    async readLaporan() {
+      try {
+        const data = await request.get("penjualan/laporan");
+        if (data.status >= 200 && data.status < 300) {
+          //console.log('laporan', data.data)
+          this.rawLaporans = data.data
+          // console.log('rawPenjualans', this.rawPenjualans)
+          //console.log('jual')
+        //return this.rawPenjualans
+        }
+      } catch (error) {
+        console.error(error)
+      }
+
+    },
     async readItem() {
       try {
         const data = await request.get("penjualan");

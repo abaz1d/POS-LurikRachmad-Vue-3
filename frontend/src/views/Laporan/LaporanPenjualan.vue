@@ -4,9 +4,9 @@
     <div class="w-full sm:w-auto flex mt-4 sm:mt-0">
       <button class="btn btn-primary shadow-md mb-3 mr-2 pr-5">
         <PrinterIcon class="w-4 h-4 mr-2" />
-         Cetak <p class="hidden xl:block ml-1">Penjualan</p>
+        Cetak <p class="hidden xl:block ml-1">Penjualan</p>
       </button>
-      
+
       <a href="" class="ml-auto sm:ml-0 btn px-2 h-10 box flex items-center text-primary">
         <RefreshCcwIcon class="w-4 h-4 sm:mr-3 sm:m-0 m-2" />
         <p class="sm:block hidden">Reload Data</p>
@@ -218,6 +218,22 @@ const total_bayar_global = ref(0);
 const kembalian = ref(0);
 
 const itemDel = ref("");
+
+var nestedData = [
+  {
+    id: 1, make: "Ford", model: "focus", reg: "P232 NJP", color: "white", serviceHistory: [
+      { date: "01/02/2016", engineer: "Steve Boberson", actions: "Changed oli filter" },
+      { date: "07/02/2017", engineer: "Martin Stevenson", actions: "Break light broken" },
+    ]
+  },
+  {
+    id: 1, make: "BMW", model: "m3", reg: "W342 SEF", color: "red", serviceHistory: [
+      { date: "22/05/2017", engineer: "Jimmy Brown", actions: "Aligned wheels" },
+      { date: "11/02/2018", engineer: "Lotty Ferberson", actions: "Changed Oil" },
+      { date: "04/04/2018", engineer: "Franco Martinez", actions: "Fixed Tracking" },
+    ]
+  },
+]
 
 // Basic non sticky notification
 const basicNonStickyNotification = ref();
@@ -441,348 +457,247 @@ template.innerHTML = '<div style="display:inline-block;" class="d-flex flex-row"
   '</div>';
 const dataLoaderLoading = template.content.firstChild;
 
+// const initTabulator = () => {
+//   tabulator.value = new Tabulator(tableJualRef.value, {
+//     data: Penjualan.laporans,
+//     dataLoaderLoading: dataLoaderLoading,
+//     groupHeader: function (value, count, data, group) {
+//       return `
+//       <span class='text-center w-screen inline-block overflow-hidden whitespace-nowrap'>
+//         <div class="table w-full">
+//           <div class="table-row-group">
+//             <div class="table-row overflow-hidden">
+//               <div class="sm:table-cell mx-2 my-0 overflow-hidden w-96">${value}</div>
+//               <div class="sm:table-cell mx-2 my-0 overflow-hidden w-96">${moment(data[0].tanggal_penjualan).format("DD MMM YYYY HH:SS")}</div>
+//               <div class="sm:table-cell mx-2 my-0 overflow-hidden w-96">${currencyFormatter.format(data[0].total_harga_jual)}</div>
+//               <div class="sm:table-cell mx-2 my-0 overflow-hidden w-96">${currencyFormatter.format(data[0].total_bayar_jual)}</div>
+//               <div class="sm:table-cell mx-2 my-0 overflow-hidden w-96">${currencyFormatter.format(data[0].kembalian_jual)}</div>
+//             </div>
+//           </div>
+//         </div>
+//       </span>`
+//     },
+//     printHeader: `<h1 class='text-2xl p-2 m-2 text-center border-y-2 border-black'>Tabel Penjualan<h1>`,
+//     printFooter: `<h2 class='p-2 m-2 text-center mt-4'>${moment(Date.now()).format("DD MMM YYYY HH:SS")}<h2>`,
+//     printAsHtml: true,
+//     printStyled: true,
+//     groupBy: "no_invoice",
+//     //height: "50vh",
+//     pagination: "remote",
+//     paginationSize: 10,
+//     paginationSizeSelector: [10, 20, 30, 40, 50, 100],
+//     layout: "fitColumns",
+//     responsiveLayout: "collapse",
+//     placeholder: "Tida ada Data di temukan",
+//     columnDefaults: {
+//       //resizable: true,
+//       tooltip: function (e, cell, onRendered) {
+//         //e - mouseover event
+//         //cell - cell component
+//         //onRendered - onRendered callback registration function
+
+//         var el = document.createElement("div");
+//         el.style.backgroundColor = "white smoke";
+//         el.innerText = cell.getColumn().getField() + " - " + cell.getValue(); //return cells "field - value";
+
+//         return el;
+//       },
+//     },
+//     columns: [
+//       {
+//         formatter: "responsiveCollapse",
+//         width: 40,
+//         minWidth: 30,
+//         hozAlign: "center",
+//         resizable: false,
+//         headerSort: false,
+//       },
+
+//       // For HTML table
+//       {
+//         title: "NAMA VARIAN",
+//         minWidth: 200,
+//         responsive: 0,
+//         field: "nama_varian",
+//         vertAlign: "middle",
+//         print: false,
+//         download: false,
+//         formatter(cell) {
+//           return `<div>
+//                 <div class="font-medium whitespace-nowrap">${cell.getData().nama_varian
+//             }</div>
+//               </div>`;
+//         },
+//       },
+//       {
+//         title: "HARGA ITEM",
+//         headerHozAlign: "center",
+//         minWidth: 200,
+//         field: "harga_detail_jual",
+//         hozAlign: "right",
+//         vertAlign: "middle",
+//         print: false,
+//         download: false,
+//         formatter(cell) {
+//           return `<div>
+//                 <div class="font-medium whitespace-nowrap">${currencyFormatter.format(cell.getData().harga_detail_jual)
+//             }</div>
+//               </div>`;
+//         },
+//       },
+//       {
+//         title: "QTY",
+//         minWidth: 200,
+//         headerHozAlign: "center",
+//         field: "qty",
+//         hozAlign: "center",
+//         vertAlign: "middle",
+//         print: false,
+//         download: false,
+//         formatter(cell) {
+//           return `<div>
+//                 <div class="font-medium whitespace-nowrap">${cell.getData().qty
+//             }</div>
+//               </div>`;
+//         },
+//       },
+//       {
+//         title: "TOTAL HARGA",
+//         minWidth: 200,
+//         headerHozAlign: "center",
+//         field: "total_harga_detail_jual",
+//         hozAlign: "right",
+//         vertAlign: "middle",
+//         print: false,
+//         download: false,
+//         formatter(cell) {
+//           return `<div>
+//                 <div class="font-medium whitespace-nowrap">${currencyFormatter.format(cell.getData().total_harga_detail_jual)
+//             }</div>
+//               </div>`;
+//         },
+//       },
+
+//       // For print format
+//       {
+//         title: "NAMA VARIAN",
+//         field: "nama_varian",
+//          minWidth: 1200,
+//         visible: false,
+//         print: true,
+//         download: true,
+//       },
+//       {
+//         title: "HARGA ITEM",
+//         field: "harga_detail_jual",
+//         visible: false,
+//         print: true,
+//         download: true,
+//       },
+//       {
+//         title: "QTY",
+//         field: "qty",
+//         visible: false,
+//         print: true,
+//         download: true,
+//       },
+//       {
+//         title: "TOTAL HARGA",
+//         field: "total_harga_detail_jual",
+//         visible: false,
+//         print: true,
+//         download: true,
+//       },
+//     ],
+//   });
+//   tabulator.value.on("renderComplete", function () {
+//     //subTable.redraw();
+//     createIcons({
+//       icons,
+//       "stroke-width": 1.5,
+//       nameAttr: "data-lucide",
+
+//     });
+//   });
+// };
+
+// Redraw table onresize
+
+//define table
 const initTabulator = () => {
   tabulator.value = new Tabulator(tableJualRef.value, {
-    data: Penjualan.penjualans,
-    dataLoaderLoading: dataLoaderLoading,
-    printHeader: `<h1 class='text-2xl p-2 m-2 text-center border-y-2 border-black'>Tabel Penjualan<h1>`,
-    printFooter: `<h2 class='p-2 m-2 text-center mt-4'>${moment(Date.now()).format("DD MMM YYYY HH:SS")}<h2>`,
-    printAsHtml: true,
-    printStyled: true,
-    //height: "50vh",
-    pagination: "remote",
-    paginationSize: 10,
-    paginationSizeSelector: [10, 20, 30, 40, 50, 100],
+    height: "311px",
     layout: "fitColumns",
-    responsiveLayout: "collapse",
-    placeholder: "Tida ada Data di temukan",
+    printConfig: {
+      columnHeaders: true, //do not include column headers in printed table
+      columnGroups: true, //do not include column groups in column headers for printed table
+      rowGroups: true, //do not include row groups in printed table
+      columnCalcs: true, //do not include column calcs in printed table
+      dataTree: true, //do not include data tree in printed table
+      formatCells: true, //show raw cell values without formatter
+    },
+    printFormatter:function(tableHolderElement, tableElement){
+        //tableHolderElement - The element that holds the header, footer and table elements
+        //tableElement - The table
+        console.log("",tableHolderElement, tableElement)
+    },
     columnDefaults: {
       resizable: true,
-      tooltip: function (e, cell, onRendered) {
-        //e - mouseover event
-        //cell - cell component
-        //onRendered - onRendered callback registration function
-
-        var el = document.createElement("div");
-        el.style.backgroundColor = "white smoke";
-        el.innerText = cell.getColumn().getField() + " - " + cell.getValue(); //return cells "field - value";
-
-        return el;
-      },
     },
+    data: nestedData,
     columns: [
-      {
-        formatter: "responsiveCollapse",
-        width: 40,
-        minWidth: 30,
-        hozAlign: "center",
-        resizable: false,
-        headerSort: false,
-      },
-
-      // For HTML table
-      {
-        title: "INVOICE",
-        minWidth: 200,
-        responsive: 0,
-        field: "no_invoice",
-        vertAlign: "middle",
-        hozAlign: "left",
-        print: false,
-        download: false,
-        formatter(cell) {
-          return `<div>
-                <div class="font-medium whitespace-nowrap">${cell.getData().no_invoice}</div>
-              </div>`;
-        },
-      },
-      {
-        title: "TANGGAL PENJUALAN",
-        headerHozAlign: "center",
-        minWidth: 200,
-        field: "tanggal_penjualan",
-        hozAlign: "center",
-        vertAlign: "middle",
-        print: false,
-        download: false,
-        formatter(cell) {
-          return `<div>
-                <div class="font-medium whitespace-nowrap">${moment(cell.getData().tanggal_penjualan).format("DD MMM YYYY HH:SS")
-            }</div>
-              </div>`;
-        },
-      },
-      {
-        title: "TOTAL HARGA",
-        minWidth: 200,
-        headerHozAlign: "center",
-        field: "total_harga_jual",
-        hozAlign: "right",
-        vertAlign: "middle",
-        print: false,
-        download: false,
-        formatter(cell) {
-          return `<div>
-                <div class="font-medium whitespace-nowrap">${currencyFormatter.format(cell.getData().total_harga_jual)
-            }</div>
-              </div>`;
-        },
-      },
-      {
-        title: "TOTAL BAYAR",
-        minWidth: 200,
-        headerHozAlign: "center",
-        field: "total_bayar_jual",
-        hozAlign: "right",
-        vertAlign: "middle",
-        print: false,
-        download: false,
-        formatter(cell) {
-          return `<div>
-                <div class="font-medium whitespace-nowrap">${currencyFormatter.format(cell.getData().total_bayar_jual)
-            }</div>
-              </div>`;
-        },
-      },
-      {
-        title: "KEMBALIAN",
-        headerHozAlign: "center",
-        minWidth: 200,
-        field: "kembalian_jual",
-        hozAlign: "right",
-        vertAlign: "middle",
-        print: false,
-        download: false,
-        formatter(cell) {
-          return `<div>
-                <div class="font-medium whitespace-nowrap">${currencyFormatter.format(cell.getData().kembalian_jual)
-            }</div>
-              </div>`;
-        },
-      },
-
-      // For print format
-      {
-        title: "INVOICE",
-        field: "no_invoice",
-        visible: false,
-        print: true,
-        download: true,
-      },
-      {
-        title: "TANGGAL PENJUALAN",
-        field: "tanggal_penjualan",
-        visible: false,
-        print: true,
-        download: true,
-        formatter(cell) {
-          return `<div>
-                <div class="font-medium whitespace-nowrap">${moment(cell.getData().tanggal_penjualan).format("DD MMM YYYY HH:SS")
-            }</div>
-              </div>`;
-        },
-      },
-      {
-        title: "TOTAL HARGA",
-        field: "total_harga_jual",
-        visible: false,
-        print: true,
-        download: true,
-        formatter(cell) {
-          return `<div>
-                <div class="font-medium whitespace-nowrap">${currencyFormatter.format(parseFloat(cell.getData().total_harga_jual))
-            }</div>
-              </div>`;
-        },
-      },
-      {
-        title: "TOTAL BAYAR",
-        field: "total_bayar_jual",
-        visible: false,
-        print: true,
-        download: true,
-        formatter(cell) {
-          return `<div>
-                <div class="font-medium whitespace-nowrap">${currencyFormatter.format(cell.getData().total_bayar_jual)
-            }</div>
-              </div>`;
-        },
-      },
-      {
-        title: "KEMBALIAN",
-        field: "kembalian_jual",
-        visible: false,
-        print: true,
-        download: true,
-        formatter(cell) {
-          return `<div>
-                <div class="font-medium whitespace-nowrap">${currencyFormatter.format(cell.getData().kembalian_jual)
-            }</div>
-              </div>`;
-        },
-      },
+      { title: "Make", field: "make" },
+      { title: "Model", field: "model" },
+      { title: "Registration", field: "reg" },
+      { title: "Color", field: "color" },
     ],
-    rowFormatter: function (row) {
+    rowFormatter: async function (row) {
       //create and style holder elements
       var holderEl = document.createElement("div");
       var tableEl = document.createElement("div");
-      holderEl.style.display = "none"
-
-      const id = row.getData().no_invoice;
 
       holderEl.style.boxSizing = "border-box";
       holderEl.style.padding = "10px 30px 10px 10px";
       holderEl.style.borderTop = "1px solid #333";
       holderEl.style.borderBotom = "1px solid #333";
-      holderEl.setAttribute('class', "subTable" + id + "");
 
 
       tableEl.style.border = "1px solid #333";
-      tableEl.style.display = "none"
-      tableEl.setAttribute('class', "subTable" + id + "");
 
       holderEl.appendChild(tableEl);
 
       row.getElement().appendChild(holderEl);
 
       subTable = new Tabulator(tableEl, {
-        printAsHtml: true,
-        printStyled: true,
         layout: "fitColumns",
+        printConfig: {
+          columnHeaders: true, //do not include column headers in printed table
+          columnGroups: true, //do not include column groups in column headers for printed table
+          rowGroups: true, //do not include row groups in printed table
+          columnCalcs: true, //do not include column calcs in printed table
+          dataTree: true, //do not include data tree in printed table
+          formatCells: true, //show raw cell values without formatter
+        },
         data: row.getData().serviceHistory,
         columns: [
-
-          // For HTML table
           {
-            title: "NAMA VARIAN",
-            minWidth: 200,
-            responsive: 0,
-            field: "nama_varian",
-            vertAlign: "middle",
-            print: false,
-            download: false,
-            formatter(cell) {
-              return `<div>
-                <div class="font-medium whitespace-nowrap">${cell.getData().nama_varian
-                }</div>
-              </div>`;
-            },
+            title: "Date", field: "date", sorter: "date",  print: true,
+            download: true
           },
           {
-            title: "HARGA ITEM",
-            headerHozAlign: "center",
-            minWidth: 200,
-            field: "harga_detail_jual",
-            hozAlign: "right",
-            vertAlign: "middle",
-            print: false,
-            download: false,
-            formatter(cell) {
-              return `<div>
-                <div class="font-medium whitespace-nowrap">${currencyFormatter.format(cell.getData().harga_detail_jual)
-                }</div>
-              </div>`;
-            },
+            title: "Engineer", field: "engineer"  ,print: true,
+            download: true
           },
           {
-            title: "QTY",
-            minWidth: 200,
-            headerHozAlign: "center",
-            field: "qty",
-            hozAlign: "center",
-            vertAlign: "middle",
-            print: false,
-            download: false,
-            formatter(cell) {
-              return `<div>
-                <div class="font-medium whitespace-nowrap">${cell.getData().qty
-                }</div>
-              </div>`;
-            },
+            title: "Action", field: "actions",  print: true,
+            download: true
           },
-          {
-            title: "TOTAL HARGA",
-            minWidth: 200,
-            headerHozAlign: "center",
-            field: "total_harga_detail_jual",
-            hozAlign: "right",
-            vertAlign: "middle",
-            print: false,
-            download: false,
-            formatter(cell) {
-              return `<div>
-                <div class="font-medium whitespace-nowrap">${currencyFormatter.format(cell.getData().total_harga_detail_jual)
-                }</div>
-              </div>`;
-            },
-          },
-
-          // For print format
-          {
-            title: "NAMA VARIAN",
-            field: "nama_varian",
-            visible: false,
-            print: true,
-            download: true,
-          },
-          {
-            title: "HARGA ITEM",
-            field: "harga_detail_jual",
-            visible: false,
-            print: true,
-            download: true,
-          },
-          {
-            title: "QTY",
-            field: "qty",
-            visible: false,
-            print: true,
-            download: true,
-          },
-          {
-            title: "TOTAL HARGA",
-            field: "total_harga_detail_jual",
-            visible: false,
-            print: true,
-            download: true,
-          },
-        ],
+        ]
       })
     },
   });
-  tabulator.value.on("renderComplete", function () {
-    //subTable.redraw();
-    createIcons({
-      icons,
-      "stroke-width": 1.5,
-      nameAttr: "data-lucide",
+}
 
-    });
-  });
-  tabulator.value.on("rowDblClick", async function (e, row) {
-    const id = row.getData().no_invoice;
-    try {
-
-      await Penjualan.readDetail(id).then(
-        (data) => {
-          tabulator.value.replaceData(data)
-          //console.log("rowClick", data);
-        }).catch((e) => {
-          throw e;
-        });
-      $(".subTable" + id + "").toggle();
-    } catch (error) {
-      alert("2click" + error);
-    }
-
-  });
-  tabulator.value.on("rowClick", function (e, row) {
-    const id = row.getData().no_invoice;
-    $(".subTable" + id + "").hide();
-  });
-};
-
-// Redraw table onresize
 const reInitOnResizeWindow = () => {
   window.addEventListener("resize", () => {
     tabulator.value.redraw();
@@ -833,11 +748,14 @@ const onExportHtml = () => {
 // Print
 const onPrint = () => {
   tabulator.value.print();
+  //subTable.print();
+  console.log("tabulator", tabulator.value);
 };
 
 onMounted(async function () {
   try {
-    const data = await Penjualan.readItem()
+    const data = await Penjualan.readLaporan()
+    // Penjualan.readLaporan()
     initTabulator();
     reInitOnResizeWindow();
   } catch (error) {

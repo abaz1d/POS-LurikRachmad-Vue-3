@@ -15,7 +15,7 @@ export const useDashboardStore = defineStore({
         const data = await request.get("utama");
         if (data.status >= 200 && data.status < 300) {
           this.rawItems =  data.data;
-          console.log("dashboard-store", this.rawItems)
+          //console.log("dashboard-store", this.rawItems)
         }
       } catch (error) {
         console.error(e);
