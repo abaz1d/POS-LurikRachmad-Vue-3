@@ -751,6 +751,10 @@ const initTabulator = () => {
     printFooter: `<h2 class='p-2 m-2 text-center mt-4'>${moment(Date.now()).format("DD MMM YYYY HH:SS")}<h2>`,
     printAsHtml: true,
     printStyled: true,
+    printFormatter: function (tableHolderElement, tableElement) {
+      //subTable.redraw()
+      //console.log(tableHolderElement, tableElement)
+    },
     //height: "50vh",
     pagination: "remote",
     paginationSize: 10,

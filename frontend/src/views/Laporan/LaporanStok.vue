@@ -10,6 +10,8 @@
           <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2">Field</label>
           <select id="tabulator-html-filter-field" v-model="filter.field"
             class="form-select w-full sm:w-32 2xl:w-full mt-2 sm:mt-0 sm:w-auto">
+            <option value="id_varian">ID Varian</option>
+            <option value="nama_varian">Nama Varian</option>
             <option value="id_barang">ID Barang</option>
             <option value="nama_barang">Nama Barang</option>
           </select>
@@ -108,7 +110,7 @@ const tableRef = ref();
 const tabulator = ref();
 const modalErrorRef = ref();
 const filter = reactive({
-  field: "id_barang",
+  field: "id_varian",
   type: "like",
   value: "",
 });
@@ -160,7 +162,8 @@ const initTabulator = () => {
     dataLoaderLoading: dataLoaderLoading,
     rowHeight: 150,
     groupToggleElement: "header",
-    groupBy: "nama_barang", printFormatter: function (tableHolderElement, tableElement) {
+    groupBy: "nama_barang", 
+    printFormatter: function (tableHolderElement, tableElement) {
       JsBarcode(".barcode").init();
     },
     printHeader: `<h1 class='text-2xl p-2 m-2 text-center border-y-2 border-black'>Tabel Barang<h1>`,
@@ -502,7 +505,7 @@ const onFilter = () => {
 
 // On reset filter
 const onResetFilter = () => {
-  filter.field = "id_barang";
+  filter.field = "id_varian";
   filter.type = "like";
   filter.value = "";
   onFilter();

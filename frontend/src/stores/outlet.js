@@ -19,7 +19,7 @@ export const useOutletStore = defineStore({
           this.rawItems =
             /*this.rawItems.concat(res.data.rows) res.data.rows*/ data.data;
           //console.log('rawItems', this.rawItems)
-          // return this.rawItems
+          return this.rawItems
         }
       } catch (error) {
         console.error(e);

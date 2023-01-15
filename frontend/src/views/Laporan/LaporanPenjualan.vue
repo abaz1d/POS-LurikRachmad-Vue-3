@@ -223,6 +223,9 @@ const initTabulator = () => {
     },
     printHeader: `<h1 class='text-2xl p-2 m-2 text-center border-y-2 border-black'>Tabel Penjualan<h1>`,
     printFooter: `<h2 class='p-2 m-2 text-center mt-4'>${moment(Date.now()).format("DD MMM YYYY HH:SS")}<h2>`,
+    printFormatter: function (tableHolderElement, tableElement) {
+      tabulator.value.getGroups().map((g) => {g.show()})
+    },
     printAsHtml: true,
     printStyled: true,
     groupBy: "no_invoice",
@@ -433,11 +436,11 @@ const onPrint = async () => {
     console.log("g", g.show())
     if (g.show != true) {
       g.show()
-      
+
     }
   });
   //console.log("grup", tabulator.value.getGroups().show())
-  // tabulator.value.print();
+  tabulator.value.print();
   isLoading.value = false;
 };
 
