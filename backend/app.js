@@ -9,22 +9,24 @@ const fileUpload = require('express-fileupload');
 var session = require('express-session');
 var cors = require('cors')
 
-const { Pool } = require('pg')
+const { pool } = require('./helpers/util')
+
+// const { Pool } = require('pg')
 
 
-const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASS,
-  port: process.env.DB_PORT,
-  // ssl: {
-  //   rejectUnauthorized: false
-  // }
-})
+// const pool = new Pool({
+//   user: process.env.DB_USER,
+//   host: process.env.DB_HOST,
+//   database: process.env.DB_NAME,
+//   password: process.env.DB_PASS,
+//   port: process.env.DB_PORT,
+//   // ssl: {
+//   //   rejectUnauthorized: false
+//   // }
+// })
 pool.connect((err) => {
   if (err) {
-    console.log('e database', error)
+    console.log('e database', err)
   }
   console.log('Connect DB successfully')
 })

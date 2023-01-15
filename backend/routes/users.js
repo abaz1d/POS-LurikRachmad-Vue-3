@@ -2,12 +2,12 @@ var express = require('express');
 var router = express.Router();
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
-const { isLoggedIn } = require('../helpers/util')
+const { isTokenValid, Response } = require('../helpers/util')
 
 /* GET home page. */
 module.exports = function (db) {
 
-  router.get('/', isLoggedIn, async function (req, res, next) {
+  router.get('/', isTokenValid, async function (req, res, next) {
     try {
       let wheres = []
       let values = []
@@ -39,66 +39,76 @@ module.exports = function (db) {
       const totalbeli = await db.query(`SELECT count(no_invoice) AS totalbeli FROM pembelian`)
       const { rows } = await db.query(sql, values);
 
-      res.render('users/list', {
+      res.json(new Response({
         rows,
         user: req.session.user,
         totaljual: totaljual.rows[0].totaljual,
         totalbeli: totalbeli.rows[0].totalbeli,
         query: req.query
-      })
+      }))
     } catch (e) {
-      res.send(e)
+      res.status(500).json(new Response(e, false))
     }
   });
 
-  router.get('/add', isLoggedIn, async function (req, res, next) {
+  router.get('/add', isTokenValid, async function (req, res, next) {
     try {
       res.render('users/register')
     } catch (e) {
-      res.send(e)
+      res.status(500).json(new Response(e, false))
     }
   });
 
   router.post('/add', function (req, res, next) {
+//id_outlet- token
     const {email_user, username, password, role} = req.body
     db.query('SELECT * FROM users WHERE email_user = $1', [email_user], (err, email) => {
-      if (err) return res.send(err)
+      
+      if (err) return res.status(500).json(new Response(err, false))
 
       if (email.rows.length > 0) return res.send("email sudah terdaftar")
 
       bcrypt.hash(password, saltRounds, function (err, hash) {
-        if (err) return res.send(err)
-        db.query('INSERT INTO users(email_user,username,password,role) VALUES ($1, $2, $3, $4)', [email_user, username, hash, role], (err, email) => {
-          res.redirect('/users')
+        if (err) return res.status(500).json(new Response(err, false))
+        db.query('INSERT INTO users(email_user,username,password,role,id_outlet) VALUES ($1, $2, $3, $4, $5) RETURNING *', [email_user, username, hash, role, id_outlet], (err, data) => {
+          res.json(new Response({
+            data: data[0]
+          }))
         })
       })
     })
   });
 
-  router.get('/edit/:id', isLoggedIn, async function (req, res, next) {
+  router.get('/edit/:id', isTokenValid, async function (req, res, next) {
     try {
       const { rows } = await db.query('SELECT * FROM users WHERE id_users = $1', [req.params.id])
-      res.render('users/edit', { item: rows[0] });
+      // res.render('users/edit', { item: rows[0] });
+      res.json(new Response({
+        data: rows[0]
+      }))
     } catch (e) {
-      res.send(e)
+      res.status(500).json(new Response(e, false))
     }
   });
 
-  router.post('/edit/:id', async function (req, res, next) {
+  router.post('/edit/:id', isTokenValid, async function (req, res, next) {
+    //id_outlet- token
     try {
       const { rows } = await db.query(`UPDATE users SET 
       email_user = $1,
       username = $2,
-      password = $3,
-      role = $4
-      WHERE id_users = $5`, [req.body.email_user, req.body.username, req.body.password, req.body.role, req.params.id])
-      res.redirect('/users')
+      role = $3,
+      id_outlet = $4
+      WHERE id_users = $5 RETURNING *`, [req.body.email_user, req.body.username, req.body.role, req.body.id_outlet, req.params.id])
+      res.json(new Response({
+        data: rows[0]
+      }))
     } catch (e) {
-      res.send(e)
+      res.status(500).json(new Response(e, false))
     }
   });
 
-  router.get('/delete/:id', isLoggedIn, async function (req, res, next) {
+  router.get('/delete/:id', isTokenValid, async function (req, res, next) {
     try {
       const { rows } = await db.query('DELETE FROM users WHERE id_users = $1', [req.params.id])
       res.redirect('/users')

@@ -19,10 +19,10 @@
             <img alt="Lurik Rachmad HTML" class="-intro-x w-1/2 -mt-16 fill-white block dark:hidden"
               src="@/assets/images/logo.svg" />
             <div
-              class="-intro-x font-philosopher text-white dark:text-[#CDA562] font-medium ml-16 text-4xl leading-tight mt-10">
+              class="intro-x font-philosopher text-white dark:text-[#CDA562] font-medium ml-16 text-4xl leading-tight mt-10">
               <b> Lurik Rachmad </b>
             </div>
-            <div class="-intro-x mt-5 font-philosopher text-2xl text-white ml-[120px] dark:text-[#CDA562]">
+            <div class="intro-x mt-5 font-philosopher text-2xl text-white ml-[120px] dark:text-[#CDA562]">
               Sejak 1960
             </div>
           </div>
@@ -32,20 +32,23 @@
         <div class="h-screen xl:h-auto flex py-5 xl:py-0 my-10 xl:my-0">
           <div
             class="my-auto mx-auto xl:ml-20 bg-white dark:bg-darkmode-600 xl:bg-transparent px-5 sm:px-8 py-8 xl:p-0 rounded-md shadow-md xl:shadow-none w-full sm:w-3/4 lg:w-2/4 xl:w-auto">
-            <img alt="Lurik Rachmad HTML"
-              class="intro-x -mt-[120px] mb-3 text-slate-400 xl:hidden text-center w-1/5 mx-auto hidden dark:block"
-              src="@/assets/images/logo-gold.svg" />
-            <img alt="Lurik Rachmad HTML"
-              class="intro-x -mt-[120px] mb-3 text-slate-400 xl:hidden text-center w-1/5 mx-auto block dark:hidden"
-              src="@/assets/images/logo.svg" />
+            <div class="xl:hidden">
+              <img alt="Lurik Rachmad HTML"
+                class="intro-x -mt-[120px] mb-3 text-slate-400 xl:hidden text-center w-1/5 mx-auto hidden dark:block"
+                src="@/assets/images/logo-gold.svg" />
+              <img alt="Lurik Rachmad HTML"
+                class="intro-x -mt-[120px] mb-3 text-slate-400 xl:hidden text-center w-1/5 mx-auto block dark:hidden"
+                src="@/assets/images/logo.svg" />
+            </div>
             <h2 class="intro-x font-bold text-2xl xl:text-3xl text-center xl:text-left mt-8">
               Sign In
             </h2>
             <div class="intro-x mt-2 text-slate-400 xl:hidden text-center">
-              Selamat Datang di <b>Lurik Rachmad</b>, silahkan masuk untuk mengakses aplikasi
+              Selamat Datang di <span class="font-philosopher text-[#CDA562] drop-shadow-2xl"> <b> Lurik Rachmad </b>
+              </span>, silahkan masuk untuk mengakses aplikasi
             </div>
             <div class="intro-x mt-8">
-              <input v-model="input_email" type="text" class="intro-x login__input form-control py-3 px-4 block mb-4"
+              <input v-model="input_email" type="email" class="intro-x login__input form-control py-3 px-4 block mb-4"
                 placeholder="Email" />
 
               <!-- <input v-model="input_password" type="password" class="intro-x login__input form-control py-3 px-4 block mt-4"
@@ -76,8 +79,7 @@
                 <p class="hidden xl:block ml-1">Loading ...</p>
               </button>
               <button v-else @click="isLoading = true"
-                class="btn btn-primary py-3 px-4 w-full xl:w-32 xl:mr-3 align-top"
-                >
+                class="btn btn-primary py-3 px-4 w-full xl:w-32 xl:mr-3 align-top">
                 Login
               </button>
               <!-- <RouterLink to="/register" class="">
