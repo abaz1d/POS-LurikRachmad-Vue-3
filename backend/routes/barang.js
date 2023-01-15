@@ -62,6 +62,16 @@ module.exports = function (db) {
     })
   })
 
+  router.get('/laporan', async function (req, res, next) {
+    try {
+        const { rows } = await db.query('SELECT varian.*,barang.* FROM public.varian LEFT JOIN barang ON varian.id_barang = barang.id_barang ORDER BY barang.id_barang ASC')
+        //res.redirect(`/penjualan/show/${rows[0].no_invoice}`)
+        res.json(rows)
+    } catch (e) {
+        res.send(e)
+    }
+});
+
   router.get('/addvarian', isLoggedIn, function (req, res) {
     db.query('SELECT * FROM barang', (err, rowsB) => {
       if (err) console.log(err)

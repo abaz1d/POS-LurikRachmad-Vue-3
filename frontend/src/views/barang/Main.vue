@@ -822,7 +822,7 @@ const initTabulator = () => {
           src="${getImgUrl(cell.getData().gambar_varian)}"
           alt="${cell.getData().gambar_varian}"
           data-action="zoom"
-          class="w-full rounded-md"
+          class="w-20 rounded-md"
         />
       </div>
       <div>

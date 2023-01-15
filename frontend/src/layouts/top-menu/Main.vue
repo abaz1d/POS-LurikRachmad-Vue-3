@@ -37,26 +37,26 @@
             <div class="search-result__content">
               <div class="search-result__content__title">Pages</div>
               <div class="mb-5">
-                <a href="" class="flex items-center">
+                <RouterLink to="/penjualan" class="flex items-center">
                   <div
                     class="w-8 h-8 bg-success/20 dark:bg-success/10 text-success flex items-center justify-center rounded-full">
-                    <InboxIcon class="w-4 h-4" />
+                    <CornerLeftUpIcon class="w-4 h-4" />
                   </div>
-                  <div class="ml-3">Mail Settings</div>
-                </a>
-                <a href="" class="flex items-center mt-2">
+                  <div class="ml-3">Penjualan</div>
+                </RouterLink>
+                <RouterLink to="/pembelian" class="flex items-center mt-2">
                   <div class="w-8 h-8 bg-pending/10 text-pending flex items-center justify-center rounded-full">
-                    <UsersIcon class="w-4 h-4" />
+                    <CornerLeftDownIcon class="w-4 h-4" />
                   </div>
-                  <div class="ml-3">Users & Permissions</div>
-                </a>
-                <a href="" class="flex items-center mt-2">
+                  <div class="ml-3">Pembelian</div>
+                </RouterLink>
+                <RouterLink to="/" class="flex items-center mt-2">
                   <div
                     class="w-8 h-8 bg-primary/10 dark:bg-primary/20 text-primary/80 flex items-center justify-center rounded-full">
-                    <CreditCardIcon class="w-4 h-4" />
+                    <UsersIcon class="w-4 h-4" />
                   </div>
-                  <div class="ml-3">Transactions Report</div>
-                </a>
+                  <div class="ml-3">Semua Akun</div>
+                </RouterLink>
               </div>
               <div class="search-result__content__title">Users</div>
               <div class="mb-5">
@@ -70,16 +70,6 @@
                   </div>
                 </a>
               </div>
-              <div class="search-result__content__title">Products</div>
-              <a v-for="(faker, fakerKey) in $_.take($f(), 4)" :key="fakerKey" href class="flex items-center mt-2">
-                <div class="w-8 h-8 image-fit">
-                  <img alt="Lurik Rachmad HTML" class="rounded-full" :src="faker.images[0]" />
-                </div>
-                <div class="ml-3">{{ faker.products[0].name }}</div>
-                <div class="ml-auto w-48 truncate text-slate-500 text-xs text-right">
-                  {{ faker.products[0].category }}
-                </div>
-              </a>
             </div>
           </div>
         </div>
@@ -136,22 +126,21 @@
               </DropdownHeader>
               <DropdownDivider class="border-white/[0.08]" />
               <DropdownItem class="hover:bg-white/5">
-                <UserIcon class="w-4 h-4 mr-2" /> Profile
+                <UserIcon class="w-4 h-4 mr-2" /> Profil
               </DropdownItem>
               <DropdownItem class="hover:bg-white/5">
-                <EditIcon class="w-4 h-4 mr-2" /> Add Account
+                <UsersIcon class="w-4 h-4 mr-2" /> Semua Akun
               </DropdownItem>
               <DropdownItem class="hover:bg-white/5">
-                <LockIcon class="w-4 h-4 mr-2" /> Reset Password
-              </DropdownItem>
-              <DropdownItem class="hover:bg-white/5">
-                <HelpCircleIcon class="w-4 h-4 mr-2" /> Help
+                <HelpCircleIcon class="w-4 h-4 mr-2" /> Bantuan
               </DropdownItem>
               <DropdownDivider class="border-white/[0.08]" />
-              <DropdownItem class="hover:bg-white/5">
-                <ToggleRightIcon class="w-4 h-4 mr-2" />
-                <RouterLink to="/login">Logout</RouterLink>
-              </DropdownItem>
+              <RouterLink to="/login" class="nav-link active">
+                <DropdownItem class="hover:bg-white/5 bg-danger justify-center text-white">
+                  <LogOutIcon class="w-4 h-4 mr-2" />
+                  Logout
+                </DropdownItem>
+              </RouterLink>
             </DropdownContent>
           </DropdownMenu>
         </Dropdown>

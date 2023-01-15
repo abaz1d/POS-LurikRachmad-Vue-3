@@ -101,7 +101,7 @@ module.exports = function (db) {
 
     router.get('/laporan', async function (req, res, next) {
         try {
-            const { rows } = await db.query('SELECT penjualan_detail.*, varian.nama_varian, penjualan.tanggal_penjualan, penjualan.total_harga_jual, penjualan.total_bayar_jual, penjualan.kembalian_jual FROM public.penjualan_detail LEFT JOIN penjualan ON penjualan_detail.no_invoice = penjualan.no_invoice LEFT JOIN varian ON penjualan_detail.id_varian = varian.id_varian ORDER BY id_detail_jual ASC')
+            const { rows } = await db.query('SELECT penjualan_detail.*, varian.nama_varian, penjualan.tanggal_penjualan, penjualan.total_harga_jual, penjualan.total_bayar_jual, penjualan.kembalian_jual FROM public.penjualan_detail LEFT JOIN penjualan ON penjualan_detail.no_invoice = penjualan.no_invoice LEFT JOIN varian ON penjualan_detail.id_varian = varian.id_varian ORDER BY penjualan.tanggal_penjualan DESC')
             //res.redirect(`/penjualan/show/${rows[0].no_invoice}`)
             res.json(rows)
         } catch (e) {

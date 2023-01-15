@@ -8,6 +8,7 @@ export const usePembelianStore = defineStore({
     rawPembelians: [],
     rawDetails: [],
     rawPrints: [],
+    rawLaporans: [],
 
     rawPembelianDetail: [],
   }),
@@ -16,10 +17,26 @@ export const usePembelianStore = defineStore({
     pembelians: (state) => state.rawPembelians,
     details: (state) => state.rawDetails,
     prints: (state) => state.rawPrints,
+    laporans: (state) => state.rawLaporans,
 
     pembelianDetail: (state) => state.rawPembelianDetail,
   },
   actions: {
+    async readLaporan() {
+      try {
+        const data = await request.get("pembelian/laporan");
+        if (data.status >= 200 && data.status < 300) {
+          //console.log('laporan', data.data)
+          this.rawLaporans = data.data
+          // console.log('rawpembelians', this.rawpembelians)
+          //console.log('jual')
+        //return this.rawpembelians
+        }
+      } catch (error) {
+        console.error(error)
+      }
+
+    },
     async readItem() {
       try {
         const data = await request.get("pembelian");

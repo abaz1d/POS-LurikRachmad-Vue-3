@@ -15,32 +15,32 @@ export const useSideMenuStore = defineStore("sideMenu", {
         subMenu: [
           {
             icon: "CornerLeftUpIcon",
-            pageName: "top-menu-penjualan",
+            pageName: "side-menu-penjualan",
             title: "Penjualan",
           },
           {
             icon: "CornerLeftDownIcon",
-            pageName: "top-menu-pembelian",
+            pageName: "side-menu-pembelian",
             title: "Pembelian",
           },
           {
             icon: "RepeatIcon",
-            pageName: "top-menu-retur",
+            pageName: "side-menu-retur",
             title: "Retur",
           },
           {
             icon: "ChevronsUpIcon",
-            pageName: "top-menu-barang-keluar",
+            pageName: "side-menu-barang-keluar",
             title: "Barang Keluar",
           },
           {
             icon: "ChevronsDownIcon",
-            pageName: "top-menu-barang-masuk",
+            pageName: "side-menu-barang-masuk",
             title: "Barang Masuk",
           },
           {
             icon: "GlobeIcon",
-            pageName: "top-menu-stok-global",
+            pageName: "side-menu-stok-global",
             title: "Stok Global",
           },
         ]
@@ -49,21 +49,23 @@ export const useSideMenuStore = defineStore("sideMenu", {
         icon: "FileTextIcon",
         pageName: "side-menu-laporan",
         title: "Laporan",
-        // subMenu: [
-        //   {
-        //     icon: "HomeIcon",
-        //     pageName: "side-menu-page-2",
-        //     title: "Page 2",
-        //     subMenu: [
-        //       {
-        //         icon: "HomeIcon",
-        //         pageName: "side-menu-page-2",
-        //         title: "Page 2",
-                
-        //       },
-        //     ]
-        //   },
-        // ]
+        subMenu: [
+          {
+            icon: "FileUpIcon",
+            pageName: "side-menu-laporan-penjualan",
+            title: "Laporan Penjualan",
+          },
+          {
+            icon: "FileDownIcon",
+            pageName: "side-menu-laporan-pembelian",
+            title: "Laporan Pembelian",
+          },
+          {
+            icon: "FileBoxIcon",
+            pageName: "side-menu-laporan-stok",
+            title: "Laporan Stok",
+          },
+        ]
       },
       {
         icon: "SlidersIcon",

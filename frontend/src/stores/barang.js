@@ -7,13 +7,31 @@ export const useBarangStore = defineStore({
     rawItems: [],
     rawVarians: [],
     rawDatas: [],
+    rawLaporans: [],
   }),
   getters: {
     items: (state) => state.rawItems,
     varians: (state) => state.rawVarians,
     datas: (state) => state.rawDatas,
+
+    laporans: (state) => state.rawLaporans,
   },
   actions: {
+    async readLaporan() {
+      try {
+        const data = await request.get("barang/laporan");
+        if (data.status >= 200 && data.status < 300) {
+          //console.log('laporan', data.data)
+          this.rawLaporans = data.data
+          // console.log('rawPenjualans', this.rawPenjualans)
+          //console.log('jual')
+        //return this.rawPenjualans
+        }
+      } catch (error) {
+        console.error(error)
+      }
+
+    },
     async readItem() {
       try {
         const data = await request.get("barang");

@@ -102,6 +102,19 @@ module.exports = function (db) {
 
     });
     //v
+
+
+    router.get('/laporan', async function (req, res, next) {
+        try {
+            const { rows } = await db.query('SELECT pembelian_detail.*, varian.nama_varian, pembelian.tanggal_pembelian, pembelian.total_harga_beli, pembelian.total_bayar_beli, pembelian.kembalian_beli FROM public.pembelian_detail LEFT JOIN pembelian ON pembelian_detail.no_invoice = pembelian.no_invoice LEFT JOIN varian ON pembelian_detail.id_varian = varian.id_varian ORDER BY pembelian.tanggal_pembelian DESC')
+            //res.redirect(`/pembelian/show/${rows[0].no_invoice}`)
+            res.json(rows)
+        } catch (e) {
+            res.send(e)
+        }
+    });
+
+
     router.post('/create', async function (req, res, next) {
         try {
             const { rows } = await db.query('INSERT INTO pembelian(total_harga_beli) VALUES(0) returning *')
@@ -135,7 +148,7 @@ module.exports = function (db) {
     //v
     router.post('/upbeli', async function (req, res, next) {
         try {
-            udatejual = await db.query('UPDATE pembelian SET id_gudang = $1, id_supplier = $2, id_outlet = $3, total_harga_beli = $4, total_bayar_beli = $5, kembalian_beli = $6 WHERE no_invoice = $7 returning *', [req.body.gudang, req.body.supplier, req.body.outlet, req.body.total_harga_beli, req.body.total_bayar_beli, req.body.kembalian, req.body.no_invoice])
+            udatebeli = await db.query('UPDATE pembelian SET id_gudang = $1, id_supplier = $2, id_outlet = $3, total_harga_beli = $4, total_bayar_beli = $5, kembalian_beli = $6 WHERE no_invoice = $7 returning *', [req.body.gudang, req.body.supplier, req.body.outlet, req.body.total_harga_beli, req.body.total_bayar_beli, req.body.kembalian, req.body.no_invoice])
             const { rows } = await db.query('SELECT * FROM pembelian WHERE no_invoice = $1', [req.body.no_invoice])
             res.json(rows)
         } catch (e) {

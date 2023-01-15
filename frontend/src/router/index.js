@@ -18,7 +18,9 @@ import Penjualan from "../views/Penjualan/Main.vue";
 import Pembelian from "../views/Pembelian/Main.vue";
 import Retur from "../views/Retur/Main.vue";
 import StokGlobal from "../views/StokGlobal/Main.vue";
-import Laporan from "../views/Laporan/Main.vue";
+import LaporanPenjualan from "../views/Laporan/LaporanPenjualan.vue";
+import LaporanPembelian from "../views/Laporan/LaporanPembelian.vue";
+import LaporanStok from "../views/Laporan/LaporanStok.vue";
 
 const routes = [
   {
@@ -91,10 +93,20 @@ const routes = [
         component: Pembelian,
       },
       {
-        path: "laporan",
-        name: "top-menu-laporan",
-        component: Laporan,
+        path: "laporan-penjualan",
+        name: "top-menu-laporan-penjualan",
+        component: LaporanPenjualan,
       },
+      {
+        path: "laporan-pembelian",
+        name: "top-menu-laporan-pembelian",
+        component: LaporanPembelian
+      },
+      {
+        path: "laporan-stok",
+        name: "top-menu-laporan-stok",
+        component: LaporanStok
+      }
     ],
   },
   {
@@ -167,10 +179,20 @@ const routes = [
         component: Pembelian,
       },
       {
-        path: "laporan",
-        name: "side-menu-laporan",
-        component: Laporan,
+        path: "laporan-penjualan",
+        name: "side-menu-laporan-penjualan",
+        component: LaporanPenjualan,
       },
+      {
+        path: "laporan-pembelian",
+        name: "side-menu-laporan-pembelian",
+        component: LaporanPembelian
+      },
+      {
+        path: "laporan-stok",
+        name: "side-menu-laporan-stok",
+        component: LaporanStok
+      }
     ],
   },
   {
@@ -243,10 +265,20 @@ const routes = [
         component: Pembelian,
       },
       {
-        path: "laporan",
-        name: "simple-menu-laporan",
-        component: Laporan,
+        path: "laporan-penjualan",
+        name: "simple-menu-laporan-penjualan",
+        component: LaporanPenjualan,
       },
+      {
+        path: "laporan-pembelian",
+        name: "simple-menu-laporan-pembelian",
+        component: LaporanPembelian
+      },
+      {
+        path: "laporan-stok",
+        name: "simple-menu-laporan-stok",
+        component: LaporanStok
+      }
     ],
   },
   {

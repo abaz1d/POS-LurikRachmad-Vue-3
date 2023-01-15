@@ -49,20 +49,23 @@ export const useTopMenuStore = defineStore("topMenu", {
         icon: "FileTextIcon",
         pageName: "top-menu-laporan",
         title: "Laporan",
-        // subMenu: [
-        //   {
-        //     icon: "HomeIcon",
-        //     pageName: "top-menu-page-2",
-        //     title: "Page 2",
-        //     subMenu: [
-        //       {
-        //         icon: "HomeIcon",
-        //         pageName: "top-menu-page-2",
-        //         title: "Page 2",
-        //       },
-        //     ]
-        //   },
-        // ]
+        subMenu: [
+          {
+            icon: "FileUpIcon",
+            pageName: "top-menu-laporan-penjualan",
+            title: "Laporan Penjualan",
+          },
+          {
+            icon: "FileDownIcon",
+            pageName: "top-menu-laporan-pembelian",
+            title: "Laporan Pembelian",
+          },
+          {
+            icon: "FileBoxIcon",
+            pageName: "top-menu-laporan-stok",
+            title: "Laporan Stok",
+          },
+        ]
       },
       {
         icon: "SlidersIcon",
