@@ -3,11 +3,21 @@ import axios from "axios";
 
 export const request = axios.create({
   baseURL: import.meta.env.VITE_APP_BASE_API,
-  timeout: 3000,
-  // headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+  timeout: 2000,
+  // headers: { 'Authorization': `Bearer ${JSON.parse(localStorage.getItem('user')).token}` }
+  //headers: { 'Authorization': token ? `Bearer ${token}` : '' }
 });
 
+request.interceptors.request.use(function (config) {
+  const token = localStorage.getItem('user');
+  if (token) {
+      config.headers.Authorization = `Bearer ${JSON.parse(token).token}`;
+  } else {
+      config.headers.Authorization = '';
+  }
+  return config;
+});
 
 request.get('/')
-.then(res => console.log('Berhasil Terhubung Database'))
-.catch(e => console.log('Gagal Terhubung Database'))
+.then(res => console.log('Berhasil Terhubung Database',res))
+.catch(e => console.log('Gagal Terhubung Database',e))

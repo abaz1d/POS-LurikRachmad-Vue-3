@@ -11,9 +11,7 @@ const { currencyFormatter, isLoggedIn, Response } = require('../helpers/util')
 /* GET home page. */
 module.exports = function (db) {
   router.get('/', function (req, res) {
-    res.render('login', {
-      info: req.flash('info')
-    });
+    res.json(new Response({ message: "Halaman Awal" }, true))
   });
   //login
   router.post('/auth', async function (req, res) {
@@ -46,7 +44,7 @@ module.exports = function (db) {
             userid: data.rows[0].id_users,
             email: data.rows[0].email_user,
           }, process.env.SECRETKEY);
-          const { rows } = await db.query(`UPDATE public.users SET token = $1 WHERE id_users = $2 RETURNING *;`, [token, data.rows[0].id_users])
+          const { rows } = await db.query(`WITH updated AS (UPDATE public.users SET token = $1 WHERE id_users = $2 RETURNING *) SELECT * FROM updated LEFT JOIN outlet ON updated.id_outlet = outlet.id_outlet;`, [token, data.rows[0].id_users])
 
           // req.session.user = data.rows[0]
           // if (req.session.user.role == 'Admin') {
@@ -61,6 +59,9 @@ module.exports = function (db) {
             username: rows[0].username,
             role: rows[0].role,
             id_outlet: rows[0].id_outlet,
+            nama_outlet: rows[0].nama_outlet,
+            alamat_outlet: rows[0].alamat_outlet,
+            kontak_outlet: rows[0].kontak_outlet,
             token: rows[0].token
           }))
         });

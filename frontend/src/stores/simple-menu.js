@@ -39,9 +39,9 @@ export const useSimpleMenuStore = defineStore("simpleMenu", {
             title: "Barang Masuk",
           },
           {
-            icon: "GlobeIcon",
-            pageName: "simple-menu-stok-global",
-            title: "Stok Global",
+            icon: "PackageIcon",
+            pageName: "simple-menu-stok-lokal",
+            title: "Stok Lokal",
           },
         ]
       },
@@ -73,7 +73,7 @@ export const useSimpleMenuStore = defineStore("simpleMenu", {
         title: "Pengaturan Data",
         subMenu: [
           {
-            icon: "PackageIcon",
+            icon: "GlobeIcon",
             pageName: "simple-menu-barang",
             title: "Barang",
           },

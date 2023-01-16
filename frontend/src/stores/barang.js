@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { request } from "../utils/api";
+import { useAuthStore } from "./auth";
 
 export const useBarangStore = defineStore({
   id: "barang",
@@ -25,7 +26,7 @@ export const useBarangStore = defineStore({
           this.rawLaporans = data.data
           // console.log('rawPenjualans', this.rawPenjualans)
           //console.log('jual')
-        //return this.rawPenjualans
+          //return this.rawPenjualans
         }
       } catch (error) {
         console.error(error)
@@ -94,6 +95,7 @@ export const useBarangStore = defineStore({
     //---------------------------------------------------------------- Varian ----------------
 
     async readVarian(id_barang) {
+      const Auth = useAuthStore();
       try {
         const data = await request.get(`barang?id_barang=${id_barang}`);
         if (data.status >= 200 && data.status < 300) {
@@ -109,7 +111,34 @@ export const useBarangStore = defineStore({
             return varian
           })
 
-          // console.log('data.data', data.data)
+          //console.log('data.data', Auth.items)
+          // console.log('this.rawVarians', this.rawVarians)
+          return this.rawItems
+        }
+      } catch (error) {
+        console.error(error);
+      }
+
+    },
+
+    async readVarianOutlet(id_barang) {
+      try {
+        const Auth = useAuthStore();
+        const data = await request.get(`barang?id_barang=${id_barang}&id_outlet=${String(Auth.items.id_outlet)}`, { id_outlet: String(Auth.items.id_outlet) });
+        if (data.status >= 200 && data.status < 300) {
+          this.rawVarians = data.data.varian;
+
+          this.rawVarians.map((varian) => {
+            this.rawItems = this.rawItems.map((barang) => {
+              if (varian.id_barang === barang.id_barang) {
+                return { ...barang, serviceHistory: this.rawVarians }
+              }
+              return barang
+            })
+            return varian
+          })
+
+          // console.log('data.data', request, Auth.items.id_outlet)
           // console.log('this.rawVarians', this.rawVarians)
           return this.rawItems
         }
@@ -282,7 +311,7 @@ export const useBarangStore = defineStore({
           }
         }
       } catch (error) {
-        console.error("error edit varian",error);
+        console.error("error edit varian", error);
       }
     },
 

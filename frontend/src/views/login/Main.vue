@@ -49,7 +49,7 @@
             </div>
             <div class="intro-x mt-8">
               <input v-model="input_email" type="email" class="intro-x login__input form-control py-3 px-4 block mb-4"
-                placeholder="Email" />
+                placeholder="Email: admin@gmail.com" />
 
               <!-- <input v-model="input_password" type="password" class="intro-x login__input form-control py-3 px-4 block mt-4"
                 placeholder="Password" /> -->
@@ -61,8 +61,8 @@
                     class="bg-gray-300 hover:bg-gray-400 rounded px-2 py-1 text-sm text-gray-600 font-mono cursor-pointer js-password-label"
                     for="toggle">show</label>
                 </div>
-                <input class=" form-control w-full py-3 px-3 pr-16 js-password" id="password" type="password"
-                  autocomplete="off" placeholder="Password" />
+                <input v-model="input_password" class=" form-control w-full py-3 px-3 pr-16 js-password" id="password" type="password"
+                  autocomplete="off" placeholder="Password: 123" />
               </div>
 
             </div>
@@ -106,10 +106,13 @@
 </template>
 
 <script setup>
+import { useAuthStore } from "@/stores/auth";
 import { RouterLink } from "vue-router";
 import { onMounted, ref, watch } from "vue";
 import DarkModeSwitcher from "@/components/dark-mode-switcher/Main.vue";
 import dom from "@left4code/tw-starter/dist/js/dom";
+
+const Auth = useAuthStore();
 
 const isLoading = ref(false);
 
@@ -141,11 +144,17 @@ watch(isLoading, async (newValue, oldValue) => {
 })
 
 const onLogin = () => {
-  const email = input_email.value
+  const email_user = input_email.value
   const password = input_password.value
 
-  if (email.length > 0 && password.length > 0) {
-    alert(email + password)
+  console.log(email_user, password)
+
+  if (email_user.length > 0 && password.length > 0) {
+    //alert(email + password)
+    Auth.login(email_user, password)
+      .catch(error => {
+        alert("Gagal Login " + error)
+      });
     isLoading.value = false;
   } else {
     alert("Email dan Password tidak boleh kosong !")

@@ -1,6 +1,6 @@
 <template>
   <div class="intro-y flex flex-col sm:flex-row items-center mt-8">
-    <h2 class="text-lg font-medium mr-auto">Produk Global</h2>
+    <h2 class="text-lg font-medium mr-auto">Produk</h2>
     <div class="w-full sm:w-auto flex mt-4 sm:mt-0">
       <button class="btn btn-primary shadow-md mb-3 mr-2 pr-5" @click="openMainModal()">
         <PlusIcon class="w-4 h-4 mr-2" />
@@ -125,7 +125,7 @@ renderQrScanner();
                             <option value="kosong" disabled>
                               &gt-- Pilih Barang --&lt
                             </option>
-                            <option v-for="barang in data.barang" :key="barang.id_barang" :barang="barang"
+                            <option v-for="barang in Barang.datas.barang" :key="barang.id_barang" :barang="barang"
                               :value="barang.id_barang">
                               {{ barang.id_barang }} - {{ barang.nama_barang }}
                             </option>
@@ -140,7 +140,7 @@ renderQrScanner();
                             <option value="kosong" disabled>
                               &gt-- Pilih Gudang --&lt
                             </option>
-                            <option v-for="gudang in data.gudang" :key="gudang.id_gudang" :gudang="gudang"
+                            <option v-for="gudang in Barang.datas.gudang" :key="gudang.id_gudang" :gudang="gudang"
                               :value="gudang.id_gudang">
                               {{ gudang.id_gudang }} - {{ gudang.nama_gudang }}
                             </option>
@@ -162,7 +162,7 @@ renderQrScanner();
                             <option value="kosong" disabled>
                               &gt-- Pilih Satuan --&lt
                             </option>
-                            <option v-for="satuan in data.satuan" :key="satuan.id_satuan" :satuan="satuan"
+                            <option v-for="satuan in Barang.datas.satuan" :key="satuan.id_satuan" :satuan="satuan"
                               :value="satuan.id_satuan">
                               {{ satuan.id_satuan }} - {{ satuan.nama_satuan }}
                             </option>
@@ -382,11 +382,15 @@ closeQrScanner();
     <div class="font-medium">Klik 2 kali pada salah satu baris tabel untuk melihat detail transaksi!</div>
   </Notification>
   <!-- END: Basic Non Sticky Notification Content -->
+
+  <ModalDatabaseError ref="modalErrorRef" />
+
 </template>
 
 <script setup>
 import $ from "jquery";
 import { useBarangStore } from "../../stores/barang";
+import ModalDatabaseError from "@/components/modal-error/Main.vue";
 import { ref, provide, reactive, onMounted, onBeforeUnmount, watch } from "vue";
 import xlsx from "xlsx";
 import { createIcons, icons } from "lucide";
@@ -407,6 +411,7 @@ const isModalScanner = ref(false);
 const qrScanner = ref()
 const tableRef = ref();
 const tabulator = ref();
+const modalErrorRef = ref();
 const filter = reactive({
   field: "id_barang",
   type: "like",
@@ -688,7 +693,6 @@ const initTabulator = () => {
       {
         title: "NAMA BARANG",
         minWidth: 200,
-        responsive: 0,
         field: "nama_barang",
         vertAlign: "middle",
         hozAlign: "center",
@@ -818,7 +822,7 @@ const initTabulator = () => {
           src="${getImgUrl(cell.getData().gambar_varian)}"
           alt="${cell.getData().gambar_varian}"
           data-action="zoom"
-          class="w-full rounded-md"
+          class="w-20 rounded-md"
         />
       </div>
       <div>
@@ -892,17 +896,17 @@ const initTabulator = () => {
             },
           },
           {
-            title: "GUDANG",
+            title: "OUTLET",
             minWidth: 50,
             headerHozAlign: "center",
-            field: "id_gudang",
+            field: "id_outlet",
             hozAlign: "center",
             vertAlign: "middle",
             print: false,
             download: false,
             formatter(cell) {
               return `<div>
-                <div class="font-medium whitespace-nowrap">${cell.getData().id_gudang
+                <div class="font-medium whitespace-nowrap">${cell.getData().id_outlet
                 }</div>
               </div>`;
             },
@@ -1090,7 +1094,7 @@ const initTabulator = () => {
     const id = row.getData().id_barang;
     try {
 
-      await Barang.readVarian(id).then(
+      await Barang.readVarianOutlet(id).then(
         (data) => {
           tabulator.value.replaceData(data)
           //console.log("rowClick", data);
@@ -1182,14 +1186,19 @@ onMounted(async function () {
         initTabulator();
         reInitOnResizeWindow();
         basicNonStickyNotificationToggle();
+        modalErrorRef.value.errorDatabaseModal = false;
+        //console.log("Error: ", varian);
+        
       }).catch((e) => {
-        throw e
+        modalErrorRef.value.errorDatabaseModal = true;
       })
     }).catch((e) => {
-      throw e
+      modalErrorRef.value.errorDatabaseModal = true;
     });
   } catch (error) {
-    alert("onMounted" + error)
+    //alert("onMounted" + error)
+    data.value = [{"barang": [], "satuan": [], "gudang": []}]
+    modalErrorRef.value.errorDatabaseModal = true;
   }
 });
 

@@ -39,9 +39,9 @@ export const useSideMenuStore = defineStore("sideMenu", {
             title: "Barang Masuk",
           },
           {
-            icon: "GlobeIcon",
-            pageName: "side-menu-stok-global",
-            title: "Stok Global",
+            icon: "PackageIcon",
+            pageName: "side-menu-stok-lokal",
+            title: "Stok Lokal",
           },
         ]
       },
@@ -73,7 +73,7 @@ export const useSideMenuStore = defineStore("sideMenu", {
         title: "Pengaturan Data",
         subMenu: [
           {
-            icon: "PackageIcon",
+            icon: "GlobeIcon",
             pageName: "side-menu-barang",
             title: "Barang",
           },

@@ -42,8 +42,19 @@ module.exports = function (db) {
     db.query(sql, search, (err, barang) => {
       if (err) console.log(err)
       const id_barang = req.query.id_barang ? req.query.id_barang : '';
+      const id_outlet = req.query.id_outlet ? req.query.id_outlet : '';
+      let reqSQL
+      let argumentSQL
 
-      db.query('SELECT dp.*, b.nama_barang FROM varian as dp LEFT JOIN barang as b ON dp.id_barang = b.id_barang WHERE dp.id_barang = $1 ORDER BY dp.id_varian ASC', [id_barang], (err, varian) => {
+      //console.log('out',req.body, req)
+      if (id_outlet == '') {
+        reqSQL = 'SELECT dp.*, b.nama_barang FROM varian as dp LEFT JOIN barang as b ON dp.id_barang = b.id_barang WHERE dp.id_barang = $1 ORDER BY dp.id_varian ASC'
+        argumentSQL = [id_barang]
+      } else {
+        reqSQL = 'SELECT v.*, b.nama_barang FROM varian as v LEFT JOIN barang as b ON v.id_barang = b.id_barang WHERE v.id_barang = $1 AND v.id_outlet = $2 ORDER BY v.id_varian ASC'
+        argumentSQL = [id_barang, id_outlet]
+      }
+      db.query(reqSQL, argumentSQL, (err, varian) => {
 
         if (err) console.log(err)
         db.query(`SELECT count(no_invoice) AS totaljual FROM penjualan`, (err, totaljual) => {
@@ -64,13 +75,13 @@ module.exports = function (db) {
 
   router.get('/laporan', async function (req, res, next) {
     try {
-        const { rows } = await db.query('SELECT varian.*,barang.* FROM public.varian LEFT JOIN barang ON varian.id_barang = barang.id_barang ORDER BY barang.id_barang ASC')
-        //res.redirect(`/penjualan/show/${rows[0].no_invoice}`)
-        res.json(rows)
+      const { rows } = await db.query('SELECT varian.*,barang.* FROM public.varian LEFT JOIN barang ON varian.id_barang = barang.id_barang ORDER BY barang.id_barang ASC')
+      //res.redirect(`/penjualan/show/${rows[0].no_invoice}`)
+      res.json(rows)
     } catch (e) {
-        res.send(e)
+      res.send(e)
     }
-});
+  });
 
   router.get('/addvarian', isLoggedIn, function (req, res) {
     db.query('SELECT * FROM barang', (err, rowsB) => {
@@ -230,7 +241,7 @@ INNER JOIN gudang gud ON gud.id_gudang = var.id_gudang WHERE id_varian = $1`, [r
             req.body.harga_jual,
             req.params.id], (err, rows) => {
               if (err) {
-                console.log('e',err);
+                console.log('e', err);
               }
               //console.log('rows',rows);
               res.status(200).json(rows.rows[0])
@@ -298,7 +309,7 @@ INNER JOIN gudang gud ON gud.id_gudang = var.id_gudang WHERE id_varian = $1`, [r
   // })
 
   router.get('/deletebar/:id', isLoggedIn, async function (req, res, next) {
-    console.log('gambar',req.params.gambar_delete)
+    console.log('gambar', req.params.gambar_delete)
     try {
       const { rows } = await db.query('DELETE FROM barang WHERE id_barang = $1', [req.params.id])
       res.json(rows[0])

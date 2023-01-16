@@ -16,7 +16,7 @@
         <!-- BEGIN: Breadcrumb -->
         <nav aria-label="breadcrumb" class="-intro-x h-full mr-auto">
           <ol class="breadcrumb breadcrumb-light">
-            <li class="breadcrumb-item"><a href="#">Application</a></li>
+            <li class="breadcrumb-item"><a href="#">{{ data.nama_outlet }}</a></li>
             <li class="breadcrumb-item active" aria-current="page">
               {{ $route.name }}
             </li>
@@ -118,10 +118,10 @@
               class="bg-primary/80 before:block before:absolute before:bg-black before:inset-0 before:rounded-md before:z-[-1] text-white">
               <DropdownHeader tag="div" class="!font-normal">
                 <div class="font-medium">
-                  {{ $f()[0].users[0].name }}
+                  {{ data.username }}
                 </div>
                 <div class="text-xs text-white/60 mt-0.5 dark:text-slate-500">
-                  {{ $f()[0].jobs[0] }}
+                  {{ data.role }} - {{ data.nama_outlet }}
                 </div>
               </DropdownHeader>
               <DropdownDivider class="border-white/[0.08]" />
@@ -135,12 +135,13 @@
                 <HelpCircleIcon class="w-4 h-4 mr-2" /> Bantuan
               </DropdownItem>
               <DropdownDivider class="border-white/[0.08]" />
-              <RouterLink to="/login" class="nav-link active">
-                <DropdownItem class="hover:bg-white/5 bg-danger justify-center text-white">
-                  <LogOutIcon class="w-4 h-4 mr-2" />
-                  Logout
-                </DropdownItem>
-              </RouterLink>
+              <!-- <RouterLink to="/login" class="nav-link active"> -->
+              <DropdownItem @click="logoutConfirmationModal = true"
+                class="hover:bg-white/5 bg-danger justify-center text-white">
+                <LogOutIcon class="w-4 h-4 mr-2" />
+                Logout
+              </DropdownItem>
+              <!-- </RouterLink> -->
             </DropdownContent>
           </DropdownMenu>
         </Dropdown>
@@ -217,9 +218,32 @@
       <ChevronUpIcon />
     </ScrollTopComponent> -->
   </div>
+
+  <!-- BEGIN: Delete Confirmation Modal -->
+  <Modal :show="logoutConfirmationModal" @hidden="logoutConfirmationModal = false">
+    <ModalBody class="p-0">
+      <div class="p-5 text-center">
+        <LogOutIcon class="w-16 h-16 text-danger mx-auto mt-3" />
+        <div class="text-xl mt-5">Apakah Anda yakin ingin Keluar ?</div>
+
+      </div>
+      <div class="px-5 pb-8 text-center">
+        <button type="button" @click="logoutConfirmationModal = false" class="btn btn-outline-secondary w-24 mr-1">
+          Cancel
+        </button>
+        <!-- <RouterLink to="/login" class="nav-link active"> -->
+          <button @click="onLogout" type="button" class="btn btn-danger w-24">
+            Keluar
+          </button>
+        <!-- </RouterLink> -->
+      </div>
+    </ModalBody>
+  </Modal>
+  <!-- END: Delete Confirmation Modal -->
 </template>
 
 <script setup>
+import { useAuthStore } from "@/stores/auth";
 import { computed, onMounted, provide, ref, watch } from "vue";
 import { useRoute, useRouter, RouterLink } from "vue-router";
 import { useTopMenuStore } from "@/stores/top-menu";
@@ -235,6 +259,10 @@ import {
 } from "./index";
 import { nestedMenu, linkTo } from "@/layouts/side-menu";
 import dom from "@left4code/tw-starter/dist/js/dom";
+
+const Auth = useAuthStore();
+const logoutConfirmationModal = ref(false);
+const data = ref([])
 
 const route = useRoute();
 const router = useRouter();
@@ -255,8 +283,14 @@ watch(
   }
 );
 
+const onLogout = () => {
+  Auth.logout()
+  logoutConfirmationModal.value = false;
+};
+
 onMounted(() => {
   dom("body").removeClass("error-page").removeClass("login").addClass("main");
   formattedMenu.value = $h.toRaw(topMenu.value);
+  data.value = Auth.items
 });
 </script>
