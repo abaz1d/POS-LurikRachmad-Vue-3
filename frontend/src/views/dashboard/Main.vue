@@ -583,7 +583,7 @@ onMounted(async function () {
     initTabulatorProduk();
     initTabulatorOutlet()
     reInitOnResizeWindow();
-    basicNonStickyNotificationToggle();
+    //basicNonStickyNotificationToggle();
     modalErrorRef.value.errorDatabaseModal = false;
   } catch (error) {
     // errorDatabaseModal.value = true;

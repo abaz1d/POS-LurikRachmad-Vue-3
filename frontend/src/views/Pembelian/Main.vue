@@ -450,10 +450,10 @@ closeQrScanner();
   <Modal backdrop="static" size="modal-xl" :show="isInvoice" @hidden="isInvoice = false">
     <ModalHeader>
       <h2 class="font-medium text-base mr-auto">
-        <button class="btn btn-primary shadow-md mr-2">
+        <button class="btn btn-primary shadow-md mr-2" @click="onPrintInvoice">
           <PrinterIcon class="w-4 h-4 mr-2" /> Print
         </button>
-         <b>{{ no_invoice }}</b>
+        <b>{{ no_invoice }}</b>
       </h2>
 
       <div @click="resetModal()" class="sm:w-auto flex mt-4 sm:mt-0 mr-0 ml-4 items-right cursor-pointer">
@@ -462,9 +462,11 @@ closeQrScanner();
         </div>
       </div>
     </ModalHeader>
-    <ModalBody>
-      <PrintInvoice :prints="Pembelian.prints" :no_invoice="no_invoice" :waktu="waktu"
-        :total_harga_global="total_harga_global" :total_bayar_global="total_bayar_global" :kembalian="kembalian" />
+    <ModalBody class="bg-white">
+      <div class="bg-white" id="modalPrintInvoice">
+        <PrintInvoice :prints="Pembelian.prints" :no_invoice="no_invoice" :waktu="waktu"
+          :total_harga_global="total_harga_global" :total_bayar_global="total_bayar_global" :kembalian="kembalian" />
+      </div>
     </ModalBody>
   </Modal>
 
@@ -485,6 +487,7 @@ import qrcode from "../../components/qrcode/QrCode.vue";
 import { currencyFormatter } from "../../utils/helper";
 import PrintInvoice from "./PrintInvoice.vue";
 import moment from "moment";
+import html2canvas from 'html2canvas';
 
 const Pembelian = usePembelianStore();
 
@@ -534,6 +537,22 @@ provide("bind[basicNonStickyNotification]", (el) => {
 const basicNonStickyNotificationToggle = () => {
   // Show notification
   basicNonStickyNotification.value.showToast();
+};
+
+const onPrintInvoice = (e) => {
+  const id = document.getElementById(`modalPrintInvoice`);
+
+  html2canvas(id, {
+    // scale: 2,
+    useCORS: true,
+  }).then((canvas) => {
+    var barcodeImgTag = document.createElement("a");
+    document.body.appendChild(barcodeImgTag);
+    barcodeImgTag.download = `Invoice-${no_invoice.value}.jpg`;
+    barcodeImgTag.href = canvas.toDataURL();
+    barcodeImgTag.target = "_blank";
+    barcodeImgTag.click();
+  });
 };
 
 

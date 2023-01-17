@@ -19,18 +19,20 @@ export const useAuthStore = defineStore({
           email_user,
           password
         });
+        console.log('user', data)
 
         if (data.success) {
           this.user = data.data;
           // return this.user
-          console.log('user', data)
+
           // store user details and jwt in local storage to keep user logged in between page refreshes
           localStorage.setItem('user', JSON.stringify(this.user));
 
           // redirect to previous url or default to home page
           router.push(this.returnUrl || '/');
-
         }
+        return data;
+
       } catch (error) {
         console.error(error);
       }

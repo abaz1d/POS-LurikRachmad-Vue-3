@@ -41,7 +41,7 @@
                 src="@/assets/images/logo.svg" />
             </div>
             <h2 class="intro-x font-bold text-2xl xl:text-3xl text-center xl:text-left mt-8">
-              Sign In
+              Masuk
             </h2>
             <div class="intro-x mt-2 text-slate-400 xl:hidden text-center">
               Selamat Datang di <span class="font-philosopher text-[#CDA562] drop-shadow-2xl"> <b> Lurik Rachmad </b>
@@ -61,8 +61,8 @@
                     class="bg-gray-300 hover:bg-gray-400 rounded px-2 py-1 text-sm text-gray-600 font-mono cursor-pointer js-password-label"
                     for="toggle">show</label>
                 </div>
-                <input v-model="input_password" class=" form-control w-full py-3 px-3 pr-16 js-password" id="password" type="password"
-                  autocomplete="off" placeholder="Password: 123" />
+                <input v-model="input_password" class=" form-control w-full py-3 px-3 pr-16 js-password" id="password"
+                  type="password" autocomplete="off" placeholder="Password: 123" />
               </div>
 
             </div>
@@ -90,6 +90,13 @@
                 </button>
               </RouterLink> -->
             </div>
+            <Alert v-if="gagalLogin" class="intro-x alert-danger flex items-center mt-3 sm:-mb-14 mb-2 text-base"
+              v-slot="{ dismiss }">
+              <AlertOctagonIcon class="w-6 h-6 mr-2" /> {{ dataPopup }}
+              <button type="button" class="btn-close text-white" aria-label="Close" @click="dismiss">
+                <XIcon class="w-4 h-4" />
+              </button>
+            </Alert>
             <div class="intro-x mt-10 xl:mt-24 text-slate-600 dark:text-slate-500 text-center xl:text-left">
               Dengan masuk aplikasi, Anda telah setuju dengan
               <a class="text-primary dark:text-slate-200" href="">Peraturan</a>
@@ -103,21 +110,54 @@
       </div>
     </div>
   </div>
+  <!-- BEGIN: Basic Non Sticky Notification Content -->
+  <Notification refKey="basicNonStickyNotification" :options="{
+    duration: 10000,
+  }" class="flex flex-col sm:flex-row md:animate-bounce animate-pulse ">
+    <div class="font-medium">Hai {{ dataPopup.role }} - {{ dataPopup.username }}, Selamat Datang di Aplikasi Point of
+      Sales <b class="font-philosopher text-xl text-[#CDA562]">Lurik Rachmad</b> Cabang {{ dataPopup.nama_outlet }}
+    </div>
+  </Notification>
+  <!-- END: Basic Non Sticky Notification Content -->
 </template>
 
 <script setup>
 import { useAuthStore } from "@/stores/auth";
 import { RouterLink } from "vue-router";
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, provide, watch, reactive, toRefs } from "vue";
 import DarkModeSwitcher from "@/components/dark-mode-switcher/Main.vue";
 import dom from "@left4code/tw-starter/dist/js/dom";
+import {
+  required,
+  minLength,
+  maxLength,
+  email,
+  url,
+  integer,
+} from "@vuelidate/validators";
+import { useVuelidate } from "@vuelidate/core";
+import Toastify from "toastify-js";
 
 const Auth = useAuthStore();
 
 const isLoading = ref(false);
+const gagalLogin = ref(false);
+const dataPopup = ref("")
 
 const input_email = ref("")
 const input_password = ref("")
+
+// Basic non sticky notification
+const basicNonStickyNotification = ref();
+provide("bind[basicNonStickyNotification]", (el) => {
+  // Binding
+  basicNonStickyNotification.value = el;
+});
+const basicNonStickyNotificationToggle = () => {
+  // Show notification
+  basicNonStickyNotification.value.showToast();
+};
+
 
 const showPassword = () => {
   const password = document.querySelector('.js-password'),
@@ -152,10 +192,27 @@ const onLogin = () => {
   if (email_user.length > 0 && password.length > 0) {
     //alert(email + password)
     Auth.login(email_user, password)
+      .then((data) => {
+
+        if (data.success == false) {
+          dataPopup.value = data.data.message
+          gagalLogin.value = true
+          // if (data.data.message == 'unregistered e-mail') {
+          //   // alert("email tidak terdaftar")
+          // } else {
+          //   alert("password salah")
+          // }
+        } else {
+          dataPopup.value = data.data
+          basicNonStickyNotificationToggle();
+        }
+        isLoading.value = false;
+      })
       .catch(error => {
-        alert("Gagal Login " + error)
+        alert("Gagal Login " + JSON.stringify(error))
+        isLoading.value = false;
       });
-    isLoading.value = false;
+
   } else {
     alert("Email dan Password tidak boleh kosong !")
     isLoading.value = false;
