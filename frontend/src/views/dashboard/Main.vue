@@ -3,7 +3,7 @@
     <div class="col-span-12 2xl:col-span-9">
       <div class="grid grid-cols-12 gap-6">
         <!-- BEGIN: General Report -->
-        <div class="col-span-12 mt-8">
+        <div class="col-span-12 mt-8" v-if="Auth.items.role == 'Super Admin'">
           <div class="intro-y flex items-center h-10">
             <h2 class="text-lg font-medium truncate mr-5">General Report</h2>
             <a href="" class="ml-auto flex items-center text-primary">
@@ -99,46 +99,109 @@
         </div>
         <!-- END: General Report -->
 
-        <!-- BEGIN: Transactions -->
-        <div class="sm:col-span-4 md:col-span-6 xl:col-span-4 col-span-12 mt-0">
-          <!-- <div class="intro-x flex items-center h-10">
-            <h2 class="text-lg font-medium truncate mr-5">Produk Terlaris</h2>
-          </div> -->
-          <div class="mt-5">
-            <div class="intro-x">
-              <div class="box px-5 py-3 mb-3 flex items-center zoom-in">
-                <div class="overflow-x-auto scrollbar-hidden">
-                  <div id="tabulatorProduk" ref="tableRefProduk" class="mt-2 table-report table-report--tabulator">
+        <TabGroup v-if="Auth.items.role == 'Super Admin'"
+          class="sm:col-span-8 md:col-span-12 xl:col-span-8 col-span-12 mt-5">
+          <TabList class="nav-boxed-tabs">
+            <Tab class="w-full py-2" tag="button">TERLARIS</Tab>
+            <Tab class="w-full py-2" tag="button">TRANSAKSI HARI INI</Tab>
+          </TabList>
+          <ChevronDownIcon class="mt-3 mx-auto motion-safe:animate-bounce" />
+          <TabPanels class="mt-2 box border-dashed border-2 border-primary dark:border-white/50">
+            <TabPanel class="leading-relaxed grid grid-cols-12 gap-2 p-2">
+              <div class="sm:col-span-6 md:col-span-6 xl:col-span-6 col-span-12 mt-0">
+                <div class="mt-0">
+                  <div class="intro-x">
+                    <div class="box py-3 mb-3 flex items-center zoom-in">
+                      <div class="overflow-x-auto scrollbar-hidden">
+                        <div id="tabulatorProduk" ref="tableRefProduk"
+                          class="mt-2 table-report table-report--tabulator">
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <!-- <a href=""
-              class="intro-x w-full block text-center rounded-md py-3 border border-dotted border-slate-400 dark:border-darkmode-9 text-slate-500">View
-              More</a> -->
-          </div>
-        </div>
-        <!-- END: Transactions -->
-        <!-- BEGIN: Transactions -->
-        <div class="sm:col-span-4 md:col-span-6 xl:col-span-4 col-span-12 mt-0">
-          <!-- <div class="intro-x flex items-center h-10">
-            <h2 class="text-lg font-medium truncate mr-5">Produk Terlaris</h2>
-          </div> -->
-          <div class="mt-5">
-            <div class="intro-x">
-              <div class="box px-5 py-3 mb-3 flex items-center zoom-in">
-                <div class="overflow-x-auto scrollbar-hidden">
-                  <div id="tabulatorOutlet" ref="tableRefOutlet" class="mt-2 table-report table-report--tabulator">
+              <div class="sm:col-span-6 md:col-span-6 xl:col-span-6 col-span-12 mt-0">
+                <div class="mt-0">
+                  <div class="intro-x">
+                    <div class="box py-3 mb-3 flex items-center zoom-in">
+                      <div class="overflow-x-auto scrollbar-hidden">
+                        <div id="tabulatorOutlet" ref="tableRefOutlet"
+                          class="mt-2 table-report table-report--tabulator">
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <!-- <a href=""
-              class="intro-x w-full block text-center rounded-md py-3 border border-dotted border-slate-400 dark:border-darkmode-9 text-slate-500">View
-              More</a> -->
-          </div>
-        </div>
-        <!-- END: Transactions -->
+            </TabPanel>
+            <TabPanel class="leading-relaxed grid grid-cols-12 gap-2 p-2">
+              <div class="sm:col-span-6 md:col-span-6 xl:col-span-6 col-span-12 mt-0">
+                <div class="mt-0">
+                  <div class="intro-x">
+                    <div class="box py-3 mb-3 flex items-center zoom-in">
+                      <div class="overflow-x-auto scrollbar-hidden">
+                        <div id="tabulatorJual" ref="tableRefJual" class="mt-2 table-report table-report--tabulator">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="sm:col-span-6 md:col-span-6 xl:col-span-6 col-span-12 mt-0">
+                <div class="mt-0">
+                  <div class="intro-x">
+                    <div class="box py-3 mb-3 flex items-center zoom-in">
+                      <div class="overflow-x-auto scrollbar-hidden">
+                        <div id="tabulatorBeli" ref="tableRefBeli" class="mt-2 table-report table-report--tabulator">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </TabPanel>
+          </TabPanels>
+        </TabGroup>
+
+        <TabGroup v-else class="sm:col-span-8 md:col-span-12 xl:col-span-8 col-span-12 mt-5">
+          <TabList class="nav-boxed-tabs">
+            <Tab class="w-full py-2" tag="button">TRANSAKSI HARI INI</Tab>
+          </TabList>
+          <ChevronDownIcon class="mt-3 mx-auto motion-safe:animate-bounce" />
+          <TabPanels class="mt-2 box border-dashed border-2 border-primary dark:border-white/50">
+            <TabPanel class="leading-relaxed grid grid-cols-12 gap-2 p-2">
+              <div class="sm:col-span-6 md:col-span-6 xl:col-span-6 col-span-12 mt-0">
+                <div class="mt-0">
+                  <div class="intro-x">
+                    <div class="box py-3 mb-3 flex items-center zoom-in">
+                      <div class="overflow-x-auto scrollbar-hidden">
+                        <div id="tabulatorJual" ref="tableRefJual" class="mt-2 table-report table-report--tabulator">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="sm:col-span-6 md:col-span-6 xl:col-span-6 col-span-12 mt-0">
+                <div class="mt-0">
+                  <div class="intro-x">
+                    <div class="box py-3 mb-3 flex items-center zoom-in">
+                      <div class="overflow-x-auto scrollbar-hidden">
+                        <div id="tabulatorBeli" ref="tableRefBeli" class="mt-2 table-report table-report--tabulator">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </TabPanel>
+          </TabPanels>
+        </TabGroup>
+
+        <!-- BEGIN: Important Notepad -->
         <div
           class="border border-slate-200/60 dark:border-darkmode-400 rounded-md p-5 sm:col-span-4 md:col-span-12 xl:col-span-4 col-span-12">
 
@@ -146,19 +209,83 @@
             class="text-lg font-medium truncate mr-auto flex items-center border-b border-slate-200/60 dark:border-darkmode-400 pb-5">
             <ChevronDownIcon class="w-4 h-4 mr-2" /> Notepad
           </h2>
-          <div class="mt-2">
-            <ClassicEditor class="h-52" v-model="editorData" />
+          <div class="mt-2" @keyup.ctrl.enter="simpan" >
+            <ClassicEditor class="h-52" v-model.lazy="editorData" />
           </div>
           {{ editorData }}
         </div>
+        <!-- END: Important Notepad -->
+
+        <!-- BEGIN: Important Notes -->
+        <div v-if="Auth.items.role != 'Super Admin'"
+          class="col-span-12 xl:col-span-12 xl:col-start-1 xl:row-start-1 2xl:col-start-auto 2xl:row-start-auto mt-3">
+          <div class="intro-x flex items-center h-10">
+            <h2 class="text-lg font-medium truncate mr-auto">
+              Important Notes
+            </h2>
+            <button data-carousel="important-notes" data-target="prev"
+              class="tiny-slider-navigator btn px-2 border-slate-9 text-slate-600 dark:text-slate-9 mr-2"
+              @click="prevImportantNotes">
+              <ChevronLeftIcon class="w-4 h-4" />
+            </button>
+            <button data-carousel="important-notes" data-target="next"
+              class="tiny-slider-navigator btn px-2 border-slate-9 text-slate-600 dark:text-slate-9 mr-2"
+              @click="nextImportantNotes">
+              <ChevronRightIcon class="w-4 h-4" />
+            </button>
+          </div>
+          <div class="mt-5 intro-x">
+            <div class="box zoom-in">
+              <TinySlider ref-key="importantNotesRef">
+                <div class="p-5">
+                  <div class="text-base font-medium truncate">
+                    Lakukan Semuanya Sesuai Prosedur
+                  </div>
+                  <div class="text-slate-400 mt-1"><b class="font-philosopher text-[#CDA562]">Lurik Rachmad - Sejak
+                      1960</b></div>
+                  <div class="text-slate-500 text-justify mt-1">
+                    Dalam menambah atau mengahpus data pastikan telah sesuai dengan prosedur yang telah dibuat
+                    perusahaan.
+                  </div>
+                </div>
+
+                <div class="p-5">
+                  <div class="text-base font-medium truncate">
+                    Jangan Lupa Keluar Akun
+                  </div>
+                  <div class="text-slate-400 mt-1"><b class="font-philosopher text-[#CDA562]">Lurik Rachmad - Sejak
+                      1960</b></div>
+                  <div class="text-slate-500 text-justify mt-1">
+                    Setelah selsai menggunakan aplikasi jangan lupa dan pastikan akun anda telah keluar dari aplikasi
+                    untuk menjaga keamanan data perushaaan.
+                  </div>
+                </div>
+
+                <div class="p-5">
+                  <div class="text-base font-medium truncate">
+                    Laporkan Bug atau Erorr
+                  </div>
+                  <div class="text-slate-400 mt-1"><b class="font-philosopher text-[#CDA562]">Lurik Rachmad - Sejak
+                      1960</b></div>
+                  <div class="text-slate-500 text-justify mt-1">
+                    Ketika menemukan bug atau erorr dalam aplikasi jangan lupa untuk melapor pada divisi yang terkait
+                    untuk terus memperbaiki dan mengembangkan aplikasi agar lebih baik lagi.
+                  </div>
+                </div>
+              </TinySlider>
+            </div>
+          </div>
+        </div>
+        <!-- END: Important Notes -->
+
       </div>
     </div>
     <div class="col-span-12 2xl:col-span-3">
       <div class="2xl:border-l -mb-10 pb-10">
         <div class="2xl:pl-6 grid grid-cols-12 gap-x-6 2xl:gap-x-0 gap-y-6">
           <!-- BEGIN: Important Notes -->
-          <div
-            class="col-span-12 md:col-span-6 xl:col-span-12 xl:col-start-1 xl:row-start-1 2xl:col-start-auto 2xl:row-start-auto mt-3 2xl:mt-8">
+          <div v-if="Auth.items.role == 'Super Admin'"
+            class="col-span-12 xl:col-span-12 xl:col-start-1 xl:row-start-1 2xl:col-start-auto 2xl:row-start-auto mt-3 2xl:mt-8 -mb-5">
             <div class="intro-x flex items-center h-10">
               <h2 class="text-lg font-medium truncate mr-auto">
                 Important Notes
@@ -188,6 +315,7 @@
                       perusahaan.
                     </div>
                   </div>
+
                   <div class="p-5">
                     <div class="text-base font-medium truncate">
                       Jangan Lupa Keluar Akun
@@ -199,6 +327,7 @@
                       untuk menjaga keamanan data perushaaan.
                     </div>
                   </div>
+
                   <div class="p-5">
                     <div class="text-base font-medium truncate">
                       Laporkan Bug atau Erorr
@@ -217,7 +346,7 @@
           <!-- END: Important Notes -->
           <!-- BEGIN: Schedules -->
           <div
-            class="col-span-12 md:col-span-6 xl:col-span-12 2xl:col-span-12 xl:col-start-1 xl:row-start-2 2xl:col-start-auto 2xl:row-start-auto mt-0">
+            class="col-span-12 xl:col-span-12 2xl:col-span-12 xl:col-start-1 xl:row-start-2 2xl:col-start-auto 2xl:row-start-auto mt-4">
             <div class="intro-x flex items-center h-10">
               <h2 class="text-lg font-medium truncate mr-5">Kalender</h2>
               <!-- <a href="javascript:void(0)" @click="addNewCal()" class="ml-auto text-primary truncate flex items-center">
@@ -257,14 +386,7 @@
       </div>
     </div>
   </div>
-  <!-- BEGIN: Basic Non Sticky Notification Content -->
-  <Notification refKey="basicNonStickyNotification" :options="{
-    duration: 10000,
-  }" class="flex flex-col sm:flex-row md:animate-bounce animate-pulse ">
-    <div class="font-medium">Selamat Datang di Aplikasi Point of Sales <b
-        class="font-philosopher text-2xl text-[#CDA562]">Lurik Rachmad</b></div>
-  </Notification>
-  <!-- END: Basic Non Sticky Notification Content -->
+
 
   <ModalDatabaseError ref="modalErrorRef" />
 </template>
@@ -273,21 +395,33 @@
 import Calendar from "@/components/calendar/Main.vue";
 import ModalDatabaseError from "@/components/modal-error/Main.vue";
 import dom from "@left4code/tw-starter/dist/js/dom";
-import { useDashboardStore } from "../../stores/dashboard";
-import { currencyFormatter } from "../../utils/helper";
+import { useDashboardStore } from "@/stores/dashboard";
+import { currencyFormatter } from "@/utils/helper";
 import { TabulatorFull as Tabulator } from 'tabulator-tables';
-import { ref, provide, reactive, onMounted, watch } from "vue";
+import { ref, provide, reactive, onMounted, watch, onBeforeUnmount, onBeforeUpdate } from "vue";
 import { createIcons, icons } from "lucide";
 import moment from "moment";
+import { useAuthStore } from "@/stores/auth";
+const Auth = useAuthStore();
 
 const publicPath = import.meta.env.VITE_APP_BASE_API;
 const Dashboard = useDashboardStore();
+
 const tableRefProduk = ref();
 const tabulatorProduk = ref();
+
 const tableRefOutlet = ref();
 const tabulatorOutlet = ref();
+
+const tableRefJual = ref();
+const tabulatorJual = ref();
+
+const tableRefBeli = ref();
+const tabulatorBeli = ref();
+
 const modalErrorRef = ref();
 const fullCalender = ref();
+const data = ref([]);
 
 
 const template = document.createElement('template');
@@ -424,7 +558,7 @@ const initTabulatorOutlet = () => {
           const a = dom(`<div class="intro-x">
               <div class="box py-1 flex items-center zoom-in">
                 
-                <div class="mr-auto">
+                <div class="ml-5 mr-auto">
                   <div class="font-medium">
                     ${cell.getData().id_outlet} - ${cell.getData().nama_outlet} 
                     <p class="text-success my-0.5">
@@ -453,11 +587,159 @@ const initTabulatorOutlet = () => {
   });
 };
 
+const initTabulatorJual = () => {
+  tabulatorJual.value = new Tabulator(tableRefJual.value, {
+    data: Dashboard.items.jualHariIni,
+    dataLoaderLoading: dataLoaderLoading,
+    pagination: "remote",
+    paginationSize: 3,
+    paginationSizeSelector: [10, 20, 30, 40, 50, 100],
+    layout: "fitColumns",
+    // responsiveLayout: "collapse",
+    placeholder: "Tida ada Data di temukan",
+    columnDefaults: {
+      tooltip: function (e, cell, onRendered) {
+        //e - mouseover event
+        //cell - cell component
+        //onRendered - onRendered callback registration function
+
+        var el = document.createElement("div");
+        el.style.backgroundColor = "white smoke";
+        el.innerText = cell.getColumn().getField() + " - " + cell.getValue(); //return cells "field - value";
+
+        return el;
+      },
+    },
+    columns: [
+      // {
+      //   formatter: "responsiveCollapse",
+      //   width: 40,
+      //   minWidth: 30,
+      //   hozAlign: "center",
+      //   resizable: false,
+      //   headerSort: false,
+      // },
+
+      // For HTML table
+      {
+        title: "PENJUALAN HARI INI",
+        minWidth: 390,
+        field: "no_invoice",
+        // hozAlign: "center",
+        // vertAlign: "middle",
+        print: false,
+        download: false,
+        formatter(cell) {
+          const a = dom(`<div class="intro-x">
+              <div class="box py-1 flex items-center zoom-in">
+                
+                <div class="ml-5 mr-auto">
+                  <div class="font-medium">
+                    ${cell.getData().no_invoice}
+                    <p class="text-success my-0.5">
+                      ${moment(cell.getData().tanggal_penjualan).format("DD MMM YYYY")}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>`);
+          return a[0];
+        },
+      },
+    ],
+  });
+  tabulatorJual.value.on("renderComplete", function () {
+    //subTable.redraw();
+    createIcons({
+      icons,
+      "stroke-width": 1.5,
+      nameAttr: "data-lucide",
+
+    });
+  });
+};
+
+const initTabulatorBeli = () => {
+  tabulatorBeli.value = new Tabulator(tableRefBeli.value, {
+    data: Dashboard.items.beliHariIni,
+    dataLoaderLoading: dataLoaderLoading,
+    pagination: "remote",
+    paginationSize: 3,
+    paginationSizeSelector: [10, 20, 30, 40, 50, 100],
+    layout: "fitColumns",
+    // responsiveLayout: "collapse",
+    placeholder: "Tida ada Data di temukan",
+    columnDefaults: {
+      tooltip: function (e, cell, onRendered) {
+        //e - mouseover event
+        //cell - cell component
+        //onRendered - onRendered callback registration function
+
+        var el = document.createElement("div");
+        el.style.backgroundColor = "white smoke";
+        el.innerText = cell.getColumn().getField() + " - " + cell.getValue(); //return cells "field - value";
+
+        return el;
+      },
+    },
+    columns: [
+      // {
+      //   formatter: "responsiveCollapse",
+      //   width: 40,
+      //   minWidth: 30,
+      //   hozAlign: "center",
+      //   resizable: false,
+      //   headerSort: false,
+      // },
+
+      // For HTML table
+      {
+        title: "PEMBELIAN HARI INI",
+        minWidth: 390,
+        field: "no_invoice",
+        // hozAlign: "center",
+        // vertAlign: "middle",
+        print: false,
+        download: false,
+        formatter(cell) {
+          const a = dom(`<div class="intro-x">
+              <div class="box py-1 flex items-center zoom-in">
+                
+                <div class="ml-5 mr-auto">
+                  <div class="font-medium">
+                    ${cell.getData().no_invoice}
+                    <p class="text-success my-0.5">
+                      ${moment(cell.getData().tanggal_pembelian).format("DD MMM YYYY")}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>`);
+          return a[0];
+        },
+      },
+    ],
+  });
+  tabulatorJual.value.on("renderComplete", function () {
+    //subTable.redraw();
+    createIcons({
+      icons,
+      "stroke-width": 1.5,
+      nameAttr: "data-lucide",
+
+    });
+  });
+};
+
 // Redraw table onresize
 const reInitOnResizeWindow = () => {
   window.addEventListener("resize", () => {
-    tabulatorProduk.value.redraw();
-    tabulatorOutlet.value.redraw();
+    if (Auth.items.role == 'Super Admin') {
+      tabulatorProduk.value.redraw();
+      tabulatorOutlet.value.redraw();
+    }
+    tabulatorJual.value.redraw();
+    tabulatorBeli.value.redraw();
     createIcons({
       icons,
       "stroke-width": 1.5,
@@ -559,9 +841,12 @@ const basicNonStickyNotificationToggle = () => {
 };
 
 //----------------------------------------------------------------
-const importantNotesRef = ref();
+const editorData = ref();
+const simpan = () =>{
+  console.log("simpan", editorData.value)
+}
 
-const editorData = ref("<p>Rencananya akan menjadi notepad serba bisa.</p>");
+const importantNotesRef = ref();
 
 provide("bind[importantNotesRef]", (el) => {
   importantNotesRef.value = el;
@@ -577,11 +862,29 @@ const nextImportantNotes = () => {
   el.tns.goTo("next");
 };
 
+// watch(editorData, async (newValue, oldValue) => {
+//   try {
+//     const id = Auth.items.userid
+//     const notepad = newValue
+//     console.log("editor: ", newValue)
+//     // await Dashboard.updateNotepad(id, notepad)
+//   } catch (error) {
+//     alert("Gagal watch notepad" + error)
+//   }
+// }, { immediate: false })
+
 onMounted(async function () {
   try {
-    const data = await Dashboard.readItem()
-    initTabulatorProduk();
-    initTabulatorOutlet()
+    await Dashboard.readItem();
+    // editorData.value = data.value.notepad
+    // data.value = Auth
+    //console.log(data.value);
+    if (Auth.items.role == 'Super Admin') {
+      initTabulatorProduk();
+      initTabulatorOutlet();
+    }
+    initTabulatorJual();
+    initTabulatorBeli();
     reInitOnResizeWindow();
     //basicNonStickyNotificationToggle();
     modalErrorRef.value.errorDatabaseModal = false;
@@ -591,6 +894,14 @@ onMounted(async function () {
     modalErrorRef.value.errorDatabaseModal = true;
     // console.log("err", modalErrorRef.value.errorDatabaseModal)
   }
+});
+
+  // onBeforeUpdate(async () => {
+  //   console.log("onBeforeUpdate", editorData.value);
+  // });
+
+onBeforeUnmount(async () => {
+  console.log("onUnmount", editorData.value);
 });
 
 </script>

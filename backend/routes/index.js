@@ -58,6 +58,8 @@ module.exports = function (db) {
             email: rows[0].email_user,
             username: rows[0].username,
             role: rows[0].role,
+            notepad: rows[0].notepad,
+
             id_outlet: rows[0].id_outlet,
             nama_outlet: rows[0].nama_outlet,
             alamat_outlet: rows[0].alamat_outlet,
@@ -99,27 +101,30 @@ module.exports = function (db) {
           //console.log('uangKeluar', uangKeluar.rows[0].uangkeluar)
 
           //console.log('profit', profit.rows[0].profit)
-          db.query(`SELECT count(no_invoice) AS totaljual FROM penjualan`, (err, totaljual) => {
-            db.query(`SELECT count(no_invoice) AS totalbeli FROM pembelian`, (err, totalbeli) => {
-              db.query(`SELECT penjualan_detail.id_varian, varian.nama_varian, varian.gambar_varian, barang.nama_barang, penjualan_detail.qty, satuan.nama_satuan FROM public.penjualan_detail LEFT JOIN varian ON penjualan_detail.id_varian = varian.id_varian LEFT JOIN barang ON varian.id_barang = barang.id_barang LEFT JOIN satuan ON varian.id_satuan = satuan.id_satuan ORDER BY qty DESC`, (err, topproduct) => {
-                db.query(`SELECT * FROM public.outlet`, (err, topoutlet) => {
-                  res.status(200).json({
-                    profit: profit.rows[0].profit,
-                    // query: req.query,
-                    uangMasuk: uangMasuk.rows[0].uangmasuk,
-                    uangKeluar: uangKeluar.rows[0].uangkeluar,
-                    totaljual: totaljual.rows[0].totaljual,
-                    totalbeli: totalbeli.rows[0].totalbeli,
-                    topproduct: topproduct.rows,
-                    topoutlet: topoutlet.rows,
-                    user: req.session.user
+          db.query(`SELECT no_invoice,tanggal_penjualan FROM penjualan WHERE tanggal_penjualan >= CURRENT_TIMESTAMP - interval '1d'`, (err, jual1d) => {
+            db.query(`SELECT no_invoice,tanggal_pembelian FROM pembelian WHERE tanggal_pembelian >= CURRENT_TIMESTAMP - interval '1d'`, (err, beli1d) => {
+              db.query(`SELECT count(no_invoice) AS totaljual FROM penjualan`, (err, totaljual) => {
+                db.query(`SELECT count(no_invoice) AS totalbeli FROM pembelian`, (err, totalbeli) => {
+                  db.query(`SELECT penjualan_detail.id_varian, varian.nama_varian, varian.gambar_varian, barang.nama_barang, penjualan_detail.qty, satuan.nama_satuan FROM public.penjualan_detail LEFT JOIN varian ON penjualan_detail.id_varian = varian.id_varian LEFT JOIN barang ON varian.id_barang = barang.id_barang LEFT JOIN satuan ON varian.id_satuan = satuan.id_satuan ORDER BY qty DESC`, (err, topproduct) => {
+                    db.query(`SELECT * FROM public.outlet`, (err, topoutlet) => {
+                      res.status(200).json({
+                        profit: profit.rows[0].profit,
+                        uangMasuk: uangMasuk.rows[0].uangmasuk,
+                        uangKeluar: uangKeluar.rows[0].uangkeluar,
+                        jualHariIni: jual1d.rows,
+                        beliHariIni: beli1d.rows,
+                        totaljual: totaljual.rows[0].totaljual,
+                        totalbeli: totalbeli.rows[0].totalbeli,
+                        topproduct: topproduct.rows,
+                        topoutlet: topoutlet.rows,
 
+                      })
+                    })
                   })
                 })
+
               })
             })
-
-
           })
         })
       })

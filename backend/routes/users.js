@@ -51,6 +51,16 @@ module.exports = function (db) {
     }
   });
 
+  router.post('/editnotepad/:id', async function (req, res, next) {
+    try {
+      console.log("id note",req.body.notepad)
+      const { rows } = await db.query(`UPDATE public.users SET notepad = $1 WHERE id_users = $2 RETURNING notepad;`, [req.body.notepad, req.params.id])
+      res.json(new Response(rows[0]))
+    } catch (e) {
+      res.status(500).json(new Response(e, false))
+    }
+  });
+
   router.get('/add', isTokenValid, async function (req, res, next) {
     try {
       res.render('users/register')

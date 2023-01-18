@@ -50,23 +50,47 @@
                   </div>
                   <div class="ml-3">Pembelian</div>
                 </RouterLink>
-                <RouterLink to="/" class="flex items-center mt-2">
-                  <div
-                    class="w-8 h-8 bg-primary/10 dark:bg-primary/20 text-primary/80 flex items-center justify-center rounded-full">
-                    <UsersIcon class="w-4 h-4" />
-                  </div>
-                  <div class="ml-3">Semua Akun</div>
-                </RouterLink>
+                <div v-if="data.role == 'Super Admin'" class="flex items-center mt-2">
+                    <div
+                      class="w-8 h-8 bg-primary/10 dark:bg-primary/20 text-primary/80 flex items-center justify-center rounded-full">
+                      <UsersIcon class="w-4 h-4" />
+                    </div>
+                    <div class="ml-3">Semua Akun</div>
+                </div>
               </div>
-              <div class="search-result__content__title">Users</div>
+              <div class="search-result__content__title">Jenis User & Hak Aksesnya</div>
               <div class="mb-5">
-                <a v-for="(faker, fakerKey) in $_.take($f(), 4)" :key="fakerKey" href class="flex items-center mt-2">
-                  <div class="w-8 h-8 image-fit">
-                    <img alt="Lurik Rachmad HTML" class="rounded-full" :src="faker.photos[0]" />
+                <a href class="flex items-center mt-3 zoom-in">
+                  <div
+                    class="w-8 h-8 bg-white stroke-2 stroke-black p-auto rounded-full overflow-hidden shadow-lg image-fit zoom-in scale-110">
+                    <CrownIcon
+                      class="w-6 h-6 object-fill stroke-2 stroke-black fill-yellow-200 bg-white mt-1 mx-auto rounded-full" />
                   </div>
-                  <div class="ml-3">{{ faker.users[0].name }}</div>
-                  <div class="ml-auto w-48 truncate text-slate-500 text-xs text-right">
-                    {{ faker.users[0].email }}
+                  <div class="ml-3">Super Admin</div>
+                  <div class="ml-auto w-auto truncate text-slate-500 text-xs text-right pr-3">
+                    Semua Menu/ Fitur
+                  </div>
+                </a>
+                <a href class="flex items-center mt-3 zoom-in">
+                  <div
+                    class="w-8 h-8 bg-white stroke-2 stroke-black p-auto rounded-full overflow-hidden shadow-lg image-fit zoom-in scale-110">
+                    <UserIcon
+                      class="w-6 h-6 object-fill stroke-2 stroke-black fill-yellow-200 bg-white mt-1 mx-auto rounded-full" />
+                  </div>
+                  <div class="ml-3">Admin</div>
+                  <div class="ml-auto w-auto truncate text-slate-500 text-xs text-right pr-3">
+                    Kecuali Menu/ Fitur SEMUA AKUN
+                  </div>
+                </a>
+                <a href class="flex items-center mt-3 zoom-in">
+                  <div
+                    class="w-8 h-8 bg-white stroke-2 stroke-black p-auto rounded-full overflow-hidden shadow-lg image-fit zoom-in scale-110">
+                    <HardHatIcon
+                      class="w-6 h-6 object-fill stroke-2 stroke-black fill-yellow-200 bg-white mt-1 mx-auto rounded-full" />
+                  </div>
+                  <div class="ml-3">Operator</div>
+                  <div class="ml-auto w-auto truncate text-slate-500 text-xs text-right pr-3">
+                    Beberapa Menu/ Fitur TRANSAKSI dan LAPORAN
                   </div>
                 </a>
               </div>
@@ -110,8 +134,16 @@
         <!-- BEGIN: Account Menu -->
         <Dropdown class="intro-x w-8 h-8">
           <DropdownToggle tag="div" role="button"
-            class="w-8 h-8 rounded-full overflow-hidden shadow-lg image-fit zoom-in scale-110">
-            <img alt="Lurik Rachmad HTML" :src="$f()[9].photos[0]" />
+            class="w-8 h-8 bg-white stroke-2 stroke-black p-auto rounded-full overflow-hidden shadow-lg image-fit zoom-in scale-110">
+            <!-- <img alt="Lurik Rachmad HTML" :src="$f()[9].photos[0]" /> -->
+            <!-- <div class="bg-white w-8 h-8 m-auto p-auto rounded-full"> -->
+            <CrownIcon v-if="data.role == 'Super Admin'"
+              class="w-6 h-6 object-fill stroke-2 stroke-black fill-yellow-200 bg-white mt-1 mx-auto rounded-full" />
+            <UserIcon v-else-if="data.role == 'Admin'"
+              class="w-6 h-6 object-fill stroke-2 stroke-black fill-yellow-200 bg-white mt-1 mx-auto rounded-full" />
+            <HardHatIcon v-else
+              class="w-6 h-6 object-fill stroke-2 stroke-black fill-yellow-200 bg-white mt-1 mx-auto rounded-full" />
+            <!-- </div> -->
           </DropdownToggle>
           <DropdownMenu class="w-56">
             <DropdownContent
@@ -126,9 +158,12 @@
               </DropdownHeader>
               <DropdownDivider class="border-white/[0.08]" />
               <DropdownItem class="hover:bg-white/5" @click="profilModal = true">
-                <UserIcon class="w-4 h-4 mr-2" /> Profil
+                <CrownIcon v-if="data.role == 'Super Admin'" class="w-4 h-4 mr-2" />
+                <UserIcon v-else-if="data.role == 'Admin'" class="w-4 h-4 mr-2" />
+                <HardHatIcon v-else class="w-4 h-4 mr-2" />
+                Profil
               </DropdownItem>
-              <DropdownItem class="hover:bg-white/5">
+              <DropdownItem v-if="data.role == 'Super Admin'" class="hover:bg-white/5" @click="semuaAkunModal = true">
                 <UsersIcon class="w-4 h-4 mr-2" /> Semua Akun
               </DropdownItem>
               <DropdownItem class="hover:bg-white/5">
@@ -244,112 +279,127 @@
   <!-- BEGIN:Profile Content -->
   <Modal size="modal-xl" backdrop="static" :show="profilModal" @hidden="profilModal = false">
     <ModalHeader>
-      <h2 class="font-medium text-base mx-auto">Profil Akun & Outlet</h2>
+      <h2 class="font-medium text-base mx-auto">Profil User & Outlet</h2>
       <a @click="profilModal = false" class="absolute right-0 top-0 mt-3 mr-3" href="javascript:;">
         <XIcon class="w-8 h-8 text-slate-400" />
       </a>
     </ModalHeader>
-    <ModalBody class="">
-      <div class="bg-white rounded shadow-lg p-4 px-4 md:p-8 mb-6">
-        <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 lg:grid-cols-3">
-
-
-          <div class="col-span-4">
-            <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
-              <div class="md:col-span-5">
-                <label for="full_name">Full Name</label>
-                <input type="text" name="full_name" id="full_name" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" />
-              </div>
-
-              <div class="md:col-span-5">
-                <label for="email">Email Address</label>
-                <input type="text" name="email" id="email" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" placeholder="email@domain.com" />
-              </div>
-
-              <div class="md:col-span-3">
-                <label for="address">Address / Street</label>
-                <input type="text" name="address" id="address" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" placeholder="" />
-              </div>
-
-              <div class="md:col-span-2">
-                <label for="city">City</label>
-                <input type="text" name="city" id="city" class="h-10 border mt-1 rounded px-4 w-full bg-gray-50" value="" placeholder="" />
-              </div>
-
-              <div class="md:col-span-2">
-                <label for="country">Country / region</label>
-                <div class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
-                  <input name="country" id="country" placeholder="Country" class="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent" value="" />
-                  <button tabindex="-1" class="cursor-pointer outline-none focus:outline-none transition-all text-gray-300 hover:text-red-600">
-                    <svg class="w-4 h-4 mx-2 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <line x1="18" y1="6" x2="6" y2="18"></line>
-                      <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                  </button>
-                  <button tabindex="-1" for="show_more" class="cursor-pointer outline-none focus:outline-none border-l border-gray-200 transition-all text-gray-300 hover:text-blue-600">
-                    <svg class="w-4 h-4 mx-2 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
-                  </button>
+    <ModalBody class="p-8 pt-0">
+      <div class="flex-auto">
+          <div class="box zoom-in px-5">
+            <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
+              Profil User
+            </h6>
+            <div class="flex flex-wrap">
+              <div class="w-full lg:w-6/12 px-4">
+                <div class="relative w-full mb-3">
+                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+                    ID User
+                  </label>
+                  <div
+                    class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+                    {{ data.userid }} </div>
                 </div>
               </div>
-
-              <div class="md:col-span-2">
-                <label for="state">State / province</label>
-                <div class="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
-                  <input name="state" id="state" placeholder="State" class="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent" value="" />
-                  <button tabindex="-1" class="cursor-pointer outline-none focus:outline-none transition-all text-gray-300 hover:text-red-600">
-                    <svg class="w-4 h-4 mx-2 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <line x1="18" y1="6" x2="6" y2="18"></line>
-                      <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                  </button>
-                  <button tabindex="-1" for="show_more" class="cursor-pointer outline-none focus:outline-none border-l border-gray-200 transition-all text-gray-300 hover:text-blue-600">
-                    <svg class="w-4 h-4 mx-2 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
-                  </button>
+              <div class="w-full lg:w-6/12 px-4">
+                <div class="relative w-full mb-3">
+                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+                    Email User
+                  </label>
+                  <div
+                    class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+                    {{ data.email }}</div>
                 </div>
               </div>
-
-              <div class="md:col-span-1">
-                <label for="zipcode">Zipcode</label>
-                <input type="text" name="zipcode" id="zipcode" class="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50" placeholder="" value="" />
-              </div>
-
-              <div class="md:col-span-5">
-                <div class="inline-flex items-center">
-                  <input type="checkbox" name="billing_same" id="billing_same" class="form-checkbox" />
-                  <label for="billing_same" class="ml-2">My billing address is different than above.</label>
+              <div class="w-full lg:w-6/12 px-4">
+                <div class="relative w-full mb-3">
+                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+                    Username
+                  </label>
+                  <div
+                    class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+                    {{ data.username }}</div>
                 </div>
               </div>
-
-              <div class="md:col-span-2">
-                <label for="soda">How many soda pops?</label>
-                <div class="h-10 w-28 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
-                  <button tabindex="-1" for="show_more" class="cursor-pointer outline-none focus:outline-none border-r border-gray-200 transition-all text-gray-500 hover:text-blue-600">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mx-2" viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                    </svg>
-                  </button>
-                  <input name="soda" id="soda" placeholder="0" class="px-2 text-center appearance-none outline-none text-gray-800 w-full bg-transparent" value="0" />
-                  <button tabindex="-1" for="show_more" class="cursor-pointer outline-none focus:outline-none border-l border-gray-200 transition-all text-gray-500 hover:text-blue-600">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mx-2 fill-current" viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd" />
-                    </svg>
-                  </button>
+              <div class="w-full lg:w-6/12 px-4">
+                <div class="relative w-full mb-3">
+                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+                    Role/ Jabatan
+                  </label>
+                  <div
+                    class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+                    {{ data.role }}</div>
                 </div>
               </div>
-      
-              <div class="md:col-span-5 text-right">
-                <div class="inline-flex items-end">
-                  <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit</button>
-                </div>
-              </div>
-
             </div>
           </div>
-        </div>
+
+          <hr class="mt-6 border-b-1 border-blueGray-300">
+          <div class="box zoom-in px-5">
+            <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
+              Profil Outlet
+            </h6>
+            <div class="flex flex-wrap">
+              <div class="w-full lg:w-4/12 px-4">
+                <div class="relative w-full mb-3">
+                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+                    ID Outlet
+                  </label>
+                  <div
+                    class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+                    {{ data.id_outlet }}</div>
+                </div>
+              </div>
+              <div class="w-full lg:w-4/12 px-4">
+                <div class="relative w-full mb-3">
+                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+                    Nama Outlet
+                  </label>
+                  <div
+                    class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+                    {{ data.nama_outlet }}</div>
+                </div>
+              </div>
+              <div class="w-full lg:w-4/12 px-4">
+                <div class="relative w-full mb-3">
+                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+                    Kontak Outlet
+                  </label>
+                  <div
+                    class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+                    {{ data.kontak_outlet }}</div>
+                </div>
+              </div>
+              <div class="w-full lg:w-12/12 px-4">
+                <div class="relative w-full mb-3">
+                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+                    Alamat Outlet
+                  </label>
+                  <textarea type="text"
+                    class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                    rows="4" disabled>{{ data.alamat_outlet }}</textarea>
+                </div>
+              </div>
+            </div>
+          </div>
       </div>
     </ModalBody>
   </Modal>
   <!-- END:Profile Content -->
+
+  <!-- BEGIN: Semua Akun Content -->
+  <Modal size="modal-xl" backdrop="static" :show="semuaAkunModal" @hidden="semuaAkunModal = false">
+    <ModalHeader>
+      <h2 class="font-medium text-base mx-auto">Semua Akun</h2>
+      <a @click="semuaAkunModal = false" class="absolute right-0 top-0 mt-3 mr-3" href="javascript:;">
+        <XIcon class="w-8 h-8 text-slate-400" />
+      </a>
+    </ModalHeader>
+    <ModalBody class="p-8 pt-0">
+      <Users />
+    </ModalBody>
+  </Modal>
+  <!-- END: Semua Akun Content -->
 </template>
 
 <script setup>
@@ -361,6 +411,7 @@ import { helper as $h } from "@/utils/helper";
 import MobileMenu from "@/components/mobile-menu/Main.vue";
 import DarkModeSwitcher from "@/components/dark-mode-switcher/Main.vue";
 import MainColorSwitcher from "@/components/main-color-switcher/Main.vue";
+import Users from "@/views/Users/Main.vue";
 
 import {
   searchDropdown,

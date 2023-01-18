@@ -49,7 +49,7 @@
             </div>
             <div class="intro-x mt-8">
               <input v-model="input_email" type="email" class="intro-x login__input form-control py-3 px-4 block mb-4"
-                placeholder="Email: admin@gmail.com" />
+                placeholder="Email: super@gmail.com" />
 
               <!-- <input v-model="input_password" type="password" class="intro-x login__input form-control py-3 px-4 block mt-4"
                 placeholder="Password" /> -->
