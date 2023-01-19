@@ -84,7 +84,7 @@ export const useSimpleMenuStore = defineStore("simpleMenu", {
             title: "Outlet",
           },
           {
-            icon: "UsersIcon",
+            icon: "ContactIcon",
             pageName: "simple-menu-pelanggan",
             title: "Pelanggan",
           },
@@ -92,6 +92,11 @@ export const useSimpleMenuStore = defineStore("simpleMenu", {
             icon: "TruckIcon",
             pageName: "simple-menu-supplier",
             title: "Supplier",
+          },
+          {
+            icon: "UsersIcon",
+            pageName: "simple-menu-semua-akun",
+            title: "Semua Akun",
           },
           {
             icon: "InfoIcon",

@@ -34,6 +34,10 @@ const routes = [
         path: "/",
         name: "top-menu-dashboard",
         component: Dashboard,
+        // beforeEnter: (to, from) => {
+        //   console.log("Entering / ", to, from);
+        //   //return false
+        // },
       },
       {
         path: "page-2",
@@ -44,13 +48,6 @@ const routes = [
         path: "satuan",
         name: "top-menu-satuan",
         component: Satuan,
-        beforeEach: (to, from) => {
-          const Auth = useAuthStore();
-          if (Auth.items.role !== 'Super Admin') {
-            alert("Selain Role Super Admin, Tidak Bisa Mengakses Halaman ini !");
-            return '/'
-          }
-        },
       },
       {
         path: "barang-keluar",
@@ -61,49 +58,21 @@ const routes = [
         path: "barang",
         name: "top-menu-barang",
         component: Barang,
-        beforeEach: (to, from) => {
-          const Auth = useAuthStore();
-          if (Auth.items.role !== 'Super Admin') {
-            alert("Selain Role Super Admin, Tidak Bisa Mengakses Halaman ini !");
-            return '/'
-          }
-        },
       },
       {
         path: "supplier",
         name: "top-menu-supplier",
         component: Supplier,
-        beforeEach: (to, from) => {
-          const Auth = useAuthStore();
-          if (Auth.items.role !== 'Super Admin') {
-            alert("Selain Role Super Admin, Tidak Bisa Mengakses Halaman ini !");
-            return '/'
-          }
-        },
       },
       {
         path: "outlet",
         name: "top-menu-outlet",
         component: Outlet,
-        beforeEach: (to, from) => {
-          const Auth = useAuthStore();
-          if (Auth.items.role !== 'Super Admin') {
-            alert("Selain Role Super Admin, Tidak Bisa Mengakses Halaman ini !");
-            return '/'
-          }
-        },
       },
       {
         path: "pelanggan",
         name: "top-menu-pelanggan",
         component: Pelanggan,
-        beforeEach: (to, from) => {
-          const Auth = useAuthStore();
-          if (Auth.items.role !== 'Super Admin') {
-            alert("Selain Role Super Admin, Tidak Bisa Mengakses Halaman ini !");
-            return '/'
-          }
-        },
       },
       {
         path: "barang-masuk",
@@ -124,13 +93,6 @@ const routes = [
         path: "stok-lokal",
         name: "top-menu-stok-lokal",
         component: StokLokal,
-        beforeEach: (to, from) => {
-          const Auth = useAuthStore();
-          if (Auth.items.role === 'Operator') {
-            alert("Role Operator, Tidak Bisa Mengakses Halaman ini !");
-            return '/'
-          }
-        },
       },
       {
         path: "pembelian",
@@ -156,13 +118,6 @@ const routes = [
         path: "semua-akun",
         name: "top-menu-semua-akun",
         component: Users,
-        beforeEach: (to, from) => {
-          const Auth = useAuthStore();
-          if (Auth.items.role !== 'Super Admin') {
-            alert("Selain Role Super Admin, Tidak Bisa Mengakses Halaman ini !");
-            return '/'
-          }
-        },
       }
     ],
   },
@@ -184,13 +139,6 @@ const routes = [
         path: "satuan",
         name: "side-menu-satuan",
         component: Satuan,
-        beforeEach: (to, from) => {
-          const Auth = useAuthStore();
-          if (Auth.items.role !== 'Super Admin') {
-            alert("Selain Role Super Admin, Tidak Bisa Mengakses Halaman ini !");
-            return '/side-menu/dashboard'
-          }
-        },
       },
       {
         path: "barang-keluar",
@@ -201,49 +149,21 @@ const routes = [
         path: "barang",
         name: "side-menu-barang",
         component: Barang,
-        beforeEach: (to, from) => {
-          const Auth = useAuthStore();
-          if (Auth.items.role !== 'Super Admin') {
-            alert("Selain Role Super Admin, Tidak Bisa Mengakses Halaman ini !");
-            return '/side-menu/dashboard'
-          }
-        },
       },
       {
         path: "supplier",
         name: "side-menu-supplier",
         component: Supplier,
-        beforeEach: (to, from) => {
-          const Auth = useAuthStore();
-          if (Auth.items.role !== 'Super Admin') {
-            alert("Selain Role Super Admin, Tidak Bisa Mengakses Halaman ini !");
-            return '/side-menu/dashboard'
-          }
-        },
       },
       {
         path: "outlet",
         name: "side-menu-outlet",
         component: Outlet,
-        beforeEach: (to, from) => {
-          const Auth = useAuthStore();
-          if (Auth.items.role !== 'Super Admin') {
-            alert("Selain Role Super Admin, Tidak Bisa Mengakses Halaman ini !");
-            return '/side-menu/dashboard'
-          }
-        },
       },
       {
         path: "pelanggan",
         name: "side-menu-pelanggan",
         component: Pelanggan,
-        beforeEach: (to, from) => {
-          const Auth = useAuthStore();
-          if (Auth.items.role !== 'Super Admin') {
-            alert("Selain Role Super Admin, Tidak Bisa Mengakses Halaman ini !");
-            return '/side-menu/dashboard'
-          }
-        },
       },
       {
         path: "barang-masuk",
@@ -264,13 +184,6 @@ const routes = [
         path: "stok-lokal",
         name: "side-menu-stok-lokal",
         component: StokLokal,
-        beforeEach: (to, from) => {
-          const Auth = useAuthStore();
-          if (Auth.items.role === 'Operator') {
-            alert("Role Operator, Tidak Bisa Mengakses Halaman ini !");
-            return '/side-menu/dashboard'
-          }
-        },
       },
       {
         path: "pembelian",
@@ -296,13 +209,6 @@ const routes = [
         path: "semua-akun",
         name: "side-menu-semua-akun",
         component: Users,
-        beforeEach: (to, from) => {
-          const Auth = useAuthStore();
-          if (Auth.items.role !== 'Super Admin') {
-            alert("Selain Role Super Admin, Tidak Bisa Mengakses Halaman ini !");
-            return '/side-menu/dashboard'
-          }
-        },
       }
     ],
   },
@@ -324,13 +230,6 @@ const routes = [
         path: "satuan",
         name: "simple-menu-satuan",
         component: Satuan,
-        beforeEach: (to, from) => {
-          const Auth = useAuthStore();
-          if (Auth.items.role !== 'Super Admin') {
-            alert("Selain Role Super Admin, Tidak Bisa Mengakses Halaman ini !");
-            return '/simple-menu/dashboard'
-          }
-        },
       },
       {
         path: "barang-keluar",
@@ -341,49 +240,21 @@ const routes = [
         path: "barang",
         name: "simple-menu-barang",
         component: Barang,
-        beforeEach: (to, from) => {
-          const Auth = useAuthStore();
-          if (Auth.items.role !== 'Super Admin') {
-            alert("Selain Role Super Admin, Tidak Bisa Mengakses Halaman ini !");
-            return '/simple-menu/dashboard'
-          }
-        },
       },
       {
         path: "supplier",
         name: "simple-menu-supplier",
         component: Supplier,
-        beforeEach: (to, from) => {
-          const Auth = useAuthStore();
-          if (Auth.items.role !== 'Super Admin') {
-            alert("Selain Role Super Admin, Tidak Bisa Mengakses Halaman ini !");
-            return '/simple-menu/dashboard'
-          }
-        },
       },
       {
         path: "outlet",
         name: "simple-menu-outlet",
         component: Outlet,
-        beforeEach: (to, from) => {
-          const Auth = useAuthStore();
-          if (Auth.items.role !== 'Super Admin') {
-            alert("Selain Role Super Admin, Tidak Bisa Mengakses Halaman ini !");
-            return '/simple-menu/dashboard'
-          }
-        },
       },
       {
         path: "pelanggan",
         name: "simple-menu-pelanggan",
         component: Pelanggan,
-        beforeEach: (to, from) => {
-          const Auth = useAuthStore();
-          if (Auth.items.role !== 'Super Admin') {
-            alert("Selain Role Super Admin, Tidak Bisa Mengakses Halaman ini !");
-            return '/simple-menu/dashboard'
-          }
-        },
       },
       {
         path: "barang-masuk",
@@ -404,13 +275,6 @@ const routes = [
         path: "stok-lokal",
         name: "simple-menu-stok-lokal",
         component: StokLokal,
-        beforeEach: (to, from) => {
-          const Auth = useAuthStore();
-          if (Auth.items.role === 'Operator') {
-            alert("Role Operator, Tidak Bisa Mengakses Halaman ini !");
-            return '/simple-menu/dashboard'
-          }
-        },
       },
       {
         path: "pembelian",
@@ -436,13 +300,6 @@ const routes = [
         path: "semua-akun",
         name: "simple-menu-semua-akun",
         component: Users,
-        beforeEach: (to, from) => {
-          const Auth = useAuthStore();
-          if (Auth.items.role !== 'Super Admin') {
-            alert("Selain Role Super Admin, Tidak Bisa Mengakses Halaman ini !");
-            return '/simple-menu/dashboard'
-          }
-        },
       }
     ],
   },

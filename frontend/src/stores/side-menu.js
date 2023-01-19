@@ -79,7 +79,7 @@ export const useSideMenuStore = defineStore("sideMenu", {
             title: "Barang",
           },
           {
-            icon: "UsersIcon",
+            icon: "ContactIcon",
             pageName: "side-menu-pelanggan",
             title: "Pelanggan",
           },
@@ -92,6 +92,11 @@ export const useSideMenuStore = defineStore("sideMenu", {
             icon: "TruckIcon",
             pageName: "side-menu-supplier",
             title: "Supplier",
+          },
+          {
+            icon: "UsersIcon",
+            pageName: "side-menu-semua-akun",
+            title: "Semua Akun",
           },
           {
             icon: "InfoIcon",

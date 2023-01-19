@@ -6,7 +6,7 @@
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#">{{ data.nama_outlet }}</a></li>
         <li class="breadcrumb-item active" aria-current="page">
-          {{ $route.name }}
+          <p class="capitalize">{{ $route.name.replace(/-/gi, " ") }}</p>
         </li>
       </ol>
     </nav>
@@ -44,18 +44,20 @@
               <div class="ml-3">Pembelian</div>
             </RouterLink>
             <div class="flex items-center mt-2" v-if="data.role == 'Super Admin'">
-                <div
-                  class="w-8 h-8 bg-primary/10 dark:bg-primary/20 text-primary/80 flex items-center justify-center rounded-full">
-                  <UsersIcon class="w-4 h-4" />
-                </div>
-                <div class="ml-3">Semua Akun</div>
+              <div
+                class="w-8 h-8 bg-primary/10 dark:bg-primary/20 text-primary/80 flex items-center justify-center rounded-full">
+                <UsersIcon class="w-4 h-4" />
+              </div>
+              <div class="ml-3">Semua Akun</div>
             </div>
           </div>
           <div class="search-result__content__title">Users</div>
           <div class="mb-5">
             <a href class="flex items-center mt-3 zoom-in">
-              <div class="w-8 h-8 bg-white stroke-2 stroke-black p-auto rounded-full overflow-hidden shadow-lg image-fit zoom-in scale-110">
-                <CrownIcon class="w-6 h-6 object-fill stroke-2 stroke-black fill-yellow-200 bg-white mt-1 mx-auto rounded-full" />
+              <div
+                class="w-8 h-8 bg-white stroke-2 stroke-black p-auto rounded-full overflow-hidden shadow-lg image-fit zoom-in scale-110">
+                <CrownIcon
+                  class="w-6 h-6 object-fill stroke-2 stroke-black fill-yellow-200 bg-white mt-1 mx-auto rounded-full" />
               </div>
               <div class="ml-3">Super Admin</div>
               <div class="ml-auto w-auto truncate text-slate-500 text-xs text-right pr-3">
@@ -63,8 +65,10 @@
               </div>
             </a>
             <a href class="flex items-center mt-3 zoom-in">
-              <div class="w-8 h-8 bg-white stroke-2 stroke-black p-auto rounded-full overflow-hidden shadow-lg image-fit zoom-in scale-110">
-                <UserIcon class="w-6 h-6 object-fill stroke-2 stroke-black fill-yellow-200 bg-white mt-1 mx-auto rounded-full" />
+              <div
+                class="w-8 h-8 bg-white stroke-2 stroke-black p-auto rounded-full overflow-hidden shadow-lg image-fit zoom-in scale-110">
+                <UserIcon
+                  class="w-6 h-6 object-fill stroke-2 stroke-black fill-yellow-200 bg-white mt-1 mx-auto rounded-full" />
               </div>
               <div class="ml-3">Admin</div>
               <div class="ml-auto w-auto truncate text-slate-500 text-xs text-right pr-3">
@@ -72,8 +76,10 @@
               </div>
             </a>
             <a href class="flex items-center mt-3 zoom-in">
-              <div class="w-8 h-8 bg-white stroke-2 stroke-black p-auto rounded-full overflow-hidden shadow-lg image-fit zoom-in scale-110">
-                <HardHatIcon class="w-6 h-6 object-fill stroke-2 stroke-black fill-yellow-200 bg-white mt-1 mx-auto rounded-full" />
+              <div
+                class="w-8 h-8 bg-white stroke-2 stroke-black p-auto rounded-full overflow-hidden shadow-lg image-fit zoom-in scale-110">
+                <HardHatIcon
+                  class="w-6 h-6 object-fill stroke-2 stroke-black fill-yellow-200 bg-white mt-1 mx-auto rounded-full" />
               </div>
               <div class="ml-3">Operator</div>
               <div class="ml-auto w-auto truncate text-slate-500 text-xs text-right pr-3">
@@ -124,9 +130,12 @@
         class="w-8 h-8 bg-white stroke-2 stroke-black p-auto rounded-full overflow-hidden shadow-lg image-fit zoom-in scale-110">
         <!-- <img alt="Lurik Rachmad HTML" :src="$f()[9].photos[0]" /> -->
         <!-- <div class="bg-white w-8 h-8 m-auto p-auto rounded-full"> -->
-          <CrownIcon v-if="data.role == 'Super Admin'" class="w-6 h-6 object-fill stroke-2 stroke-black fill-yellow-200 bg-white mt-1 mx-auto rounded-full" />
-          <UserIcon v-else-if="data.role == 'Admin'" class="w-6 h-6 object-fill stroke-2 stroke-black fill-yellow-200 bg-white mt-1 mx-auto rounded-full" />
-          <HardHatIcon v-else class="w-6 h-6 object-fill stroke-2 stroke-black fill-yellow-200 bg-white mt-1 mx-auto rounded-full" />
+        <CrownIcon v-if="data.role == 'Super Admin'"
+          class="w-6 h-6 object-fill stroke-2 stroke-black fill-yellow-200 bg-white mt-1 mx-auto rounded-full" />
+        <UserIcon v-else-if="data.role == 'Admin'"
+          class="w-6 h-6 object-fill stroke-2 stroke-black fill-yellow-200 bg-white mt-1 mx-auto rounded-full" />
+        <HardHatIcon v-else
+          class="w-6 h-6 object-fill stroke-2 stroke-black fill-yellow-200 bg-white mt-1 mx-auto rounded-full" />
         <!-- </div> -->
       </DropdownToggle>
       <DropdownMenu class="w-56">
@@ -144,9 +153,11 @@
             <HardHatIcon v-else class="w-4 h-4 mr-2" />
             Profil
           </DropdownItem>
-          <DropdownItem v-if="data.role == 'Super Admin'" class="hover:bg-white/5" @click="semuaAkunModal = true">
-            <UsersIcon class="w-4 h-4 mr-2" /> Semua Akun
-          </DropdownItem>
+          <RouterLink to="/semua-akun">
+            <DropdownItem v-if="data.role == 'Super Admin'" class="hover:bg-white/5">
+              <UsersIcon class="w-4 h-4 mr-2" /> Semua Akun
+            </DropdownItem>
+          </RouterLink>
           <DropdownItem class="hover:bg-white/5">
             <HelpCircleIcon class="w-4 h-4 mr-2" /> Bantuan
           </DropdownItem>
@@ -200,133 +211,118 @@
     </ModalHeader>
     <ModalBody class="p-8 pt-0">
       <div class="flex-auto">
-          <div class="box zoom-in px-5">
-            <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
-              Profil User
-            </h6>
-            <div class="flex flex-wrap">
-              <div class="w-full lg:w-6/12 px-4">
-                <div class="relative w-full mb-3">
-                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
-                    ID User
-                  </label>
-                  <div
-                    class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                    >{{ data.userid }} </div>
-                </div>
+        <div class="box zoom-in px-5">
+          <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
+            Profil User
+          </h6>
+          <div class="flex flex-wrap">
+            <div class="w-full lg:w-6/12 px-4">
+              <div class="relative w-full mb-3">
+                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+                  ID User
+                </label>
+                <div
+                  class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+                  {{ data.userid }} </div>
               </div>
-              <div class="w-full lg:w-6/12 px-4">
-                <div class="relative w-full mb-3">
-                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
-                    Email User
-                  </label>
-                  <div
-                    class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                  >{{ data.email }}</div>
-                </div>
+            </div>
+            <div class="w-full lg:w-6/12 px-4">
+              <div class="relative w-full mb-3">
+                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+                  Email User
+                </label>
+                <div
+                  class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+                  {{ data.email }}</div>
               </div>
-              <div class="w-full lg:w-6/12 px-4">
-                <div class="relative w-full mb-3">
-                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
-                    Username
-                  </label>
-                  <div
-                    class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                  >{{ data.username }}</div>
-                </div>
+            </div>
+            <div class="w-full lg:w-6/12 px-4">
+              <div class="relative w-full mb-3">
+                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+                  Username
+                </label>
+                <div
+                  class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+                  {{ data.username }}</div>
               </div>
-              <div class="w-full lg:w-6/12 px-4">
-                <div class="relative w-full mb-3">
-                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
-                    Role/ Jabatan
-                  </label>
-                  <div
-                    class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                  >{{ data.role }}</div>
-                </div>
+            </div>
+            <div class="w-full lg:w-6/12 px-4">
+              <div class="relative w-full mb-3">
+                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+                  Role/ Jabatan
+                </label>
+                <div
+                  class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+                  {{ data.role }}</div>
               </div>
             </div>
           </div>
+        </div>
 
-          <hr class="mt-6 border-b-1 border-blueGray-300">
-          <div class="box zoom-in px-5">
-            <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
-              Profil Outlet
-            </h6>
-            <div class="flex flex-wrap">
-              <div class="w-full lg:w-4/12 px-4">
-                <div class="relative w-full mb-3">
-                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
-                    ID Outlet
-                  </label>
-                  <div
-                    class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                  >{{ data.id_outlet }}</div>
-                </div>
+        <hr class="mt-6 border-b-1 border-blueGray-300">
+        <div class="box zoom-in px-5">
+          <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
+            Profil Outlet
+          </h6>
+          <div class="flex flex-wrap">
+            <div class="w-full lg:w-4/12 px-4">
+              <div class="relative w-full mb-3">
+                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+                  ID Outlet
+                </label>
+                <div
+                  class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+                  {{ data.id_outlet }}</div>
               </div>
-              <div class="w-full lg:w-4/12 px-4">
-                <div class="relative w-full mb-3">
-                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
-                    Nama Outlet
-                  </label>
-                  <div
-                    class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                  >{{ data.nama_outlet }}</div>
-                </div>
+            </div>
+            <div class="w-full lg:w-4/12 px-4">
+              <div class="relative w-full mb-3">
+                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+                  Nama Outlet
+                </label>
+                <div
+                  class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+                  {{ data.nama_outlet }}</div>
               </div>
-              <div class="w-full lg:w-4/12 px-4">
-                <div class="relative w-full mb-3">
-                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
-                    Kontak Outlet
-                  </label>
-                  <div
-                    class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                  >{{ data.kontak_outlet }}</div>
-                </div>
+            </div>
+            <div class="w-full lg:w-4/12 px-4">
+              <div class="relative w-full mb-3">
+                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+                  Kontak Outlet
+                </label>
+                <div
+                  class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+                  {{ data.kontak_outlet }}</div>
               </div>
-              <div class="w-full lg:w-12/12 px-4">
-                <div class="relative w-full mb-3">
-                  <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
-                    Alamat Outlet
-                  </label>
-                  <textarea type="text"
-                    class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                    rows="4" disabled>{{ data.alamat_outlet }}</textarea>
-                </div>
+            </div>
+            <div class="w-full lg:w-12/12 px-4">
+              <div class="relative w-full mb-3">
+                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+                  Alamat Outlet
+                </label>
+                <textarea type="text"
+                  class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                  rows="4" disabled>{{ data.alamat_outlet }}</textarea>
               </div>
             </div>
           </div>
+        </div>
       </div>
     </ModalBody>
   </Modal>
   <!-- END:Profile Content -->
 
-   <!-- BEGIN: Semua Akun Content -->
-   <Modal size="modal-xl" backdrop="static" :show="semuaAkunModal" @hidden="semuaAkunModal = false">
-    <ModalHeader>
-      <h2 class="font-medium text-base mx-auto">Semua Akun</h2>
-      <a @click="semuaAkunModal = false" class="absolute right-0 top-0 mt-3 mr-3" href="javascript:;">
-        <XIcon class="w-8 h-8 text-slate-400" />
-      </a>
-    </ModalHeader>
-    <ModalBody class="p-8 pt-0">
-      <Users />
-    </ModalBody>
-  </Modal>
-  <!-- END: Semua Akun Content -->
 </template>
 
 <script setup>
 import { useAuthStore } from "@/stores/auth";
 import { RouterLink } from "vue-router";
 import { ref, onMounted } from "vue";
-import Users from "@/views/Users/Main.vue";
 
 
 const Auth = useAuthStore();
 const logoutConfirmationModal = ref(false);
 const profilModal = ref(false);
-const semuaAkunModal = ref(false);
 const data = ref([])
 
 const onLogout = () => {

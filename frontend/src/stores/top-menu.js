@@ -79,7 +79,7 @@ export const useTopMenuStore = defineStore("topMenu", {
             title: "Barang",
           },
           {
-            icon: "UsersIcon",
+            icon: "ContactIcon",
             pageName: "top-menu-pelanggan",
             title: "Pelanggan",
           },
@@ -92,6 +92,11 @@ export const useTopMenuStore = defineStore("topMenu", {
             icon: "TruckIcon",
             pageName: "top-menu-supplier",
             title: "Supplier",
+          },
+          {
+            icon: "UsersIcon",
+            pageName: "top-menu-semua-akun",
+            title: "Semua Akun",
           },
           {
             icon: "InfoIcon",
