@@ -3,7 +3,7 @@
     <div class="col-span-12 2xl:col-span-9">
       <div class="grid grid-cols-12 gap-6">
         <!-- BEGIN: General Report -->
-        <div class="col-span-12 mt-8" v-if="Auth.items.role == 'Super Admin'">
+        <div class="col-span-12 mt-8" v-if="data.role == 'Super Admin'">
           <div class="intro-y flex items-center h-10">
             <h2 class="text-lg font-medium truncate mr-5">General Report</h2>
             <a href="" class="ml-auto flex items-center text-primary">
@@ -99,7 +99,7 @@
         </div>
         <!-- END: General Report -->
 
-        <TabGroup v-if="Auth.items.role == 'Super Admin'"
+        <TabGroup v-if="data.role == 'Super Admin'"
           class="sm:col-span-8 md:col-span-12 xl:col-span-8 col-span-12 mt-5">
           <TabList class="nav-boxed-tabs">
             <Tab class="w-full py-2" tag="button">TERLARIS</Tab>
@@ -205,19 +205,28 @@
         <div
           class="border border-slate-200/60 dark:border-darkmode-400 rounded-md p-5 sm:col-span-4 md:col-span-12 xl:col-span-4 col-span-12">
 
-          <h2
-            class="text-lg font-medium truncate mr-auto flex items-center border-b border-slate-200/60 dark:border-darkmode-400 pb-5">
+          <h2 @click="isSave = true"
+            class="text-lg font-medium truncate mr-auto flex items-center border-b border-slate-200/60 dark:border-darkmode-400 pb-5 cursor-pointer hover:text-primary">
             <ChevronDownIcon class="w-4 h-4 mr-2" /> Notepad
+            <Loader2Icon v-if="isSave" class="motion-safe:animate-spin w-4 h-4 ml-2" />
           </h2>
-          <div class="mt-2" @keyup.ctrl.enter="simpan" >
+          <span class="text-xs">Klik <kbd
+              class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">Notepad</kbd>
+            di atas atau Klik
+            <kbd
+              class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">Ctrl</kbd>
+            + <kbd
+              class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">Enter</kbd>
+            untuk menyimpan.
+          </span>
+          <div class="mt-2" @keyup.ctrl.enter="isSave = true">
             <ClassicEditor class="h-52" v-model.lazy="editorData" />
           </div>
-          {{ editorData }}
         </div>
         <!-- END: Important Notepad -->
 
         <!-- BEGIN: Important Notes -->
-        <div v-if="Auth.items.role != 'Super Admin'"
+        <div v-if="data.role != 'Super Admin'"
           class="col-span-12 xl:col-span-12 xl:col-start-1 xl:row-start-1 2xl:col-start-auto 2xl:row-start-auto mt-3">
           <div class="intro-x flex items-center h-10">
             <h2 class="text-lg font-medium truncate mr-auto">
@@ -284,7 +293,7 @@
       <div class="2xl:border-l -mb-10 pb-10">
         <div class="2xl:pl-6 grid grid-cols-12 gap-x-6 2xl:gap-x-0 gap-y-6">
           <!-- BEGIN: Important Notes -->
-          <div v-if="Auth.items.role == 'Super Admin'"
+          <div v-if="data.role == 'Super Admin'"
             class="col-span-12 xl:col-span-12 xl:col-start-1 xl:row-start-1 2xl:col-start-auto 2xl:row-start-auto mt-3 2xl:mt-8 -mb-5">
             <div class="intro-x flex items-center h-10">
               <h2 class="text-lg font-medium truncate mr-auto">
@@ -399,7 +408,7 @@ import { useDashboardStore } from "@/stores/dashboard";
 import { currencyFormatter } from "@/utils/helper";
 import { TabulatorFull as Tabulator } from 'tabulator-tables';
 import { ref, provide, reactive, onMounted, watch, onBeforeUnmount, onBeforeUpdate } from "vue";
-import { createIcons, icons } from "lucide";
+import { createIcons, icons, Loader2 } from "lucide";
 import moment from "moment";
 import { useAuthStore } from "@/stores/auth";
 const Auth = useAuthStore();
@@ -421,6 +430,7 @@ const tabulatorBeli = ref();
 
 const modalErrorRef = ref();
 const fullCalender = ref();
+const isSave = ref(false);
 const data = ref([]);
 
 
@@ -842,8 +852,12 @@ const basicNonStickyNotificationToggle = () => {
 
 //----------------------------------------------------------------
 const editorData = ref();
-const simpan = () =>{
-  console.log("simpan", editorData.value)
+const simpanNotepad = async () => {
+  const id = data.value.userid
+  const notepad = editorData.value
+  await Dashboard.updateNotepad(id, notepad)
+  isSave.value = false;
+  //console.log("simpanNotepad", editorData.value)
 }
 
 const importantNotesRef = ref();
@@ -862,23 +876,25 @@ const nextImportantNotes = () => {
   el.tns.goTo("next");
 };
 
-// watch(editorData, async (newValue, oldValue) => {
-//   try {
-//     const id = Auth.items.userid
-//     const notepad = newValue
-//     console.log("editor: ", newValue)
-//     // await Dashboard.updateNotepad(id, notepad)
-//   } catch (error) {
-//     alert("Gagal watch notepad" + error)
-//   }
-// }, { immediate: false })
+watch(isSave, async (newValue, oldValue) => {
+  try {
+    if (newValue == true) {
+      simpanNotepad()
+    }
+  } catch (error) {
+    alert("Gagal watch save notepad" + error)
+  }
+}, { immediate: false })
 
 onMounted(async function () {
   try {
-    await Dashboard.readItem();
+    const id = Auth.items.userid
+    data.value = await Dashboard.readItem();
+    editorData.value = await Dashboard.getNotepad(id);
+
     // editorData.value = data.value.notepad
     // data.value = Auth
-    //console.log(data.value);
+    console.log(data.value.role);
     if (Auth.items.role == 'Super Admin') {
       initTabulatorProduk();
       initTabulatorOutlet();
@@ -896,12 +912,13 @@ onMounted(async function () {
   }
 });
 
-  // onBeforeUpdate(async () => {
-  //   console.log("onBeforeUpdate", editorData.value);
-  // });
+// onBeforeUpdate(async () => {
+//   console.log("onBeforeUpdate", editorData.value);
+// });
 
 onBeforeUnmount(async () => {
-  console.log("onUnmount", editorData.value);
+  simpanNotepad();
+  //console.log("onUnmount", editorData.value);
 });
 
 </script>

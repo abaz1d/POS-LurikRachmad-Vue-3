@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { request } from "../utils/api";
+import { useAuthStore } from "./auth";
 
 export const useDashboardStore = defineStore({
   id: "dashboard-store",
@@ -12,26 +13,45 @@ export const useDashboardStore = defineStore({
   actions: {
     async readItem() {
       try {
+        const Auth = useAuthStore();
         const data = await request.get("utama");
         if (data.status >= 200 && data.status < 300) {
           this.rawItems = data.data;
           // console.log("dashboard-store", this.rawItems)
           
+          //console.log("dashboard-store", notepad, id)
+          return Auth.items
         }
       } catch (error) {
         console.error(e);
       }
 
     },
+    async getNotepad(id) {
+      // console.log("notepad", id, notepad)
+      try {
+        const { data } = await request.get(`users/editnotepad/${id}`);
+        //console.log("dashboard-store get", data, id)
+        if (data.success) {
+          return data.data.notepad
+
+        }
+      } catch (error) {
+        console.error(error)
+      }
+    },
     async updateNotepad(id, notepad) {
       // console.log("notepad", id, notepad)
-      const data = await request.post(`users/editnotepad/${id}`, {notepad});
-      if (data.success) {
-        console.log("ss")
-        return data.data.notepad
-        
+      try {
+        const { data } = await request.post(`users/editnotepad/${id}`, { notepad });
+        //console.log("ss", data)
+        if (data.success) {
+          
+          return data.data.notepad
+        }
+      } catch (error) {
+        console.error(error)
       }
-      console.log("gagal", data)
     }
   },
 });
