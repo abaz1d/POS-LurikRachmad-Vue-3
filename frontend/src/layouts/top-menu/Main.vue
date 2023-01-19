@@ -192,9 +192,9 @@
             menu.subMenu
               ? 'javascript:;'
               : router.resolve({ name: menu.pageName }).path
-          " class="top-menu" :class="{
-  'top-menu--active': menu.active,
-}" @click="linkTo(menu, router, $event)">
+                          " class="top-menu" :class="{
+                  'top-menu--active': menu.active,
+                }" @click="linkTo(menu, router, $event)">
             <div class="top-menu__icon">
               <component :is="menu.icon" />
             </div>
@@ -205,7 +205,9 @@
           </a>
           <!-- BEGIN: Second Child -->
           <ul v-if="menu.subMenu">
-            <li v-for="(subMenu, subMenuKey) in menu.subMenu" :key="subMenuKey">
+            <li v-for="(subMenu, subMenuKey) in menu.subMenu.filter(
+              item => {return item.title !== dataFilter}
+            )" :key="subMenuKey">
               <a :href="
                 subMenu.subMenu
                   ? 'javascript:;'
@@ -427,11 +429,13 @@ const profilModal = ref(false);
 const semuaAkunModal = ref(false);
 const data = ref([])
 
+const dataFilter = ref()
+
 const route = useRoute();
 const router = useRouter();
 const formattedMenu = ref([]);
 const topMenuStore = useTopMenuStore();
-const topMenu = computed(() => nestedMenu(topMenuStore.menu, route));
+const topMenu = computed(() => nestedMenu(topMenuStore.items, route));
 
 provide("forceActiveMenu", (pageName) => {
   route.forceActiveMenu = pageName;
@@ -455,5 +459,7 @@ onMounted(() => {
   dom("body").removeClass("error-page").removeClass("login").addClass("main");
   formattedMenu.value = $h.toRaw(topMenu.value);
   data.value = Auth.items
+  dataFilter.value = data.value.role == "Operator" ? "Stok Lokal" : ""
+  //console.log("stook", dataFilter.value, data.value.role)
 });
 </script>

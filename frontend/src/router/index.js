@@ -33,6 +33,10 @@ const routes = [
         path: "/",
         name: "top-menu-dashboard",
         component: Dashboard,
+        // beforeEnter: (to, from) => {
+        //   console.log("Entering / ", to, from);
+        //   //return false
+        // },
       },
       {
         path: "page-2",
@@ -317,6 +321,7 @@ router.beforeEach(async (to) => {
   const publicPages = ['/login'];
   const authRequired = !publicPages.includes(to.path);
   const auth = useAuthStore();
+  //console.log("auth required", auth.user)
 
   if (authRequired && !auth.user) {
     auth.returnUrl = to.fullPath;

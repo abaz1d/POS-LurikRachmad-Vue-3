@@ -58,7 +58,7 @@ module.exports = function (db) {
             email: rows[0].email_user,
             username: rows[0].username,
             role: rows[0].role,
-            notepad: rows[0].notepad,
+            //notepad: rows[0].notepad,
 
             id_outlet: rows[0].id_outlet,
             nama_outlet: rows[0].nama_outlet,

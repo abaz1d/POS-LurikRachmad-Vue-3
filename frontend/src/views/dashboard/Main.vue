@@ -894,7 +894,7 @@ onMounted(async function () {
 
     // editorData.value = data.value.notepad
     // data.value = Auth
-    console.log(data.value.role);
+    //console.log(data.value.role);
     if (Auth.items.role == 'Super Admin') {
       initTabulatorProduk();
       initTabulatorOutlet();
