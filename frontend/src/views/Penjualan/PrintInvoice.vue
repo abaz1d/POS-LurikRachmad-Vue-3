@@ -79,7 +79,7 @@
 </template>
 
 <script>
-import { currencyFormatter } from "../../utils/helper";
+import { currencyFormatter } from "@/utils/helper";
 import moment from "moment";
 
 export default {

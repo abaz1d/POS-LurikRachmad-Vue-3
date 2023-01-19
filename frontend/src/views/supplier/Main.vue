@@ -159,7 +159,7 @@
 </template>
 
 <script>
-import { useSupplierStore } from "../../stores/supplier";
+import { useSupplierStore } from "@/stores/supplier";
 // import SupplierList from "./SupplierList.vue";
 import { ref, reactive } from "vue";
 import xlsx from "xlsx";

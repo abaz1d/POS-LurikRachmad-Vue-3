@@ -91,13 +91,13 @@
 </template>
 
 <script setup>
-import { useBarangStore } from "../../stores/barang";
+import { useBarangStore } from "@/stores/barang";
 import ModalDatabaseError from "@/components/modal-error/Main.vue";
 import { ref, provide, reactive, onMounted, onBeforeUnmount, watch } from "vue";
 import xlsx from "xlsx";
 import { createIcons, icons } from "lucide";
 import { TabulatorFull as Tabulator } from 'tabulator-tables';
-import { currencyFormatter } from "../../utils/helper";
+import { currencyFormatter } from "@/utils/helper";
 import dom from "@left4code/tw-starter/dist/js/dom";
 import moment from "moment";
 import JsBarcode from "jsbarcode"

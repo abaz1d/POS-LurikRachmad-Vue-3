@@ -13,7 +13,7 @@
           <div class="grid grid-cols-12 gap-6 mt-5">
             <div class="col-span-12 sm:col-span-6 xl:col-span-3 intro-y">
               <div class="report-box zoom-in">
-                <div class="box p-5">
+                <div class="box p-5 overflow-x-auto">
                   <div class="flex">
                     <BanknoteIcon class="report-box__icon text-primary" />
                     <div class="ml-auto">
@@ -26,7 +26,7 @@
                       </Tippy>
                     </div>
                   </div>
-                  <div class="text-3xl font-medium leading-8 mt-6">{{
+                  <div class="text-3xl font-medium leading-8 mt-6 whitespace-nowrap">{{
                     currencyFormatter.format(Dashboard.items.profit)
                   }}</div>
                   <div class="text-base text-slate-500 mt-1">Pendapatan</div>
@@ -35,7 +35,7 @@
             </div>
             <div class="col-span-12 sm:col-span-6 xl:col-span-3 intro-y">
               <div class="report-box zoom-in">
-                <div class="box p-5">
+                <div class="box p-5 overflow-x-auto">
                   <div class="flex">
                     <ChevronsDownIcon class="report-box__icon text-success" />
                     <div class="ml-auto">
@@ -44,7 +44,7 @@
                       </Tippy>
                     </div>
                   </div>
-                  <div class="text-3xl font-medium leading-8 mt-6">{{
+                  <div class="text-3xl font-medium leading-8 mt-6 whitespace-nowrap">{{
                     currencyFormatter.format(Dashboard.items.uangMasuk)
                   }}</div>
                   <div class="text-base text-slate-500 mt-1">Uang Masuk</div>
@@ -53,7 +53,7 @@
             </div>
             <div class="col-span-12 sm:col-span-6 xl:col-span-3 intro-y">
               <div class="report-box zoom-in">
-                <div class="box p-5">
+                <div class="box p-5 overflow-x-auto">
                   <div class="flex">
                     <ChevronsUpIcon class="report-box__icon text-danger" />
                     <div class="ml-auto">
@@ -62,7 +62,7 @@
                       </Tippy>
                     </div>
                   </div>
-                  <div class="text-3xl font-medium leading-8 mt-6">{{
+                  <div class="text-3xl font-medium leading-8 mt-6 whitespace-nowrap">{{
                     currencyFormatter.format(Dashboard.items.uangKeluar)
                   }}</div>
                   <div class="text-base text-slate-500 mt-1">
@@ -73,7 +73,7 @@
             </div>
             <div class="col-span-12 sm:col-span-6 xl:col-span-3 intro-y">
               <div class="report-box zoom-in">
-                <div class="box p-5">
+                <div class="box p-5 overflow-x-auto">
                   <div class="flex">
                     <ArrowLeftRightIcon class="report-box__icon text-primary" />
                     <div class="ml-auto">
@@ -87,7 +87,7 @@
                       </Tippy>
                     </div>
                   </div>
-                  <div class="text-3xl font-medium leading-8 mt-6">{{ parseInt(Dashboard.items.totaljual) +
+                  <div class="text-3xl font-medium leading-8 mt-6 whitespace-nowrap">{{ parseInt(Dashboard.items.totaljual) +
                   parseInt(Dashboard.items.totalbeli) }}</div>
                   <div class="text-base text-slate-500 mt-1">
                     Total Transaksi
@@ -358,32 +358,12 @@
             class="col-span-12 xl:col-span-12 2xl:col-span-12 xl:col-start-1 xl:row-start-2 2xl:col-start-auto 2xl:row-start-auto mt-4">
             <div class="intro-x flex items-center h-10">
               <h2 class="text-lg font-medium truncate mr-5">Kalender</h2>
-              <!-- <a href="javascript:void(0)" @click="addNewCal()" class="ml-auto text-primary truncate flex items-center">
-                <PlusIcon class="w-4 h-4 mr-1" /> Tambah Jadwal Baru
-              </a> -->
             </div>
             <div class="mt-5">
               <div class="intro-x box">
                 <div class="p-5">
                   <Calendar ref="fullCalender" />
                 </div>
-                <!-- <div class="border-t border-slate-200/60 p-5">
-                  <div class="flex items-center">
-                    <div class="w-2 h-2 bg-pending rounded-full mr-3"></div>
-                    <span class="truncate">UI/UX Workshop</span>
-                    <span class="font-medium xl:ml-auto">23th</span>
-                  </div>
-                  <div class="flex items-center mt-4">
-                    <div class="w-2 h-2 bg-primary rounded-full mr-3"></div>
-                    <span class="truncate">VueJs Frontend Development</span>
-                    <span class="font-medium xl:ml-auto">10th</span>
-                  </div>
-                  <div class="flex items-center mt-4">
-                    <div class="w-2 h-2 bg-warning rounded-full mr-3"></div>
-                    <span class="truncate">Laravel Rest API</span>
-                    <span class="font-medium xl:ml-auto">31th</span>
-                  </div>
-                </div> -->
               </div>
             </div>
           </div>
@@ -767,89 +747,6 @@ const getImgUrl = (gambar_varian) => {
 
   return image;
 }
-
-// const addNewCal = () => {
-//   [{
-//     "start": "2023-01-11T17:00:00.000Z",
-//     "end": "2023-01-12T17:00:00.000Z",
-//     "startStr": "2023-01-12",
-//     "endStr": "2023-01-13",
-//     "allDay": true,
-//     "jsEvent": {
-//         "isTrusted": true
-//     },
-//     "view": {
-//         "type": "dayGridMonth",
-//         "dateEnv": {
-//             "timeZone": "local",
-//             "canComputeOffset": true,
-//             "calendarSystem": {},
-//             "locale": {
-//                 "codeArg": "en",
-//                 "codes": [
-//                     "en"
-//                 ],
-//                 "week": {
-//                     "dow": 0,
-//                     "doy": 4
-//                 },
-//                 "simpleNumberFormat": {},
-//                 "options": {
-//                     "direction": "ltr",
-//                     "buttonText": {
-//                         "prev": "prev",
-//                         "next": "next",
-//                         "prevYear": "prev year",
-//                         "nextYear": "next year",
-//                         "year": "year",
-//                         "today": "today",
-//                         "month": "month",
-//                         "week": "week",
-//                         "day": "day",
-//                         "list": "list"
-//                     },
-//                     "weekText": "W",
-//                     "weekTextLong": "Week",
-//                     "closeHint": "Close",
-//                     "timeHint": "Time",
-//                     "eventHint": "Event",
-//                     "allDayText": "all-day",
-//                     "moreLinkText": "more",
-//                     "noEventsText": "No events to display",
-//                     "buttonHints": {
-//                         "prev": "Previous $0",
-//                         "next": "Next $0"
-//                     },
-//                     "viewHint": "$0 view",
-//                     "navLinkHint": "Go to $0"
-//                 }
-//             },
-//             "weekDow": 0,
-//             "weekDoy": 4,
-//             "weekText": "W",
-//             "weekTextLong": "Week",
-//             "cmdFormatter": null,
-//             "defaultSeparator": " - "
-//         }
-//     }
-// }]
-//   //console.log("cal", fullCalender.value);
-//   fullCalender.value.handleDateSelect()
-// }
-
-//----------------------------------------------------------------
-
-// Basic non sticky notification
-const basicNonStickyNotification = ref();
-provide("bind[basicNonStickyNotification]", (el) => {
-  // Binding
-  basicNonStickyNotification.value = el;
-});
-const basicNonStickyNotificationToggle = () => {
-  // Show notification
-  basicNonStickyNotification.value.showToast();
-};
-
 //----------------------------------------------------------------
 const editorData = ref();
 const simpanNotepad = async () => {
@@ -891,10 +788,6 @@ onMounted(async function () {
     const id = Auth.items.userid
     data.value = await Dashboard.readItem();
     editorData.value = await Dashboard.getNotepad(id);
-
-    // editorData.value = data.value.notepad
-    // data.value = Auth
-    //console.log(data.value.role);
     if (Auth.items.role == 'Super Admin') {
       initTabulatorProduk();
       initTabulatorOutlet();
@@ -902,19 +795,12 @@ onMounted(async function () {
     initTabulatorJual();
     initTabulatorBeli();
     reInitOnResizeWindow();
-    //basicNonStickyNotificationToggle();
     modalErrorRef.value.errorDatabaseModal = false;
   } catch (error) {
-    // errorDatabaseModal.value = true;
-    //alert("onMounted" + error)
+    console.error(error)
     modalErrorRef.value.errorDatabaseModal = true;
-    // console.log("err", modalErrorRef.value.errorDatabaseModal)
   }
 });
-
-// onBeforeUpdate(async () => {
-//   console.log("onBeforeUpdate", editorData.value);
-// });
 
 onBeforeUnmount(async () => {
   simpanNotepad();

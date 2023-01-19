@@ -154,7 +154,7 @@
 </template>
 
 <script>
-import { useOutletStore } from "../../stores/outlet";
+import { useOutletStore } from "@/stores/outlet";
 import ModalDatabaseError from "@/components/modal-error/Main.vue";
 // import OutletList from "./OutletList.vue";
 import { ref, reactive } from "vue";
@@ -516,14 +516,10 @@ export default {
       this.$refs.modalErrorRef.errorDatabaseModal = false;
     }).catch((error) => {
       //alert(error)
+      console.error(error);
       this.$refs.modalErrorRef.errorDatabaseModal = true;
       //console.log("error: " + this.$refs.modalErrorRef)
     });
-    // this.outlets = this.Outlet.items
   },
-  // mounted() {
-  //   this.initTabulator();
-  //   this.reInitOnResizeWindow();
-  // }
 };
 </script>

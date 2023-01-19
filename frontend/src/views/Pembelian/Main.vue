@@ -476,15 +476,15 @@ closeQrScanner();
 
 <script setup>
 import $ from "jquery";
-import { usePembelianStore } from "../../stores/pembelian";
+import { usePembelianStore } from "@/stores/pembelian";
 import { ref, provide, reactive, onMounted, watch } from "vue";
 import ModalDatabaseError from "@/components/modal-error/Main.vue";
 import xlsx from "xlsx";
 import { createIcons, icons } from "lucide";
 import { TabulatorFull as Tabulator } from 'tabulator-tables';
 import dom from "@left4code/tw-starter/dist/js/dom";
-import qrcode from "../../components/qrcode/QrCode.vue";
-import { currencyFormatter } from "../../utils/helper";
+import qrcode from "@/components/qrcode/QrCode.vue";
+import { currencyFormatter } from "@/utils/helper";
 import PrintInvoice from "./PrintInvoice.vue";
 import moment from "moment";
 import html2canvas from 'html2canvas';

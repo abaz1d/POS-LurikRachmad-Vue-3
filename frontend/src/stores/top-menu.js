@@ -132,14 +132,12 @@ export const useTopMenuStore = defineStore("topMenu", {
       const Auth = useAuthStore();
       const Role = Auth.items.role
       const Title = item.title
-      //state.menu[1].subMenu[5]
 
       //Jika Role Selain Super Admin Menu Pengaturan Data Tidak Tersedia
       if (Role !== 'Super Admin') {
         return Title !== 'Pengaturan Data'
      
       } else {
-        //console.log("bukan sa")
         return item
       }
     })

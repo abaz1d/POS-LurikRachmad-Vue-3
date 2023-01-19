@@ -149,7 +149,7 @@
 </template>
 
 <script>
-import { useSatuanStore } from "../../stores/satuan";
+import { useSatuanStore } from "@/stores/satuan";
 // import SatuanList from "./SatuanList.vue";
 import { ref, reactive } from "vue";
 import xlsx from "xlsx";
@@ -181,9 +181,6 @@ export default {
     const Satuan = useSatuanStore();
     return { Satuan, moment, };
   },
-  // components: {
-  //   SatuanList,
-  // },
   data() {
     return {
       deleteConfirmationModal,
@@ -247,10 +244,6 @@ export default {
 
     initTabulator() {
       this.tabulator = new Tabulator(this.$refs.tableRef, {
-        // ajaxURL: "https://dummy-data.left4code.com",
-        // ajaxFiltering: true,
-        // ajaxSorting: true,
-        //ajaxLoaderLoading:"<span>Loading Data</span>",
         printAsHtml: true,
         printStyled: true,
         printHeader: `<h1 class='text-2xl p-2 m-2 text-center border-y-2 border-black'>Tabel Satuan<h1>`,

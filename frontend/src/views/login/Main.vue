@@ -127,16 +127,6 @@ import { RouterLink } from "vue-router";
 import { onMounted, ref, provide, watch, reactive, toRefs } from "vue";
 import DarkModeSwitcher from "@/components/dark-mode-switcher/Main.vue";
 import dom from "@left4code/tw-starter/dist/js/dom";
-import {
-  required,
-  minLength,
-  maxLength,
-  email,
-  url,
-  integer,
-} from "@vuelidate/validators";
-import { useVuelidate } from "@vuelidate/core";
-import Toastify from "toastify-js";
 
 const Auth = useAuthStore();
 

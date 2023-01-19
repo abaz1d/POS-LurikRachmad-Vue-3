@@ -155,7 +155,7 @@
 </template>
 
 <script>
-import { usePelangganStore } from "../../stores/pelanggan";
+import { usePelangganStore } from "@/stores/pelanggan";
 import ModalDatabaseError from "@/components/modal-error/Main.vue";
 // import PelangganList from "./PelangganList.vue";
 import { ref, reactive } from "vue";
@@ -265,10 +265,6 @@ export default {
 
     initTabulator() {
       this.tabulator = new Tabulator(this.$refs.tableRef, {
-        // ajaxURL: "https://dummy-data.left4code.com",
-        // ajaxFiltering: true,
-        // ajaxSorting: true,
-        //ajaxLoaderLoading:"<span>Loading Data</span>",
         printAsHtml: true,
         printStyled: true,
         printHeader: `<h1 class='text-2xl p-2 m-2 text-center border-y-2 border-black'>Tabel Pelanggan<h1>`,
@@ -316,9 +312,6 @@ export default {
             vertAlign: "middle",
             print: false,
             editor: "input",
-            // editable: false, cellDblClick: function (e, cell) {
-            //   cell.edit(true);
-            // },
             download: false,
             formatter(cell) {
               return `<div>
@@ -516,14 +509,9 @@ export default {
       this.reInitOnResizeWindow();
       this.$refs.modalErrorRef.errorDatabaseModal = false;
     }).catch((error) => {
-      //alert(error)
+      console.error(error);
       this.$refs.modalErrorRef.errorDatabaseModal = true;
     });
-    // this.pelanggans = this.Pelanggan.items
   },
-  // mounted() {
-  //   this.initTabulator();
-  //   this.reInitOnResizeWindow();
-  // }
 };
 </script>

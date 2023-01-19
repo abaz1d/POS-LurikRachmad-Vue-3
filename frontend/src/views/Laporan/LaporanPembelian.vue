@@ -101,12 +101,12 @@
 </template>
 
 <script setup>
-import { usePembelianStore } from "../../stores/pembelian";
+import { usePembelianStore } from "@/stores/pembelian";
 import { ref, provide, reactive, onMounted, onBeforeUnmount, watch } from "vue";
 import xlsx from "xlsx";
 import { createIcons, icons } from "lucide";
 import { TabulatorFull as Tabulator } from 'tabulator-tables';
-import { currencyFormatter } from "../../utils/helper";
+import { currencyFormatter } from "@/utils/helper";
 import moment from "moment";
 
 const Pembelian = usePembelianStore();

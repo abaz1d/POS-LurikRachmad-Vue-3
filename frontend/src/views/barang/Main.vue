@@ -388,14 +388,14 @@ closeQrScanner();
 
 <script setup>
 import $ from "jquery";
-import { useBarangStore } from "../../stores/barang";
+import { useBarangStore } from "@/stores/barang";
 import { ref, provide, reactive, onMounted, onBeforeUnmount, watch } from "vue";
 import xlsx from "xlsx";
 import { createIcons, icons } from "lucide";
 import { TabulatorFull as Tabulator } from 'tabulator-tables';
 import dom from "@left4code/tw-starter/dist/js/dom";
-import qrcode from "../../components/qrcode/QrCode.vue";
-import { currencyFormatter } from "../../utils/helper";
+import qrcode from "@/components/qrcode/QrCode.vue";
+import { currencyFormatter } from "@/utils/helper";
 import moment from "moment";
 
 const Barang = useBarangStore();
