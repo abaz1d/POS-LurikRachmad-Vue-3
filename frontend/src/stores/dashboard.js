@@ -14,11 +14,11 @@ export const useDashboardStore = defineStore({
     async readItem() {
       try {
         const Auth = useAuthStore();
-        const data = await request.get("utama");
-        if (data.status >= 200 && data.status < 300) {
+        const { data } = await request.get("utama");
+        if (data.success) {
           this.rawItems = data.data;
-          // console.log("dashboard-store", this.rawItems)
-          
+          //console.log("dashboard-store", this.rawItems)
+
           //console.log("dashboard-store", notepad, id)
           return Auth.items
         }
@@ -31,7 +31,7 @@ export const useDashboardStore = defineStore({
       // console.log("notepad", id, notepad)
       try {
         const { data } = await request.get(`users/editnotepad/${id}`);
-        //console.log("dashboard-store get", data, id)
+        //console.log("dashboard-store get", data.data.notepad, id)
         if (data.success) {
           return data.data.notepad
 
@@ -46,7 +46,7 @@ export const useDashboardStore = defineStore({
         const { data } = await request.post(`users/editnotepad/${id}`, { notepad });
         //console.log("ss", data)
         if (data.success) {
-          
+
           return data.data.notepad
         }
       } catch (error) {

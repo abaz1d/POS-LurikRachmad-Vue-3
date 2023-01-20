@@ -87,7 +87,8 @@
                       </Tippy>
                     </div>
                   </div>
-                  <div class="text-3xl font-medium leading-8 mt-6 whitespace-nowrap">{{ parseInt(Dashboard.items.totaljual) +
+                  <div class="text-3xl font-medium leading-8 mt-6 whitespace-nowrap">{{
+                  parseInt(Dashboard.items.totaljual) +
                   parseInt(Dashboard.items.totalbeli) }}</div>
                   <div class="text-base text-slate-500 mt-1">
                     Total Transaksi
@@ -99,8 +100,7 @@
         </div>
         <!-- END: General Report -->
 
-        <TabGroup v-if="data.role == 'Super Admin'"
-          class="sm:col-span-8 md:col-span-12 xl:col-span-8 col-span-12 mt-5">
+        <TabGroup v-if="data.role == 'Super Admin'" class="sm:col-span-8 md:col-span-12 xl:col-span-8 col-span-12 mt-5">
           <TabList class="nav-boxed-tabs">
             <Tab class="w-full py-2" tag="button">TERLARIS</Tab>
             <Tab class="w-full py-2" tag="button">TRANSAKSI HARI INI</Tab>
@@ -220,7 +220,7 @@
             untuk menyimpan.
           </span>
           <div class="mt-2" @keyup.ctrl.enter="isSave = true">
-            <ClassicEditor class="h-52" v-model.lazy="editorData" />
+            <ClassicEditor class="h-52" v-model="editorData" />
           </div>
         </div>
         <!-- END: Important Notepad -->
@@ -748,7 +748,7 @@ const getImgUrl = (gambar_varian) => {
   return image;
 }
 //----------------------------------------------------------------
-const editorData = ref();
+const editorData = ref("");
 const simpanNotepad = async () => {
   const id = data.value.userid
   const notepad = editorData.value
@@ -784,10 +784,13 @@ watch(isSave, async (newValue, oldValue) => {
 }, { immediate: false })
 
 onMounted(async function () {
+  const id = Auth.items.userid
   try {
-    const id = Auth.items.userid
+
     data.value = await Dashboard.readItem();
-    editorData.value = await Dashboard.getNotepad(id);
+    const notepad = await Dashboard.getNotepad(id)
+    editorData.value = (notepad == null) ? '' : notepad
+    //console.log("onUnmount", editorData.value, id);
     if (Auth.items.role == 'Super Admin') {
       initTabulatorProduk();
       initTabulatorOutlet();

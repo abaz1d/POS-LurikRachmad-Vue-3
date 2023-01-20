@@ -28,23 +28,19 @@ module.exports = function (db) {
         values.push(req.query.cari_role);
       }
 
-      sql = 'SELECT * FROM users '
+      sql = 'SELECT users.id_users, users.email_user, users.username, users.password, users.role, users.id_outlet, users.notepad, outlet.nama_outlet FROM public.users LEFT JOIN outlet ON users.id_outlet = outlet.id_outlet '
       if (wheres.length > 0) {
         sql += ` WHERE ${wheres.join(' AND ')}`
       }
 
-      sql += 'ORDER BY id_users'
+      sql += 'ORDER BY id_users ASC';
 
-      const totaljual = await db.query(`SELECT count(no_invoice) AS totaljual FROM penjualan`)
-      const totalbeli = await db.query(`SELECT count(no_invoice) AS totalbeli FROM pembelian`)
+      const outlet = await db.query(`SELECT id_outlet, nama_outlet FROM public.outlet ORDER BY id_outlet ASC `)
       const { rows } = await db.query(sql, values);
 
       res.json(new Response({
         rows,
-        user: req.session.user,
-        totaljual: totaljual.rows[0].totaljual,
-        totalbeli: totalbeli.rows[0].totalbeli,
-        query: req.query
+        outlet: outlet.rows,
       }))
     } catch (e) {
       res.status(500).json(new Response(e, false))

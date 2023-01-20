@@ -61,7 +61,7 @@
                     class="bg-gray-300 hover:bg-gray-400 rounded px-2 py-1 text-sm text-gray-600 font-mono cursor-pointer js-password-label"
                     for="toggle">show</label>
                 </div>
-                <input v-model="input_password" class=" form-control w-full py-3 px-3 pr-16 js-password" id="password"
+                <input @keyup.enter="isLoading = true" v-model="input_password" class=" form-control w-full py-3 px-3 pr-16 js-password" id="password"
                   type="password" autocomplete="off" placeholder="Password: 123" />
               </div>
 
@@ -177,7 +177,7 @@ const onLogin = () => {
   const email_user = input_email.value
   const password = input_password.value
 
-  console.log(email_user, password)
+  //console.log(email_user, password)
 
   if (email_user.length > 0 && password.length > 0) {
     //alert(email + password)
