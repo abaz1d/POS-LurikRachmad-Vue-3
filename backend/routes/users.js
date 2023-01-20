@@ -1,5 +1,5 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const { isTokenValid, Response } = require('../helpers/util')
@@ -74,24 +74,29 @@ module.exports = function (db) {
     }
   });
 
-  router.post('/add', function (req, res, next) {
-//id_outlet- token
-    const {email_user, username, password, role} = req.body
-    db.query('SELECT * FROM users WHERE email_user = $1', [email_user], (err, email) => {
-      
-      if (err) return res.status(500).json(new Response(err, false))
+  router.post('/add', async function (req, res, next) {
+    //id_outlet- token
+    try {
+      const { email_user, username, password, role, id_outlet } = req.body
+      db.query('SELECT * FROM users WHERE email_user = $1', [email_user], (err, email) => {
 
-      if (email.rows.length > 0) return res.send("email sudah terdaftar")
+        if (err) return res.json(new Response({ message: "failed compare emaile" }, false))
 
-      bcrypt.hash(password, saltRounds, function (err, hash) {
-        if (err) return res.status(500).json(new Response(err, false))
-        db.query('INSERT INTO users(email_user,username,password,role,id_outlet) VALUES ($1, $2, $3, $4, $5) RETURNING *', [email_user, username, hash, role, id_outlet], (err, data) => {
+        if (email.rows.length > 0) return res.json(new Response({ message: "e-mail has been registered" }, false))
+
+        bcrypt.hash(password, saltRounds, async function (err, hash) {
+          if (err) return res.json(new Response({ message: "failed hash" }, false))
+          const { rows } = await db.query('WITH inserted AS (INSERT INTO users(email_user,username,password,role,id_outlet) VALUES ($1, $2, $3, $4, $5) RETURNING *) SELECT * FROM inserted LEFT JOIN outlet ON inserted.id_outlet = outlet.id_outlet;', [email_user, username, hash, role, id_outlet])
+          // INSERT INTO users(email_user,username,password,role,id_outlet) VALUES ($1, $2, $3, $4, $5) RETURNING *
+          if (err) return res.json(new Response({ message: "failed insert" }, false))
           res.json(new Response({
-            data: data[0]
+            data: rows[0]
           }))
         })
       })
-    })
+    } catch (error) {
+      res.json(new Response({ message: "failed add user" }, false))
+    }
   });
 
   router.get('/edit/:id', isTokenValid, async function (req, res, next) {
@@ -109,26 +114,48 @@ module.exports = function (db) {
   router.post('/edit/:id', isTokenValid, async function (req, res, next) {
     //id_outlet- token
     try {
-      const { rows } = await db.query(`UPDATE users SET 
-      email_user = $1,
-      username = $2,
-      role = $3,
-      id_outlet = $4
-      WHERE id_users = $5 RETURNING *`, [req.body.email_user, req.body.username, req.body.role, req.body.id_outlet, req.params.id])
-      res.json(new Response({
-        data: rows[0]
-      }))
+      if (Object.keys(req.body).length > 4) {
+        const { email_user, username, password, role, id_outlet } = req.body
+        console.log("password Baru")
+        bcrypt.hash(password, saltRounds, async function (err, hash) {
+          if (err) return res.json(new Response({ message: "failed hash" }, false))
+          const { rows } = await db.query(`WITH updated AS (UPDATE users SET 
+          email_user = $1,
+          username = $2,
+          password = $3,
+          role = $4,
+          id_outlet = $5
+          WHERE id_users = $6 RETURNING *) SELECT * FROM updated LEFT JOIN outlet ON updated.id_outlet = outlet.id_outlet;`, [email_user, username, hash, role, id_outlet, req.params.id])
+          res.json(new Response({
+            data: rows[0]
+          }))
+        })
+      } else {
+        const { email_user, username, role, id_outlet } = req.body
+        console.log("Password Lama");
+        const { rows } = await db.query(`WITH updated AS (UPDATE users SET 
+        email_user = $1,
+        username = $2,
+        role = $3,
+        id_outlet = $4
+        WHERE id_users = $5 RETURNING *) SELECT * FROM updated LEFT JOIN outlet ON updated.id_outlet = outlet.id_outlet;`, [email_user, username, role, id_outlet, req.params.id])
+        res.json(new Response({
+          data: rows[0]
+        }))
+      }
+
+      //res.json(new Response({ message: "Berhasil menghapus User" }, true))
     } catch (e) {
-      res.status(500).json(new Response(e, false))
+      res.json(new Response({ message: "failed edit user" }, false))
     }
   });
 
   router.get('/delete/:id', isTokenValid, async function (req, res, next) {
     try {
       const { rows } = await db.query('DELETE FROM users WHERE id_users = $1', [req.params.id])
-      res.redirect('/users')
+      res.json(new Response({ message: "Berhasil menghapus User" }, true))
     } catch (e) {
-      res.send(e)
+      res.json(new Response({ message: "failed add user" }, false))
     }
   });
 

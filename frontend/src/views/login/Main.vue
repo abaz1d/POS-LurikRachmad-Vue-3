@@ -61,8 +61,9 @@
                     class="bg-gray-300 hover:bg-gray-400 rounded px-2 py-1 text-sm text-gray-600 font-mono cursor-pointer js-password-label"
                     for="toggle">show</label>
                 </div>
-                <input @keyup.enter="isLoading = true" v-model="input_password" class=" form-control w-full py-3 px-3 pr-16 js-password" id="password"
-                  type="password" autocomplete="off" placeholder="Password: 123" />
+                <input @keyup.enter="isLoading = true" v-model="input_password"
+                  class=" form-control w-full py-3 px-3 pr-16 js-password" id="password" type="password"
+                  autocomplete="off" placeholder="Password: 123" />
               </div>
 
             </div>
@@ -187,11 +188,12 @@ const onLogin = () => {
         if (data.success == false) {
           dataPopup.value = data.data.message
           gagalLogin.value = true
-          // if (data.data.message == 'unregistered e-mail') {
-          //   // alert("email tidak terdaftar")
-          // } else {
-          //   alert("password salah")
-          // }
+          if (data.data.message == 'unregistered e-mail') {
+            input_email.value = "";
+            input_password.value = "";
+          } else {
+            input_password.value = ""
+          }
         } else {
           dataPopup.value = data.data
           basicNonStickyNotificationToggle();
@@ -204,7 +206,9 @@ const onLogin = () => {
       });
 
   } else {
-    alert("Email dan Password tidak boleh kosong !")
+    dataPopup.value = "Email dan Password tidak boleh kosong !"
+    gagalLogin.value = true
+    //alert("Email dan Password tidak boleh kosong !")
     isLoading.value = false;
   }
 }

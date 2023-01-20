@@ -5,84 +5,125 @@ export const useUserStore = defineStore({
   id: "user",
   state: () => ({
     rawItems: [],
+    rawOutlets: [],
   }),
   getters: {
     items: (state) => state.rawItems,
+    outlets: (state) => state.rawOutlets
   },
   actions: {
     async readItem() {
       try {
-        const { data } = await request.get("users", {
-          timeout: 1000
-        });
+        const { data } = await request.get("users");
         if (data.success) {
-          this.rawItems = data.data;
-          console.log('rawItems', this.rawItems)
+          this.rawItems = data.data.rows
+          this.rawOutlets = data.data.outlet
+          //console.log('rawItems', this.rawItems)
           return this.rawItems
         }
       } catch (error) {
-        console.error(e);
+        console.error(error);
       }
 
     },
     async addItem(
-      nama_user,
-      alamat_user,
-      kontak_user,
+      username,
+      role,
+      outlet,
+      email_user,
+      password,
     ) {
       const id_users = Date.now();
       this.rawItems.push({
         id_users,
-        nama_user,
-        alamat_user,
-        kontak_user,
+        username,
+        role,
+        id_outlet: outlet,
+        email_user,
+        password,
       });
       try {
-        const data = await request.post("user/add", {
-          nama_user,
-          alamat_user,
-          kontak_user,
+        const { data } = await request.post("users/add", {
+          id_users,
+          username,
+          role,
+          id_outlet: outlet,
+          email_user,
+          password,
         });
 
-        this.rawItems = this.rawItems.map((item) => {
-          if (item.id_users === id_users) {
-            return data.data;
-          }
-          return item;
-        });
+        console.log("add", data);
+        if (data.success) {
+
+          this.rawItems = this.rawItems.map((item) => {
+            if (item.id_users === id_users) {
+              return data.data.data
+            }
+            return item;
+          });
+        }
       } catch (e) {
         console.error(e);
       }
     },
     async removeItem(id_users) {
-      this.rawItems = this.rawItems.filter(
-        (item) => item.id_users !== id_users
-      );
-      request
-        .get(`user/delete/${id_users}`)
-        .then((res) => {
-          if (res.status >= 200 && res.status < 300) {
-            // alert(`Sukses Hapus Data ${id_users}`)
-          }
-        })
-        .catch((e) => console.error(e));
+      try {
+        this.rawItems = this.rawItems.filter(
+          (item) => item.id_users !== id_users
+        );
+        request
+          .get(`users/delete/${id_users}`)
+          .then((data) => {
+            if (data.success) {
+              // alert(`Sukses Hapus Data ${id_users}`)
+            }
+          })
+          .catch((e) => console.error(e));
+      } catch (error) {
+        console.error(error);
+      }
     },
     async updateItem(user) {
-      let id_users = user.id_users;
-      let nama_user = user.nama_user;
-      let alamat_user = user.alamat_user;
-      let kontak_user = user.kontak_user;
-      this.rawItems = this.rawItems.map((item) => {
-        if (item.id_users === id_users) {
-          return user;
+      try {
+        let item
+        let id_users = user.id_users;
+        let username = user.username;
+        let role = user.role;
+        let id_outlet = user.id_outlet;
+        let email_user = user.email_user;
+        let password = user.password;
+
+        if (password === "") {
+          //console.log("password lama: ", password)
+          item = {
+            username,
+            role,
+            id_outlet,
+            email_user,
+          }
+        } else {
+          //console.log("password baru: ", password)
+          item = {
+            username,
+            role,
+            id_outlet,
+            email_user,
+            password,
+          }
         }
-        return item;
-      });
-      request.post(`user/edit/${id_users}`, {
-        nama_user,
-        alamat_user,
-        kontak_user,
-      }).catch((e) => console.error(e));
+        const { data } = await request.post(`users/edit/${id_users}`, item)
+       //console.log("data",data)
+        if (data.success) {
+          this.rawItems = this.rawItems.map((item) => {
+            if (item.id_users === id_users) {
+              return data.data.data
+            }
+            return item;
+          });
+        }
+      } catch (error) {
+        console.error(error);
+      }
     },
   },
 });

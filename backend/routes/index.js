@@ -1,10 +1,10 @@
-var express = require('express');
+const express = require('express');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
-var router = express.Router();
-var jwt = require('jsonwebtoken');
+const router = express.Router();
+const jwt = require('jsonwebtoken');
 
-var path = require('path');
+const path = require('path');
 const { currencyFormatter, isLoggedIn, Response } = require('../helpers/util')
 // const { isLoggedIn } = require('../helpers/util')
 

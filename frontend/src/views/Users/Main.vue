@@ -28,8 +28,22 @@
             </div>
             <div class="col-span-12 mb-5">
               <label for="pos-form-3" class="form-label mb-1">Role</label>
-              <input id="pos-form-3" type="text" class="form-control flex-1" placeholder="Masukan Role" v-model="role"
-                required />
+              <!-- <input id="pos-form-3" type="text" class="form-control flex-1" placeholder="Masukan Role" v-model="role"
+                required /> -->
+              <TomSelect v-model="role" class="w-full" required>
+                <option value="role" disabled>
+                  &gt-- Pilih Role --&lt
+                </option>
+                <option value="Super Admin">
+                  Super Admin
+                </option>
+                <option value="Admin">
+                  Admin
+                </option>
+                <option value="Operator">
+                  Operator
+                </option>
+              </TomSelect>
             </div>
             <div class="col-span-12 mb-5">
               <label for="pos-form-4" class="form-label mb-1">Outlet</label>
@@ -39,7 +53,7 @@
                 <option value="id_outlet" disabled>
                   &gt-- Pilih Outlet --&lt
                 </option>
-                <option v-for="outlet in User.items.outlet" :key="outlet.id_outlet" :outlet="outlet"
+                <option v-for="outlet in User.outlets" :key="outlet.id_outlet" :outlet="outlet"
                   :value="outlet.id_outlet">
                   {{ outlet.id_outlet }} - {{ outlet.nama_outlet }}
                 </option>
@@ -50,12 +64,18 @@
               <input id="pos-form-5" class="form-control" type="email" placeholder="Masukan Email" v-model="email_user"
                 required />
             </div>
-            <div class="col-span-12 mb-5">
+            <div class="col-span-12 form-switch mb-5">
               <label for="pos-form-6" class="form-label mb-1">Password</label>
+              <input v-if="isEdit" class="form-check-input m-2" type="checkbox" v-model="passEdit" /> <br>
+              <label v-if="passEdit" for="pos-form-6" class="text-xs form-label mx-2 mt-1 mb-0.5">Password Lama</label>
               <input id="pos-form-6" type="text" class="form-control flex-1" placeholder="Masukan Password"
                 v-model="password" :readonly="isEdit" />
+              <label v-if="passEdit" for="pos-form-6" class="text-xs form-label mx-2 mt-2 mb-0.5">Password Baru</label>
+              <input v-if="passEdit" id="pos-form-6" type="text" class="form-control flex-1"
+                placeholder="Masukan Password Baru" v-model="password_baru" :required="passEdit" />
               <div v-if="isEdit" class="form-help">
-                * Password tidak bisa di edit untuk sementara karena telah di HASH
+                * Password saat ini telah di HASH/Bcrypt, untuk menggaanti password baru silahkan ceklis pada checkbox,
+                Setelah di simpan kata sandi baru akan ter HASH/Bcrypt juga.
               </div>
             </div>
           </form>
@@ -182,6 +202,7 @@
 </template>
 
 <script>
+//import bcrypt from "bcrypt";
 import { useUserStore } from "@/stores/user";
 import ModalDatabaseError from "@/components/modal-error/Main.vue";
 // import UserList from "./UserList.vue";
@@ -196,12 +217,14 @@ import moment from "moment";
 const modal_utama = ref(false);
 const id_users = ref("");
 const username = ref("");
-const role = ref("");
+const role = ref("role");
 const outlet = ref("id_outlet");
 const email_user = ref("");
 const password = ref("");
+const password_baru = ref("");
 const deleteConfirmationModal = ref(false);
 const isEdit = ref(false);
+const passEdit = ref(false);
 
 // const tableRef = ref("");
 const tabulator = ref();
@@ -231,11 +254,13 @@ export default {
       outlet,
       email_user,
       password,
+      password_baru,
 
       //tableRef,
       tabulator,
       filter,
-      isEdit
+      isEdit,
+      passEdit
     };
   },
   methods: {
@@ -243,13 +268,15 @@ export default {
       modal_utama.value = false;
       deleteConfirmationModal.value = false;
       isEdit.value = false;
+      passEdit.value = false;
 
       id_users.value = "";
       username.value = "";
-      role.value = "";
-      outlet.value = "";
+      role.value = "role";
+      outlet.value = "id_outlet";
       email_user.value = "";
       password.value = "";
+      password_baru.value = "";
     },
     addUser() {
       try {
@@ -272,13 +299,24 @@ export default {
     },
     updateUser() {
       try {
+        let finalPassword
+        if (this.passEdit) {
+          if (this.password_baru != "") {
+            finalPassword = password_baru.value;
+          } else {
+            alert("Password Baru tidak boleh kosong")
+          }
+        } else {
+          finalPassword = "";
+          //console.log("Password Lama")
+        }
         this.User.updateItem({
           id_users: this.id_users,
           username: this.username,
           role: this.role,
-          id_outlet: this.id_outlet,
+          id_outlet: this.outlet,
           email_user: this.email_user,
-          password: this.password,
+          password: finalPassword,
         }).then(() => {
           this.initTabulator();
           this.resetModal();
@@ -306,7 +344,7 @@ export default {
         printStyled: true,
         printHeader: `<h1 class='text-2xl p-2 m-2 text-center border-y-2 border-black'>Tabel User<h1>`,
         printFooter: `<h2 class='p-2 m-2 text-center mt-4'>${moment(Date.now()).format("DD MMM YYYY HH:SS")}<h2>`,
-        data: this.User.items.rows,
+        data: this.User.items,
         pagination: "remote",
         paginationSize: 10,
         paginationSizeSelector: [10, 20, 30, 40, 50],
