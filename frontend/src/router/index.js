@@ -364,7 +364,7 @@ router.beforeEach((to, from, next) => {
     if (authRequired && !auth.user) {
       auth.returnUrl = to.fullPath;
       //return '/login';
-      return next({ path: "/login", query: { returnUrl: to.path } });
+      return next({ path: "/login" });
     }
     if (authorize.length && !authorize.includes(currentUser.role)) {
       //console.log('user beda', to.matched[1].props)
