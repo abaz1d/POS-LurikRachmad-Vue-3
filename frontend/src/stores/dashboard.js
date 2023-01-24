@@ -17,7 +17,7 @@ export const useDashboardStore = defineStore({
         const { data } = await request.get("utama");
         if (data.success) {
           this.rawItems = data.data;
-          //console.log("dashboard-store", this.rawItems)
+          //console.log("dashboard-store", Auth.items)
 
           //console.log("dashboard-store", notepad, id)
           return Auth.items

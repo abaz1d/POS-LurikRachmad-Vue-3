@@ -204,21 +204,21 @@
   <!-- BEGIN:Profile Content -->
   <Modal size="modal-xl" backdrop="static" :show="profilModal" @hidden="profilModal = false">
     <ModalHeader>
-      <h2 class="font-medium text-base mx-auto">Profil User & Outlet</h2>
+      <h2 class="font-medium text-base mx-auto dark:text-white">Profil User & Outlet</h2>
       <a @click="profilModal = false" class="absolute right-0 top-0 mt-3 mr-3" href="javascript:;">
         <XIcon class="w-8 h-8 text-slate-400" />
       </a>
     </ModalHeader>
-    <ModalBody class="p-8 pt-0">
+    <ModalBody class="p-8 pt-0 text-black">
       <div class="flex-auto">
         <div class="box zoom-in px-5">
-          <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
+          <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase dark:text-white">
             Profil User
           </h6>
           <div class="flex flex-wrap">
             <div class="w-full lg:w-6/12 px-4">
               <div class="relative w-full mb-3">
-                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2 dark:text-white">
                   ID User
                 </label>
                 <div
@@ -228,7 +228,7 @@
             </div>
             <div class="w-full lg:w-6/12 px-4">
               <div class="relative w-full mb-3">
-                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2 dark:text-white">
                   Email User
                 </label>
                 <div
@@ -238,7 +238,7 @@
             </div>
             <div class="w-full lg:w-6/12 px-4">
               <div class="relative w-full mb-3">
-                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2 dark:text-white">
                   Username
                 </label>
                 <div
@@ -248,12 +248,19 @@
             </div>
             <div class="w-full lg:w-6/12 px-4">
               <div class="relative w-full mb-3">
-                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2 dark:text-white">
                   Role/ Jabatan
                 </label>
                 <div
-                  class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
-                  {{ data.role }}</div>
+                  class="flex items-start my-auto border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150">
+                  <CrownIcon v-if="data.role == 'Super Admin'"
+                    class="w-6 h-6 stroke-2 stroke-black fill-yellow-200 bg-white -mt-1 mr-2 rounded-full whitespace-nowrap" />
+                  <UserIcon v-else-if="data.role == 'Admin'"
+                    class="w-6 h-6 stroke-2 stroke-black fill-yellow-200 bg-white -mt-1 mr-2 rounded-full whitespace-nowrap" />
+                  <HardHatIcon v-else
+                    class="w-6 h-6 stroke-2 stroke-black fill-yellow-200 bg-white -mt-1 mr-2 rounded-full whitespace-nowrap" />
+                  {{ data.role }}
+                </div>
               </div>
             </div>
           </div>
@@ -261,13 +268,13 @@
 
         <hr class="mt-6 border-b-1 border-blueGray-300">
         <div class="box zoom-in px-5">
-          <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
+          <h6 class="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase dark:text-white">
             Profil Outlet
           </h6>
           <div class="flex flex-wrap">
             <div class="w-full lg:w-4/12 px-4">
               <div class="relative w-full mb-3">
-                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2 dark:text-white">
                   ID Outlet
                 </label>
                 <div
@@ -277,7 +284,7 @@
             </div>
             <div class="w-full lg:w-4/12 px-4">
               <div class="relative w-full mb-3">
-                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2 dark:text-white">
                   Nama Outlet
                 </label>
                 <div
@@ -287,7 +294,7 @@
             </div>
             <div class="w-full lg:w-4/12 px-4">
               <div class="relative w-full mb-3">
-                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2 dark:text-white">
                   Kontak Outlet
                 </label>
                 <div
@@ -297,7 +304,7 @@
             </div>
             <div class="w-full lg:w-12/12 px-4">
               <div class="relative w-full mb-3">
-                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" htmlfor="grid-password">
+                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2 dark:text-white">
                   Alamat Outlet
                 </label>
                 <textarea type="text"

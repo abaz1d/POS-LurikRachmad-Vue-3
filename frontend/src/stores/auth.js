@@ -19,7 +19,7 @@ export const useAuthStore = defineStore({
           email_user,
           password
         });
-        //console.log('user', data)
+        console.log('user', data.data)
 
         if (data.success) {
           this.user = data.data;

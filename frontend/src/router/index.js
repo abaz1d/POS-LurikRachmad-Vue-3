@@ -34,11 +34,13 @@ const routes = [
         path: "/",
         name: "top-menu-dashboard",
         component: Dashboard,
+        meta: { authorize: [] }
       },
       {
         path: "page-2",
         name: "top-menu-page-2",
         component: Page2,
+        meta: { authorize: [] }
       },
       {
         path: "satuan",
@@ -50,6 +52,7 @@ const routes = [
         path: "barang-keluar",
         name: "top-menu-barang-keluar",
         component: BarangKeluar,
+        meta: { authorize: [] }
       },
       {
         path: "barang",
@@ -79,16 +82,19 @@ const routes = [
         path: "barang-masuk",
         name: "top-menu-barang-masuk",
         component: BarangMasuk,
+        meta: { authorize: [] }
       },
       {
         path: "penjualan",
         name: "top-menu-penjualan",
         component: Penjualan,
+        meta: { authorize: [] }
       },
       {
         path: "retur",
         name: "top-menu-retur",
         component: Retur,
+        meta: { authorize: [] }
       },
       {
         path: "stok-lokal",
@@ -100,21 +106,25 @@ const routes = [
         path: "pembelian",
         name: "top-menu-pembelian",
         component: Pembelian,
+        meta: { authorize: [] }
       },
       {
         path: "laporan-penjualan",
         name: "top-menu-laporan-penjualan",
         component: LaporanPenjualan,
+        meta: { authorize: [] }
       },
       {
         path: "laporan-pembelian",
         name: "top-menu-laporan-pembelian",
-        component: LaporanPembelian
+        component: LaporanPembelian,
+        meta: { authorize: [] }
       },
       {
         path: "laporan-stok",
         name: "top-menu-laporan-stok",
-        component: LaporanStok
+        component: LaporanStok,
+        meta: { authorize: [] }
       },
       {
         path: "semua-akun",
@@ -132,11 +142,13 @@ const routes = [
         path: "dashboard",
         name: "side-menu-dashboard",
         component: Dashboard,
+        meta: { authorize: [] }
       },
       {
         path: "page-2",
         name: "side-menu-page-2",
         component: Page2,
+        meta: { authorize: [] }
       },
       {
         path: "satuan",
@@ -148,6 +160,7 @@ const routes = [
         path: "barang-keluar",
         name: "side-menu-barang-keluar",
         component: BarangKeluar,
+        meta: { authorize: [] }
       },
       {
         path: "barang",
@@ -177,16 +190,19 @@ const routes = [
         path: "barang-masuk",
         name: "side-menu-barang-masuk",
         component: BarangMasuk,
+        meta: { authorize: [] }
       },
       {
         path: "penjualan",
         name: "side-menu-penjualan",
         component: Penjualan,
+        meta: { authorize: [] }
       },
       {
         path: "retur",
         name: "side-menu-retur",
         component: Retur,
+        meta: { authorize: [] }
       },
       {
         path: "stok-lokal",
@@ -198,21 +214,25 @@ const routes = [
         path: "pembelian",
         name: "side-menu-pembelian",
         component: Pembelian,
+        meta: { authorize: [] }
       },
       {
         path: "laporan-penjualan",
         name: "side-menu-laporan-penjualan",
         component: LaporanPenjualan,
+        meta: { authorize: [] }
       },
       {
         path: "laporan-pembelian",
         name: "side-menu-laporan-pembelian",
-        component: LaporanPembelian
+        component: LaporanPembelian,
+        meta: { authorize: [] }
       },
       {
         path: "laporan-stok",
         name: "side-menu-laporan-stok",
-        component: LaporanStok
+        component: LaporanStok,
+        meta: { authorize: [] }
       },
       {
         path: "semua-akun",
@@ -230,11 +250,13 @@ const routes = [
         path: "dashboard",
         name: "simple-menu-dashboard",
         component: Dashboard,
+        meta: { authorize: [] }
       },
       {
         path: "page-2",
         name: "simple-menu-page-2",
         component: Page2,
+        meta: { authorize: [] }
       },
       {
         path: "satuan",
@@ -246,6 +268,7 @@ const routes = [
         path: "barang-keluar",
         name: "simple-menu-barang-keluar",
         component: BarangKeluar,
+        meta: { authorize: [] }
       },
       {
         path: "barang",
@@ -275,16 +298,19 @@ const routes = [
         path: "barang-masuk",
         name: "simple-menu-barang-masuk",
         component: BarangMasuk,
+        meta: { authorize: [] }
       },
       {
         path: "penjualan",
         name: "simple-menu-penjualan",
         component: Penjualan,
+        meta: { authorize: [] }
       },
       {
         path: "retur",
         name: "simple-menu-retur",
         component: Retur,
+        meta: { authorize: [] }
       },
       {
         path: "stok-lokal",
@@ -296,21 +322,25 @@ const routes = [
         path: "pembelian",
         name: "simple-menu-pembelian",
         component: Pembelian,
+        meta: { authorize: [] }
       },
       {
         path: "laporan-penjualan",
         name: "simple-menu-laporan-penjualan",
         component: LaporanPenjualan,
+        meta: { authorize: [] }
       },
       {
         path: "laporan-pembelian",
         name: "simple-menu-laporan-pembelian",
-        component: LaporanPembelian
+        component: LaporanPembelian,
+        meta: { authorize: [] }
       },
       {
         path: "laporan-stok",
         name: "simple-menu-laporan-stok",
-        component: LaporanStok
+        component: LaporanStok,
+        meta: { authorize: [] }
       },
       {
         path: "semua-akun",

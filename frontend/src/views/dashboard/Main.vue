@@ -789,8 +789,8 @@ onMounted(async function () {
 
     data.value = await Dashboard.readItem();
     const notepad = await Dashboard.getNotepad(id)
-    editorData.value = (notepad == null) ? '' : notepad
-    //console.log("onUnmount", editorData.value, id);
+    editorData.value = (notepad === null) ? '' : notepad
+    //console.log("onUnmount", editorData.value, notepad, id);
     if (Auth.items.role == 'Super Admin') {
       initTabulatorProduk();
       initTabulatorOutlet();
@@ -806,7 +806,9 @@ onMounted(async function () {
 });
 
 onBeforeUnmount(async () => {
-  simpanNotepad();
+  if (editorData.value !== "" || null) {
+    simpanNotepad();
+  };
   //console.log("onUnmount", editorData.value);
 });
 
