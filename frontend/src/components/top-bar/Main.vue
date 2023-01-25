@@ -18,13 +18,8 @@
           @focus="showSearchDropdown" @blur="hideSearchDropdown" />
         <SearchIcon class="search__icon dark:text-slate-500" />
       </div>
-      <a class="notification sm:hidden">
-        <!-- <SearchIcon class="notification__icon dark:text-slate-500" /> -->
-        <form action="" class="items-center justify-center">
-          <input type="search"
-            class="peer shadow-none cursor-pointer relative z-10 h-12 w-12 rounded-full border bg-transparent dark:bg-transparent dark:text-white pl-9 outline-none focus:w-full focus:cursor-text focus:pl-16 focus:pr-4 search__input form-control border-transparent" />
-          <SearchIcon class="absolute inset-y-0 my-auto h-8 w-12 px-3.5 mr-0 search__icon dark:stroke-white" />
-        </form>
+      <a class="notification notification--light sm:hidden">
+        <SearchIcon class="notification__icon dark:text-slate-500" />
       </a>
       <div class="search-result" :class="{ show: searchDropdown }">
         <div class="search-result__content">
@@ -43,7 +38,7 @@
               </div>
               <div class="ml-3">Pembelian</div>
             </RouterLink>
-            <div class="flex items-center mt-2" v-if="data.role == 'Super Admin'">
+            <div v-if="data.role == 'Super Admin'" class="flex items-center mt-2">
               <div
                 class="w-8 h-8 bg-primary/10 dark:bg-primary/20 text-primary/80 flex items-center justify-center rounded-full">
                 <UsersIcon class="w-4 h-4" />
@@ -51,7 +46,7 @@
               <div class="ml-3">Semua Akun</div>
             </div>
           </div>
-          <div class="search-result__content__title">Users</div>
+          <div class="search-result__content__title">Jenis User & Hak Aksesnya</div>
           <div class="mb-5">
             <a href class="flex items-center mt-3 zoom-in">
               <div
@@ -59,7 +54,9 @@
                 <CrownIcon
                   class="w-6 h-6 object-fill stroke-2 stroke-black fill-yellow-200 bg-white mt-1 mx-auto rounded-full" />
               </div>
-              <div class="ml-3">Super Admin</div>
+              <div class="ml-3"><kbd
+                  class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">Super
+                  Admin</kbd></div>
               <div class="ml-auto w-auto truncate text-slate-500 text-xs text-right pr-3">
                 Semua Menu/ Fitur
               </div>
@@ -70,9 +67,11 @@
                 <UserIcon
                   class="w-6 h-6 object-fill stroke-2 stroke-black fill-yellow-200 bg-white mt-1 mx-auto rounded-full" />
               </div>
-              <div class="ml-3">Admin</div>
+              <div class="ml-3"><kbd
+                  class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">Admin</kbd>
+              </div>
               <div class="ml-auto w-auto truncate text-slate-500 text-xs text-right pr-3">
-                Kecuali Menu/ Fitur SEMUA AKUN
+                Kecuali SEMUA AKUN & PENGATURAN DATA
               </div>
             </a>
             <a href class="flex items-center mt-3 zoom-in">
@@ -81,9 +80,11 @@
                 <HardHatIcon
                   class="w-6 h-6 object-fill stroke-2 stroke-black fill-yellow-200 bg-white mt-1 mx-auto rounded-full" />
               </div>
-              <div class="ml-3">Operator</div>
+              <div class="ml-3"><kbd
+                  class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">Operator</kbd>
+              </div>
               <div class="ml-auto w-auto truncate text-slate-500 text-xs text-right pr-3">
-                Beberapa Menu/ Fitur TRANSAKSI dan LAPORAN
+                Beberapa Menu/ Fitur TRANSAKSI & LAPORAN
               </div>
             </a>
           </div>

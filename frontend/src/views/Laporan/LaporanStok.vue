@@ -318,16 +318,16 @@ const initTabulator = () => {
         },
       },
       {
-        title: "STOK",
+        title: "STOK GLOBAL",
         minWidth: 50,
-        field: "stok_varian",
+        field: "stok_global",
         hozAlign: "center",
         vertAlign: "middle",
         print: false,
         download: false,
         formatter(cell) {
           return `<div>
-      <div class="font-medium whitespace-nowrap">${cell.getData().stok_varian
+      <div class="font-medium whitespace-nowrap">${cell.getData().stok_global
             }</div>
     </div>`;
         },
@@ -336,30 +336,14 @@ const initTabulator = () => {
         title: "SATUAN",
         minWidth: 50,
         headerHozAlign: "center",
-        field: "id_satuan",
+        field: "nama_satuan",
         hozAlign: "center",
         vertAlign: "middle",
         print: false,
         download: false,
         formatter(cell) {
           return `<div>
-      <div class="font-medium whitespace-nowrap">${cell.getData().id_satuan
-            }</div>
-    </div>`;
-        },
-      },
-      {
-        title: "GUDANG",
-        minWidth: 50,
-        headerHozAlign: "center",
-        field: "id_gudang",
-        hozAlign: "center",
-        vertAlign: "middle",
-        print: false,
-        download: false,
-        formatter(cell) {
-          return `<div>
-      <div class="font-medium whitespace-nowrap">${cell.getData().id_gudang
+      <div class="font-medium whitespace-nowrap">${cell.getData().nama_satuan
             }</div>
     </div>`;
         },
@@ -443,12 +427,6 @@ const initTabulator = () => {
         download: true,
       },
       {
-        title: "GUDANG",
-        field: "id_gudang",
-        visible: false,
-        print: true,
-        download: true,
-      }, {
         title: "HARGA BELI",
         field: "harga_beli_varian",
         visible: false,

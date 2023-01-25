@@ -111,7 +111,7 @@ export const useBarangStore = defineStore({
             return varian
           })
 
-          //console.log('data.data', Auth.items)
+          //console.log('data.data', this.rawVarians)
           // console.log('this.rawVarians', this.rawVarians)
           return this.rawItems
         }
@@ -139,7 +139,7 @@ export const useBarangStore = defineStore({
           })
 
           // console.log('data.data', request, Auth.items.id_outlet)
-          // console.log('this.rawVarians', this.rawVarians)
+          //console.log('this.rawVarians', this.rawVarians)
           return this.rawItems
         }
       } catch (error) {
@@ -243,6 +243,7 @@ export const useBarangStore = defineStore({
     async updateVarianGet(id_varian) {
       try {
         const data = await request.get(`barang/editvar/${id_varian}`);
+        console.log('data.data', data)
         if (data.status >= 200 && data.status < 300) {
           return data.data;
         } else {

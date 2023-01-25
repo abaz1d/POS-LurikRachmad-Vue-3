@@ -66,7 +66,7 @@
                     <CrownIcon
                       class="w-6 h-6 object-fill stroke-2 stroke-black fill-yellow-200 bg-white mt-1 mx-auto rounded-full" />
                   </div>
-                  <div class="ml-3">Super Admin</div>
+                  <div class="ml-3"><kbd class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">Super Admin</kbd></div>
                   <div class="ml-auto w-auto truncate text-slate-500 text-xs text-right pr-3">
                     Semua Menu/ Fitur
                   </div>
@@ -77,9 +77,9 @@
                     <UserIcon
                       class="w-6 h-6 object-fill stroke-2 stroke-black fill-yellow-200 bg-white mt-1 mx-auto rounded-full" />
                   </div>
-                  <div class="ml-3">Admin</div>
+                  <div class="ml-3"><kbd class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">Admin</kbd></div>
                   <div class="ml-auto w-auto truncate text-slate-500 text-xs text-right pr-3">
-                    Kecuali Menu/ Fitur SEMUA AKUN
+                    Kecuali SEMUA AKUN & PENGATURAN DATA
                   </div>
                 </a>
                 <a href class="flex items-center mt-3 zoom-in">
@@ -88,9 +88,9 @@
                     <HardHatIcon
                       class="w-6 h-6 object-fill stroke-2 stroke-black fill-yellow-200 bg-white mt-1 mx-auto rounded-full" />
                   </div>
-                  <div class="ml-3">Operator</div>
+                  <div class="ml-3"><kbd class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">Operator</kbd></div>
                   <div class="ml-auto w-auto truncate text-slate-500 text-xs text-right pr-3">
-                    Beberapa Menu/ Fitur TRANSAKSI dan LAPORAN
+                    Beberapa Menu/ Fitur TRANSAKSI & LAPORAN
                   </div>
                 </a>
               </div>

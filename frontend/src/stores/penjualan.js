@@ -193,7 +193,7 @@ export const usePenjualanStore = defineStore({
         //   // console.log('data.data', data.data);
         //   return data.data
         // })
-        // console.log('data.data', data.data);
+        console.log('data.data', data.data);
         //if (data.status >= 200 && data.status < 300) {
         return data.data
         // }

@@ -150,7 +150,7 @@ renderQrScanner();
                         </div>
 
                         <div class="col-span-6 sm:col-span-3 mb-0">
-                          <label for="stokVarian" class="block text-sm font-medium text-gray-700">Stok Varian</label>
+                          <label for="stokVarian" class="block text-sm font-medium text-gray-700">Stok Global Varian</label>
                           <input id="stokVarian" type="text"
                             class="form-control flex-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                             placeholder="Masukan Stok Varian" v-model="stokVarian" required />
@@ -454,6 +454,9 @@ const basicNonStickyNotificationToggle = () => {
 };
 
 const openMainModal = () => {
+  Barang.addVarianGet().then((varian) => {
+    data.value = varian;
+  });
   modal_utama.value = true;
 };
 
@@ -606,7 +609,7 @@ const resetModal = () => {
   kategoriBarangVarian.value = "kosong";
   stokVarian.value = "";
 
-  data.value = "";
+  //data.value = "";
 
   url.value = null;
   file.value = null;
@@ -820,7 +823,7 @@ const initTabulator = () => {
           src="${getImgUrl(cell.getData().gambar_varian)}"
           alt="${cell.getData().gambar_varian}"
           data-action="zoom"
-          class="w-full rounded-md"
+          class="w-20 rounded-md"
         />
       </div>
       <div>
@@ -862,17 +865,17 @@ const initTabulator = () => {
             },
           },
           {
-            title: "STOK",
+            title: "STOK GLOBAL",
             minWidth: 50,
             responsive: 0,
-            field: "stok_varian",
+            field: "stok_global",
             hozAlign: "center",
             vertAlign: "middle",
             print: false,
             download: false,
             formatter(cell) {
               return `<div>
-                <div class="font-medium whitespace-nowrap">${cell.getData().stok_varian
+                <div class="font-medium whitespace-nowrap">${cell.getData().stok_global
                 }</div>
               </div>`;
             },
@@ -881,30 +884,14 @@ const initTabulator = () => {
             title: "SATUAN",
             minWidth: 50,
             headerHozAlign: "center",
-            field: "id_satuan",
+            field: "nama_satuan",
             hozAlign: "center",
             vertAlign: "middle",
             print: false,
             download: false,
             formatter(cell) {
               return `<div>
-                <div class="font-medium whitespace-nowrap">${cell.getData().id_satuan
-                }</div>
-              </div>`;
-            },
-          },
-          {
-            title: "OUTLET",
-            minWidth: 50,
-            headerHozAlign: "center",
-            field: "id_outlet",
-            hozAlign: "center",
-            vertAlign: "middle",
-            print: false,
-            download: false,
-            formatter(cell) {
-              return `<div>
-                <div class="font-medium whitespace-nowrap">${cell.getData().id_outlet
+                <div class="font-medium whitespace-nowrap">${cell.getData().nama_satuan
                 }</div>
               </div>`;
             },
@@ -983,7 +970,7 @@ const initTabulator = () => {
                     kategoriBarangVarian.value = detail.item.id_barang
                     satuanVarian.value = detail.item.id_satuan
                     kategoriGudangVarian.value = detail.item.id_gudang
-                    stokVarian.value = detail.item.stok_varian
+                    stokVarian.value = detail.item.stok_global
                     hargaBeliVarian.value = detail.item.harga_beli_varian
                     hargaJualVarian.value = detail.item.harga_jual_varian
 
@@ -1035,25 +1022,19 @@ const initTabulator = () => {
             download: true,
           },
           {
-            title: "STOK",
-            field: "stok_varian",
+            title: "STOK GLOBAL",
+            field: "stok_global",
             visible: false,
             print: true,
             download: true,
           }, {
             title: "SATUAN",
-            field: "id_satuan",
+            field: "nama_satuan",
             visible: false,
             print: true,
             download: true,
           },
           {
-            title: "OUTLET",
-            field: "id_outlet",
-            visible: false,
-            print: true,
-            download: true,
-          }, {
             title: "HARGA BELI",
             field: "harga_beli_varian",
             visible: false,

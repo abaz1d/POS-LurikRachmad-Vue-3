@@ -48,10 +48,10 @@ module.exports = function (db) {
 
       //console.log('out',req.body, req)
       if (id_outlet == '') {
-        reqSQL = 'SELECT dp.*, b.nama_barang FROM varian as dp LEFT JOIN barang as b ON dp.id_barang = b.id_barang WHERE dp.id_barang = $1 ORDER BY dp.id_varian ASC'
+        reqSQL = 'SELECT v.gambar_varian,b.id_barang, b.nama_barang, v.id_varian, v.nama_varian, stok.stok_global, s.nama_satuan, v.harga_beli_varian, v.harga_jual_varian FROM varian as v LEFT JOIN barang as b ON v.id_barang = b.id_barang LEFT JOIN satuan AS s ON v.id_satuan = s.id_satuan LEFT JOIN (SELECT id_varian, sum(stok_varian) AS stok_global FROM sub_varian GROUP  BY 1) stok ON v.id_varian = stok.id_varian WHERE v.id_barang = $1;'
         argumentSQL = [id_barang]
       } else {
-        reqSQL = 'SELECT v.*, b.nama_barang FROM varian as v LEFT JOIN barang as b ON v.id_barang = b.id_barang WHERE v.id_barang = $1 AND v.id_outlet = $2 ORDER BY v.id_varian ASC'
+        reqSQL = 'SELECT sv.id_sub_varian, v.gambar_varian, b.id_barang, b.nama_barang, v.id_varian, v.nama_varian, sv.stok_varian, s.nama_satuan, o.nama_outlet, v.harga_beli_varian, v.harga_jual_varian FROM sub_varian AS sv  LEFT JOIN varian AS v ON sv.id_varian = v.id_varian LEFT JOIN barang AS b ON v.id_barang = b.id_barang LEFT JOIN outlet AS o ON sv.id_outlet = o.id_outlet LEFT JOIN satuan AS s ON v.id_satuan = s.id_satuan WHERE b.id_barang = $1 AND o.id_outlet = $2'
         argumentSQL = [id_barang, id_outlet]
       }
       db.query(reqSQL, argumentSQL, (err, varian) => {
@@ -75,7 +75,7 @@ module.exports = function (db) {
 
   router.get('/laporan', async function (req, res, next) {
     try {
-      const { rows } = await db.query('SELECT varian.*,barang.* FROM public.varian LEFT JOIN barang ON varian.id_barang = barang.id_barang ORDER BY barang.id_barang ASC')
+      const { rows } = await db.query('SELECT v.gambar_varian, b.nama_barang, v.id_varian, v.nama_varian, stok.stok_global, s.nama_satuan, v.harga_beli_varian, v.harga_jual_varian FROM varian as v LEFT JOIN barang as b ON v.id_barang = b.id_barang LEFT JOIN satuan AS s ON v.id_satuan = s.id_satuan LEFT JOIN (SELECT id_varian, sum(stok_varian) AS stok_global FROM sub_varian GROUP  BY 1) stok ON v.id_varian = stok.id_varian')
       //res.redirect(`/penjualan/show/${rows[0].no_invoice}`)
       res.json(rows)
     } catch (e) {
@@ -172,21 +172,21 @@ module.exports = function (db) {
           const satuan = rowsS.rows
           const gudang = rowsG.rows
           db.query(`SELECT var.id_varian,
-    var.nama_varian,
-      bar.id_barang,
-    bar.nama_barang,
-      var.stok_varian,
-      var.harga_beli_varian,
-      var.harga_jual_varian,
-      sat.id_satuan,
-      sat.nama_satuan,
-      gud.id_gudang,
-      gud.nama_gudang,
-      var.gambar_varian
-FROM varian var
-INNER JOIN barang bar ON bar.id_barang = var.id_barang
-INNER JOIN satuan sat ON sat.id_satuan = var.id_satuan
-INNER JOIN gudang gud ON gud.id_gudang = var.id_gudang WHERE id_varian = $1`, [req.params.id], (err, rows) => {
+          var.nama_varian,
+            bar.id_barang,
+          bar.nama_barang,
+          stok.stok_global,
+            var.harga_beli_varian,
+            var.harga_jual_varian,
+            sat.id_satuan,
+            sat.nama_satuan,
+            gud.id_gudang,
+            gud.nama_gudang,
+            var.gambar_varian
+      FROM varian var
+      INNER JOIN barang bar ON bar.id_barang = var.id_barang
+      INNER JOIN satuan sat ON sat.id_satuan = var.id_satuan
+      INNER JOIN gudang gud ON gud.id_gudang = var.id_gudang LEFT JOIN (SELECT id_varian, sum(stok_varian) AS stok_global FROM sub_varian GROUP  BY 1) stok ON var.id_varian = stok.id_varian WHERE var.id_varian = $1`, [req.params.id], (err, rows) => {
             if (err) {
               return console.error(err.message);
             }

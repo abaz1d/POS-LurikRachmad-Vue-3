@@ -883,14 +883,14 @@ const initTabulator = () => {
             title: "SATUAN",
             minWidth: 50,
             headerHozAlign: "center",
-            field: "id_satuan",
+            field: "nama_satuan",
             hozAlign: "center",
             vertAlign: "middle",
             print: false,
             download: false,
             formatter(cell) {
               return `<div>
-                <div class="font-medium whitespace-nowrap">${cell.getData().id_satuan
+                <div class="font-medium whitespace-nowrap">${cell.getData().nama_satuan
                 }</div>
               </div>`;
             },
@@ -899,14 +899,14 @@ const initTabulator = () => {
             title: "OUTLET",
             minWidth: 50,
             headerHozAlign: "center",
-            field: "id_outlet",
+            field: "nama_outlet",
             hozAlign: "center",
             vertAlign: "middle",
             print: false,
             download: false,
             formatter(cell) {
               return `<div>
-                <div class="font-medium whitespace-nowrap">${cell.getData().id_outlet
+                <div class="font-medium whitespace-nowrap">${cell.getData().nama_outlet
                 }</div>
               </div>`;
             },
@@ -1044,18 +1044,19 @@ const initTabulator = () => {
             download: true,
           }, {
             title: "SATUAN",
-            field: "id_satuan",
+            field: "nama_satuan",
             visible: false,
             print: true,
             download: true,
           },
           {
-            title: "GUDANG",
-            field: "id_gudang",
+            title: "OUTLET",
+            field: "nama_outlet",
             visible: false,
             print: true,
             download: true,
-          }, {
+          },
+          {
             title: "HARGA BELI",
             field: "harga_beli_varian",
             visible: false,
