@@ -64,12 +64,13 @@
             </Modal>
           </div>
           <div class="text-center col-span-6">
-            <button class="btn btn-pending" @click="modalVarian = true">
+            <button class="btn btn-pending" @click="addVarianGet">
               Tambah Varian
             </button>
             <Modal backdrop="static" size="modal-xl" :show="modalVarian" @hidden="modalVarian = false">
               <ModalHeader>
-                <h2 class="font-medium text-base mr-auto">Tambah Varian</h2>
+                <h2 v-if="isEdit" class="font-medium text-base mr-auto">Edit Varian {{ id_data }}</h2>
+                <h2 v-else class="font-medium text-base mr-auto">Tambah Varian</h2>
                 <button type="button" @click="resetFormVarian"
                   class="btn btn-outline-danger inline-block hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
                   <RefreshCwIcon class="mr-2" />Reset Form
@@ -79,113 +80,101 @@
                 <form @submit.prevent="!isEdit ? addVarian() : updateVarian()" id="addVarianForm">
                   <div class="overflow-hidden shadow sm:rounded-md">
                     <div class="bg-white px-4 py-5 sm:p-6">
-                      <div class="grid grid-cols-6 gap-6">
-                        <div class="col-span-6 sm:col-span-3 form-switch mb-0">
-                          <label for="inputIdVarian" class="block text-sm font-medium text-gray-700">ID Varian |
-                            <input id="ScanID" class="form-check-input" type="checkbox" v-model="checkedID"
-                              :disabled="isEdit" /></label>
-                          <div class="input-group">
-                            <input type="text" id="inputIdVarian"
-                              class="form-control mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                              :placeholder="
-                                checkedID
-                                  ? 'Ketik / Scan ID'
-                                  : 'Auto Generate ID'
-                              " v-model="inputIdVarian" :readonly="!checkedID" />
-                            <div v-if="checkedID"
-                              class="camera inline-flex items-center rounded-r-md border border-l-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500 mt-1"
-                              @click="
-  isModalScanner = true;
-renderQrScanner();
-                              ">
-                              <component is="CameraIcon" />
-                            </div>
-                          </div>
-                          <small v-if="!checkedID" class="text-grey-800 text-xs ml-2 mt-0">
-                            {{ isEdit? "* ID Tidak bisa diedit.": "* Untuk manambah ID Manual cek pada checkbox." }}
-                          </small>
-                          <small v-else class="text-grey-800 text-xs ml-2 mt-0">
-                            * Tekan lambang Kamera untuk scan
-                            <b>Barcode / ID</b>.</small>
+                      <div class="grid grid-cols-12 gap-6">
+
+                        <div v-if="!isEdit" class="col-span-12">
+                          <label for="daftarVarian" class="block text-sm font-medium text-gray-700">Daftar Varian
+                            Tersedia</label>
+                          <TomSelect v-model="daftarVarian" id="daftarVarian" class="mt-1 w-full"
+                            aria-label="Default select example" required>
+                            <option value="kosong" disabled>
+                              &gt-- Pilih Varian --&lt
+                            </option>
+                            <option v-for="varian in data" :key="varian.id_varian" :varian="varian"
+                              :value="varian.id_varian">
+                              {{ varian.id_varian }} - {{ varian.nama_varian }}
+                            </option>
+                          </TomSelect>
                         </div>
 
-                        <div class="col-span-6 sm:col-span-3 mb-0">
+                        <div class="col-span-12 sm:col-span-6 mb-0">
+                          <label for="inputIdVarian" class="block text-sm font-medium text-gray-700 mb-2">ID
+                            Varian</label>
+                          <input id="inputIdVarian" type="text"
+                            class="form-control flex-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            placeholder="Masukan Nama Varian" v-model="inputIdVarian" readonly />
+                        </div>
+
+                        <div class="col-span-12 sm:col-span-6 mb-0">
                           <label for="inputNamaVarian" class="block text-sm font-medium text-gray-700 mb-2">Nama
                             Varian</label>
                           <input id="inputNamaVarian" type="text"
                             class="form-control flex-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                            placeholder="Masukan Nama Varian" v-model="inputNamaVarian" required />
+                            placeholder="Masukan Nama Varian" v-model="inputNamaVarian" readonly />
                         </div>
 
-                        <div class="col-span-6 sm:col-span-3">
+                        <div class="col-span-12 sm:col-span-6">
                           <label for="kategoriBarang" class="block text-sm font-medium text-gray-700">Kategori
                             Barang</label>
-                          <TomSelect v-model="kategoriBarangVarian" id="kategoriBarang" class="mt-1 w-full"
-                            aria-label="Default select example" required>
-                            <option value="kosong" disabled>
-                              &gt-- Pilih Barang --&lt
-                            </option>
-                            <option v-for="barang in Barang.datas.barang" :key="barang.id_barang" :barang="barang"
-                              :value="barang.id_barang">
-                              {{ barang.id_barang }} - {{ barang.nama_barang }}
-                            </option>
-                          </TomSelect>
-                        </div>
-
-                        <div class="col-span-6 sm:col-span-3">
-                          <label for="kategoriGudang" class="block text-sm font-medium text-gray-700">Kategori
-                            Gudang</label>
-                          <TomSelect v-model="kategoriGudangVarian" id="kategoriGudang" class="mt-1 w-full"
-                            aria-label="Default select example" required>
-                            <option value="kosong" disabled>
-                              &gt-- Pilih Gudang --&lt
-                            </option>
-                            <option v-for="gudang in Barang.datas.gudang" :key="gudang.id_gudang" :gudang="gudang"
-                              :value="gudang.id_gudang">
-                              {{ gudang.id_gudang }} - {{ gudang.nama_gudang }}
-                            </option>
-                          </TomSelect>
-                        </div>
-
-                        <div class="col-span-6 sm:col-span-3 mb-0">
-                          <label for="stokVarian" class="block text-sm font-medium text-gray-700">Stok Varian</label>
-                          <input id="stokVarian" type="text"
+                          <input id="kategoriBarang" type="text"
                             class="form-control flex-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                            placeholder="Masukan Stok Varian" v-model="stokVarian" required />
+                            placeholder="Masukan Stok Varian" v-model="kategoriBarangVarian" readonly />
                         </div>
 
-                        <div class="col-span-6 sm:col-span-3">
+                        <div class="col-span-12 sm:col-span-6">
                           <label for="satuanVarian" class="block text-sm font-medium text-gray-700">Satuan
                             Varian</label>
-                          <TomSelect v-model="satuanVarian" id="satuanVarian" class="mt-1 w-full"
-                            aria-label="Default select example" required>
-                            <option value="kosong" disabled>
-                              &gt-- Pilih Satuan --&lt
-                            </option>
-                            <option v-for="satuan in Barang.datas.satuan" :key="satuan.id_satuan" :satuan="satuan"
-                              :value="satuan.id_satuan">
-                              {{ satuan.id_satuan }} - {{ satuan.nama_satuan }}
-                            </option>
-                          </TomSelect>
+                          <input id="satuanVarian" type="text"
+                            class="form-control flex-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            placeholder="Masukan Stok Varian" v-model="satuanVarian" readonly />
                         </div>
 
                         <div class="col-span-6 sm:col-span-3">
+                          <label for="stokGlobal" class="block text-sm font-medium text-gray-700">Stok Global</label>
+                          <input id="stokGlobal" type="text"
+                            class="form-control flex-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            placeholder="Masukan Stok Varian" v-model="stokGlobal" readonly />
+                        </div>
+
+                        <div class="col-span-6 sm:col-span-3">
+                          <label for="StokTerpakai" class="block text-sm font-medium text-gray-700">Stok
+                            Terpakai</label>
+                          <input id="StokTerpakai" type="text"
+                            class="form-control flex-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            placeholder="Masukan Stok Varian" v-model="stokTerpakai" readonly />
+                        </div>
+
+                        <div class="col-span-6 sm:col-span-3">
+                          <label for="stokTersisa" class="block text-sm font-medium text-gray-700">Stok Tersisa</label>
+                          <input id="stokTersisa" type="text"
+                            class="form-control flex-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            placeholder="Masukan Stok Varian" v-model="stokTersisa" readonly />
+                        </div>
+
+                        <div class="col-span-6 sm:col-span-3">
+                          <label for="stokLokal" class="block text-sm font-medium text-gray-700">Stok Lokal</label>
+                          <input id="stokLokal" type="text"
+                            class="form-control flex-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                            placeholder="Masukan Stok Varian" v-model="stokLokal" required />
+                        </div>
+
+                        <div class="col-span-12 sm:col-span-6">
                           <label for="hargaBeliVarian" class="block text-sm font-medium text-gray-700">Harga Beli
                             Varian</label>
                           <input id="hargaBeliVarian" type="text"
                             class="form-control flex-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                            placeholder="Masukan Harga Beli Varian" v-model="hargaBeliVarian" required />
+                            placeholder="Masukan Harga Beli Varian" v-model="hargaBeliVarian" readonly />
                         </div>
 
-                        <div class="col-span-6 sm:col-span-3">
+                        <div class="col-span-12 sm:col-span-6">
                           <label for="hargaJualVarian" class="block text-sm font-medium text-gray-700">Harga Jual
                             Varian</label>
                           <input id="hargaJualVarian" type="text"
                             class="form-control flex-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                            placeholder="Masukan Harga Jual Varian" v-model="hargaJualVarian" required />
+                            placeholder="Masukan Harga Jual Varian" v-model="hargaJualVarian" readonly />
                         </div>
 
-                        <div class="col-span-6 sm:col-span-6">
+                        <div class="col-span-12">
                           <label class="block text-sm font-medium text-gray-700">Gambar Varian</label>
                           <div
                             class="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
@@ -201,10 +190,10 @@ renderQrScanner();
                               <div v-else class="col-span-5 md:col-span-2 relative image-fit cursor-pointer zoom-in"
                                 style="height: 9rem">
                                 <img class="imgUp rounded-md" alt="Lurik Rachmad" :src="url" />
-                                <Tippy content="Remove this image?" @click="url = null"
+                                <!-- <Tippy content="Remove this image?" @click="url = null"
                                   class="tooltip w-5 h-5 flex items-center justify-center absolute rounded-full text-white bg-danger right-0 top-0 -mr-2 -mt-2">
                                   <XIcon class="w-4 h-4" />
-                                </Tippy>
+                                </Tippy> -->
                               </div>
                               <div>
                                 <div class="flex text-sm text-gray-600">
@@ -212,7 +201,7 @@ renderQrScanner();
                                     class="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500">
                                     <span>Upload a file</span>
                                     <input id="gambarBaru" ref="gambarBaru" @change="previewImage" name="file-upload"
-                                      type="file" class="sr-only" />
+                                      type="file" class="sr-only" disabled />
                                   </label>
                                   <p class="pl-1">or drag and drop</p>
                                 </div>
@@ -420,6 +409,8 @@ const filter = reactive({
 var subTable
 // const isInvoice = ref(false)
 // const data_jual = ref([])
+const id_data = ref("");
+const daftarVarian = ref("kosong");
 
 const checkedID = ref(false);
 const inputIdBarang = ref("");
@@ -430,10 +421,13 @@ const inputNamaVarian = ref("");
 const inputGambarVarian = ref("");
 const hargaBeliVarian = ref("");
 const hargaJualVarian = ref("");
-const kategoriGudangVarian = ref("kosong");
-const satuanVarian = ref("kosong");
-const kategoriBarangVarian = ref("kosong");
-const stokVarian = ref("");
+const stokLokal = ref(0);
+const satuanVarian = ref("");
+const kategoriBarangVarian = ref("");
+const stokGlobal = ref(0);
+const stokTersisa = ref(0);
+const stokTerpakai = ref(0);
+
 
 const data = ref([]);
 
@@ -458,6 +452,12 @@ const basicNonStickyNotificationToggle = () => {
 
 const openMainModal = () => {
   modal_utama.value = true;
+};
+
+const addVarianGet = async () => {
+  //data.value = await Barang.addSubvarianGet()
+  //console.log("data get", data)
+  modalVarian.value = true
 };
 
 const addBarang = () => {
@@ -499,10 +499,10 @@ const addVarian = () => {
         id_varian: '',
         nama_varian: inputNamaVarian.value,
         kategori_barang: kategoriBarangVarian.value,
-        stok_varian: parseInt(stokVarian.value),
+        stok_varian: parseInt(stokGlobal.value),
         harga_beli: parseInt(hargaBeliVarian.value),
         satuan_varian: satuanVarian.value,
-        gudang: kategoriGudangVarian.value,
+        gudang: stokLokal.value,
 
         file: file.value,
         harga_jual: parseInt(hargaJualVarian.value),
@@ -512,10 +512,10 @@ const addVarian = () => {
         id_varian: inputIdVarian.value,
         nama_varian: inputNamaVarian.value,
         kategori_barang: kategoriBarangVarian.value,
-        stok_varian: stokVarian.value,
+        stok_varian: stokGlobal.value,
         harga_beli: hargaBeliVarian.value,
         satuan_varian: satuanVarian.value,
-        gudang: kategoriGudangVarian.value,
+        gudang: stokLokal.value,
 
         file: file.value,
         harga_jual: hargaJualVarian.value,
@@ -531,18 +531,10 @@ const addVarian = () => {
 const updateVarian = () => {
   try {
     //console.log("Update Tambah Data", file.value);
-    Barang.updateVarian({
+    Barang.updateSubvarian({
+      id_sub_varian: id_data.value,
       id_varian: inputIdVarian.value,
-      nama_varian: inputNamaVarian.value,
-      kategori_barang: kategoriBarangVarian.value,
-      stok_varian: parseInt(stokVarian.value),
-      harga_beli: parseInt(hargaBeliVarian.value),
-      harga_jual: parseInt(hargaJualVarian.value),
-      satuan_varian: satuanVarian.value,
-      gudang: kategoriGudangVarian.value,
-
-      gambarLama: gambar_lama.value,
-      file_baru: file.value
+      stok_varian: parseInt(stokLokal.value),
 
     }).then(() => {
       initTabulator();
@@ -555,7 +547,7 @@ const updateVarian = () => {
 
 const deleteVarian = () => {
   // alert("delete" + inputIdVarian.value + inputNamaVarian.value)
-  Barang.removeVarian(inputIdVarian.value, inputNamaVarian.value).then((data) => {
+  Barang.removeSubvarian({ id_sub_varian: id_data.value, id_varian: inputIdVarian.value }).then((data) => {
     initTabulator();
     resetModal();
   }).catch((e) => {
@@ -588,6 +580,7 @@ const resultScan = (result) => {
 }
 
 const resetModal = () => {
+  id_data.value = ''
   modal_utama.value = false
   modalBarang.value = false
   modalVarian.value = false
@@ -598,18 +591,21 @@ const resetModal = () => {
   checkedID.value = false;
   inputIdBarang.value = "";
   inputNamaBarang.value = "";
+  daftarVarian.value = "";
 
   inputIdVarian.value = "";
   inputNamaVarian.value = "";
   inputGambarVarian.value = "";
   hargaBeliVarian.value = "";
   hargaJualVarian.value = "";
-  kategoriGudangVarian.value = "kosong";
-  satuanVarian.value = "kosong";
-  kategoriBarangVarian.value = "kosong";
-  stokVarian.value = "";
+  stokLokal.value = 0;
+  satuanVarian.value = "";
+  kategoriBarangVarian.value = "";
+  stokGlobal.value = 0;
+  stokTerpakai.value = 0;
+  stokTersisa.value = 0;
 
-  data.value = "";
+  //data.value = "";
 
   url.value = null;
   file.value = null;
@@ -627,6 +623,50 @@ watch(filter, async (newValue, oldValue) => {
     alert("Gagal wtch filter" + error)
   }
 })
+
+watch(daftarVarian, async (newValue, oldValue) => {
+  //console.log("daftar varian: ", newValue)
+  if (newValue != "") {
+    Barang.updateSubvarianGet(newValue).then((detail) => {
+      //alert("edit " + JSON.stringify(varian.gambar_varian));
+      // data.value = detail
+      //gambar_lama.value = detail.item.gambar_varian
+      file.value = ''
+
+      //id_data.value = detail.item.id_sub_varian
+
+      inputIdVarian.value = detail.item.id_varian
+      inputNamaVarian.value = detail.item.nama_varian
+      kategoriBarangVarian.value = `${detail.item.id_barang} - ${detail.item.nama_barang}`
+      satuanVarian.value = `${detail.item.id_satuan} - ${detail.item.nama_satuan}`
+      stokLokal.value = 0
+      stokGlobal.value = detail.item.stok_global
+      stokTerpakai.value = detail.item.stok_terpakai
+      stokTersisa.value = detail.item.stok_tersisa
+      hargaBeliVarian.value = detail.item.harga_beli_varian
+      hargaJualVarian.value = detail.item.harga_jual_varian
+
+      // isEdit.value = true;
+      // modalVarian.value = true;
+    }).catch((e) => {
+      alert("Error edit Get " + e);
+    });
+  }
+});
+
+watch(stokLokal, async (newValue, oldValue) => {
+  try {
+    if (oldValue != "") {
+      stokTersisa.value = stokTersisa.value - parseInt(newValue - oldValue)
+      if (stokTersisa.value < 0) {
+        alert("Stok Lokal Melebihi Stok Tersisa Global")
+        stokLokal.value = oldValue
+      }
+    }
+  } catch (error) {
+    alert("Gagal wtch stok lokal" + error)
+  }
+});
 
 const template = document.createElement('template');
 template.innerHTML = '<div style="display:inline-block;" class="d-flex flex-row">' +
@@ -967,25 +1007,22 @@ const initTabulator = () => {
                   //alert("edit " + JSON.stringify(cell.getData()));
                   const varian = cell.getData()
                   getImgUrl(varian.gambar_varian)
-                  // console.log("openEditModal", cell.getRow());
-                  // inputIdBarang.value = varian.id_barang
-                  // inputNamaBarang.value = varian.nama_barang
-                  // isEdit.value = true;
-                  // modalVarian.value = true;
-                  Barang.updateVarianGet(varian.id_varian).then((detail) => {
+                  Barang.updateSubvarianGet(varian.id_varian).then((detail) => {
                     //alert("edit " + JSON.stringify(varian.gambar_varian));
                     data.value = detail
-
-                    //console.log("edit ", detail.item.gambar_varian, varian.gambar_varian);
-                    //previewImage(detail.item.gambar_varian)
                     gambar_lama.value = detail.item.gambar_varian
                     file.value = ''
+
+                    id_data.value = detail.item.id_sub_varian
+
                     inputIdVarian.value = detail.item.id_varian
                     inputNamaVarian.value = detail.item.nama_varian
-                    kategoriBarangVarian.value = detail.item.id_barang
-                    satuanVarian.value = detail.item.id_satuan
-                    kategoriGudangVarian.value = detail.item.id_gudang
-                    stokVarian.value = detail.item.stok_varian
+                    kategoriBarangVarian.value = `${detail.item.id_barang} - ${detail.item.nama_barang}`
+                    satuanVarian.value = `${detail.item.id_satuan} - ${detail.item.nama_satuan}`
+                    stokLokal.value = detail.item.stok_lokal
+                    stokGlobal.value = detail.item.stok_global
+                    stokTerpakai.value = detail.item.stok_terpakai
+                    stokTersisa.value = detail.item.stok_tersisa
                     hargaBeliVarian.value = detail.item.harga_beli_varian
                     hargaJualVarian.value = detail.item.harga_jual_varian
 
@@ -998,6 +1035,8 @@ const initTabulator = () => {
                 } else {
                   //alert("delete" + JSON.stringify(cell.getData()));
                   const varian = cell.getData();
+                  //console.log("varian", varian);
+                  id_data.value = varian.id_sub_varian;
                   inputIdVarian.value = varian.id_varian;
                   inputNamaVarian.value = varian.nama_varian;
                   isVarian.value = true;
@@ -1182,14 +1221,14 @@ const onPrint = () => {
 onMounted(async function () {
   try {
     Barang.readItem().then(() => {
-      Barang.addVarianGet().then((varian) => {
+      Barang.addSubvarianGet().then((varian) => {
         data.value = varian;
         initTabulator();
         reInitOnResizeWindow();
         basicNonStickyNotificationToggle();
         modalErrorRef.value.errorDatabaseModal = false;
         //console.log("Error: ", varian);
-        
+
       }).catch((e) => {
         modalErrorRef.value.errorDatabaseModal = true;
       })
@@ -1198,7 +1237,7 @@ onMounted(async function () {
     });
   } catch (error) {
     //alert("onMounted" + error)
-    data.value = [{"barang": [], "satuan": [], "gudang": []}]
+    data.value = [{ "barang": [], "satuan": [], "gudang": [] }]
     modalErrorRef.value.errorDatabaseModal = true;
   }
 });

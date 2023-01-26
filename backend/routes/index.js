@@ -70,7 +70,7 @@ module.exports = function (db) {
       })
     } catch (error) {
       //console.log(`gagal`, e)
-      res.status(500).json(new Response(e, false))
+      res.status(500).json(new Response(error, false))
     }
   });
 
