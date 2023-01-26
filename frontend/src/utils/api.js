@@ -3,7 +3,7 @@ import axios from "axios";
 
 export const request = axios.create({
   baseURL: import.meta.env.VITE_APP_BASE_API,
-  timeout: 2000,
+  timeout: 3000,
   // headers: { 'Authorization': `Bearer ${JSON.parse(localStorage.getItem('user')).token}` }
   //headers: { 'Authorization': token ? `Bearer ${token}` : '' }
 });

@@ -52,45 +52,53 @@ export const useBarangStore = defineStore({
       const id_barang = Date.now();
       this.rawItems.push({ id_barang, nama_barang });
       try {
-        const data = await request.post("barang/addbarang", { nama_barang });
-
-        this.rawItems = this.rawItems.map((item) => {
-          if (item.id_barang === id_barang) {
-            this.readVarian(data.data.id_barang);
-            return data.data;
-          }
-
-          return item;
-        });
+        const { data } = await request.post("barang/addbarang", { nama_barang });
+        //console.log("add", data.success);
+        if (data.success) {
+          this.rawItems = this.rawItems.map((item) => {
+            if (item.id_barang === id_barang) {
+              this.readVarian(data.data.data.id_barang);
+              return data.data.data;
+            }
+            return item;
+          });
+        }
       } catch (error) {
         console.error(error);
       }
     },
 
     async removeItem(id_barang) {
-      this.rawItems = this.rawItems.filter(
-        (item) => item.id_barang !== id_barang
-      );
-      request
-        .get(`barang/deletebar/${id_barang}`)
-        .then((res) => {
-          if (res.status >= 200 && res.status < 300) {
-            // alert(`Sukses Hapus Data ${id_barang}`)
-          }
-        })
-        .catch((e) => console.error(e));
+      try {
+        this.rawItems = this.rawItems.filter(
+          (item) => item.id_barang !== id_barang
+        );
+        const { data } = await request.delete(`barang/deletebar/${id_barang}`)
+        //console.log('data.data', data);
+        if (data.success) {
+          // alert(`Sukses Hapus Data ${id_barang}`)
+        }
+      } catch (error) {
+        console.error(error);
+      }
     },
 
     async updateItem(barang) {
-      let id_barang = barang.id_barang;
-      let nama_barang = barang.nama_barang;
-      this.rawItems = this.rawItems.map((item) => {
-        if (item.id_barang === id_barang) {
-          return barang;
+      try {
+        let id_barang = barang.id_barang;
+        let nama_barang = barang.nama_barang;
+        this.rawItems = this.rawItems.map((item) => {
+          if (item.id_barang === id_barang) {
+            return barang;
+          }
+          return item;
+        });
+        const { data } = await request.post(`barang/editbar/${id_barang}`, { nama_barang })
+        if (data.success) {
         }
-        return item;
-      });
-      request.post(`barang/editbar/${id_barang}`, { nama_barang }).catch((e) => console.error(e));
+      } catch (error) {
+        console.error(error);
+      }
     },
 
     //---------------------------------------------------------------- Varian ----------------
@@ -216,12 +224,10 @@ export const useBarangStore = defineStore({
 
     async updateVarianGet(id_varian) {
       try {
-        const data = await request.get(`barang/editvar/${id_varian}`);
-        console.log('data.data', data)
-        if (data.status >= 200 && data.status < 300) {
+        const { data } = await request.get(`barang/editvar/${id_varian}`);
+        console.log('data.data', data.data)
+        if (data.success) {
           return data.data;
-        } else {
-          console.log("error", data.status);
         }
       } catch (error) {
         console.error(error);
@@ -253,16 +259,16 @@ export const useBarangStore = defineStore({
       //console.log("varian update ", varian)
       try {
         if (file === "" || null) {
-          const data = await request.post(
+          const { data } = await request.post(
             `barang/editvar/${varian.id_varian}`,
             formData,
             headers,
             { timeout: 3 }
           );
-          if (data.status >= 200 && data.status < 300) {
+          if (data.success) {
             this.rawVarians = this.rawVarians.map((item) => {
               if (item.id_varian === varian.id_varian) {
-                return data.data;
+                return data.data.data;
               }
               return item;
             });
@@ -270,16 +276,16 @@ export const useBarangStore = defineStore({
         } else {
           console.log("file_baru")
           formData.append("file", file);
-          const data = await request.post(
+          const { data } = await request.post(
             `barang/editvar/${varian.id_varian}`,
             formData,
             headers,
             { timeout: 3 }
           );
-          if (data.status >= 200 && data.status < 300) {
+          if (data.success) {
             this.rawVarians = this.rawVarians.map((item) => {
               if (item.id_varian === varian.id_varian) {
-                return data.data;
+                return data.data.data;
               }
               return item;
             });
@@ -290,15 +296,19 @@ export const useBarangStore = defineStore({
       }
     },
 
-    async removeVarian(varian) {
-      this.rawVarians = this.rawVarians.filter(
-        (item) => item.id_varian !== varian.id_varian
-      );
-      request.get(`barang/deletevar/${varian.id_varian}`).then((res) => {
-        if (res.status >= 200 && res.status < 300) {
+    async removeVarian(id_varian) {
+      //console.log("id_varian removed", id_varian);
+      try {
+        this.rawVarians = this.rawVarians.filter(
+          (item) => item.id_varian !== id_varian
+        );
+        const { data } = await request.delete(`barang/deletevar/${id_varian}`)
+        if (data.success) {
           // alert(`Sukses Hapus Data ${id_barang}`)
         }
-      });
+      } catch (error) {
+        console.error("error delete varian", error);
+      }
     },
 
     //----------------------------------------------------------------Sub Varian --------------------------------
@@ -341,7 +351,7 @@ export const useBarangStore = defineStore({
           harga_beli_varian: varian.harga_beli,
           harga_jual_varian: varian.harga_jual,
         });
-        const {data} = await request.post(
+        const { data } = await request.post(
           "barang/addsubvarian",
           formData,
           headers
@@ -364,7 +374,7 @@ export const useBarangStore = defineStore({
       try {
         const Auth = useAuthStore();
         const { data } = await request.get(`barang?id_barang=${id_barang}&id_outlet=${String(Auth.items.id_outlet)}`);
-       
+
         if (data.success) {
           this.rawVarians = data.data.varian;
 
@@ -393,7 +403,7 @@ export const useBarangStore = defineStore({
       try {
         const Auth = useAuthStore();
         const { data } = await request.get(`barang/editsubvar/${id_varian}?id_outlet=${String(Auth.items.id_outlet)}`);
-        console.log('data.data', data.data)
+        //console.log('data.data', data.data)
         if (data.success) {
           return data.data;
         }
@@ -435,15 +445,19 @@ export const useBarangStore = defineStore({
     },
 
     async removeSubvarian(varian) {
-      //console.log('data.data', varian);
-      this.rawVarians = this.rawVarians.filter(
-        (item) => item.id_varian !== varian.id_varian
-      );
-      request.delete(`barang/deletesubvar/${varian.id_sub_varian}`).then((res) => {
-        if (data.success) {
-          // alert(`Sukses Hapus Data ${id_barang}`)
-        }
-      });
+      try {
+        this.rawVarians = this.rawVarians.filter(
+          (item) => item.id_varian !== varian.id_varian
+        );
+        const { data } = await request.delete(`barang/deletesubvar/${varian.id_sub_varian}`)
+        // console.log('data.data', data);
+        // if (data.success) {
+        //   // alert(`Sukses Hapus Data ${id_barang}`)
+        // }
+      } catch (error) {
+        console.error(error);
+      }
+
     },
 
   },

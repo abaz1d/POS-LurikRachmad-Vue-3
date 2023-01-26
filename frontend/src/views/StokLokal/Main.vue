@@ -131,7 +131,7 @@
 
                         <div class="col-span-6 sm:col-span-3">
                           <label for="stokGlobal" class="block text-sm font-medium text-gray-700">Stok Global</label>
-                          <input id="stokGlobal" type="text"
+                          <input id="stokGlobal" type="number"
                             class="form-control flex-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                             placeholder="Masukan Stok Varian" v-model="stokGlobal" readonly />
                         </div>
@@ -139,14 +139,14 @@
                         <div class="col-span-6 sm:col-span-3">
                           <label for="StokTerpakai" class="block text-sm font-medium text-gray-700">Stok
                             Terpakai</label>
-                          <input id="StokTerpakai" type="text"
+                          <input id="StokTerpakai" type="number"
                             class="form-control flex-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                             placeholder="Masukan Stok Varian" v-model="stokTerpakai" readonly />
                         </div>
 
                         <div class="col-span-6 sm:col-span-3">
                           <label for="stokTersisa" class="block text-sm font-medium text-gray-700">Stok Tersisa</label>
-                          <input id="stokTersisa" type="text"
+                          <input id="stokTersisa" type="number"
                             class="form-control flex-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                             placeholder="Masukan Stok Varian" v-model="stokTersisa" readonly />
                         </div>
@@ -457,7 +457,7 @@ const openMainModal = () => {
 };
 
 const addVarianGet = async () => {
-  //data.value = await Barang.addSubvarianGet()
+  data.value = await Barang.addSubvarianGet()
   //console.log("data get", data)
   modalVarian.value = true
 };
@@ -651,6 +651,7 @@ watch(stokLokal, async (newValue, oldValue) => {
   try {
     if (oldValue != "") {
       stokTersisa.value = stokTersedia.value - parseInt(newValue)
+      stokTerpakai.value = stokGlobal.value - stokTersisa.value
       if (stokTersisa.value < 0) {
         alert("Stok Lokal Melebihi Stok Tersisa Global")
         stokLokal.value = oldValue
@@ -659,6 +660,7 @@ watch(stokLokal, async (newValue, oldValue) => {
         alert("Stok Lokal Minimal 0")
         stokLokal.value = oldValue
         stokTersisa.value = stokTersedia.value - parseInt(oldValue)
+        stokTerpakai.value = stokGlobal.value - stokTersisa.value
       }
     }
   } catch (error) {

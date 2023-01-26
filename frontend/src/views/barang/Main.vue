@@ -150,10 +150,10 @@ renderQrScanner();
                         </div>
 
                         <div class="col-span-6 sm:col-span-3 mb-0">
-                          <label for="stokVarian" class="block text-sm font-medium text-gray-700">Stok Global Varian</label>
-                          <input id="stokVarian" type="text"
+                          <label for="stokGlobal" class="block text-sm font-medium text-gray-700">Stok Global Varian</label>
+                          <input id="stokGlobal" type="text"
                             class="form-control flex-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                            placeholder="Masukan Stok Varian" v-model="stokVarian" required />
+                            placeholder="Masukan Stok Varian" v-model="stokGlobal" required />
                         </div>
 
                         <div class="col-span-6 sm:col-span-3">
@@ -430,7 +430,7 @@ const hargaJualVarian = ref("");
 const kategoriGudangVarian = ref("kosong");
 const satuanVarian = ref("kosong");
 const kategoriBarangVarian = ref("kosong");
-const stokVarian = ref("");
+const stokGlobal = ref("");
 
 const data = ref([]);
 
@@ -499,7 +499,7 @@ const addVarian = () => {
         id_varian: '',
         nama_varian: inputNamaVarian.value,
         kategori_barang: kategoriBarangVarian.value,
-        stok_varian: parseInt(stokVarian.value),
+        stok_varian: parseInt(stokGlobal.value),
         harga_beli: parseInt(hargaBeliVarian.value),
         satuan_varian: satuanVarian.value,
         gudang: kategoriGudangVarian.value,
@@ -512,7 +512,7 @@ const addVarian = () => {
         id_varian: inputIdVarian.value,
         nama_varian: inputNamaVarian.value,
         kategori_barang: kategoriBarangVarian.value,
-        stok_varian: stokVarian.value,
+        stok_varian: stokGlobal.value,
         harga_beli: hargaBeliVarian.value,
         satuan_varian: satuanVarian.value,
         gudang: kategoriGudangVarian.value,
@@ -535,7 +535,7 @@ const updateVarian = () => {
       id_varian: inputIdVarian.value,
       nama_varian: inputNamaVarian.value,
       kategori_barang: kategoriBarangVarian.value,
-      stok_varian: parseInt(stokVarian.value),
+      stok_varian: parseInt(stokGlobal.value),
       harga_beli: parseInt(hargaBeliVarian.value),
       harga_jual: parseInt(hargaJualVarian.value),
       satuan_varian: satuanVarian.value,
@@ -555,7 +555,7 @@ const updateVarian = () => {
 
 const deleteVarian = () => {
   // alert("delete" + inputIdVarian.value + inputNamaVarian.value)
-  Barang.removeVarian(inputIdVarian.value, inputNamaVarian.value).then((data) => {
+  Barang.removeVarian(inputIdVarian.value).then((data) => {
     initTabulator();
     resetModal();
   }).catch((e) => {
@@ -607,7 +607,7 @@ const resetModal = () => {
   kategoriGudangVarian.value = "kosong";
   satuanVarian.value = "kosong";
   kategoriBarangVarian.value = "kosong";
-  stokVarian.value = "";
+  stokGlobal.value = "";
 
   //data.value = "";
 
@@ -951,13 +951,15 @@ const initTabulator = () => {
                 if (e.id === "edit") {
                   //alert("edit " + JSON.stringify(cell.getData()));
                   const varian = cell.getData()
-                  getImgUrl(varian.gambar_varian)
+                  //getImgUrl(varian.gambar_varian)
+                  url.value = getImgUrl(varian.gambar_varian)
                   // console.log("openEditModal", cell.getRow());
                   // inputIdBarang.value = varian.id_barang
                   // inputNamaBarang.value = varian.nama_barang
                   // isEdit.value = true;
                   // modalVarian.value = true;
                   Barang.updateVarianGet(varian.id_varian).then((detail) => {
+                    console.log("detail", detail)
                     //alert("edit " + JSON.stringify(varian.gambar_varian));
                     data.value = detail
 
@@ -970,7 +972,7 @@ const initTabulator = () => {
                     kategoriBarangVarian.value = detail.item.id_barang
                     satuanVarian.value = detail.item.id_satuan
                     kategoriGudangVarian.value = detail.item.id_gudang
-                    stokVarian.value = detail.item.stok_global
+                    stokGlobal.value = detail.item.stok_global
                     hargaBeliVarian.value = detail.item.harga_beli_varian
                     hargaJualVarian.value = detail.item.harga_jual_varian
 
