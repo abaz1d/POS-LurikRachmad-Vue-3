@@ -1105,15 +1105,20 @@ const reInitOnResizeWindow = () => {
 };
 
 const getImgUrl = (gambar_varian) => {
-  // console.log('gambar_varian',gambar_varian.data)
-  var images = gambar_varian.data
-    .map((b) => String.fromCharCode(b))
-    .join("");
-  gambar_lama_preview.value = new URL(`${publicPath}gambar/${images}`).href;
-  if (isEdit) {
-    url.value = gambar_lama_preview.value
+  //console.log('gambar_varian', import.meta.url)
+  if (gambar_varian) {
+    var images = gambar_varian.data
+      .map((b) => String.fromCharCode(b))
+      .join("");
+    gambar_lama_preview.value = new URL(`${publicPath}gambar/${images}`).href;
+    if (isEdit) {
+      url.value = gambar_lama_preview.value
+    }
+    
+    return gambar_lama_preview.value;
+  } else {
+    return `${new URL(window.location.origin)}`+ '404.jpeg'
   }
-  return gambar_lama_preview.value;
 }
 
 // Filter function

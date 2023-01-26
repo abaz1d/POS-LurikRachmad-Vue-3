@@ -264,10 +264,15 @@ module.exports = function (db) {
       res.status(500).json(new Response(e, false))
     }
   })
+  //----------------------------------------------------------------
 
   router.get('/addsubvarian', isLoggedIn, async function (req, res) {
     try {
-      db.query('SELECT v.id_varian, v.nama_varian, sv.id_outlet FROM public.varian v LEFT JOIN sub_varian sv ON v.id_varian = sv.id_varian WHERE sv.id_outlet IS NULL ORDER BY id_varian ASC ', (err, rowsV) => {
+      db.query(`SELECT * FROM (
+        SELECT var.id_varian, var.nama_varian, svar.id_outlet FROM varian var LEFT JOIN sub_varian svar ON var.id_varian = svar.id_varian) as X
+      WHERE (select count(*) FROM (
+        SELECT v.id_varian, v.nama_varian, sv.id_outlet FROM varian v LEFT JOIN sub_varian sv ON v.id_varian = sv.id_varian) as Y
+         WHERE X.id_varian = Y.id_varian) = 1`, (err, rowsV) => {
         if (err) throw new Error(err)
         const varian = rowsV.rows
         // res.render('varian/addvarian', { current: '', varian, satuan, gudang });
@@ -277,6 +282,35 @@ module.exports = function (db) {
     } catch (error) {
       res.status(500).json(new Response(error, false))
     }
+  })
+
+  router.post('/addsubvarian', async function (req, res, next) {
+    const { id_varian, id_outlet, stok_varian } = req.body
+
+    try {
+      const { rows } = await db.query(`WITH insert AS (INSERT INTO sub_varian(id_varian, id_outlet, stok_varian) VALUES ($1, $2, $3) RETURNING *) SELECT sv.id_sub_varian, 
+      v.gambar_varian, 
+      b.nama_barang, 
+      v.id_varian, 
+      v.nama_varian, 
+      sv.stok_varian,
+      s.nama_satuan, 
+      o.nama_outlet, 
+      v.harga_beli_varian, 
+      v.harga_jual_varian 
+    FROM insert AS sv  
+    LEFT JOIN varian AS v ON sv.id_varian = v.id_varian 
+    LEFT JOIN barang AS b ON v.id_barang = b.id_barang 
+    LEFT JOIN outlet AS o ON sv.id_outlet = o.id_outlet 
+    LEFT JOIN satuan AS s ON v.id_satuan = s.id_satuan`,
+        [id_varian, id_outlet, stok_varian])
+      let data = rows[0]
+      //res.json(rows)
+      res.json(new Response({ data }));
+    } catch (error) {
+      res.status(500).json(new Response(error, false))
+    }
+
   })
 
   router.get('/editsubvar/:id', isLoggedIn, async (req, res) => {
@@ -308,7 +342,7 @@ module.exports = function (db) {
         if (err) throw new Error(err)
         let data = rows.rows
         //console.log("rows",data, data.length)
-        if (data.length >1) {
+        if (data.length > 1) {
           data = data.filter((data) => {
             //console.log("item",id_outlet=== data.id_outlet)
             return data.id_outlet === id_outlet
@@ -366,7 +400,7 @@ module.exports = function (db) {
       res.status(500).json(new Response(e, false))
     }
   })
-  //=====================================================
+  //----------------------------------------------------------------
   router.get('/addbarang', isLoggedIn, function (req, res) {
     res.render('barang/addbarang', { currentDir: 'settingdata', current: 'barang' });
   })

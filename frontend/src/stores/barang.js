@@ -318,11 +318,53 @@ export const useBarangStore = defineStore({
 
     },
 
+    async addSubvarian(varian) {
+
+      const Auth = useAuthStore();
+      //const id_varian = Date.now();
+      const formData = new FormData();
+
+      //formData.append("id_sub_varian", varian.id_sub_varian);
+      formData.append("id_varian", varian.id_varian);
+      formData.append("id_outlet", String(Auth.items.id_outlet));
+      formData.append("stok_varian", varian.stok_varian);
+
+      const headers = { "Content-Type": "multipart/form-data" };
+      try {
+        this.rawVarians.push({
+          id_varian: varian.id_varian,
+          nama_varian: varian.nama_varian,
+          nama_barang: varian.nama_barang,
+          stok_varian: varian.stok_varian,
+          nama_satuan: varian.nama_satuan,
+          nama_outlet: varian.nama_outlet,
+          harga_beli_varian: varian.harga_beli,
+          harga_jual_varian: varian.harga_jual,
+        });
+        const {data} = await request.post(
+          "barang/addsubvarian",
+          formData,
+          headers
+        );
+        //console.log("data add", data.data.data);
+        if (data.success) {
+          this.rawVarians = this.rawVarians.map((item) => {
+            if (item.id_varian === varian.id_varian) {
+              return data.data.data;
+            }
+            return item;
+          });
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
+
     async readVarianOutlet(id_barang) {
       try {
         const Auth = useAuthStore();
         const { data } = await request.get(`barang?id_barang=${id_barang}&id_outlet=${String(Auth.items.id_outlet)}`);
-        //console.log('data.data', data)
+       
         if (data.success) {
           this.rawVarians = data.data.varian;
 
@@ -333,6 +375,7 @@ export const useBarangStore = defineStore({
               }
               return barang
             })
+            //console.log('data.data', data.data.varian, varian)
             return varian
           })
 

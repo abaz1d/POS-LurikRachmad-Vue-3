@@ -153,9 +153,9 @@
 
                         <div class="col-span-6 sm:col-span-3">
                           <label for="stokLokal" class="block text-sm font-medium text-gray-700">Stok Lokal</label>
-                          <input id="stokLokal" type="text"
+                          <input id="stokLokal" type="number"
                             class="form-control flex-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                            placeholder="Masukan Stok Varian" v-model="stokLokal" required />
+                            placeholder="Masukan Stok Varian" v-model="stokLokal" required :disabled="!isEdit && daftarVarian == 'kosong'" />
                         </div>
 
                         <div class="col-span-12 sm:col-span-6">
@@ -427,6 +427,8 @@ const kategoriBarangVarian = ref("");
 const stokGlobal = ref(0);
 const stokTersisa = ref(0);
 const stokTerpakai = ref(0);
+const stokTersedia = ref(0);
+const outlet = ref("");
 
 
 const data = ref([]);
@@ -467,7 +469,7 @@ const addBarang = () => {
       resetModal();
     })
   } catch (error) {
-    alert("Gagal Tambah Data", error);
+    alert("Gagal Tambah Data" + error);
   }
 };
 const updateBarang = () => {
@@ -494,37 +496,23 @@ const deleteBarang = () => {
 
 const addVarian = () => {
   try {
-    if (inputIdVarian.value === "" || null) {
-      Barang.addVarian({
-        id_varian: '',
-        nama_varian: inputNamaVarian.value,
-        kategori_barang: kategoriBarangVarian.value,
-        stok_varian: parseInt(stokGlobal.value),
-        harga_beli: parseInt(hargaBeliVarian.value),
-        satuan_varian: satuanVarian.value,
-        gudang: stokLokal.value,
+    Barang.addSubvarian({
+      id_varian: inputIdVarian.value,
+      nama_varian: inputNamaVarian.value,
+      nama_barang: kategoriBarangVarian.value,
+      stok_varian: stokLokal.value,
+      nama_satuan: satuanVarian.value,
+      harga_beli: hargaBeliVarian.value,
+      harga_jual: hargaJualVarian.value,
 
-        file: file.value,
-        harga_jual: parseInt(hargaJualVarian.value),
-      });
-    } else {
-      Barang.addVarian({
-        id_varian: inputIdVarian.value,
-        nama_varian: inputNamaVarian.value,
-        kategori_barang: kategoriBarangVarian.value,
-        stok_varian: stokGlobal.value,
-        harga_beli: hargaBeliVarian.value,
-        satuan_varian: satuanVarian.value,
-        gudang: stokLokal.value,
+      file: file.value,
 
-        file: file.value,
-        harga_jual: hargaJualVarian.value,
-      });
-    }
-    initTabulator()
-    resetModal()
+    }).then(() => {
+      initTabulator();
+      resetModal();
+    });
   } catch (error) {
-    alert("Varian Tambah Data", error);
+    alert("Varian Tambah Data" + error);
   }
 };
 
@@ -591,7 +579,7 @@ const resetModal = () => {
   checkedID.value = false;
   inputIdBarang.value = "";
   inputNamaBarang.value = "";
-  daftarVarian.value = "";
+  daftarVarian.value = "kosong";
 
   inputIdVarian.value = "";
   inputNamaVarian.value = "";
@@ -604,6 +592,8 @@ const resetModal = () => {
   stokGlobal.value = 0;
   stokTerpakai.value = 0;
   stokTersisa.value = 0;
+  stokTersedia.value = 0;
+  outlet.value = "";
 
   //data.value = "";
 
@@ -626,12 +616,13 @@ watch(filter, async (newValue, oldValue) => {
 
 watch(daftarVarian, async (newValue, oldValue) => {
   //console.log("daftar varian: ", newValue)
-  if (newValue != "") {
+  if (newValue != "kosong" || "") {
     Barang.updateSubvarianGet(newValue).then((detail) => {
       //alert("edit " + JSON.stringify(varian.gambar_varian));
       // data.value = detail
       //gambar_lama.value = detail.item.gambar_varian
       file.value = ''
+      url.value = getImgUrl(detail.item.gambar_varian)
 
       //id_data.value = detail.item.id_sub_varian
 
@@ -640,12 +631,14 @@ watch(daftarVarian, async (newValue, oldValue) => {
       kategoriBarangVarian.value = `${detail.item.id_barang} - ${detail.item.nama_barang}`
       satuanVarian.value = `${detail.item.id_satuan} - ${detail.item.nama_satuan}`
       stokLokal.value = 0
+
       stokGlobal.value = detail.item.stok_global
-      stokTerpakai.value = detail.item.stok_terpakai
-      stokTersisa.value = detail.item.stok_tersisa
+      stokTerpakai.value = (detail.item.stok_terpakai === null ? 0 : detail.item.stok_terpakai)
+      stokTersisa.value = detail.item.stok_tersisa === null ? detail.item.stok_global : detail.item.stok_tersisa
       hargaBeliVarian.value = detail.item.harga_beli_varian
       hargaJualVarian.value = detail.item.harga_jual_varian
-
+      outlet.value = detail.item.nama_outlet
+      stokTersedia.value = parseInt(+stokLokal.value + +stokTersisa.value)
       // isEdit.value = true;
       // modalVarian.value = true;
     }).catch((e) => {
@@ -657,10 +650,15 @@ watch(daftarVarian, async (newValue, oldValue) => {
 watch(stokLokal, async (newValue, oldValue) => {
   try {
     if (oldValue != "") {
-      stokTersisa.value = stokTersisa.value - parseInt(newValue - oldValue)
+      stokTersisa.value = stokTersedia.value - parseInt(newValue)
       if (stokTersisa.value < 0) {
         alert("Stok Lokal Melebihi Stok Tersisa Global")
         stokLokal.value = oldValue
+      }
+      if (newValue === "") {
+        alert("Stok Lokal Minimal 0")
+        stokLokal.value = oldValue
+        stokTersisa.value = stokTersedia.value - parseInt(oldValue)
       }
     }
   } catch (error) {
@@ -1025,6 +1023,8 @@ const initTabulator = () => {
                     stokTersisa.value = detail.item.stok_tersisa
                     hargaBeliVarian.value = detail.item.harga_beli_varian
                     hargaJualVarian.value = detail.item.harga_jual_varian
+                    stokTersedia.value = parseInt(+stokLokal.value + +stokTersisa.value)
+                    //console.log("stoktersedi", stokTersedia.value)
 
                     isEdit.value = true;
                     modalVarian.value = true;
@@ -1166,15 +1166,20 @@ const reInitOnResizeWindow = () => {
 };
 
 const getImgUrl = (gambar_varian) => {
-  // console.log('gambar_varian',gambar_varian.data)
-  var images = gambar_varian.data
-    .map((b) => String.fromCharCode(b))
-    .join("");
-  gambar_lama_preview.value = new URL(`${publicPath}gambar/${images}`).href;
-  if (isEdit) {
-    url.value = gambar_lama_preview.value
+  //console.log('gambar_varian', import.meta.url)
+  if (gambar_varian) {
+    var images = gambar_varian.data
+      .map((b) => String.fromCharCode(b))
+      .join("");
+    gambar_lama_preview.value = new URL(`${publicPath}gambar/${images}`).href;
+    //if (isEdit) {
+      url.value = gambar_lama_preview.value
+    //}
+
+    return gambar_lama_preview.value;
+  } else {
+    return `${new URL(window.location.origin)}` + '404.jpeg'
   }
-  return gambar_lama_preview.value;
 }
 
 // Filter function
