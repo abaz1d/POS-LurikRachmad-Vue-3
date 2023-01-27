@@ -225,7 +225,7 @@ export const useBarangStore = defineStore({
     async updateVarianGet(id_varian) {
       try {
         const { data } = await request.get(`barang/editvar/${id_varian}`);
-        console.log('data.data', data.data)
+        //console.log('data.data', data.data)
         if (data.success) {
           return data.data;
         }

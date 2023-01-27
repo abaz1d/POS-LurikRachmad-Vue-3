@@ -149,11 +149,19 @@ renderQrScanner();
                           </TomSelect>
                         </div>
 
-                        <div class="col-span-6 sm:col-span-3 mb-0">
-                          <label for="stokGlobal" class="block text-sm font-medium text-gray-700">Stok Global Varian</label>
-                          <input id="stokGlobal" type="text"
-                            class="form-control flex-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                            placeholder="Masukan Stok Varian" v-model="stokGlobal" required />
+                        <div class="col-span-6 sm:col-span-3 mb-0 grid grid-cols-6 gap-2">
+                          <div :class="isEdit ? 'col-span-3' : 'col-span-6'">
+                            <label for="stokGlobal" class="block text-sm font-medium text-gray-700">Stok Global</label>
+                            <input id="stokGlobal" type="text"
+                              class="form-control flex-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                              placeholder="Masukan Stok Varian" v-model="stokGlobal" required />
+                          </div>
+                          <div v-if="isEdit" class="col-span-3">
+                            <label for="stokTerpakai" class="block text-sm font-medium text-gray-700">Stok Terpakai</label>
+                            <input id="stokTerpakai" type="text"
+                              class="form-control flex-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                              placeholder="Masukan Stok Varian" v-model="stokTerpakai" readonly />
+                          </div>
                         </div>
 
                         <div class="col-span-6 sm:col-span-3">
@@ -430,7 +438,8 @@ const hargaJualVarian = ref("");
 const kategoriGudangVarian = ref("kosong");
 const satuanVarian = ref("kosong");
 const kategoriBarangVarian = ref("kosong");
-const stokGlobal = ref("");
+const stokGlobal = ref(0);
+const stokTerpakai = ref(0);
 
 const data = ref([]);
 
@@ -607,7 +616,8 @@ const resetModal = () => {
   kategoriGudangVarian.value = "kosong";
   satuanVarian.value = "kosong";
   kategoriBarangVarian.value = "kosong";
-  stokGlobal.value = "";
+  stokGlobal.value = 0;
+  stokTerpakai.value = 0;
 
   //data.value = "";
 
@@ -618,6 +628,13 @@ const resetModal = () => {
   gambar_lama_preview.value = "";
 }
 
+watch(stokGlobal, async (newValue, oldValue) => {
+  //console.log(stokGlobal.value, newValue);
+  if (newValue < stokTerpakai.value) {
+    alert("Stok Global Tidak Boleh Lebih Kecil Dari Stok Terpakai")
+    stokGlobal.value = oldValue
+  }
+})
 
 watch(filter, async (newValue, oldValue) => {
   try {
@@ -973,6 +990,7 @@ const initTabulator = () => {
                     satuanVarian.value = detail.item.id_satuan
                     kategoriGudangVarian.value = detail.item.id_gudang
                     stokGlobal.value = detail.item.stok_global
+                    stokTerpakai.value = detail.item.stok_terpakai
                     hargaBeliVarian.value = detail.item.harga_beli_varian
                     hargaJualVarian.value = detail.item.harga_jual_varian
 
@@ -1116,10 +1134,10 @@ const getImgUrl = (gambar_varian) => {
     if (isEdit) {
       url.value = gambar_lama_preview.value
     }
-    
+
     return gambar_lama_preview.value;
   } else {
-    return `${new URL(window.location.origin)}`+ '404.jpeg'
+    return `${new URL(window.location.origin)}` + '404.jpeg'
   }
 }
 
