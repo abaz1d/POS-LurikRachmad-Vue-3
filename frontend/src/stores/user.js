@@ -15,10 +15,10 @@ export const useUserStore = defineStore({
     async readItem() {
       try {
         const { data } = await request.get("users");
+        //console.log('rawItems users',data, this.rawItems)
         if (data.success) {
           this.rawItems = data.data.rows
           this.rawOutlets = data.data.outlet
-          //console.log('rawItems', this.rawItems)
           return this.rawItems
         }
       } catch (error) {

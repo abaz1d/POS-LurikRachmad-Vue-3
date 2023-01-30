@@ -1255,7 +1255,9 @@ onMounted(async function () {
     alert("onMounted" + error)
   }
 });
-
+onBeforeUnmount(() => {
+  basicNonStickyNotification.value.hideToast()
+});
 </script>
 <style scoped>
 table thead th:first-child {

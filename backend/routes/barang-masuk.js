@@ -9,7 +9,7 @@ module.exports = function (db) {
             const noInvoice = req.query.noInvoice ? req.query.noInvoice : '';
             const id_outlet = req.query.id_outlet ? req.query.id_outlet : '';
 
-            const { rows } = await db.query('SELECT * FROM barang_masuk WHERE id_outlet_penerima = $1',[id_outlet]);
+            const { rows } = await db.query('SELECT bm.*, ot.nama_outlet AS penerima, op.nama_outlet AS pengirim FROM barang_masuk bm LEFT JOIN outlet ot ON bm.id_outlet_penerima = ot.id_outlet LEFT JOIN outlet op ON bm.id_outlet_pengirim = op.id_outlet WHERE id_outlet_penerima = $1',[id_outlet]);
             //console.log('rows',rows)
             //const noInvoice = req.query.noInvoice ? req.query.noInvoice : rows.length > 0 ? rows[0].no_invoice : '';
            

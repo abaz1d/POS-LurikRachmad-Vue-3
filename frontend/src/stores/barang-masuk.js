@@ -30,7 +30,7 @@ export const useBarangMasukStore = defineStore({
           this.rawDetails = data.data.details;
           // console.log('data', data.data)
           // console.log('rawVarians', this.rawVarians)
-          console.log('masuk', data.data)
+         //console.log('masuk', data.data)
           //return this.rawVarians
 
         }

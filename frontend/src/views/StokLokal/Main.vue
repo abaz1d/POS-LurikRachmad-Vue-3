@@ -1248,6 +1248,9 @@ onMounted(async function () {
     modalErrorRef.value.errorDatabaseModal = true;
   }
 });
+onBeforeUnmount(() => {
+  basicNonStickyNotification.value.hideToast()
+});
 
 </script>
 <style scoped>
