@@ -22,7 +22,7 @@ export const useBarangMasukStore = defineStore({
     async readItem() {
       try {
         const Auth = useAuthStore()
-        const { data } = await request.get(`barang-masuk?id_outlet=${String(Auth.items.id_outlet)}`);
+        const { data } = await request.get(`mutasi-barang/barang-masuk?id_outlet=${String(Auth.items.id_outlet)}`);
         if (data.success) {
           this.rawItems = data.data.barang_masuk;
           this.rawVarians = data.data.varian;

@@ -2,6 +2,165 @@
   <div class="intro-y flex flex-col sm:flex-row items-center mt-8">
     <h2 class="text-lg font-medium mr-auto">Barang Keluar</h2>
     <div class="w-full sm:w-auto flex mt-4 sm:mt-0">
+      <button class="btn btn-primary shadow-md mb-3 mr-2 pr-5" @click="startMutation()">
+        <PlusIcon class="w-4 h-4 mr-2" />
+        <p class="hidden xl:block mr-1">Barang Keluar</p> Baru
+      </button>
+      <!-- BEGIN: Modal Content -->
+      <Modal size="modal-xl" backdrop="static" :show="modal_utama" @hidden="modal_utama = false">
+        <ModalHeader class="border-b-2">
+          <h2 class="hidden lg:block font-medium text-base mr-auto">
+            <p class="mx-auto" v-if="isEdit">Edit Barang Keluar {{ no_invoice }}</p>
+            <p class="mx-auto" v-else>Tambah Barang Keluar</p>
+          </h2>
+
+          <div class="sm:w-auto flex mt-3 mx-auto sm:mx-0 sm:mr-0 sm:ml-4 items-center sm:items-right">
+            <div class="mr-2 m-auto">
+              <div class="bg-slate-200 rounded-md p-2 font-medium lg:text-base text-sm px-2">
+                <p class="text-right text-black">{{ no_invoice }}</p>
+              </div>
+              <p class="text-center bg-primary text-white rounded-md w-24 mx-auto lg:-mt-[52px] -mt-12 lg:mb-8 mb-6">NO
+                INVOICE</p>
+            </div>
+            <div class="mr-2 m-auto">
+              <div class="bg-slate-200 rounded-md p-2 font-medium lg:text-base text-sm px-2">
+                <p class="text-right text-black">{{ moment(waktu).format("DD MMM YYYY HH:SS") }}</p>
+              </div>
+              <p class="text-center bg-primary text-white rounded-md w-24 mx-auto lg:-mt-[52px] -mt-12 lg:mb-8 mb-6">
+                WAKTU
+              </p>
+            </div>
+          </div>
+
+        </ModalHeader>
+        <ModalBody class="">
+          <div class="overflow-auto sm:overflow-hidden mx-0 sm:h-3/4 h-80">
+            <div class="grid grid-cols-12 gap-1 -mt-3">
+
+              <div class="col-span-12">
+                <!-- BEGIN: Display Item -->
+                <div class="intro-y box">
+                  <div class="p-2">
+                    <div class="flex flex-col-reverse xl:flex-row flex-col">
+                      <div class="flex-1 mt-0">
+                        <div class="grid grid-cols-12 gap-x-2 sm:gap-x-3">
+                          <div class="col-span-12 mb-5">
+                            <label for="pos-form-1" class="form-label">Outlet Tujuan</label>
+                            <div class="flex w-full">
+                              <TomSelect v-model="outlet_select" class="w-full" required>
+                                <option value="kosong" disabled>
+                                  &gt-- Pilih Outlet --&lt
+                                </option>
+                                <option v-for="outlet in BarangKeluar.outlets" :key="outlet.id_outlet" :outlet="outlet"
+                                  :value="outlet.id_outlet">
+                                  {{ outlet.id_outlet }} - {{ outlet.nama_outlet }}
+                                </option>
+                              </TomSelect>
+                            </div>
+                          </div>
+                          <div class="col-span-9 mb-5">
+                            <label for="pos-form-1" class="form-label">ID Barang/Item</label>
+                            <div class="flex w-full">
+                              <div
+                                class="z-30 rounded-l w-10 flex items-center justify-center bg-gray-100 hover:bg-gray-300 border text-gray-600 dark:bg-dark-1 dark:border-dark-4 -mr-1 cursor-pointer"
+                                @click="isModalScanner = true; renderQrScanner();">
+                                <CameraIcon class="w-4 h-4" />
+                              </div>
+                              <TomSelect v-model="item_select" class="w-full">
+                                <option value="kosong" disabled>
+                                  &gt-- Pilih Item --&lt
+                                </option>
+                                <option v-for="varian in BarangKeluar.varians" :key="varian.id_varian" :varian="varian"
+                                  :value="varian.id_varian">
+                                  {{ varian.id_varian }} - {{ varian.nama_varian }}
+                                </option>
+                              </TomSelect>
+                            </div>
+                            <div class="form-help">
+                              * Pilih atau Klik Kamera untuk scan barcode.
+                            </div>
+                          </div>
+                          <div class="col-span-3 mb-5">
+                            <label for="pos-form-1" class="form-label">Stok <p
+                                class="hidden sm:inline-block -mb-2 form-label">Tersisa</p></label>
+                            <input v-model="stok" id="pos-form-1" type="number" class="form-control flex-1"
+                              placeholder="Masukan Stok Tersisa" readonly />
+                          </div>
+
+                          <div class="col-span-6 mb-5">
+                            <label for="pos-form-1" class="form-label">Nama Varian</label>
+                            <!-- <input id="pos-form-1" type="text" class="form-control flex-1"
+                              placeholder="Masukan Nama Varian" readonly /> -->
+                            <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
+                              <p class="text-black">{{ nama_varian_select }}</p>
+                            </div>
+                          </div>
+
+                          <div class="col-span-6 mb-5">
+                            <label for="pos-form-1" class="form-label">Qty</label>
+                            <input id="pos-form-1" type="number" class="form-control flex-1" placeholder="Masukan Qty"
+                              required v-model="qty_select" :disabled="qty_select == 0" />
+                          </div>
+
+                        </div>
+                        <button type="button" @click="addItem()" class="btn btn-primary w-20 mt-3"
+                          :disabled="item_select == 'kosong'">
+                          Tambah
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- END: Display Item -->
+              </div>
+
+              <!-- BEGIN: Detail BarangKeluar -->
+              <div class="col-span-12 flex-col-reverse z-0">
+                <div class="intro-y box">
+                  <div class="flex items-center px-5 py-2 border-b border-slate-200/60 dark:border-darkmode-400">
+                    <h2 class="font-medium text-base mr-auto">Detail Barang Keluar</h2>
+                  </div>
+                  <div class="px-2">
+                    <div class="col-span-12 overflow-auto w-full h-56">
+                      <table class="table table-hover mt-2">
+                        <thead class="table-light">
+                          <tr>
+                            <th class="sticky top-0 left-0 w-5 bg-slate-200">#</th>
+                            <th class="sticky top-0 whitespace-nowrap bg-slate-200">ID & Nama Varian</th>
+                            <th class="sticky top-0 whitespace-nowrap bg-slate-200">QTY</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <DetailMutasi v-for="detail in BarangKeluar.mutasi" :key="detail.id_barang" :detail="detail" @openModalRemove="openModalRemove" />
+                          <!-- <tr v-for="detail in BarangKeluar.mutasi" :key="detail.id_barang" :detail="detail">
+                            <td @click="openModalRemove(detail)"
+                              class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer hover:bg-slate-500">
+                              <TrashIcon class="text-danger w-4 h-4 p-0" />
+                            </td>
+                            <td>{{ detail.id_varian }} - {{ detail.nama_varian }}</td>
+                            <td>{{ detail.qty }}</td>
+                          </tr> -->
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- END: Detail BarangKeluar -->
+            </div>
+          </div>
+        </ModalBody>
+        <ModalFooter class="">
+          <button type="button" @click="modal_utama = false; resetModal()" class="btn btn-outline-secondary w-32 mr-1">
+            Cancel
+          </button>
+          <button type="button" @click="simpanMutasi()" class="object-left btn btn-primary w-32"
+            
+          >
+            Simpan
+          </button>
+        </ModalFooter>
+      </Modal>
       <a href="" class="ml-auto sm:ml-0 btn px-2 h-10 box flex items-center text-primary">
         <RefreshCcwIcon class="w-4 h-4 sm:mr-3 sm:m-0 m-2" />
         <p class="sm:block hidden">Reload Data</p>
@@ -17,8 +176,8 @@
           <select id="tabulator-html-filter-field" v-model="filter.field"
             class="form-select w-full sm:w-32 2xl:w-full mt-2 sm:mt-0 sm:w-auto">
             <option value="no_invoice">No Invoice</option>
-            <option value="tanggal_barang_masuk">Tanggal Barang Masuk</option>
-            <option value="total_barang_masuk">Total Barang Masuk</option>
+            <option value="tanggal_mutasi">Tanggal Barang Keluar</option>
+            <option value="total_barang_mutasi">Total Barang Keluar</option>
             <option value="status">Status</option>
             <option value="id_outlet_penerima">Outlet Penerima</option>
           </select>
@@ -88,7 +247,7 @@
             itemDel.qty
           }}</b> ?</div>
 
-        <div v-else class="text-xl mt-5">Apakah Anda yakin akan menghapus BarangMasuk <b> {{ no_invoice }} </b> ?</div>
+        <div v-else class="text-xl mt-5">Apakah Anda yakin akan menghapus BarangKeluar <b> {{ no_invoice }} </b> ?</div>
 
       </div>
       <div class="px-5 pb-8 text-center">
@@ -96,7 +255,7 @@
           Cancel
         </button>
         <button type="button" class="btn btn-danger w-24"
-          @click="modal_utama ? removeItem(itemDel.id_detail_beli, itemDel.no_invoice) : deletePembelian(no_invoice)">
+          @click="modal_utama ? removeItem(itemDel.id_detail_barang_mutasi) : deleteMutasi(no_invoice)">
           Delete
         </button>
       </div>
@@ -129,8 +288,31 @@
     </ModalHeader>
     <ModalBody class="bg-white">
       <div class="bg-white" id="modalPrintInvoice">
-        <PrintInvoice :prints="BarangMasuk.prints" :no_invoice="no_invoice" :waktu="waktu"
+        <PrintInvoice :prints="BarangKeluar.prints" :no_invoice="no_invoice" :waktu="waktu"
           :total_harga_global="total_harga_global" :total_bayar_global="total_bayar_global" :kembalian="kembalian" />
+      </div>
+    </ModalBody>
+  </Modal>
+
+  <Modal size="modal-xl" backdrop="static" :show="isModalScanner" @hidden="isModalScanner = false">
+    <ModalHeader>
+      <div class="text-center mt-2">
+        <h2 class="text-lg font-bold">QR Code Scanner</h2>
+      </div>
+    </ModalHeader>
+    <ModalBody class="px-5 py-10">
+      <div class="text-center">
+        <div class="mb-5">
+          <div class="intro-y justify-center flex mt-5">
+            <qrcode v-bind:qrbox="250" v-bind:fps="10" ref="qrScanner" @resultScan="resultScan" />
+          </div>
+        </div>
+        <button type="button" @click="
+  isModalScanner = false;
+closeQrScanner();
+        " class="btn btn-danger w-24">
+          Close
+        </button>
       </div>
     </ModalBody>
   </Modal>
@@ -141,8 +323,9 @@
 
 <script setup>
 import $ from "jquery";
-import { useBarangMasukStore } from "@/stores/barang-masuk";
+import { useBarangKeluarStore } from "@/stores/barang-keluar";
 import { ref, provide, reactive, onMounted, onBeforeUnmount, watch } from "vue";
+import DetailMutasi from "./DetailMutasi.vue"
 import ModalDatabaseError from "@/components/modal-error/Main.vue";
 import xlsx from "xlsx";
 import { createIcons, icons } from "lucide";
@@ -154,7 +337,7 @@ import PrintInvoice from "./PrintInvoice.vue";
 import moment from "moment";
 import html2canvas from 'html2canvas';
 
-const BarangMasuk = useBarangMasukStore();
+const BarangKeluar = useBarangKeluarStore();
 
 const modal_utama = ref(false);
 const deleteConfirmationModal = ref(false);
@@ -177,6 +360,7 @@ const no_invoice = ref("-");
 const waktu = ref("");
 
 const item_select = ref("kosong");
+const outlet_select = ref("kosong");
 const stok = ref(0);
 const nama_barang_select = ref("-");
 const nama_varian_select = ref("-");
@@ -220,27 +404,47 @@ const onPrintInvoice = (e) => {
   });
 };
 
-
+const startMutation = async () => {
+  // const data = await BarangKeluar.startMutation()
+  // no_invoice.value = data.no_invoice;
+  // waktu.value = data.tanggal_penjualan;
+  modal_utama.value = true;
+};
+const addItem = () => {
+  BarangKeluar.addDetailMutasi(
+    no_invoice.value,
+    item_select.value,
+    qty_select.value
+  ).then((data) => {
+    //console.log('data.data', stok, qty_select);
+    // total_harga_global.value = data.total_harga_jual
+    // stok.value = stok.value - qty_select.value
+    // nama_campur_select.value = `${nama_barang_select.value} - ${nama_varian_select.value} | ${stok.value}`
+  }).catch((e) => {
+    alert("addItem" + e)
+  });
+};
 
 const openModalRemove = (item) => {
-  //console.log(item)
+  console.log(item)
   itemDel.value = item
   deleteConfirmationModal.value = true
 }
 
-const removeItem = (id_detail_beli, no_invoice) => {
-  BarangMasuk.removeItem(id_detail_beli, no_invoice).then((data) => {
-    stok.value = stok.value + parseInt(itemDel.value.qty)
-    nama_campur_select.value = `${nama_barang_select.value} - ${nama_varian_select.value} | ${stok.value}`
+const removeItem = (id_detail_barang_mutasi) => {
+  //console.log('data', itemDel, id_detail_barang_mutasi)
+  BarangKeluar.removeDetail(id_detail_barang_mutasi).then((data) => {
+    // stok.value = stok.value + parseInt(itemDel.value.qty)
+    // nama_campur_select.value = `${nama_barang_select.value} - ${nama_varian_select.value} | ${stok.value}`
     deleteConfirmationModal.value = false
-    // console.log('data', itemDel)
-    total_harga_global.value = parseFloat(data)
+    //console.log('data', itemDel)
+    // total_harga_global.value = parseFloat(data)
   }).catch((e) => {
     alert("removeItem" + e)
   });
 }
 
-const simpanPembelian = () => {
+const simpanMutasi = () => {
   const no_invoice_now = no_invoice.value
   const total_harga_global_now = total_harga_global.value
   const total_bayar_global_now = total_bayar_global.value
@@ -254,9 +458,9 @@ const simpanPembelian = () => {
   //   total_bayar_beli: currencyFormatter.format(total_bayar_global.value),
   //   kembalian_now
   // }]);
-  console.log('data', BarangMasuk.pembelianDetail.length);
-  if (BarangMasuk.pembelianDetail.length !== 0 && total_bayar_global.value >= total_harga_global.value) {
-    BarangMasuk.addPembelian(no_invoice_now, total_harga_global_now, total_bayar_global_now, kembalian_now).then((data) => {
+  console.log('data', BarangKeluar.pembelianDetail.length);
+  if (BarangKeluar.pembelianDetail.length !== 0 && total_bayar_global.value >= total_harga_global.value) {
+    BarangKeluar.addMutasi(no_invoice_now, total_harga_global_now, total_bayar_global_now, kembalian_now).then((data) => {
       isEdit.value = false;
       modal_utama.value = false;
       // tabulator.value.clearData()
@@ -267,12 +471,12 @@ const simpanPembelian = () => {
     }).catch((e) => {
       alert("Simpan Error: " + e)
     });
-  } else { alert("Simpan Detail BarangMasuk Tidak Boleh Kosong") }
+  } else { alert("Simpan Detail BarangKeluar Tidak Boleh Kosong") }
 }
 
-const deletePembelian = (no_invoice) => {
+const deleteMutasi = (no_invoice) => {
 
-  BarangMasuk.removePembelian(no_invoice)
+  BarangKeluar.removeMutasi(no_invoice)
   initTabulator();
   deleteConfirmationModal.value = false;
 }
@@ -290,7 +494,7 @@ const closeQrScanner = () => {
 const resultScan = (result) => {
   // ntar di concat ma it outlet
   item_select.value = result;
-  //console.log("hasil", item_select)
+  //console.log("hasil", result, item_select)
   isModalScanner.value = false;
   qrScanner.value.closeQrScanner();
 }
@@ -306,6 +510,7 @@ const resetModal = () => {
   waktu.value = ""
 
   item_select.value = "kosong"
+  outlet_select.value = "kosong"
   stok.value = 0
   nama_barang_select.value = "-"
   nama_varian_select.value = "-"
@@ -325,17 +530,14 @@ const resetModal = () => {
 
 watch(item_select, async (e) => {
   try {
-    // console.log("item_select" , e)
-    BarangMasuk.readDetailItem(e).then((data) => {
-      // console.log('data.data', data);
-      nama_barang_select.value = data.nama_barang,
-        nama_varian_select.value = data.nama_varian,
-        nama_campur_select.value = `${data.nama_barang} - ${data.nama_varian} | ${data.stok_varian}`,
 
-        harga_item_select.value = data.harga_beli_varian,
+    BarangKeluar.readDetailItem(e).then((data) => {
+      //const data = await BarangKeluar.readDetailItem(e)
+      // console.log("item_select", e, data)
+      // console.log('data.data', data);
+      nama_varian_select.value = data.nama_varian,
         stok.value = data.stok_varian,
-        qty_select.value = 1,
-        total_harga_select.value = data.harga_beli_varian
+        qty_select.value = 1
     }).catch((e) => {
       throw e
     });
@@ -345,9 +547,9 @@ watch(item_select, async (e) => {
 })
 
 watch(qty_select, async (newValue, oldValue) => {
-  const qty = newValue
-  const harga_item_select_now = harga_item_select.value
-  const stok_now = stok.value
+  let qty = newValue
+  let harga_item_select_now = harga_item_select.value
+  let stok_now = stok.value
   try {
     if (newValue > stok_now) {
       alert("Stok tersisa hanya " + stok_now);
@@ -356,41 +558,11 @@ watch(qty_select, async (newValue, oldValue) => {
       alert("Minimal Qty harus 1");
       qty_select.value = 1;
     } else {
-      total_harga_select.value = harga_item_select_now * qty
+      //console.log("benar", stok_now, qty, stok_now - qty)
+      stok.value = stok_now - qty
     }
   } catch (error) {
     alert("Gagal wtch qty" + error)
-  }
-})
-
-watch(total_bayar_global, async (newValue, oldValue) => {
-  const total_bayar_global_now = newValue
-  const total_harga_global_now = total_harga_global.value
-  try {
-    if (newValue === "" || newValue < 0) {
-      alert("Total Bayar tidak boleh kosong atau minus");
-      total_bayar_global.value = oldValue;
-    } else {
-      kembalian.value = total_bayar_global_now - total_harga_global_now
-    }
-  } catch (error) {
-    alert("Gagal wtch total_bayar_globl" + error)
-  }
-})
-
-watch(total_harga_global, async (newValue, oldValue) => {
-  const total_bayar_global_now = total_bayar_global.value
-  const total_harga_global_now = newValue
-  try {
-
-    if (newValue === "" || newValue < 0) {
-      alert("Total Harga tidak boleh kosong atau minus");
-      total_harga_global.value = oldValue;
-    } else {
-      kembalian.value = total_bayar_global_now - total_harga_global_now
-    }
-  } catch (error) {
-    alert("Gagal wtch total_harga_globl" + error)
   }
 })
 
@@ -412,9 +584,9 @@ const dataLoaderLoading = template.content.firstChild;
 
 const initTabulator = () => {
   tabulator.value = new Tabulator(tableRef.value, {
-    data: BarangMasuk.items,
+    data: BarangKeluar.items,
     dataLoaderLoading: dataLoaderLoading,
-    printHeader: `<h1 class='text-2xl p-2 m-2 text-center border-y-2 border-black'>Tabel BarangMasuk<h1>`,
+    printHeader: `<h1 class='text-2xl p-2 m-2 text-center border-y-2 border-black'>Tabel BarangKeluar<h1>`,
     printFooter: `<h2 class='p-2 m-2 text-center mt-4'>${moment(Date.now()).format("DD MMM YYYY HH:SS")}<h2>`,
     printAsHtml: true,
     printStyled: true,
@@ -458,11 +630,11 @@ const initTabulator = () => {
 
           return a[0];
         }, cellClick: function (e, cell) {
-          //console.log("openInvoiceModal", BarangMasuk);
+          //console.log("openInvoiceModal", BarangKeluar);
           // alert("Print");
           const pembelian = cell.getData()
 
-          BarangMasuk.readDetail(pembelian.no_invoice).then((data) => {
+          BarangKeluar.readDetail(pembelian.no_invoice).then((data) => {
             no_invoice.value = pembelian.no_invoice;
             waktu.value = pembelian.tanggal_pembelian;
             total_harga_global.value = parseFloat(pembelian.total_harga_beli);
@@ -503,26 +675,26 @@ const initTabulator = () => {
         },
       },
       {
-        title: "TANGGAL MASUK",
+        title: "TANGGAL KELUAR",
         headerHozAlign: "center",
         minWidth: 200,
-        field: "tanggal_barang_masuk",
+        field: "tanggal_mutasi",
         hozAlign: "center",
         vertAlign: "middle",
         print: false,
         download: false,
         formatter(cell) {
           return `<div>
-                <div class="font-medium whitespace-nowrap">${moment(cell.getData().tanggal_barang_masuk).format("DD MMM YYYY HH:SS")
+                <div class="font-medium whitespace-nowrap">${moment(cell.getData().tanggal_mutasi).format("DD MMM YYYY HH:SS")
             }</div>
               </div>`;
         },
       },
       {
-        title: "TOTAL BARANG MASUK",
+        title: "TOTAL BARANG KELUAR",
         minWidth: 200,
         headerHozAlign: "center",
-        field: "total_barang_masuk",
+        field: "total_barang_mutasi",
         hozAlign: "center",
         vertAlign: "middle",
         print: false,
@@ -602,16 +774,14 @@ const initTabulator = () => {
           dom(a).on("click", "a", function (e) {
             if (e.id === "edit") {
               //alert("edit " + cell.getData());
-              const pembelian = cell.getData()
+              const mutasi = cell.getData()
               //console.log("openEditModal", cell.getRow());
               //index_select.value = cell._cell.row.getPosition()
 
-              BarangMasuk.readDetailPembelian(pembelian.no_invoice).then((data) => {
-                no_invoice.value = pembelian.no_invoice;
-                waktu.value = pembelian.tanggal_pembelian;
-                total_harga_global.value = parseFloat(pembelian.total_harga_beli);
-                total_bayar_global.value = parseFloat(pembelian.total_bayar_beli);
-                kembalian.value = parseFloat(pembelian.kembalian_beli);
+              BarangKeluar.readDetailMutasi(mutasi.no_invoice).then((data) => {
+                no_invoice.value = mutasi.no_invoice;
+                waktu.value = mutasi.tanggal_mutasi;
+                outlet_select.value = mutasi.id_outlet_penerima == null || '' ? 'kosong' : mutasi.id_outlet_penerima
 
                 isEdit.value = true;
                 modal_utama.value = true;
@@ -639,7 +809,7 @@ const initTabulator = () => {
         download: true,
       },
       {
-        title: "TANGGAL MASUK",
+        title: "TANGGAL KELUAR",
         field: "tanggal_pembelian",
         visible: false,
         print: true,
@@ -652,8 +822,8 @@ const initTabulator = () => {
         },
       },
       {
-        title: "TOTAL BARANG MASUK",
-        field: "total_barang_masuk",
+        title: "TOTAL BARANG KELUAR",
+        field: "total_barang_mutasi",
         visible: false,
         print: true,
         download: true,
@@ -679,7 +849,7 @@ const initTabulator = () => {
         print: true,
         download: true,
         formatterPrint(cell) {
-          return cell.getValue().status ? "Active" : "Inactive";
+          return `${cell.getData().status ? "Diterima" : "Dalam Pengiriman"}`;
         },
       },
     ],
@@ -825,7 +995,7 @@ const initTabulator = () => {
     const id = row.getData().no_invoice;
     try {
 
-      await BarangMasuk.readDetail(id).then(
+      await BarangKeluar.readDetail(id).then(
         (data) => {
           tabulator.value.replaceData(data)
           //console.log("rowClick", data);
@@ -898,7 +1068,7 @@ const onPrint = () => {
 };
 
 onMounted(() => {
-  BarangMasuk.readItem().then((data) => {
+  BarangKeluar.readItem().then((data) => {
     initTabulator();
     reInitOnResizeWindow();
     basicNonStickyNotificationToggle();

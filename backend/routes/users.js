@@ -7,7 +7,7 @@ const { isTokenValid, Response } = require('../helpers/util')
 /* GET home page. */
 module.exports = function (db) {
 
-  router.get('/', isTokenValid, async function (req, res, next) {
+  router.get('/', async function (req, res, next) {
     try {
       let wheres = []
       let values = []
@@ -47,7 +47,7 @@ module.exports = function (db) {
     }
   });
 
-  router.get('/editnotepad/:id', isTokenValid, async function (req, res, next) {
+  router.get('/editnotepad/:id', async function (req, res, next) {
     try {
       const { rows } = await db.query(`SELECT notepad FROM public.users WHERE id_users = $1;`, [req.params.id])
       res.json(new Response(rows[0]))
@@ -66,7 +66,7 @@ module.exports = function (db) {
     }
   });
 
-  router.get('/add', isTokenValid, async function (req, res, next) {
+  router.get('/add', async function (req, res, next) {
     try {
       res.render('users/register')
     } catch (e) {
@@ -99,7 +99,7 @@ module.exports = function (db) {
     }
   });
 
-  router.get('/edit/:id', isTokenValid, async function (req, res, next) {
+  router.get('/edit/:id', async function (req, res, next) {
     try {
       const { rows } = await db.query('SELECT * FROM users WHERE id_users = $1', [req.params.id])
       // res.render('users/edit', { item: rows[0] });
@@ -111,7 +111,7 @@ module.exports = function (db) {
     }
   });
 
-  router.post('/edit/:id', isTokenValid, async function (req, res, next) {
+  router.post('/edit/:id', async function (req, res, next) {
     //id_outlet- token
     try {
       if (Object.keys(req.body).length > 4) {
@@ -150,7 +150,7 @@ module.exports = function (db) {
     }
   });
 
-  router.get('/delete/:id', isTokenValid, async function (req, res, next) {
+  router.get('/delete/:id', async function (req, res, next) {
     try {
       const { rows } = await db.query('DELETE FROM users WHERE id_users = $1', [req.params.id])
       res.json(new Response({ message: "Berhasil menghapus User" }, true))

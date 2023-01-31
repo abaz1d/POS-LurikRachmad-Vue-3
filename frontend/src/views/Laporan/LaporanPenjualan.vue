@@ -123,7 +123,7 @@ const filter = reactive({
 watch(isLoading, async (newValue, oldValue) => {
   try {
     if (newValue === true) {
-      setTimeout(() => (onPrint()), 100);
+      setTimeout(() => (onPrint()), 50);
     }
   } catch (error) {
     alert("Gagal wtch print" + error)
@@ -433,7 +433,7 @@ const onExportHtml = () => {
 // Print
 const onPrint = async () => {
   await tabulator.value.getGroups().map((g) => {
-    console.log("g", g.show())
+    //console.log("g", g.show())
     if (g.show != true) {
       g.show()
 

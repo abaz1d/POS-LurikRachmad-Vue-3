@@ -31,10 +31,11 @@
             <SearchIcon class="search__icon dark:text-slate-500" />
           </div>
           <a class="notification notification--light sm:hidden">
-            <SearchIcon class="notification__icon dark:text-slate-500" />
+            <SearchIcon @focus="showSearchDropdown" @blur="hideSearchDropdown"
+              class="notification__icon dark:text-slate-500" />
           </a>
-          <div class="search-result" :class="{ show: searchDropdown }">
-            <div class="search-result__content">
+          <div class="search-result max-[640px]:-left-[70vw]" :class="{ show: searchDropdown }">
+            <div class="max-[640px]:w-[75vw] search-result__content">
               <div class="search-result__content__title">Pages</div>
               <div class="mb-5">
                 <RouterLink to="/penjualan" class="flex items-center">
@@ -66,7 +67,9 @@
                     <CrownIcon
                       class="w-6 h-6 object-fill stroke-2 stroke-black fill-yellow-200 bg-white mt-1 mx-auto rounded-full" />
                   </div>
-                  <div class="ml-3"><kbd class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">Super Admin</kbd></div>
+                  <div class="ml-3"><kbd
+                      class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">Super
+                      Admin</kbd></div>
                   <div class="ml-auto w-auto truncate text-slate-500 text-xs text-right pr-3">
                     Semua Menu/ Fitur
                   </div>
@@ -77,7 +80,9 @@
                     <UserIcon
                       class="w-6 h-6 object-fill stroke-2 stroke-black fill-yellow-200 bg-white mt-1 mx-auto rounded-full" />
                   </div>
-                  <div class="ml-3"><kbd class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">Admin</kbd></div>
+                  <div class="ml-3"><kbd
+                      class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">Admin</kbd>
+                  </div>
                   <div class="ml-auto w-auto truncate text-slate-500 text-xs text-right pr-3">
                     Kecuali SEMUA AKUN & PENGATURAN DATA
                   </div>
@@ -88,7 +93,9 @@
                     <HardHatIcon
                       class="w-6 h-6 object-fill stroke-2 stroke-black fill-yellow-200 bg-white mt-1 mx-auto rounded-full" />
                   </div>
-                  <div class="ml-3"><kbd class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">Operator</kbd></div>
+                  <div class="ml-3"><kbd
+                      class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">Operator</kbd>
+                  </div>
                   <div class="ml-auto w-auto truncate text-slate-500 text-xs text-right pr-3">
                     Beberapa Menu/ Fitur TRANSAKSI & LAPORAN
                   </div>

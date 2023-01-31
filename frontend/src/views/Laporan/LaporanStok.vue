@@ -142,7 +142,7 @@ watch(filter, async (newValue, oldValue) => {
 watch(isLoading, async (newValue, oldValue) => {
   try {
     if (newValue === true) {
-      setTimeout(() => (onPrint()), 100);
+      setTimeout(() => (onPrint()), 50);
     }
   } catch (error) {
     alert("Gagal wtch print" + error)

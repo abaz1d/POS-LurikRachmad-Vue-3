@@ -19,10 +19,10 @@
         <SearchIcon class="search__icon dark:text-slate-500" />
       </div>
       <a class="notification notification--light sm:hidden">
-        <SearchIcon class="notification__icon dark:text-slate-500" />
+        <SearchIcon @focus="showSearchDropdown" @blur="hideSearchDropdown" class="text-black notification__icon dark:text-slate-500" />
       </a>
-      <div class="search-result" :class="{ show: searchDropdown }">
-        <div class="search-result__content">
+      <div class="search-result max-[640px]:left-0" :class="{ show: searchDropdown }">
+        <div class="max-[640px]:w-[86vw] search-result__content">
           <div class="search-result__content__title">Pages</div>
           <div class="mb-5">
             <RouterLink to="/penjualan" class="flex items-center">

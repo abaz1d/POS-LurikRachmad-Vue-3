@@ -477,7 +477,7 @@ closeQrScanner();
 <script setup>
 import $ from "jquery";
 import { usePembelianStore } from "@/stores/pembelian";
-import { ref, provide, reactive, onMounted, watch } from "vue";
+import { ref, provide, reactive, onMounted, watch,onBeforeUnmount } from "vue";
 import ModalDatabaseError from "@/components/modal-error/Main.vue";
 import xlsx from "xlsx";
 import { createIcons, icons } from "lucide";
