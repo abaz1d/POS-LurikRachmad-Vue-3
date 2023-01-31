@@ -9,8 +9,9 @@ const setValue = (el, props) => {
 };
 
 const init = (originalEl, clonedEl, props, emit, computedOptions) => {
+  //console.log("init", props.options.create)
   // On option add
-  if (Array.isArray(props.modelValue)) {
+  if (Array.isArray(props.modelValue)|| props.options.create) {
     computedOptions = {
       onOptionAdd: function (value) {
         // Add new option

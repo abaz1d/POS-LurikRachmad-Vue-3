@@ -75,7 +75,7 @@
               <a href="">Lupa Password?</a>
             </div>
             <div class="intro-x mt-5 xl:mt-8 text-center xl:text-left">
-              <button v-if="isLoading" class="btn btn-primary py-3 px-4 w-full xl:w-32 xl:mr-3 align-top" disabled>
+              <button v-if="isLoading" class="cursor-progress btn btn-primary py-3 px-4 w-full xl:w-32 xl:mr-3 align-top" disabled>
                 <Loader-2Icon class="w-4 h-4 mr-2 animate-spin" />
                 <p class="hidden xl:block ml-1">Loading ...</p>
               </button>
@@ -113,7 +113,7 @@
   </div>
   <!-- BEGIN: Basic Non Sticky Notification Content -->
   <Notification refKey="basicNonStickyNotification" :options="{
-    duration: 10000,
+    duration: 5000,
   }" class="flex flex-col sm:flex-row md:animate-bounce animate-pulse ">
     <div class="font-medium">Hai {{ dataPopup.role }} - {{ dataPopup.username }}, Selamat Datang di Aplikasi Point of
       Sales <b class="font-philosopher text-xl text-[#CDA562]">Lurik Rachmad</b> Cabang {{ dataPopup.nama_outlet }}

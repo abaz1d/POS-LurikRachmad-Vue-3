@@ -19,8 +19,8 @@
               <div class="bg-slate-200 rounded-md p-2 font-medium lg:text-base text-sm px-2">
                 <p class="text-right text-black">{{ no_invoice }}</p>
               </div>
-              <p class="text-center bg-primary text-white rounded-md w-24 mx-auto lg:-mt-[52px] -mt-12 lg:mb-8 mb-6">NO
-                INVOICE</p>
+              <p class="text-center bg-primary text-white rounded-md w-24 mx-auto lg:-mt-[52px] -mt-12 lg:mb-8 mb-6">NO.
+                SURAT</p>
             </div>
             <div class="mr-2 m-auto">
               <div class="bg-slate-200 rounded-md p-2 font-medium lg:text-base text-sm px-2">
@@ -58,6 +58,30 @@
                               </TomSelect>
                             </div>
                           </div>
+
+                          <div class="col-span-6 mb-5">
+                            <label for="pos-form-1" class="form-label">Ekpedisi</label>
+                            <TomSelect v-model="ekspedisi_select" :options="{
+                              create: true,
+                              render: data_select
+                            }" class="w-full">
+                              <option value="kosong" data-src="src/assets/images/logo-gold.svg" disabled>
+                                &gt-- Pilih Ekspedisi --&lt
+                              </option>
+                              <option v-for="ekspedisi in ekspedisis.default" :key="ekspedisi.id_ekspedisi"
+                                :ekspedisi="ekspedisi" :value="ekspedisi.alias_ekspedisi"
+                                :data-src="ekspedisi.image_ekspedisi">
+                                -- {{ ekspedisi.nama_ekspedisi }}
+                              </option>
+                            </TomSelect>
+                          </div>
+
+                          <div class="col-span-6 mb-5">
+                            <label for="pos-form-1" class="form-label">Nomor Resi</label>
+                            <input id="pos-form-1" type="text" class="form-control flex-1" placeholder="Masukan Nomor"
+                              required v-model="no_resi" :disabled="outlet_select == 'kosong'" />
+                          </div>
+
                           <div class="col-span-9 mb-5">
                             <label for="pos-form-1" class="form-label">ID Barang/Item</label>
                             <div class="flex w-full">
@@ -89,8 +113,6 @@
 
                           <div class="col-span-6 mb-5">
                             <label for="pos-form-1" class="form-label">Nama Varian</label>
-                            <!-- <input id="pos-form-1" type="text" class="form-control flex-1"
-                              placeholder="Masukan Nama Varian" readonly /> -->
                             <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
                               <p class="text-black">{{ nama_varian_select }}</p>
                             </div>
@@ -131,7 +153,8 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <DetailMutasi v-for="detail in BarangKeluar.mutasi" :key="detail.id_barang" :detail="detail" @openModalRemove="openModalRemove" />
+                          <DetailMutasi v-for="detail in BarangKeluar.mutasi" :key="detail.id_barang" :detail="detail"
+                            @openModalRemove="openModalRemove" />
                           <!-- <tr v-for="detail in BarangKeluar.mutasi" :key="detail.id_barang" :detail="detail">
                             <td @click="openModalRemove(detail)"
                               class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer hover:bg-slate-500">
@@ -155,8 +178,7 @@
             Cancel
           </button>
           <button type="button" @click="simpanMutasi()" class="object-left btn btn-primary w-32"
-            
-          >
+            :disabled="outlet_select === 'kosong'">
             Simpan
           </button>
         </ModalFooter>
@@ -265,7 +287,7 @@
 
   <!-- BEGIN: Basic Non Sticky Notification Content -->
   <Notification refKey="basicNonStickyNotification" :options="{
-    duration: 10000,
+    duration: 5000,
   }" class="flex flex-col sm:flex-row hover:animate-none md:animate-bounce animate-pulse ">
     <div class="font-medium">Klik 2 kali pada salah satu baris tabel untuk melihat detail transaksi!</div>
   </Notification>
@@ -323,6 +345,7 @@ closeQrScanner();
 
 <script setup>
 import $ from "jquery";
+import * as ekspedisis from "@/assets/json/ekspedisi.json"
 import { useBarangKeluarStore } from "@/stores/barang-keluar";
 import { ref, provide, reactive, onMounted, onBeforeUnmount, watch } from "vue";
 import DetailMutasi from "./DetailMutasi.vue"
@@ -358,6 +381,8 @@ const data_utama = ref([])
 
 const no_invoice = ref("-");
 const waktu = ref("");
+const ekspedisi_select = ref("kosong");
+const no_resi = ref("");
 
 const item_select = ref("kosong");
 const outlet_select = ref("kosong");
@@ -376,6 +401,14 @@ const total_bayar_global = ref(0);
 const kembalian = ref(0);
 
 const itemDel = ref("");
+const data_select = {
+  option: function (data, escape) {
+    return `<div><img class="w-auto h-6 inline-block mr-2" src="${data.src}">${data.text}</div>`;
+  },
+  item: function (item, escape) {
+    return `<div><img class="w-auto h-6 inline-block mr-2" src="${item.src}">${item.text}</div>`;
+  }
+}
 
 // Basic non sticky notification
 const basicNonStickyNotification = ref();
@@ -405,9 +438,9 @@ const onPrintInvoice = (e) => {
 };
 
 const startMutation = async () => {
-  // const data = await BarangKeluar.startMutation()
-  // no_invoice.value = data.no_invoice;
-  // waktu.value = data.tanggal_penjualan;
+  const data = await BarangKeluar.startMutation()
+  no_invoice.value = data.no_invoice;
+  waktu.value = data.tanggal_penjualan;
   modal_utama.value = true;
 };
 const addItem = () => {
@@ -446,23 +479,15 @@ const removeItem = (id_detail_barang_mutasi) => {
 
 const simpanMutasi = () => {
   const no_invoice_now = no_invoice.value
-  const total_harga_global_now = total_harga_global.value
-  const total_bayar_global_now = total_bayar_global.value
-  const kembalian_now = kembalian.value
+  const outlet_penerima = outlet_select.value
+  const tanggal = waktu.value
+  const ekspedisi = ekspedisi_select.value
+  const noResi = no_resi.value
 
-  // tabulator.value.updateData([{
-  //   // id: index_select.value,
-  //   no_invoice_now,
-  //   tanggal_pembelian: Date.now(),
-  //   total_harga_beli: currencyFormatter.format(total_harga_global.value),
-  //   total_bayar_beli: currencyFormatter.format(total_bayar_global.value),
-  //   kembalian_now
-  // }]);
-  console.log('data', BarangKeluar.pembelianDetail.length);
-  if (BarangKeluar.pembelianDetail.length !== 0 && total_bayar_global.value >= total_harga_global.value) {
-    BarangKeluar.addMutasi(no_invoice_now, total_harga_global_now, total_bayar_global_now, kembalian_now).then((data) => {
-      isEdit.value = false;
-      modal_utama.value = false;
+  console.log('data', BarangKeluar.mutasi.length);
+  if (BarangKeluar.mutasi.length !== 0 && outlet_select.value !== "kosong") {
+    BarangKeluar.addMutasi(no_invoice_now, outlet_penerima, tanggal, ekspedisi, noResi).then((data) => {
+      resetModal();
       // tabulator.value.clearData()
       // tabulator.value.setData(data);
       initTabulator()
@@ -478,7 +503,8 @@ const deleteMutasi = (no_invoice) => {
 
   BarangKeluar.removeMutasi(no_invoice)
   initTabulator();
-  deleteConfirmationModal.value = false;
+  resetModal();
+  //deleteConfirmationModal.value = false;
 }
 defineExpose({ qrScanner })
 
@@ -508,6 +534,8 @@ const resetModal = () => {
 
   no_invoice.value = "-"
   waktu.value = ""
+  ekspedisi_select.value = "kosong"
+  no_resi.value = ""
 
   item_select.value = "kosong"
   outlet_select.value = "kosong"
@@ -530,17 +558,16 @@ const resetModal = () => {
 
 watch(item_select, async (e) => {
   try {
-
-    BarangKeluar.readDetailItem(e).then((data) => {
-      //const data = await BarangKeluar.readDetailItem(e)
-      // console.log("item_select", e, data)
-      // console.log('data.data', data);
-      nama_varian_select.value = data.nama_varian,
-        stok.value = data.stok_varian,
-        qty_select.value = 1
-    }).catch((e) => {
-      throw e
-    });
+    if (e !== "kosong") {
+      BarangKeluar.readDetailItem(e).then((data) => {
+        console.log('data.data', data);
+        nama_varian_select.value = data.nama_varian,
+          stok.value = data.stok_varian,
+          qty_select.value = 1
+      }).catch((e) => {
+        throw e
+      });
+    };
   } catch (error) {
     alert("Gagal pilih barang" + error)
   }
@@ -586,7 +613,7 @@ const initTabulator = () => {
   tabulator.value = new Tabulator(tableRef.value, {
     data: BarangKeluar.items,
     dataLoaderLoading: dataLoaderLoading,
-    printHeader: `<h1 class='text-2xl p-2 m-2 text-center border-y-2 border-black'>Tabel BarangKeluar<h1>`,
+    printHeader: `<h1 class='text-2xl p-2 m-2 text-center border-y-2 border-black'>Tabel Barang Keluar<h1>`,
     printFooter: `<h2 class='p-2 m-2 text-center mt-4'>${moment(Date.now()).format("DD MMM YYYY HH:SS")}<h2>`,
     printAsHtml: true,
     printStyled: true,
@@ -636,7 +663,7 @@ const initTabulator = () => {
 
           BarangKeluar.readDetail(pembelian.no_invoice).then((data) => {
             no_invoice.value = pembelian.no_invoice;
-            waktu.value = pembelian.tanggal_pembelian;
+            waktu.value = pembelian.tanggal_mutasi;
             total_harga_global.value = parseFloat(pembelian.total_harga_beli);
             total_bayar_global.value = parseFloat(pembelian.total_bayar_beli);
             kembalian.value = parseFloat(pembelian.kembalian_beli);
@@ -645,21 +672,10 @@ const initTabulator = () => {
           }).catch((e) => {
             alert("gagal open invoice" + e);
           });
-
-          // //filter table to just this row
-          // table.Filter(function (data) {
-          //   return data.id == cell.getData().id;
-          // });
-
-          // //print the table
-          // table.print();
-
-          // //clear the filter
-          // table.clearFilter();
         }
       },
       {
-        title: "INVOICE",
+        title: "NO. SURAT",
         minWidth: 200,
         responsive: 0,
         field: "no_invoice",
@@ -675,7 +691,7 @@ const initTabulator = () => {
         },
       },
       {
-        title: "TANGGAL KELUAR",
+        title: "TANGGAL",
         headerHozAlign: "center",
         minWidth: 200,
         field: "tanggal_mutasi",
@@ -691,8 +707,8 @@ const initTabulator = () => {
         },
       },
       {
-        title: "TOTAL BARANG KELUAR",
-        minWidth: 200,
+        title: "TOTAL BARANG",
+        minWidth: 100,
         headerHozAlign: "center",
         field: "total_barang_mutasi",
         hozAlign: "center",
@@ -703,7 +719,7 @@ const initTabulator = () => {
       {
         title: "OUTLET PENGIRIM & PENERIMA",
         headerHozAlign: "center",
-        minWidth: 200,
+        minWidth: 300,
         field: "id_outlet_penerima",
         hozAlign: "center",
         vertAlign: "middle",
@@ -731,6 +747,29 @@ const initTabulator = () => {
         },
       },
       {
+        title: "EKSPEDISI & INVOICE",
+        minWidth: 250,
+        headerHozAlign: "center",
+        field: "status",
+        hozAlign: "center",
+        vertAlign: "middle",
+        print: false,
+        download: false,
+        formatter(cell) {
+          const a = dom(`<div>
+          <div class="flex items-center lg:justify-center mb-1">
+            ${cell.getData().ekspedisi}
+          </div>
+          <kbd class="select-all px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">${cell.getData().no_resi}</kbd>
+          <i data-lucide="copy" class="cursor-pointer hover:bg-white inline-block w-4 h-4 ml-1"></i>
+        </div>`);
+          dom(a).on("click", function (e) {
+            navigator.clipboard.writeText(`${cell.getData().no_resi}`);
+          });
+          return a[0];
+        },
+      },
+      {
         title: "STATUS",
         minWidth: 200,
         headerHozAlign: "center",
@@ -740,23 +779,19 @@ const initTabulator = () => {
         print: false,
         download: false,
         formatter(cell) {
-          return `<div class="flex items-center lg:justify-center ${cell.getData().status ? "text-success" : "text-pending"
-            }">
-                <i data-lucide="truck" class="w-4 h-4 mr-2"></i> ${cell.getData().status ? "Diterima" : "Dalam Pengiriman"}
-              </div>`;
-          //           return `
-          // <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-          //   <option value="false" selected ><div><i data-lucide="truck" class="w-4 h-4 mr-2"></i> Dalam Pengiriman</div></option>
-          //   <option value="true"><i data-lucide="truck" class="w-4 h-4 mr-2"></i> Diterima</option>
-          // </select>
-          // `
+          const a = dom(`
+          <div class="flex items-center lg:justify-center ${cell.getData().status ? "text-success" : "text-pending"}">
+            <i data-lucide="truck" class="w-4 h-4 mr-2"></i> ${cell.getData().status ? "Diterima" : "Dalam Pengiriman"}
+          </div>`);
+          dom(a).on("click", function (e) {
+          });
+          return a[0];
         },
       },
       {
         title: "ACTIONS",
         headerHozAlign: "center",
         minWidth: 200,
-        field: "actions",
         responsive: 1,
         hozAlign: "center",
         vertAlign: "middle",
@@ -775,13 +810,13 @@ const initTabulator = () => {
             if (e.id === "edit") {
               //alert("edit " + cell.getData());
               const mutasi = cell.getData()
-              //console.log("openEditModal", cell.getRow());
-              //index_select.value = cell._cell.row.getPosition()
 
               BarangKeluar.readDetailMutasi(mutasi.no_invoice).then((data) => {
                 no_invoice.value = mutasi.no_invoice;
                 waktu.value = mutasi.tanggal_mutasi;
                 outlet_select.value = mutasi.id_outlet_penerima == null || '' ? 'kosong' : mutasi.id_outlet_penerima
+                no_resi.value = mutasi.no_resi
+                ekspedisi_select.value = mutasi.ekspedisi
 
                 isEdit.value = true;
                 modal_utama.value = true;
@@ -789,8 +824,6 @@ const initTabulator = () => {
                 alert("gagal open edit" + e);
               });
             } else {
-              //alert("delete" + JSON.stringify(cell.getData().no_invoice));
-              //const no_invoice_del = JSON.stringify(cell.getData().no_invoice)
               no_invoice.value = cell.getData().no_invoice;
               deleteConfirmationModal.value = true;
             }
@@ -802,27 +835,27 @@ const initTabulator = () => {
 
       // For print format
       {
-        title: "INVOICE",
+        title: "NO. SURAT",
         field: "no_invoice",
         visible: false,
         print: true,
         download: true,
       },
       {
-        title: "TANGGAL KELUAR",
-        field: "tanggal_pembelian",
+        title: "TANGGAL",
+        field: "tanggal_mutasi",
         visible: false,
         print: true,
         download: true,
         formatter(cell) {
           return `<div>
-                <div class="font-medium whitespace-nowrap">${moment(cell.getData().tanggal_pembelian).format("DD MMM YYYY HH:SS")
+                <div class="font-medium whitespace-nowrap">${moment(cell.getData().tanggal_mutasi).format("DD MMM YYYY HH:SS")
             }</div>
               </div>`;
         },
       },
       {
-        title: "TOTAL BARANG KELUAR",
+        title: "TOTAL BARANG",
         field: "total_barang_mutasi",
         visible: false,
         print: true,
@@ -841,6 +874,27 @@ const initTabulator = () => {
         visible: false,
         print: true,
         download: true,
+      },
+      {
+        title: "EKSPEDISI & INVOICE",
+        minWidth: 250,
+        headerHozAlign: "center",
+        field: "status",
+        visible: false,
+        print: true,
+        download: true,
+        formatter(cell) {
+          const a = dom(`<div>
+          <div class="flex items-center lg:justify-center">
+            JNE
+          </div>
+          ${cell.getData().no_invoice}
+        </div>`);
+          dom(a).on("click", function (e) {
+            navigator.clipboard.writeText(`${cell.getData().no_invoice}`);
+          });
+          return a[0];
+        },
       },
       {
         title: "STATUS",
@@ -885,6 +939,22 @@ const initTabulator = () => {
 
           // For HTML table
           {
+            title: "ID VARIAN",
+            minWidth: 200,
+            responsive: 0,
+            field: "id_varian",
+            hozAlign: "left",
+            vertAlign: "middle",
+            print: false,
+            download: false,
+            formatter(cell) {
+              return `<div>
+                <div class="font-medium whitespace-nowrap">${cell.getData().id_varian
+                }</div>
+              </div>`;
+            },
+          },
+          {
             title: "NAMA VARIAN",
             minWidth: 200,
             responsive: 0,
@@ -896,22 +966,6 @@ const initTabulator = () => {
             formatter(cell) {
               return `<div>
                 <div class="font-medium whitespace-nowrap">${cell.getData().nama_varian
-                }</div>
-              </div>`;
-            },
-          },
-          {
-            title: "HARGA ITEM",
-            headerHozAlign: "center",
-            minWidth: 200,
-            field: "harga_detail_beli",
-            hozAlign: "right",
-            vertAlign: "middle",
-            print: false,
-            download: false,
-            formatter(cell) {
-              return `<div>
-                <div class="font-medium whitespace-nowrap">${currencyFormatter.format(cell.getData().harga_detail_beli)
                 }</div>
               </div>`;
             },
@@ -932,24 +986,15 @@ const initTabulator = () => {
               </div>`;
             },
           },
-          {
-            title: "TOTAL HARGA",
-            minWidth: 200,
-            headerHozAlign: "center",
-            field: "total_harga_detail_beli",
-            hozAlign: "right",
-            vertAlign: "middle",
-            print: false,
-            download: false,
-            formatter(cell) {
-              return `<div>
-                <div class="font-medium whitespace-nowrap">${currencyFormatter.format(cell.getData().total_harga_detail_beli)
-                }</div>
-              </div>`;
-            },
-          },
 
           // For print format
+          {
+            title: "ID VARIAN",
+            field: "id_varian",
+            visible: false,
+            print: true,
+            download: true,
+          },
           {
             title: "NAMA VARIAN",
             field: "nama_varian",
@@ -958,22 +1003,8 @@ const initTabulator = () => {
             download: true,
           },
           {
-            title: "HARGA ITEM",
-            field: "harga_detail_beli",
-            visible: false,
-            print: true,
-            download: true,
-          },
-          {
             title: "QTY",
             field: "qty",
-            visible: false,
-            print: true,
-            download: true,
-          },
-          {
-            title: "TOTAL HARGA",
-            field: "total_harga_detail_beli",
             visible: false,
             print: true,
             download: true,

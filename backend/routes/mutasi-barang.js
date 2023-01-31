@@ -109,12 +109,15 @@ module.exports = function (db) {
 		}
 	});
 	//v
-	router.post('/upbeli', async function (req, res, next) {
+	router.post('/upmutasi', async function (req, res, next) {
+		const { no_invoice, outlet_penerima, ekspedisi, no_resi } = req.body
 		try {
-			udatebeli = await db.query('UPDATE mutasi_barang SET id_gudang = $1, id_supplier = $2, id_outlet = $3, total_harga_beli = $4, total_bayar_beli = $5, kembalian_beli = $6 WHERE no_invoice = $7 returning *', [req.body.gudang, req.body.supplier, req.body.outlet, req.body.total_harga_beli, req.body.total_bayar_beli, req.body.kembalian, req.body.no_invoice])
-			const { rows } = await db.query('SELECT * FROM mutasi_barang WHERE no_invoice = $1', [req.body.no_invoice])
+			//console.log('data', req.body);
+			updatemutasi = await db.query('UPDATE mutasi_barang SET id_outlet_penerima = $1, ekspedisi = $2, no_resi = $3 WHERE no_invoice = $4 returning *', [outlet_penerima, ekspedisi, no_resi, no_invoice])
+			const { rows } = await db.query('SELECT mb.*, ot.nama_outlet AS penerima, op.nama_outlet AS pengirim FROM mutasi_barang mb LEFT JOIN outlet ot ON mb.id_outlet_penerima = ot.id_outlet LEFT JOIN outlet op ON mb.id_outlet_pengirim = op.id_outlet WHERE no_invoice = $1', [no_invoice])
 			res.json(new Response({ rows }));
 		} catch (e) {
+			console.error(e);
 			res.status(500).json(new Response(e, false))
 		}
 	});
@@ -132,7 +135,8 @@ module.exports = function (db) {
 		try {
 			const { rows } = await db.query('DELETE FROM mutasi_barang WHERE no_invoice = $1', [req.params.no_invoice])
 			delPen = await db.query('DELETE FROM barang_mutasi_detail WHERE no_invoice = $1', [req.params.no_invoice])
-			res.redirect('/mutasi_barang')
+			//res.redirect('/mutasi_barang')
+			res.json(new Response({ message: "delete mutasi success" }, true))
 		} catch (e) {
 			console.log(e)
 			res.status(500).json(new Response(e, false))
@@ -158,7 +162,7 @@ module.exports = function (db) {
 		try {
 			const { rows } = await db.query('DELETE FROM barang_mutasi_detail WHERE id_detail_barang_mutasi = $1', [req.params.id_detail_barang_mutasi])
 			//const { rows } = await db.query('SELECT SUM(total_harga_detail_beli)  AS total FROM barang_mutasi_detail WHERE no_invoice = $1', [req.body.no_invoice])
-			res.json(new Response({ message: "delete barang success" }, true))
+			res.json(new Response({ message: "delete item mutasi success" }, true))
 		} catch (e) {
 			console.log(e)
 			res.status(500).json(new Response(e, false))

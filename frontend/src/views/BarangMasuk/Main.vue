@@ -106,7 +106,7 @@
 
   <!-- BEGIN: Basic Non Sticky Notification Content -->
   <Notification refKey="basicNonStickyNotification" :options="{
-    duration: 10000,
+    duration: 5000,
   }" class="flex flex-col sm:flex-row hover:animate-none md:animate-bounce animate-pulse ">
     <div class="font-medium">Klik 2 kali pada salah satu baris tabel untuk melihat detail transaksi!</div>
   </Notification>
