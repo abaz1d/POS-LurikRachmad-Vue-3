@@ -43,6 +43,7 @@ export const useBarangKeluarStore = defineStore({
     async readDetail(no_invoice) {
       try {
         const { data } = await request.get(`mutasi-barang/barang-keluar?noInvoice=${no_invoice}`);
+        console.log("data", data.data)
         if (data.success) {
           this.rawDetails = data.data.details;
           this.rawPrints = data.data.print.rows;

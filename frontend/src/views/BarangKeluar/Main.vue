@@ -310,8 +310,7 @@
     </ModalHeader>
     <ModalBody class="bg-white">
       <div class="bg-white" id="modalPrintInvoice">
-        <PrintInvoice :prints="BarangKeluar.prints" :no_invoice="no_invoice" :waktu="waktu"
-          :total_harga_global="total_harga_global" :total_bayar_global="total_bayar_global" :kembalian="kembalian" />
+        <PrintSuratJalan :prints="BarangKeluar.prints" :mutasi="data_utama" :no_invoice="no_invoice" :waktu="waktu" :outlet_tujuan="outlet_select" />
       </div>
     </ModalBody>
   </Modal>
@@ -356,7 +355,7 @@ import { TabulatorFull as Tabulator } from 'tabulator-tables';
 import dom from "@left4code/tw-starter/dist/js/dom";
 import qrcode from "@/components/qrcode/QrCode.vue";
 import { currencyFormatter } from "@/utils/helper";
-import PrintInvoice from "./PrintInvoice.vue";
+import PrintSuratJalan from "./PrintSuratJalan.vue";
 import moment from "moment";
 import html2canvas from 'html2canvas';
 
@@ -532,6 +531,7 @@ const resetModal = () => {
   isModalScanner.value = false;
   isInvoice.value = false;
 
+  data_utama.value = []
   no_invoice.value = "-"
   waktu.value = ""
   ekspedisi_select.value = "kosong"
@@ -659,14 +659,13 @@ const initTabulator = () => {
         }, cellClick: function (e, cell) {
           //console.log("openInvoiceModal", BarangKeluar);
           // alert("Print");
-          const pembelian = cell.getData()
+          const mutasi = cell.getData()
 
-          BarangKeluar.readDetail(pembelian.no_invoice).then((data) => {
-            no_invoice.value = pembelian.no_invoice;
-            waktu.value = pembelian.tanggal_mutasi;
-            total_harga_global.value = parseFloat(pembelian.total_harga_beli);
-            total_bayar_global.value = parseFloat(pembelian.total_bayar_beli);
-            kembalian.value = parseFloat(pembelian.kembalian_beli);
+          BarangKeluar.readDetail(mutasi.no_invoice).then((data) => {
+            // no_invoice.value = mutasi.no_invoice;
+            // waktu.value = mutasi.tanggal_mutasi;
+            // outlet_select.value = mutasi.penerima
+            data_utama.value = mutasi
 
             isInvoice.value = true;
           }).catch((e) => {

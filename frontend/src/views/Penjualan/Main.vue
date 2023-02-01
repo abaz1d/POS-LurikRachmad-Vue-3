@@ -643,7 +643,7 @@ const closeQrScanner = () => {
 const resultScan = (result) => {
   // ntar di concat ma it outlet
   item_select.value = result;
-  console.log("hasil", item_select)
+  //console.log("hasil", item_select)
   isModalScanner.value = false;
   qrScanner.value.closeQrScanner();
 }

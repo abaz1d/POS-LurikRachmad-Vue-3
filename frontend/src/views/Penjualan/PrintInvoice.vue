@@ -9,10 +9,10 @@
           }}
         </div>
       </div>
-      <div class="bg-white mt-20  lg:mt-0 lg:ml-auto lg:text-right">
-        <div class="bg-white text-xl text-primary font-medium">Left4code</div>
-        <div class="bg-white mt-1 text-black">left4code@gmail.com</div>
-        <div class="bg-white mt-1 text-black">8023 Amerige Street Harriman, NY 10926.</div>
+      <div class="bg-white mt-20 lg:mt-0 lg:ml-auto lg:text-right">
+        <div class="font-philosopher bg-white text-xl text-primary font-medium"> <b> Lurik Rachmad </b></div>
+        <div class="bg-white mt-1 text-black">{{ String(Auth.items.nama_outlet) }} - {{ String(Auth.items.kontak_outlet) }}</div>
+        <div class="bg-white mt-1 text-black w-96 break-words">{{ String(Auth.items.alamat_outlet) }}</div>
       </div>
     </div>
     <div class="bg-white px-5  sm:px-16 py-10 sm:py-20">
@@ -61,7 +61,9 @@
           </div> -->
       <div class="bg-white sm:ml-auto grid grid-cols-2 sm:gap-4">
         <div class="bg-white text-lg text-black font-medium text-left sm:text-right">TOTAL : </div>
-        <div class="bg-white text-lg text-primary font-bold text-right">{{ currencyFormat.format(parseInt(total_harga_global)) }}
+        <div class="bg-white text-lg text-primary font-bold text-right">{{
+          currencyFormat.format(parseInt(total_harga_global))
+        }}
         </div>
 
         <div class="bg-white text-lg text-black font-medium text-left sm:text-right">BAYAR : </div>
@@ -75,21 +77,30 @@
         <div class="bg-white col-span-2 text-right">* Termasuk pajak</div>
       </div>
     </div>
+    <!-- <hr>
+    <div class="grid justify-items-center items-center">
+      <div class="font-philosopher bg-white text-xl text-primary font-medium"> <b> Lurik Rachmad </b></div>
+      <div class="bg-white mt-1 text-black">{{ String(Auth.items.nama_outlet) }} - {{ String(Auth.items.kontak_outlet) }}</div>
+      <div class="bg-white mt-1 text-black w-96 break-words">{{ String(Auth.items.alamat_outlet) }}</div>
+    </div> -->
   </div>
 </template>
 
 <script>
 import { currencyFormatter } from "@/utils/helper";
+import { useAuthStore } from "@/stores/auth";
 import moment from "moment";
 
 export default {
   setup() {
     const currencyFormat = currencyFormatter;
     const dateFormat = moment;
+    const Auth = useAuthStore();
 
     return {
       currencyFormat,
-      dateFormat
+      dateFormat,
+      Auth
     }
   },
   data() {
