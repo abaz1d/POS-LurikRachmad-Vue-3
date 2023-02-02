@@ -78,7 +78,7 @@
 
                           <div class="col-span-6 mb-5">
                             <label for="pos-form-1" class="form-label">Nomor Resi</label>
-                            <input id="pos-form-1" type="text" class="form-control flex-1" placeholder="Masukan Nomor"
+                            <input id="pos-form-1" type="text" class="form-control flex-1" placeholder="Masukan Nomor Resi"
                               required v-model="no_resi" :disabled="outlet_select == 'kosong'" />
                           </div>
 
@@ -152,7 +152,7 @@
                             <th class="sticky top-0 whitespace-nowrap bg-slate-200">QTY</th>
                           </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="bg-white">
                           <DetailMutasi v-for="detail in BarangKeluar.mutasi" :key="detail.id_barang" :detail="detail"
                             @openModalRemove="openModalRemove" />
                           <!-- <tr v-for="detail in BarangKeluar.mutasi" :key="detail.id_barang" :detail="detail">
@@ -308,9 +308,9 @@
         </div>
       </div>
     </ModalHeader>
-    <ModalBody class="bg-white">
-      <div class="bg-white" id="modalPrintInvoice">
-        <PrintSuratJalan :prints="BarangKeluar.prints" :mutasi="data_utama" :no_invoice="no_invoice" :waktu="waktu" :outlet_tujuan="outlet_select" />
+    <ModalBody class="">
+      <div class="bg-white"  >
+        <PrintSuratJalan :prints="BarangKeluar.prints" :mutasi="data_utama" :no_invoice="no_invoice" :waktu="waktu" />
       </div>
     </ModalBody>
   </Modal>
@@ -399,6 +399,7 @@ const total_harga_global = ref(0);
 const total_bayar_global = ref(0);
 const kembalian = ref(0);
 
+
 const itemDel = ref("");
 const data_select = {
   option: function (data, escape) {
@@ -420,20 +421,37 @@ const basicNonStickyNotificationToggle = () => {
   basicNonStickyNotification.value.showToast();
 };
 
-const onPrintInvoice = (e) => {
-  const id = document.getElementById(`modalPrintInvoice`);
+const onPrintInvoice = async (e) => {
+  //const id = document.getElementById(`modalPrintInvoice`);
+  const id = document.querySelector("#modalPrintInvoice")
 
-  html2canvas(id, {
-    // scale: 2,
-    useCORS: true,
-  }).then((canvas) => {
+  console.log("onPrintInvoice", id, tabulator.value);
+  // var originalContents = document.body.innerHTML;
+  // document.body.innerHTML = id.innerHTML
+  // window.print();
+  // document.body.innerHTML = originalContents;
+  // resetModal() {logging: true, letterRendering: true, allowTaint: false, useCORS: true, scale: 1920*2/window.innerWidth, backgroundColor: null }
+
+  const canvas = await html2canvas(id)
+  //console.log("html2canvas", gambar)
     var barcodeImgTag = document.createElement("a");
     document.body.appendChild(barcodeImgTag);
     barcodeImgTag.download = `Invoice-${no_invoice.value}.jpg`;
     barcodeImgTag.href = canvas.toDataURL();
     barcodeImgTag.target = "_blank";
     barcodeImgTag.click();
-  });
+
+  // html2canvas(id, {
+  //   // width: 3000,
+  //   // height:3000,
+  // }).then((canvas) => {
+  //   var barcodeImgTag = document.createElement("a");
+  //   document.body.appendChild(barcodeImgTag);
+  //   barcodeImgTag.download = `Invoice-${no_invoice.value}.jpg`;
+  //   barcodeImgTag.href = canvas.toDataURL();
+  //   barcodeImgTag.target = "_blank";
+  //   barcodeImgTag.click();
+  // });
 };
 
 const startMutation = async () => {
@@ -662,7 +680,7 @@ const initTabulator = () => {
           const mutasi = cell.getData()
 
           BarangKeluar.readDetail(mutasi.no_invoice).then((data) => {
-            // no_invoice.value = mutasi.no_invoice;
+            no_invoice.value = mutasi.no_invoice;
             // waktu.value = mutasi.tanggal_mutasi;
             // outlet_select.value = mutasi.penerima
             data_utama.value = mutasi

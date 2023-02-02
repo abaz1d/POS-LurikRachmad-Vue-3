@@ -2,6 +2,147 @@
   <div class="intro-y flex flex-col sm:flex-row items-center mt-8">
     <h2 class="text-lg font-medium mr-auto">Barang Masuk</h2>
     <div class="w-full sm:w-auto flex mt-4 sm:mt-0">
+      <!-- <button class="cursor-progress btn btn-primary shadow-md mb-3 mr-2 pr-5" @click="startMutation()">
+        <PlusIcon class="w-4 h-4 mr-2" />
+        <p class="hidden xl:block mr-1">Barang Masuk</p> Baru
+      </button> -->
+      <!-- BEGIN: Modal Content -->
+      <Modal size="modal-xl" backdrop="static" :show="modal_utama" @hidden="modal_utama = false">
+        <ModalHeader class="border-b-2">
+          <h2 class="hidden lg:block font-medium text-base mr-auto">
+            <p class="mx-auto" v-if="isEdit">Edit Barang Masuk {{ no_invoice }}</p>
+            <p class="mx-auto" v-else>Tambah Barang Masuk</p>
+          </h2>
+
+          <div class="sm:w-auto flex mt-3 mx-auto sm:mx-0 sm:mr-0 sm:ml-4 items-center sm:items-right">
+            <div class="mr-2 m-auto">
+              <div class="bg-slate-200 rounded-md p-2 font-medium lg:text-base text-sm px-2">
+                <p class="text-right text-black">{{ no_invoice }}</p>
+              </div>
+              <p class="text-center bg-primary text-white rounded-md w-24 mx-auto lg:-mt-[52px] -mt-12 lg:mb-8 mb-6">NO.
+                SURAT</p>
+            </div>
+            <div class="mr-2 m-auto">
+              <div class="bg-slate-200 rounded-md p-2 font-medium lg:text-base text-sm px-2">
+                <p class="text-right text-black">{{ moment(waktu).format("DD MMM YYYY HH:SS") }}</p>
+              </div>
+              <p class="text-center bg-primary text-white rounded-md w-24 mx-auto lg:-mt-[52px] -mt-12 lg:mb-8 mb-6">
+                WAKTU
+              </p>
+            </div>
+          </div>
+
+        </ModalHeader>
+        <ModalBody class="">
+          <div class="overflow-auto sm:overflow-hidden mx-0 sm:h-3/4 h-80">
+            <div class="grid grid-cols-12 gap-1 -mt-3">
+
+              <div class="col-span-12">
+                <!-- BEGIN: Display Item -->
+                <div class="intro-y box">
+                  <div class="p-2">
+                    <div class="flex flex-col-reverse xl:flex-row flex-col">
+                      <div class="flex-1 mt-0">
+                        <div class="grid grid-cols-12 gap-x-2 sm:gap-x-3">
+                          <div class="col-span-12 mb-5">
+                            <label for="pos-form-1" class="form-label">Outlet Pengirim</label>
+                            <div class="flex w-full">
+                              <TomSelect v-model="outlet_select" class="w-full" disabled>
+                                <option value="kosong" disabled>
+                                  &gt-- Pilih Outlet --&lt
+                                </option>
+                                <option v-for="outlet in BarangMasuk.outlets" :key="outlet.id_outlet" :outlet="outlet"
+                                  :value="outlet.id_outlet">
+                                  {{ outlet.id_outlet }} - {{ outlet.nama_outlet }}
+                                </option>
+                              </TomSelect>
+                            </div>
+                          </div>
+
+                          <div class="col-span-6 mb-5">
+                            <label for="pos-form-1" class="form-label">Ekpedisi</label>
+                            <TomSelect v-model="ekspedisi_select" :options="{
+                              create: true,
+                              render: data_select
+                            }" class="w-full" disabled>
+                              <option value="kosong" data-src="src/assets/images/logo-gold.svg" disabled>
+                                &gt-- Pilih Ekspedisi --&lt
+                              </option>
+                              <option v-for="ekspedisi in ekspedisis.default" :key="ekspedisi.id_ekspedisi"
+                                :ekspedisi="ekspedisi" :value="ekspedisi.alias_ekspedisi"
+                                :data-src="ekspedisi.image_ekspedisi">
+                                -- {{ ekspedisi.nama_ekspedisi }}
+                              </option>
+                            </TomSelect>
+                          </div>
+
+                          <div class="col-span-6 mb-5">
+                            <label for="pos-form-1" class="form-label">Nomor Resi</label>
+                            <input id="pos-form-1" type="text" class="form-control flex-1" placeholder="Masukan Nomor Resi"
+                              v-model="no_resi" disabled/>
+                          </div>
+
+                          <div class="col-span-6 mb-5">
+                            <label for="pos-form-1" class="form-label">Foto Bukti</label>
+                            <input id="pos-form-1" type="file" class="form-control flex-1" placeholder="Unggah Bukti Foto"
+                                disabled/>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- END: Display Item -->
+              </div>
+
+              <!-- BEGIN: Detail BarangMasuk -->
+              <div class="col-span-12 flex-col-reverse z-0">
+                <div class="intro-y box">
+                  <div class="flex items-center px-5 py-2 border-b border-slate-200/60 dark:border-darkmode-400">
+                    <h2 class="font-medium text-base mr-auto">Detail Barang Masuk</h2>
+                  </div>
+                  <div class="px-2">
+                    <div class="col-span-12 overflow-auto w-full h-56">
+                      <table class="table table-hover mt-2">
+                        <thead class="table-light">
+                          <tr>
+                            <th class="sticky top-0 left-0 w-5 bg-slate-200">#</th>
+                            <th class="sticky top-0 whitespace-nowrap bg-slate-200">ID & Nama Varian</th>
+                            <th class="sticky top-0 whitespace-nowrap bg-slate-200">QTY</th>
+                          </tr>
+                        </thead>
+                        <tbody class="bg-white">
+                          <DetailMutasi v-for="detail in BarangMasuk.mutasi" :key="detail.id_barang" :detail="detail"
+                            @openModalRemove="openModalRemove" />
+                          <!-- <tr v-for="detail in BarangMasuk.mutasi" :key="detail.id_barang" :detail="detail">
+                            <td @click="openModalRemove(detail)"
+                              class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer hover:bg-slate-500">
+                              <TrashIcon class="text-danger w-4 h-4 p-0" />
+                            </td>
+                            <td>{{ detail.id_varian }} - {{ detail.nama_varian }}</td>
+                            <td>{{ detail.qty }}</td>
+                          </tr> -->
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- END: Detail BarangMasuk -->
+            </div>
+          </div>
+        </ModalBody>
+        <ModalFooter class="">
+          <button type="button" @click="modal_utama = false; resetModal()" class="btn btn-outline-secondary w-32 mr-1">
+            Cancel
+          </button>
+          <button type="button" @click="simpanMutasi()" class="object-left btn btn-primary w-32"
+            :disabled="outlet_select === 'kosong'">
+            Simpan
+          </button>
+        </ModalFooter>
+      </Modal>
       <a href="" class="ml-auto sm:ml-0 btn px-2 h-10 box flex items-center text-primary">
         <RefreshCcwIcon class="w-4 h-4 sm:mr-3 sm:m-0 m-2" />
         <p class="sm:block hidden">Reload Data</p>
@@ -17,10 +158,10 @@
           <select id="tabulator-html-filter-field" v-model="filter.field"
             class="form-select w-full sm:w-32 2xl:w-full mt-2 sm:mt-0 sm:w-auto">
             <option value="no_invoice">No Invoice</option>
-            <option value="tanggal_barang_masuk">Tanggal Barang Masuk</option>
-            <option value="total_barang_masuk">Total Barang Masuk</option>
+            <option value="tanggal_mutasi">Tanggal Barang Masuk</option>
+            <option value="total_barang_mutasi">Total Barang Masuk</option>
             <option value="status">Status</option>
-            <option value="id_outlet_penerima">Outlet Penerima</option>
+            <option value="id_outlet_pengirim">Outlet Pengirim</option>
           </select>
         </div>
         <div class="sm:flex items-center sm:mr-4 mt-2 xl:mt-0">
@@ -96,7 +237,7 @@
           Cancel
         </button>
         <button type="button" class="btn btn-danger w-24"
-          @click="modal_utama ? removeItem(itemDel.id_detail_beli, itemDel.no_invoice) : deletePembelian(no_invoice)">
+          @click="modal_utama ? removeItem(itemDel.id_detail_barang_mutasi) : deleteMutasi(no_invoice)">
           Delete
         </button>
       </div>
@@ -127,10 +268,32 @@
         </div>
       </div>
     </ModalHeader>
-    <ModalBody class="bg-white">
-      <div class="bg-white" id="modalPrintInvoice">
-        <PrintInvoice :prints="BarangMasuk.prints" :no_invoice="no_invoice" :waktu="waktu"
-          :total_harga_global="total_harga_global" :total_bayar_global="total_bayar_global" :kembalian="kembalian" />
+    <ModalBody class="">
+      <div class="bg-white"  >
+        <PrintSuratJalan :prints="BarangMasuk.prints" :mutasi="data_utama" :no_invoice="no_invoice" :waktu="waktu" />
+      </div>
+    </ModalBody>
+  </Modal>
+
+  <Modal size="modal-xl" backdrop="static" :show="isModalScanner" @hidden="isModalScanner = false">
+    <ModalHeader>
+      <div class="text-center mt-2">
+        <h2 class="text-lg font-bold">QR Code Scanner</h2>
+      </div>
+    </ModalHeader>
+    <ModalBody class="px-5 py-10">
+      <div class="text-center">
+        <div class="mb-5">
+          <div class="intro-y justify-center flex mt-5">
+            <qrcode v-bind:qrbox="250" v-bind:fps="10" ref="qrScanner" @resultScan="resultScan" />
+          </div>
+        </div>
+        <button type="button" @click="
+  isModalScanner = false;
+closeQrScanner();
+        " class="btn btn-danger w-24">
+          Close
+        </button>
       </div>
     </ModalBody>
   </Modal>
@@ -141,8 +304,10 @@
 
 <script setup>
 import $ from "jquery";
+import * as ekspedisis from "@/assets/json/ekspedisi.json"
 import { useBarangMasukStore } from "@/stores/barang-masuk";
 import { ref, provide, reactive, onMounted, onBeforeUnmount, watch } from "vue";
+import DetailMutasi from "./DetailMutasi.vue"
 import ModalDatabaseError from "@/components/modal-error/Main.vue";
 import xlsx from "xlsx";
 import { createIcons, icons } from "lucide";
@@ -150,7 +315,7 @@ import { TabulatorFull as Tabulator } from 'tabulator-tables';
 import dom from "@left4code/tw-starter/dist/js/dom";
 import qrcode from "@/components/qrcode/QrCode.vue";
 import { currencyFormatter } from "@/utils/helper";
-import PrintInvoice from "./PrintInvoice.vue";
+import PrintSuratJalan from "./PrintSuratJalan.vue";
 import moment from "moment";
 import html2canvas from 'html2canvas';
 
@@ -175,8 +340,11 @@ const data_utama = ref([])
 
 const no_invoice = ref("-");
 const waktu = ref("");
+const ekspedisi_select = ref("kosong");
+const no_resi = ref("");
 
 const item_select = ref("kosong");
+const outlet_select = ref("kosong");
 const stok = ref(0);
 const nama_barang_select = ref("-");
 const nama_varian_select = ref("-");
@@ -191,7 +359,16 @@ const total_harga_global = ref(0);
 const total_bayar_global = ref(0);
 const kembalian = ref(0);
 
+
 const itemDel = ref("");
+const data_select = {
+  option: function (data, escape) {
+    return `<div><img class="w-auto h-6 inline-block mr-2" src="${data.src}">${data.text}</div>`;
+  },
+  item: function (item, escape) {
+    return `<div><img class="w-auto h-6 inline-block mr-2" src="${item.src}">${item.text}</div>`;
+  }
+}
 
 // Basic non sticky notification
 const basicNonStickyNotification = ref();
@@ -204,61 +381,90 @@ const basicNonStickyNotificationToggle = () => {
   basicNonStickyNotification.value.showToast();
 };
 
-const onPrintInvoice = (e) => {
-  const id = document.getElementById(`modalPrintInvoice`);
+const onPrintInvoice = async (e) => {
+  //const id = document.getElementById(`modalPrintInvoice`);
+  const id = document.querySelector("#modalPrintInvoice")
 
-  html2canvas(id, {
-    // scale: 2,
-    useCORS: true,
-  }).then((canvas) => {
+  console.log("onPrintInvoice", id, tabulator.value);
+  // var originalContents = document.body.innerHTML;
+  // document.body.innerHTML = id.innerHTML
+  // window.print();
+  // document.body.innerHTML = originalContents;
+  // resetModal() {logging: true, letterRendering: true, allowTaint: false, useCORS: true, scale: 1920*2/window.innerWidth, backgroundColor: null }
+
+  const canvas = await html2canvas(id)
+  //console.log("html2canvas", gambar)
     var barcodeImgTag = document.createElement("a");
     document.body.appendChild(barcodeImgTag);
     barcodeImgTag.download = `Invoice-${no_invoice.value}.jpg`;
     barcodeImgTag.href = canvas.toDataURL();
     barcodeImgTag.target = "_blank";
     barcodeImgTag.click();
+
+  // html2canvas(id, {
+  //   // width: 3000,
+  //   // height:3000,
+  // }).then((canvas) => {
+  //   var barcodeImgTag = document.createElement("a");
+  //   document.body.appendChild(barcodeImgTag);
+  //   barcodeImgTag.download = `Invoice-${no_invoice.value}.jpg`;
+  //   barcodeImgTag.href = canvas.toDataURL();
+  //   barcodeImgTag.target = "_blank";
+  //   barcodeImgTag.click();
+  // });
+};
+
+const startMutation = async () => {
+  const data = await BarangMasuk.startMutation()
+  no_invoice.value = data.no_invoice;
+  waktu.value = data.tanggal_penjualan;
+  modal_utama.value = true;
+};
+const addItem = () => {
+  BarangMasuk.addDetailMutasi(
+    no_invoice.value,
+    item_select.value,
+    qty_select.value
+  ).then((data) => {
+    //console.log('data.data', stok, qty_select);
+    // total_harga_global.value = data.total_harga_jual
+    // stok.value = stok.value - qty_select.value
+    // nama_campur_select.value = `${nama_barang_select.value} - ${nama_varian_select.value} | ${stok.value}`
+  }).catch((e) => {
+    alert("addItem" + e)
   });
 };
 
-
-
 const openModalRemove = (item) => {
-  //console.log(item)
+  console.log(item)
   itemDel.value = item
   deleteConfirmationModal.value = true
 }
 
-const removeItem = (id_detail_beli, no_invoice) => {
-  BarangMasuk.removeItem(id_detail_beli, no_invoice).then((data) => {
-    stok.value = stok.value + parseInt(itemDel.value.qty)
-    nama_campur_select.value = `${nama_barang_select.value} - ${nama_varian_select.value} | ${stok.value}`
+const removeItem = (id_detail_barang_mutasi) => {
+  //console.log('data', itemDel, id_detail_barang_mutasi)
+  BarangMasuk.removeDetail(id_detail_barang_mutasi).then((data) => {
+    // stok.value = stok.value + parseInt(itemDel.value.qty)
+    // nama_campur_select.value = `${nama_barang_select.value} - ${nama_varian_select.value} | ${stok.value}`
     deleteConfirmationModal.value = false
-    // console.log('data', itemDel)
-    total_harga_global.value = parseFloat(data)
+    //console.log('data', itemDel)
+    // total_harga_global.value = parseFloat(data)
   }).catch((e) => {
     alert("removeItem" + e)
   });
 }
 
-const simpanPembelian = () => {
+const simpanMutasi = () => {
   const no_invoice_now = no_invoice.value
-  const total_harga_global_now = total_harga_global.value
-  const total_bayar_global_now = total_bayar_global.value
-  const kembalian_now = kembalian.value
+  const outlet_pengirim = outlet_select.value
+  const tanggal = waktu.value
+  const ekspedisi = ekspedisi_select.value
+  const noResi = no_resi.value
 
-  // tabulator.value.updateData([{
-  //   // id: index_select.value,
-  //   no_invoice_now,
-  //   tanggal_pembelian: Date.now(),
-  //   total_harga_beli: currencyFormatter.format(total_harga_global.value),
-  //   total_bayar_beli: currencyFormatter.format(total_bayar_global.value),
-  //   kembalian_now
-  // }]);
-  console.log('data', BarangMasuk.pembelianDetail.length);
-  if (BarangMasuk.pembelianDetail.length !== 0 && total_bayar_global.value >= total_harga_global.value) {
-    BarangMasuk.addPembelian(no_invoice_now, total_harga_global_now, total_bayar_global_now, kembalian_now).then((data) => {
-      isEdit.value = false;
-      modal_utama.value = false;
+  console.log('data', BarangMasuk.mutasi.length);
+  if (BarangMasuk.mutasi.length !== 0 && outlet_select.value !== "kosong") {
+    BarangMasuk.addMutasi(no_invoice_now, outlet_pengirim, tanggal, ekspedisi, noResi).then((data) => {
+      resetModal();
       // tabulator.value.clearData()
       // tabulator.value.setData(data);
       initTabulator()
@@ -270,11 +476,12 @@ const simpanPembelian = () => {
   } else { alert("Simpan Detail BarangMasuk Tidak Boleh Kosong") }
 }
 
-const deletePembelian = (no_invoice) => {
+const deleteMutasi = (no_invoice) => {
 
-  BarangMasuk.removePembelian(no_invoice)
+  BarangMasuk.removeMutasi(no_invoice)
   initTabulator();
-  deleteConfirmationModal.value = false;
+  resetModal();
+  //deleteConfirmationModal.value = false;
 }
 defineExpose({ qrScanner })
 
@@ -290,7 +497,7 @@ const closeQrScanner = () => {
 const resultScan = (result) => {
   // ntar di concat ma it outlet
   item_select.value = result;
-  //console.log("hasil", item_select)
+  //console.log("hasil", result, item_select)
   isModalScanner.value = false;
   qrScanner.value.closeQrScanner();
 }
@@ -302,10 +509,14 @@ const resetModal = () => {
   isModalScanner.value = false;
   isInvoice.value = false;
 
+  data_utama.value = []
   no_invoice.value = "-"
   waktu.value = ""
+  ekspedisi_select.value = "kosong"
+  no_resi.value = ""
 
   item_select.value = "kosong"
+  outlet_select.value = "kosong"
   stok.value = 0
   nama_barang_select.value = "-"
   nama_varian_select.value = "-"
@@ -325,29 +536,25 @@ const resetModal = () => {
 
 watch(item_select, async (e) => {
   try {
-    // console.log("item_select" , e)
-    BarangMasuk.readDetailItem(e).then((data) => {
-      // console.log('data.data', data);
-      nama_barang_select.value = data.nama_barang,
+    if (e !== "kosong") {
+      BarangMasuk.readDetailItem(e).then((data) => {
+        console.log('data.data', data);
         nama_varian_select.value = data.nama_varian,
-        nama_campur_select.value = `${data.nama_barang} - ${data.nama_varian} | ${data.stok_varian}`,
-
-        harga_item_select.value = data.harga_beli_varian,
-        stok.value = data.stok_varian,
-        qty_select.value = 1,
-        total_harga_select.value = data.harga_beli_varian
-    }).catch((e) => {
-      throw e
-    });
+          stok.value = data.stok_varian,
+          qty_select.value = 1
+      }).catch((e) => {
+        throw e
+      });
+    };
   } catch (error) {
     alert("Gagal pilih barang" + error)
   }
 })
 
 watch(qty_select, async (newValue, oldValue) => {
-  const qty = newValue
-  const harga_item_select_now = harga_item_select.value
-  const stok_now = stok.value
+  let qty = newValue
+  let harga_item_select_now = harga_item_select.value
+  let stok_now = stok.value
   try {
     if (newValue > stok_now) {
       alert("Stok tersisa hanya " + stok_now);
@@ -356,41 +563,11 @@ watch(qty_select, async (newValue, oldValue) => {
       alert("Minimal Qty harus 1");
       qty_select.value = 1;
     } else {
-      total_harga_select.value = harga_item_select_now * qty
+      //console.log("benar", stok_now, qty, stok_now - qty)
+      stok.value = stok_now - qty
     }
   } catch (error) {
     alert("Gagal wtch qty" + error)
-  }
-})
-
-watch(total_bayar_global, async (newValue, oldValue) => {
-  const total_bayar_global_now = newValue
-  const total_harga_global_now = total_harga_global.value
-  try {
-    if (newValue === "" || newValue < 0) {
-      alert("Total Bayar tidak boleh kosong atau minus");
-      total_bayar_global.value = oldValue;
-    } else {
-      kembalian.value = total_bayar_global_now - total_harga_global_now
-    }
-  } catch (error) {
-    alert("Gagal wtch total_bayar_globl" + error)
-  }
-})
-
-watch(total_harga_global, async (newValue, oldValue) => {
-  const total_bayar_global_now = total_bayar_global.value
-  const total_harga_global_now = newValue
-  try {
-
-    if (newValue === "" || newValue < 0) {
-      alert("Total Harga tidak boleh kosong atau minus");
-      total_harga_global.value = oldValue;
-    } else {
-      kembalian.value = total_bayar_global_now - total_harga_global_now
-    }
-  } catch (error) {
-    alert("Gagal wtch total_harga_globl" + error)
   }
 })
 
@@ -414,7 +591,7 @@ const initTabulator = () => {
   tabulator.value = new Tabulator(tableRef.value, {
     data: BarangMasuk.items,
     dataLoaderLoading: dataLoaderLoading,
-    printHeader: `<h1 class='text-2xl p-2 m-2 text-center border-y-2 border-black'>Tabel BarangMasuk<h1>`,
+    printHeader: `<h1 class='text-2xl p-2 m-2 text-center border-y-2 border-black'>Tabel Barang Masuk<h1>`,
     printFooter: `<h2 class='p-2 m-2 text-center mt-4'>${moment(Date.now()).format("DD MMM YYYY HH:SS")}<h2>`,
     printAsHtml: true,
     printStyled: true,
@@ -460,34 +637,22 @@ const initTabulator = () => {
         }, cellClick: function (e, cell) {
           //console.log("openInvoiceModal", BarangMasuk);
           // alert("Print");
-          const pembelian = cell.getData()
+          const mutasi = cell.getData()
 
-          BarangMasuk.readDetail(pembelian.no_invoice).then((data) => {
-            no_invoice.value = pembelian.no_invoice;
-            waktu.value = pembelian.tanggal_pembelian;
-            total_harga_global.value = parseFloat(pembelian.total_harga_beli);
-            total_bayar_global.value = parseFloat(pembelian.total_bayar_beli);
-            kembalian.value = parseFloat(pembelian.kembalian_beli);
+          BarangMasuk.readDetail(mutasi.no_invoice).then((data) => {
+            no_invoice.value = mutasi.no_invoice;
+            // waktu.value = mutasi.tanggal_mutasi;
+            // outlet_select.value = mutasi.penerima
+            data_utama.value = mutasi
 
             isInvoice.value = true;
           }).catch((e) => {
             alert("gagal open invoice" + e);
           });
-
-          // //filter table to just this row
-          // table.Filter(function (data) {
-          //   return data.id == cell.getData().id;
-          // });
-
-          // //print the table
-          // table.print();
-
-          // //clear the filter
-          // table.clearFilter();
         }
       },
       {
-        title: "INVOICE",
+        title: "NO. SURAT",
         minWidth: 200,
         responsive: 0,
         field: "no_invoice",
@@ -503,26 +668,26 @@ const initTabulator = () => {
         },
       },
       {
-        title: "TANGGAL MASUK",
+        title: "TANGGAL",
         headerHozAlign: "center",
         minWidth: 200,
-        field: "tanggal_barang_masuk",
+        field: "tanggal_mutasi",
         hozAlign: "center",
         vertAlign: "middle",
         print: false,
         download: false,
         formatter(cell) {
           return `<div>
-                <div class="font-medium whitespace-nowrap">${moment(cell.getData().tanggal_barang_masuk).format("DD MMM YYYY HH:SS")
+                <div class="font-medium whitespace-nowrap">${moment(cell.getData().tanggal_mutasi).format("DD MMM YYYY HH:SS")
             }</div>
               </div>`;
         },
       },
       {
-        title: "TOTAL BARANG MASUK",
-        minWidth: 200,
+        title: "TOTAL BARANG",
+        minWidth: 100,
         headerHozAlign: "center",
-        field: "total_barang_masuk",
+        field: "total_barang_mutasi",
         hozAlign: "center",
         vertAlign: "middle",
         print: false,
@@ -531,8 +696,8 @@ const initTabulator = () => {
       {
         title: "OUTLET PENGIRIM & PENERIMA",
         headerHozAlign: "center",
-        minWidth: 200,
-        field: "id_outlet_penerima",
+        minWidth: 300,
+        field: "id_outlet_pengirim",
         hozAlign: "center",
         vertAlign: "middle",
         print: false,
@@ -559,6 +724,29 @@ const initTabulator = () => {
         },
       },
       {
+        title: "EKSPEDISI & INVOICE",
+        minWidth: 250,
+        headerHozAlign: "center",
+        field: "status",
+        hozAlign: "center",
+        vertAlign: "middle",
+        print: false,
+        download: false,
+        formatter(cell) {
+          const a = dom(`<div>
+          <div class="flex items-center lg:justify-center mb-1">
+            ${cell.getData().ekspedisi}
+          </div>
+          <kbd class="select-all px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">${cell.getData().no_resi}</kbd>
+          <i data-lucide="copy" class="cursor-pointer hover:bg-white inline-block w-4 h-4 ml-1"></i>
+        </div>`);
+          dom(a).on("click", function (e) {
+            navigator.clipboard.writeText(`${cell.getData().no_resi}`);
+          });
+          return a[0];
+        },
+      },
+      {
         title: "STATUS",
         minWidth: 200,
         headerHozAlign: "center",
@@ -568,23 +756,19 @@ const initTabulator = () => {
         print: false,
         download: false,
         formatter(cell) {
-          return `<div class="flex items-center lg:justify-center ${cell.getData().status ? "text-success" : "text-pending"
-            }">
-                <i data-lucide="truck" class="w-4 h-4 mr-2"></i> ${cell.getData().status ? "Diterima" : "Dalam Pengiriman"}
-              </div>`;
-          //           return `
-          // <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-          //   <option value="false" selected ><div><i data-lucide="truck" class="w-4 h-4 mr-2"></i> Dalam Pengiriman</div></option>
-          //   <option value="true"><i data-lucide="truck" class="w-4 h-4 mr-2"></i> Diterima</option>
-          // </select>
-          // `
+          const a = dom(`
+          <div class="flex items-center lg:justify-center ${cell.getData().status ? "text-success" : "text-pending"}">
+            <i data-lucide="truck" class="w-4 h-4 mr-2"></i> ${cell.getData().status ? "Diterima" : "Dalam Pengiriman"}
+          </div>`);
+          dom(a).on("click", function (e) {
+          });
+          return a[0];
         },
       },
       {
         title: "ACTIONS",
         headerHozAlign: "center",
         minWidth: 200,
-        field: "actions",
         responsive: 1,
         hozAlign: "center",
         vertAlign: "middle",
@@ -592,68 +776,57 @@ const initTabulator = () => {
         download: false,
         formatter(cell) {
           const a = dom(`<div class="flex lg:justify-center items-center">
-                <a id="edit" class="flex items-center mr-3" href="javascript:;">
-                  <i data-lucide="check-square" class="w-4 h-4 mr-1"></i> Edit
-                </a>
-                <a id="delete" class="flex items-center text-danger" href="javascript:;">
-                  <i data-lucide="trash-2" class="w-4 h-4 mr-1"></i> Delete
-                </a>
+            <button class="btn btn-rounded btn-success-soft flex items-center">
+                  <i data-lucide="package" class="w-4 h-4 mr-1"></i> Terima
+                </button>
               </div>`);
-          dom(a).on("click", "a", function (e) {
-            if (e.id === "edit") {
-              //alert("edit " + cell.getData());
-              const pembelian = cell.getData()
-              //console.log("openEditModal", cell.getRow());
-              //index_select.value = cell._cell.row.getPosition()
+          dom(a).on("click", function (e) {
 
-              BarangMasuk.readDetailPembelian(pembelian.no_invoice).then((data) => {
-                no_invoice.value = pembelian.no_invoice;
-                waktu.value = pembelian.tanggal_pembelian;
-                total_harga_global.value = parseFloat(pembelian.total_harga_beli);
-                total_bayar_global.value = parseFloat(pembelian.total_bayar_beli);
-                kembalian.value = parseFloat(pembelian.kembalian_beli);
-
-                isEdit.value = true;
-                modal_utama.value = true;
-              }).catch((e) => {
-                alert("gagal open edit" + e);
-              });
-            } else {
-              //alert("delete" + JSON.stringify(cell.getData().no_invoice));
-              //const no_invoice_del = JSON.stringify(cell.getData().no_invoice)
-              no_invoice.value = cell.getData().no_invoice;
-              deleteConfirmationModal.value = true;
-            }
           });
 
           return a[0];
-        },
+        }, cellClick: function (e, cell) {
+          //console.log("openInvoiceModal", BarangMasuk);
+          // alert("Print");
+          const mutasi = cell.getData()
+
+          BarangMasuk.readDetail(mutasi.no_invoice).then((data) => {
+            no_invoice.value = mutasi.no_invoice;
+            // waktu.value = mutasi.tanggal_mutasi;
+            // outlet_select.value = mutasi.penerima
+            data_utama.value = mutasi
+
+            isInvoice.value = true;
+          }).catch((e) => {
+            alert("gagal open invoice" + e);
+          });
+        }
       },
 
       // For print format
       {
-        title: "INVOICE",
+        title: "NO. SURAT",
         field: "no_invoice",
         visible: false,
         print: true,
         download: true,
       },
       {
-        title: "TANGGAL MASUK",
-        field: "tanggal_pembelian",
+        title: "TANGGAL",
+        field: "tanggal_mutasi",
         visible: false,
         print: true,
         download: true,
         formatter(cell) {
           return `<div>
-                <div class="font-medium whitespace-nowrap">${moment(cell.getData().tanggal_pembelian).format("DD MMM YYYY HH:SS")
+                <div class="font-medium whitespace-nowrap">${moment(cell.getData().tanggal_mutasi).format("DD MMM YYYY HH:SS")
             }</div>
               </div>`;
         },
       },
       {
-        title: "TOTAL BARANG MASUK",
-        field: "total_barang_masuk",
+        title: "TOTAL BARANG",
+        field: "total_barang_mutasi",
         visible: false,
         print: true,
         download: true,
@@ -673,13 +846,34 @@ const initTabulator = () => {
         download: true,
       },
       {
+        title: "EKSPEDISI & INVOICE",
+        minWidth: 250,
+        headerHozAlign: "center",
+        field: "status",
+        visible: false,
+        print: true,
+        download: true,
+        formatter(cell) {
+          const a = dom(`<div>
+          <div class="flex items-center lg:justify-center">
+            JNE
+          </div>
+          ${cell.getData().no_invoice}
+        </div>`);
+          dom(a).on("click", function (e) {
+            navigator.clipboard.writeText(`${cell.getData().no_invoice}`);
+          });
+          return a[0];
+        },
+      },
+      {
         title: "STATUS",
         field: "status",
         visible: false,
         print: true,
         download: true,
         formatterPrint(cell) {
-          return cell.getValue().status ? "Active" : "Inactive";
+          return `${cell.getData().status ? "Diterima" : "Dalam Pengiriman"}`;
         },
       },
     ],
@@ -715,6 +909,22 @@ const initTabulator = () => {
 
           // For HTML table
           {
+            title: "ID VARIAN",
+            minWidth: 200,
+            responsive: 0,
+            field: "id_varian",
+            hozAlign: "left",
+            vertAlign: "middle",
+            print: false,
+            download: false,
+            formatter(cell) {
+              return `<div>
+                <div class="font-medium whitespace-nowrap">${cell.getData().id_varian
+                }</div>
+              </div>`;
+            },
+          },
+          {
             title: "NAMA VARIAN",
             minWidth: 200,
             responsive: 0,
@@ -726,22 +936,6 @@ const initTabulator = () => {
             formatter(cell) {
               return `<div>
                 <div class="font-medium whitespace-nowrap">${cell.getData().nama_varian
-                }</div>
-              </div>`;
-            },
-          },
-          {
-            title: "HARGA ITEM",
-            headerHozAlign: "center",
-            minWidth: 200,
-            field: "harga_detail_beli",
-            hozAlign: "right",
-            vertAlign: "middle",
-            print: false,
-            download: false,
-            formatter(cell) {
-              return `<div>
-                <div class="font-medium whitespace-nowrap">${currencyFormatter.format(cell.getData().harga_detail_beli)
                 }</div>
               </div>`;
             },
@@ -762,24 +956,15 @@ const initTabulator = () => {
               </div>`;
             },
           },
-          {
-            title: "TOTAL HARGA",
-            minWidth: 200,
-            headerHozAlign: "center",
-            field: "total_harga_detail_beli",
-            hozAlign: "right",
-            vertAlign: "middle",
-            print: false,
-            download: false,
-            formatter(cell) {
-              return `<div>
-                <div class="font-medium whitespace-nowrap">${currencyFormatter.format(cell.getData().total_harga_detail_beli)
-                }</div>
-              </div>`;
-            },
-          },
 
           // For print format
+          {
+            title: "ID VARIAN",
+            field: "id_varian",
+            visible: false,
+            print: true,
+            download: true,
+          },
           {
             title: "NAMA VARIAN",
             field: "nama_varian",
@@ -788,22 +973,8 @@ const initTabulator = () => {
             download: true,
           },
           {
-            title: "HARGA ITEM",
-            field: "harga_detail_beli",
-            visible: false,
-            print: true,
-            download: true,
-          },
-          {
             title: "QTY",
             field: "qty",
-            visible: false,
-            print: true,
-            download: true,
-          },
-          {
-            title: "TOTAL HARGA",
-            field: "total_harga_detail_beli",
             visible: false,
             print: true,
             download: true,

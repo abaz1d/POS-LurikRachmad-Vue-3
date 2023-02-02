@@ -51,7 +51,7 @@ module.exports = function (db) {
 			const print = await db.query('SELECT bmd.*,mb.*,v.nama_varian FROM barang_mutasi_detail as bmd LEFT JOIN varian as v ON bmd.id_varian = v.id_varian LEFT JOIN mutasi_barang as mb ON bmd.no_invoice = mb.no_invoice WHERE bmd.no_invoice = $1', [noInvoice]);
 			res.json(new Response({
 				barang_masuk: rows,
-				//outlet: outlet.rows,
+				outlet: outlet.rows,
 				//supplier: supplier.rows,
 				details: details.rows,
 				//varian: varian.rows,
