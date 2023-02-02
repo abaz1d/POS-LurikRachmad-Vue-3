@@ -44,7 +44,8 @@ export default {
     </td>
     <td>{{ detail.id_varian }} - {{ detail.nama_varian }}</td>
     <td>
-      <MinusIcon @click="qty = qty - 1" class="text-danger fill-daanger w-6 h-6 cursor-pointer inline-block" /> <input
+      <MinusIcon @click="qty = qty - 1" class="text-danger fill-daanger w-6 h-6 cursor-pointer inline-block" /> 
+      <input
         v-model="qty" id="pos-form-1" type="number" class="w-24 form-control flex-1" placeholder="Masukan Qty"
         required />
       <PlusIcon @click="qty = qty + 1" class="text-success fill-success w-6 h-6 cursor-pointer inline-block" />

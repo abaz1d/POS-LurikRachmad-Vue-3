@@ -200,7 +200,7 @@ renderQrScanner();
                           <div
                             class="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
                             <div class="space-y-1 text-center">
-                              <svg @click="this.$refs.gambarBaru.click()" v-if="url == null || ''"
+                              <svg @click="this.$refs.gambarBaru.click()" v-if="url == null || url == ''"
                                 class="mx-auto h-12 w-12 text-gray-400 cursor-pointer" stroke="currentColor" fill="none"
                                 viewBox="0 0 48 48" aria-hidden="true">
                                 <path
@@ -503,7 +503,7 @@ const deleteBarang = () => {
 
 const addVarian = () => {
   try {
-    if (inputIdVarian.value === "" || null) {
+    if (inputIdVarian.value === "" || inputIdVarian.value === null) {
       Barang.addVarian({
         id_varian: '',
         nama_varian: inputNamaVarian.value,

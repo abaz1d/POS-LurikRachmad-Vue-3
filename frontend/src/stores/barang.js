@@ -160,7 +160,7 @@ export const useBarangStore = defineStore({
 
       const headers = { "Content-Type": "multipart/form-data" };
 
-      if (varian.id_varian === "" || null) {
+      if (varian.id_varian === "" || varian.id_varian === null) {
         console.log("id kosong");
         this.rawVarians.push({
           id_varian: id_varian,
@@ -258,7 +258,7 @@ export const useBarangStore = defineStore({
       const headers = { "Content-Type": "multipart/form-data" };
       //console.log("varian update ", varian)
       try {
-        if (file === "" || null) {
+        if (file === "" || file === null) {
           const { data } = await request.post(
             `barang/editvar/${varian.id_varian}`,
             formData,

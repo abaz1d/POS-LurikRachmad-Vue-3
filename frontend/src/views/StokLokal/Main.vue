@@ -179,7 +179,7 @@
                           <div
                             class="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
                             <div class="space-y-1 text-center">
-                              <svg @click="this.$refs.gambarBaru.click()" v-if="url == null || ''"
+                              <svg @click="this.$refs.gambarBaru.click()" v-if="url == null || url == ''"
                                 class="mx-auto h-12 w-12 text-gray-400 cursor-pointer" stroke="currentColor" fill="none"
                                 viewBox="0 0 48 48" aria-hidden="true">
                                 <path
@@ -616,7 +616,7 @@ watch(filter, async (newValue, oldValue) => {
 
 watch(daftarVarian, async (newValue, oldValue) => {
   //console.log("daftar varian: ", newValue)
-  if (newValue != "kosong" || "") {
+  if (newValue != "kosong" || newValue !="") {
     Barang.updateSubvarianGet(newValue).then((detail) => {
       //alert("edit " + JSON.stringify(varian.gambar_varian));
       // data.value = detail

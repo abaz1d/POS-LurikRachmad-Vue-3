@@ -1,5 +1,6 @@
 <template>
-  <div class="intro-y bg-white box overflow-hidden mt-2 z-50 absolute top-0" style="background-color: white;" id="modalPrintInvoice">
+  <div class="intro-y bg-white box overflow-hidden mt-2 z-50 absolute top-0" style="background-color: white;"
+    id="modalPrintInvoice">
     <div class="min-w-max bg-white">
       <div class="grid sm:grid-cols-3 bg-white">
         <div class="col mx-auto sm:ml-40">
@@ -35,63 +36,19 @@
         </div>
       </div>
       <div class="bg-white mt-10 lg:mt-0 lg:ml-auto lg:text-right">
-        <div class="bg-white mt-1 text-black text-left text-base font-medium">Penerima : {{ mutasi.id_outlet_penerima }} - {{ mutasi.penerima }}</div>
+        <div class="bg-white mt-1 text-black text-left text-base font-medium">Penerima : {{ mutasi.id_outlet_penerima }}
+          - {{ mutasi.penerima }}</div>
         <div class="bg-white mt-1 text-black text-left text-base font-medium">Ekpedisi : {{ mutasi.ekspedisi }} - {{
           mutasi.no_resi
         }}</div>
       </div>
     </div>
     <div class="px-5 bg-white sm:px-10 py-10 sm:py-10">
-      <!-- <div class="bg-white overflow-x-auto">
-        <table class="table border border-collapse text-black bg-white mb-0">
-          <thead>
-            <tr>
-              <th>
-                <input id="default-checkbox" type="checkbox" value=""
-                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-              </th>
-              <th class="border whitespace-nowrap">
-                ITEM
-              </th>
-              <th class="border text-center whitespace-nowrap">
-                QTY KIRIM
-              </th>
-              <th class="border text-center whitespace-nowrap">
-                QTY TERIMA
-              </th>
-              <th class="border text-center whitespace-nowrap">
-                KETERANGAN
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(print, index) in prints" :no="index + 1" :print="print">
-              <td>
-                <input id="default-checkbox" type="checkbox" value=""
-                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-              </td>
-              <td class="border mx-auto">
-                {{ print.nama_barang }} <b>{{ print.nama_varian }}</b>
-              </td>
-              <td class="text-center border w-32">
-                {{ print.qty }}
-              </td>
-              <td class="text-right border w-10">
-                <input type="number" class="w-24 form-control flex-1" placeholder="Qty Diterima" required />
-              </td>
-              <td class="text-right border w-32 font-medium">
-                <textarea name="keterangan" class="w-32 form-control flex-1" placeholder="Keterangan"
-                  id="print-keterangan"></textarea>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div> -->
       <div class="container">
         <table class="w-full flex flex-row flex-no-wrap bg-white rounded-lg overflow-hidden p-2" id="suratJalan">
-          <thead class="text-white ">
+          <thead class="text-black ">
             <tr v-for="(print, index) in prints" :no="index + 1" :print="print"
-              class="bg-blue-500 flex flex-col flex-no wrap sm:table-row rounded-l-lg sm:rounded-none mb-2 sm:mb-0">
+              class="bg-sky-100 flex flex-col flex-no wrap sm:table-row rounded-l-lg sm:rounded-none mb-2 sm:mb-0">
               <th class="p-3 text-left sm:text-center ">
                 <input id="default-checkbox" type="checkbox" value=""
                   class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-white dark:border-gray-600" />
@@ -103,26 +60,8 @@
             </tr>
           </thead>
           <tbody class="flex-1 sm:flex-none mb-2">
-            <tr v-for="(print, index) in prints" :no="index + 1" :print="print"
-              class="flex flex-col flex-no wrap sm:table-row mb-2 sm:mb-0">
-              <td class="text-center p-3">
-                <input id="default-checkbox" type="checkbox" value=""
-                  class="w-4 h-4 text-blue-600 bg-white border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:border-gray-600" />
-              </td>
-              <td class=" text-black p-3 text-center"> 
-                {{ print.nama_barang }} <b>{{print.nama_varian}}</b>
-              </td>
-              <td class=" p-3 text-center text-black"> {{ print.qty }}</td>
-              <td
-                class="py-1 sm:p-3 text-center cursor-pointer">
-                <input type="number" class="w-24 form-control flex-1 bg-white text-black" />
-              </td>
-              <td
-                class="py-1 sm:p-3 text-center cursor-pointer">
-                <textarea name="keterangan" class="w-32 form-control flex-1 bg-white text-black" 
-                  id="print-keterangan"></textarea>
-              </td>
-            </tr>
+            <DetailSuratJalan ref="suratJalanViewDetail" v-for="(print, index) in prints" :isEdit="isEdit"
+              :print="print" />
           </tbody>
         </table>
       </div>
@@ -149,6 +88,7 @@
 </template>
 
 <script>
+import DetailSuratJalan from "./DetailSuratJalan.vue"
 import { currencyFormatter } from "@/utils/helper";
 import { useAuthStore } from "@/stores/auth";
 import moment from "moment";
@@ -165,6 +105,9 @@ export default {
       Auth
     }
   },
+  components: {
+    DetailSuratJalan
+  },
   data() {
     return {
       // no_invoice: this.prints[0].no_invoice,
@@ -177,8 +120,23 @@ export default {
     },
     mutasi: {
       type: Object,
+    },
+    isEdit: {
+      type: Boolean,
     }
   },
+  methods: {
+    resetTable() {
+    //this.$refs.suratJalanViewDetail.resetTable2()
+      console.log("resetTable",this.$refs.suratJalanViewDetail)
+    }
+  },
+  mounted() {
+    // console.log("before create depan", this.mutasi)
+    //this.qty_terima = this.print.qty
+    // this.suppliers = this.Supplier.items
+  },
+
 
 }
 </script>
@@ -199,6 +157,6 @@ td {
 }
 
 th {
-  border-bottom: 2px solid rgba(0, 0, 0, .1);
+  border-bottom: 1px solid rgba(0, 0, 0, .1);
 }
 </style>

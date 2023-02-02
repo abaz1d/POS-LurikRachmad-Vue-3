@@ -3,73 +3,73 @@
     "id": "1",
     "alias_ekspedisi": "JNE",
     "nama_ekspedisi": "JNE",
-    "image_ekspedisi": "src/assets/images/ekspedisi/jne.png"
+    "image_ekspedisi": "/src/assets/images/ekspedisi/jne.png"
   },
   {
     "id": "2",
     "alias_ekspedisi": "J&T",
     "nama_ekspedisi": "J&T Express",
-    "image_ekspedisi": "src/assets/images/ekspedisi/jnt.png"
+    "image_ekspedisi": "/src/assets/images/ekspedisi/jnt.png"
   },
   {
     "id": "3",
     "alias_ekspedisi": "POS",
     "nama_ekspedisi": "POS Indonesia",
-    "image_ekspedisi": "src/assets/images/ekspedisi/pos.jpeg"
+    "image_ekspedisi": "/src/assets/images/ekspedisi/pos.jpeg"
   },
   {
     "id": "4",
     "alias_ekspedisi": "TIKI",
     "nama_ekspedisi": "TIKI (Titipan Kilat)",
-    "image_ekspedisi": "src/assets/images/ekspedisi/tiki.jpeg"
+    "image_ekspedisi": "/src/assets/images/ekspedisi/tiki.jpeg"
   },
   {
     "id": "5",
     "alias_ekspedisi": "SICEPAT",
     "nama_ekspedisi": "SiCepat",
-    "image_ekspedisi": "src/assets/images/ekspedisi/sicepat.png"
+    "image_ekspedisi": "/src/assets/images/ekspedisi/sicepat.png"
   },
   {
     "id": "6",
     "alias_ekspedisi": "PAHALA",
     "nama_ekspedisi": "Pahala Express",
-    "image_ekspedisi": "src/assets/images/ekspedisi/pahala.jpeg"
+    "image_ekspedisi": "/src/assets/images/ekspedisi/pahala.jpeg"
   },
   {
     "id": "7",
     "alias_ekspedisi": "WAHANA",
     "nama_ekspedisi": "Wahana",
-    "image_ekspedisi": "src/assets/images/ekspedisi/wahana.png"
+    "image_ekspedisi": "/src/assets/images/ekspedisi/wahana.png"
   },
   {
     "id": "8",
     "alias_ekspedisi": "INDAH",
     "nama_ekspedisi": "Indah Logistik",
-    "image_ekspedisi": "src/assets/images/ekspedisi/indah.png"
+    "image_ekspedisi": "/src/assets/images/ekspedisi/indah.png"
   },
   {
     "id": "9",
     "alias_ekspedisi": "PANDU",
     "nama_ekspedisi": "Pandu Logistics",
-    "image_ekspedisi": "src/assets/images/ekspedisi/pandu.jpeg"
+    "image_ekspedisi": "/src/assets/images/ekspedisi/pandu.jpeg"
   },
   {
     "id": "10",
     "alias_ekspedisi": "FIRST",
     "nama_ekspedisi": "First Logistic",
-    "image_ekspedisi": "src/assets/images/ekspedisi/first.png"
+    "image_ekspedisi": "/src/assets/images/ekspedisi/first.png"
   },
   {
     "id": "11",
     "alias_ekspedisi": "GOSEND",
     "nama_ekspedisi": "Gosend",
-    "image_ekspedisi": "src/assets/images/ekspedisi/gosend.png"
+    "image_ekspedisi": "/src/assets/images/ekspedisi/gosend.png"
     
   },
   {
     "id": "12",
     "alias_ekspedisi": "GRAB",
     "nama_ekspedisi": "Grab Express",
-    "image_ekspedisi": "src/assets/images/ekspedisi/grab.png"
+    "image_ekspedisi": "/src/assets/images/ekspedisi/grab.png"
   }
 ]

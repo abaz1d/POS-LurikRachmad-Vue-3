@@ -65,7 +65,7 @@
                               create: true,
                               render: data_select
                             }" class="w-full">
-                              <option value="kosong" data-src="src/assets/images/logo-gold.svg" disabled>
+                              <option value="kosong" data-src="/src/assets/images/ekspedisi/logo-gold.svg" disabled>
                                 &gt-- Pilih Ekspedisi --&lt
                               </option>
                               <option v-for="ekspedisi in ekspedisis.default" :key="ekspedisi.id_ekspedisi"
@@ -399,14 +399,18 @@ const total_harga_global = ref(0);
 const total_bayar_global = ref(0);
 const kembalian = ref(0);
 
+const imageAssets = import.meta.globEager(
+  `/src/assets/images/ekspedisi/*.{jpg,jpeg,png,svg}`
+);
 
 const itemDel = ref("");
 const data_select = {
   option: function (data, escape) {
-    return `<div><img class="w-auto h-6 inline-block mr-2" src="${data.src}">${data.text}</div>`;
+    return `<div><img class="w-auto h-6 inline-block mr-2" src="${
+      imageAssets[data.src].default}">${data.text}</div>`;
   },
   item: function (item, escape) {
-    return `<div><img class="w-auto h-6 inline-block mr-2" src="${item.src}">${item.text}</div>`;
+    return `<div><img class="w-auto h-6 inline-block mr-2" src="${imageAssets[item.src].default}">${item.text}</div>`;
   }
 }
 
@@ -501,8 +505,8 @@ const simpanMutasi = () => {
   const ekspedisi = ekspedisi_select.value
   const noResi = no_resi.value
 
-  console.log('data', BarangKeluar.mutasi.length);
-  if (BarangKeluar.mutasi.length !== 0 && outlet_select.value !== "kosong") {
+  //console.log('data', BarangKeluar.mutasi.length);
+  if (BarangKeluar.mutasi.length !== 0 && outlet_select.value !== "kosong", ekspedisi_select !== "kosong") {
     BarangKeluar.addMutasi(no_invoice_now, outlet_penerima, tanggal, ekspedisi, noResi).then((data) => {
       resetModal();
       // tabulator.value.clearData()
@@ -810,6 +814,7 @@ const initTabulator = () => {
         headerHozAlign: "center",
         minWidth: 200,
         responsive: 1,
+        field: "actions",
         hozAlign: "center",
         vertAlign: "middle",
         print: false,
@@ -831,7 +836,7 @@ const initTabulator = () => {
               BarangKeluar.readDetailMutasi(mutasi.no_invoice).then((data) => {
                 no_invoice.value = mutasi.no_invoice;
                 waktu.value = mutasi.tanggal_mutasi;
-                outlet_select.value = mutasi.id_outlet_penerima == null || '' ? 'kosong' : mutasi.id_outlet_penerima
+                outlet_select.value = mutasi.id_outlet_penerima == null || mutasi.id_outlet_penerima === '' ? 'kosong' : mutasi.id_outlet_penerima
                 no_resi.value = mutasi.no_resi
                 ekspedisi_select.value = mutasi.ekspedisi
 
