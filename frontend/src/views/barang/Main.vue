@@ -350,7 +350,7 @@ renderQrScanner();
 
       </div>
       <div class="px-5 pb-8 text-center">
-        <button type="button" @click="resetModal()" class="btn btn-outline-secondary w-24 mr-1">
+        <button type="button" @click="resetModal()" class="btn btn-outline-secondary w-24 mr-2">
           Cancel
         </button>
         <button type="button" class="btn btn-danger w-24"

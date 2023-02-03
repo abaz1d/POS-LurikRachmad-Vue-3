@@ -75,7 +75,6 @@ module.exports = function (db) {
 		}
 	});
 
-
 	router.post('/create', async function (req, res, next) {
 		const id_outlet = req.query.id_outlet ? req.query.id_outlet : '';
 		try {
@@ -121,6 +120,38 @@ module.exports = function (db) {
 			res.status(500).json(new Response(e, false))
 		}
 	});
+
+	router.put('/terima_barang', async (req, res) => {
+		const { no_invoice, status  } = req.body
+		try {
+			let gambar;
+			let uploadPath;
+			//console.log('Uploading', req.body,req.body.id_varian, Object.keys(req.body).length, Object.keys(req.body).length > 7);
+			// console.log('Uploading', req);
+			if (!req.files || Object.keys(req.files).length === 0) {
+				return res.status(400).json(new Response({ message: 'No files were uploaded.' }, false))
+			}
+			// The name of the input field (i.e. "gambar") is used to retrieve the uploaded file
+			gambar = req.files.file;
+			const filename = `A${Date.now()}-${gambar.name}`
+			uploadPath = path.join(__dirname, '/../public', 'gambar_bukti', filename);
+			// Use the mv() method to place the file somewhere on your server
+			gambar.mv(uploadPath, function (err) {
+				if (err) throw new Error(err)
+				db.query('UPDATE mutasi_barang SET status = $1, gambar_bukti = $2 WHERE no_invoice = $3 returning *', [status, filename, no_invoice])
+				.then((rows) => {
+					let data = rows.rows
+					res.json(new Response({ data }));
+				})
+				.catch((err) => {
+					throw new Error(err)
+				})
+
+			})
+		} catch (e) {
+			res.status(500).json(new Response(e, false))
+		}
+	});
 	//v
 	router.get('/details/:no_invoice', isLoggedIn, async function (req, res, next) {
 		try {
@@ -157,6 +188,22 @@ module.exports = function (db) {
 			res.status(500).json(new Response(e, false))
 		}
 	})
+
+	router.put('/upd-terima/:id_detail_barang_mutasi', async function (req, res) {
+		try {
+			const qty_terima = parseInt(req.body.qty_terima);
+			const id = parseInt(req.params.id_detail_barang_mutasi);
+			const keterangan = req.body.keterangan
+			//console.log("updte itm", id,qty, req.body);
+			const { rows } = await db.query('UPDATE barang_mutasi_detail SET qty_terima = $1, keterangan = $2 WHERE id_detail_barang_mutasi = $3', [qty_terima, keterangan, id])
+			// delDetail = await db.query('DELETE FROM barang_mutasi_detail WHERE id_detail_barang_mutasi = $1', [req.params.id_detail_barang_mutasi])
+			// const { rows } = await db.query('SELECT SUM(total_harga_detail_beli)  AS total FROM barang_mutasi_detail WHERE no_invoice = $1', [req.body.no_invoice])
+			res.json(new Response({ message: "update detail success" }, true))
+		} catch (e) {
+			console.log(e)
+			res.status(500).json(new Response(e, false))
+		}
+	});
 
 	router.delete('/delitem/:id_detail_barang_mutasi', isLoggedIn, async function (req, res, next) {
 		try {

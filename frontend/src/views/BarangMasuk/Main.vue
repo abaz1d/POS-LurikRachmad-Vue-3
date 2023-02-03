@@ -97,16 +97,15 @@
         <b>{{ no_invoice }}</b>
       </h2>
 
-      <div @click="resetModal()"
-        class="sm:w-auto flex mt-4 sm:mt-0 mr-0 ml-4 items-right cursor-pointer">
+      <div @click="resetModal()" class="sm:w-auto flex mt-4 sm:mt-0 mr-0 ml-4 items-right cursor-pointer">
         <div class="ml-2 m-auto text-danger">
           <XIcon class="w-8 h-8 mx-auto" />
         </div>
       </div>
     </ModalHeader>
     <ModalBody class="">
-      <div class="bg-white" :prints="BarangMasuk.prints" ref="suratJalanView" :mutasi="data_utama" :isEdit="isEdit">
-        <!-- <PrintSuratJalan :prints="BarangMasuk.prints" ref="suratJalanView" :mutasi="data_utama" :isEdit="isEdit" /> -->
+      <div class="bg-white" :prints="BarangMasuk.prints" :mutasi="data_utama" :isEdit="isEdit">
+        <!-- <PrintSuratJalan :prints="BarangMasuk.prints" ref="suratJalanViewDetail" :mutasi="data_utama" :isEdit="isEdit" /> -->
         <div class="intro-y bg-white box overflow-hidden mt-2 z-50 absolute top-0" style="background-color: white;"
           id="modalPrintInvoice">
           <div class="min-w-max bg-white">
@@ -151,7 +150,9 @@
                 data_utama.id_outlet_penerima
               }}
                 - {{ data_utama.penerima }}</div>
-              <div class="bg-white mt-1 text-black text-left text-base font-medium">Ekpedisi : {{ data_utama.ekspedisi }} -
+              <div class="bg-white mt-1 text-black text-left text-base font-medium">Ekpedisi : {{
+                data_utama.ekspedisi
+              }} -
                 {{
                   data_utama.no_resi
                 }}</div>
@@ -164,7 +165,7 @@
                   <tr v-for="(print, index) in BarangMasuk.prints" :no="index + 1" :print="print"
                     class="bg-sky-100 flex flex-col flex-no wrap sm:table-row rounded-l-lg sm:rounded-none mb-2 sm:mb-0">
                     <th class="p-3 text-left sm:text-center ">
-                      <input id="default-checkbox" type="checkbox" value=""
+                      <input id="default-checkbox" type="checkbox" v-model="check_semua"
                         class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-white dark:border-gray-600" />
                     </th>
                     <th class="p-3 text-left sm:text-center ">ITEM</th>
@@ -174,8 +175,8 @@
                   </tr>
                 </thead>
                 <tbody class="flex-1 sm:flex-none mb-2">
-                  <DetailSuratJalan ref="suratJalanViewDetail" v-for="(print, index) in BarangMasuk.prints" :isEdit="isEdit"
-                    :print="print" />
+                  <DetailSuratJalan ref="suratJalanViewDetail" v-for="(print, index) in BarangMasuk.prints"
+                    :isEdit="isEdit" :print="print" />
                 </tbody>
               </table>
             </div>
@@ -201,7 +202,10 @@
         </div>
       </div>
       <div class="col-span-6 mb-5" v-if="isEdit">
-        <small>*Isi Keterangan/ Sesuaikan QTY Jika di Perlukan</small>
+        <small>NB :</small> <br>
+        <small> - Ceklis untuk mengonfirmasi barang telah diterima</small> <br>
+        <small> - Isi Keterangan/ Sesuaikan QTY TERIMA Jika di Perlukan</small> <br>
+        <small> - Foto Bukti Pengiriman Wajib Diisi</small>
         <hr class="mborder-2 my-2 text-black fill-black stroke-black border-black">
         <label class="block text-sm font-medium text-gray-700">Foto Bukti Pengiriman</label>
         <div class="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
@@ -243,11 +247,34 @@
       <button type="button" @click="resetModal()" class="btn btn-outline-secondary w-32 mr-1">
         Cancel
       </button>
-      <button type="submit" class="btn btn-primary w-32">
-        Simpan
+      <button type="submit" @click="simpanConfirmationModal = true" class="btn btn-primary w-36">
+        Terima & Simpan
       </button>
     </ModalFooter>
   </Modal>
+
+  <!-- BEGIN: simpan Confirmation Modal -->
+  <Modal :show="simpanConfirmationModal" @hidden="simpanConfirmationModal = false">
+    <ModalBody class="p-0">
+      <div class="p-5 text-center">
+        <PackageCheckIcon class="w-16 h-16 mx-auto mt-3 text-success" />
+        <div class="mt-5 text-xl">Apakah Anda Yakin Menyimpan <br> <b>{{ no_invoice }}</b> ?</div>
+        <div class="mt-2 text-slate-500">
+          Pastikan Data yang anda kirim telah sesuai <br> dengan barang yang anda terima <br />
+          <b>Proses ini tidak dapat diulangi.</b>
+        </div>
+      </div>
+      <div class="px-5 pb-8 text-center">
+        <button type="button" @click="simpanConfirmationModal = false" class="btn btn-outline-secondary w-24 mr-2">
+          Cancel
+        </button>
+        <button type="button" @click="simpanTerima()" class="btn btn-primary w-24">
+          Simpan
+        </button>
+      </div>
+    </ModalBody>
+  </Modal>
+  <!-- END: simpan Confirmation Modal -->
 
   <ModalDatabaseError ref="modalErrorRef" />
 
@@ -272,7 +299,7 @@ const BarangMasuk = useBarangMasukStore();
 const isEdit = ref(false);
 const modalErrorRef = ref();
 const tableRef = ref();
-const suratJalanView = ref();
+const suratJalanViewDetail = ref();
 const tabulator = ref();
 const filter = reactive({
   field: "no_invoice",
@@ -281,16 +308,45 @@ const filter = reactive({
 });
 const isInvoice = ref(false)
 const data_utama = ref([])
+const check_semua = ref(false)
+const simpanConfirmationModal = ref(false)
 
 const no_invoice = ref("-");
 const waktu = ref("");
 
 const url = ref("");
 const file = ref("");
+const publicPath = import.meta.env.VITE_APP_BASE_API;
 
 const previewImage = (e) => {
   file.value = e.target.files[0];
   url.value = URL.createObjectURL(file.value);
+};
+
+const getImgUrl = (gambar_bukti) => {
+  //console.log('gambar_bukti', import.meta.url)
+  if (gambar_bukti) {
+    var images = gambar_bukti.data
+      .map((b) => String.fromCharCode(b))
+      .join("");
+    // gambar_lama_preview.value = new URL(`${publicPath}gambar/${images}`).href;
+    // if (isEdit) {
+    //   url.value = gambar_lama_preview.value
+    // }
+
+    return new URL(`${publicPath}gambar_bukti/${images}`).href;
+  } else {
+    return `${new URL(window.location.origin)}` + '404.jpeg'
+  }
+}
+
+const simpanTerima = async () => {
+  if (file.value != "") {
+    const data = await BarangMasuk.terimaMutasi(no_invoice.value, file.value);
+    resetModal();
+  } else {
+    alert("Tolong sertakan foto bukti barang telah diterima");
+  }
 };
 
 // Basic non sticky notification
@@ -340,6 +396,8 @@ const onPrintInvoice = async (e) => {
 const resetModal = () => {
   isEdit.value = false;
   isInvoice.value = false;
+  check_semua.value = false;
+  simpanConfirmationModal.value = false;
 
   data_utama.value = []
   no_invoice.value = "-"
@@ -349,6 +407,13 @@ const resetModal = () => {
   file.value = ""
 }
 
+watch(check_semua, async (e) => {
+  for (let index = 0; index < suratJalanViewDetail.value.length; index++) {
+    const element = suratJalanViewDetail.value[index];
+    //console.log("centang semua",element)
+    element.updateTerima(e)
+  }
+})
 
 watch(filter, async (newValue, oldValue) => {
   try {
@@ -555,18 +620,44 @@ const initTabulator = () => {
         print: false,
         download: false,
         formatter(cell) {
-          const a = cell.getData().status ? dom(`<div class="flex lg:justify-center items-center">
-                <button class="btn btn-rounded btn-success flex items-center" disabled>
-                  <i data-lucide="package-check" class="w-4 h-4 mr-1"></i> Barang DiTerima
+          const a = dom(`<div class="flex lg:justify-center items-center">
+                <button class="btn btn-rounded btn-success-soft flex items-center">
+                  <img
+                  id="gambar${cell.getData().no_invoice}"
+                  src="${getImgUrl(cell.getData().gambar_bukti)}"
+                  alt="${cell.getData().gambar_bukti}"
+                  data-action="zoom"
+                  class="w-4 h-4 rounded-md mr-2" >Lihat Bukti</img>
                 </button>
               </div>`)
-            :
-            dom(`<div class="flex lg:justify-center items-center">
+
+          const b = dom(`<div class="flex lg:justify-center items-center">
                 <button class="btn btn-rounded btn-pending-soft flex items-center">
                   <i data-lucide="package" class="w-4 h-4 mr-1"></i> Terima Barang
                 </button>
               </div>`);
+
           dom(a).on("click", function (e) {
+            //$(`#gambar${cell.getData().no_invoice}`).click(); 
+            // alert("Gambar Bukti")
+            // const mutasi = cell.getData()
+            // data_utama.value = mutasi
+            // //console.log("data utama",mutasi);
+
+            // BarangMasuk.readDetail(mutasi.no_invoice).then((data) => {
+            //   no_invoice.value = mutasi.no_invoice;
+            //   // waktu.value = mutasi.tanggal_mutasi;
+            //   // outlet_select.value = mutasi.penerima
+
+            //   //suratJalanViewDetail.value.resetTable()
+            //   isEdit.value = true;
+            //   isInvoice.value = true;
+            // }).catch((e) => {
+            //   alert("gagal open invoice" + e);
+            // });
+          });
+
+          dom(b).on("click", function (e) {
             const mutasi = cell.getData()
             data_utama.value = mutasi
             //console.log("data utama",mutasi);
@@ -576,7 +667,7 @@ const initTabulator = () => {
               // waktu.value = mutasi.tanggal_mutasi;
               // outlet_select.value = mutasi.penerima
 
-              //suratJalanView.value.resetTable()
+              //suratJalanViewDetail.value.resetTable()
               isEdit.value = true;
               isInvoice.value = true;
             }).catch((e) => {
@@ -584,7 +675,7 @@ const initTabulator = () => {
             });
           });
 
-          return a[0];
+          return cell.getData().status ? a[0] : b[0];
         },
       },
 

@@ -43,7 +43,7 @@ export const useBarangMasukStore = defineStore({
     async readDetail(no_invoice) {
       try {
         const { data } = await request.get(`mutasi-barang/barang-masuk?noInvoice=${no_invoice}`);
-       //console.log("detail",data);
+        //console.log("detail",data);
         if (data.success) {
           this.rawDetails = data.data.details;
           this.rawPrints = data.data.print.rows;
@@ -64,106 +64,125 @@ export const useBarangMasukStore = defineStore({
       }
 
     },
-    async addMutasi(no_invoice, outlet_penerima, tanggal, ekspedisi, no_resi) {
-      const Auth = useAuthStore()
-      const tanggal_mutasi = tanggal === '' ? Date.now() : tanggal;
+    async terimaMutasi(no_invoice, file) {
       try {
-        const { data } = await request.post('mutasi-barang/upmutasi', { no_invoice, outlet_penerima, ekspedisi, no_resi })
-        if (data.success) {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("no_invoice", no_invoice);
+        formData.append("status", true);
+        const headers = { "Content-Type": "multipart/form-data" };
 
-          this.rawItems = this.rawItems.map((item) => {
-            if (item.tanggal_mutasi == tanggal_mutasi) {
-              return data.data.rows[0]
-            }
-            return item;
-          });
-          return this.rawItems
-        }
-      } catch (e) {
-        console.error(e);
-      }
-    },
-    async startMutation() {
-      try {
-        const Auth = useAuthStore()
-        const { data } = await request.post(`mutasi-barang/create?id_outlet=${String(Auth.items.id_outlet)}`)
+        
+        const { data } = await request.put(`mutasi-barang/terima_barang`, formData, headers)
         if (data.success) {
-          this.rawItems.push(data.data.rows);
-          //console.log(`mutasi`, this.rawItems)
-          return data.data.rows;
-        }
-      } catch (error) {
-        console.error(error)
-      }
-    },
-    async readDetailItem(id_varian) {
-      try {
-        const Auth = useAuthStore()
-        const { data } = await request.get(`mutasi-barang/barang/${id_varian}?id_outlet=${String(Auth.items.id_outlet)}`)
-        if (data.success) {
-          return data.data.rows
-        }
-      } catch (error) {
-        console.error(error)
-      }
-
-    },
-    async removeMutasi(no_invoice) {
-      this.rawItems = this.rawItems.filter(
-        (item) => item.no_invoice !== no_invoice
-      );
-      const { data } = await request.delete(`mutasi-barang/delete/${no_invoice}`)
-        if (data.success) {
-          // alert(`Sukses Hapus Data ${id_barang}`)
-        };
-    },
-    //----------------------------------------------------------------  Detail
-    async readDetailMutasi(no_invoice) {
-      try {
-        const { data } = await request.get(`mutasi-barang/details/${no_invoice}`)
-        if (data.success) {
-          this.rawDetailMutasi = data.data.rows;
-          return data.data.rows;
+          console.log("terima mutasi", data, no_invoice, file)
         }
       } catch (error) {
         console.error(error);
       }
     },
-    async addDetailMutasi(noInvoice, id_varian, qty) {
-      const id = Date.now();
-      const no_invoice = String(noInvoice)
+    // async addMutasi(no_invoice, outlet_penerima, tanggal, ekspedisi, no_resi) {
+    //   const Auth = useAuthStore()
+    //   const tanggal_mutasi = tanggal === '' ? Date.now() : tanggal;
+    //   try {
+    //     const { data } = await request.post('mutasi-barang/upmutasi', { no_invoice, outlet_penerima, ekspedisi, no_resi })
+    //     if (data.success) {
+
+    //       this.rawItems = this.rawItems.map((item) => {
+    //         if (item.tanggal_mutasi == tanggal_mutasi) {
+    //           return data.data.rows[0]
+    //         }
+    //         return item;
+    //       });
+    //       return this.rawItems
+    //     }
+    //   } catch (e) {
+    //     console.error(e);
+    //   }
+    // },
+    // async startMutation() {
+    //   try {
+    //     const Auth = useAuthStore()
+    //     const { data } = await request.post(`mutasi-barang/create?id_outlet=${String(Auth.items.id_outlet)}`)
+    //     if (data.success) {
+    //       this.rawItems.push(data.data.rows);
+    //       //console.log(`mutasi`, this.rawItems)
+    //       return data.data.rows;
+    //     }
+    //   } catch (error) {
+    //     console.error(error)
+    //   }
+    // },
+    // async readDetailItem(id_varian) {
+    //   try {
+    //     const Auth = useAuthStore()
+    //     const { data } = await request.get(`mutasi-barang/barang/${id_varian}?id_outlet=${String(Auth.items.id_outlet)}`)
+    //     if (data.success) {
+    //       return data.data.rows
+    //     }
+    //   } catch (error) {
+    //     console.error(error)
+    //   }
+
+    // },
+    // async removeMutasi(no_invoice) {
+    //   this.rawItems = this.rawItems.filter(
+    //     (item) => item.no_invoice !== no_invoice
+    //   );
+    //   const { data } = await request.delete(`mutasi-barang/delete/${no_invoice}`)
+    //     if (data.success) {
+    //       // alert(`Sukses Hapus Data ${id_barang}`)
+    //     };
+    // },
+    // //----------------------------------------------------------------  Detail
+    // async readDetailMutasi(no_invoice) {
+    //   try {
+    //     const { data } = await request.get(`mutasi-barang/details/${no_invoice}`)
+    //     if (data.success) {
+    //       this.rawDetailMutasi = data.data.rows;
+    //       return data.data.rows;
+    //     }
+    //   } catch (error) {
+    //     console.error(error);
+    //   }
+    // },
+    // async addDetailMutasi(noInvoice, id_varian, qty) {
+    //   const id = Date.now();
+    //   const no_invoice = String(noInvoice)
+    //   try {
+    //     const { data } = await request.post('mutasi-barang/additem', { no_invoice, id_varian, qty })
+    //     if (data.success) {
+    //       this.readDetailMutasi(noInvoice)
+    //       return data.data
+    //     }
+    //   } catch (e) {
+    //     console.error(e);
+    //   }
+    // },
+    async updateTerima(id_detail_barang_mutasi, qty_terima, keterangan) {
       try {
-        const { data } = await request.post('mutasi-barang/additem', { no_invoice, id_varian, qty })
+
+        const { data } = await request.put(`mutasi-barang/upd-terima/${id_detail_barang_mutasi}`, { qty_terima: qty_terima, keterangan: keterangan })
         if (data.success) {
-          this.readDetailMutasi(noInvoice)
-          return data.data
-        }
-      } catch (e) {
-        console.error(e);
-      }
-    },
-    async updateDetail(id_detail_barang_mutasi, qty) {
-      try {
-        const { data } = await request.put(`mutasi-barang/upditem/${id_detail_barang_mutasi}`, { qty: qty })
-        if (data.success) {
+          console.log("update terima", id_detail_barang_mutasi, qty_terima, keterangan)
         }
       } catch (error) {
         console.error(error);
       }
     },
-    async removeDetail(id_detail_barang_mutasi) {
-      try {
-        this.rawDetailMutasi = this.rawDetailMutasi.filter(
-          (item) => item.id_detail_barang_mutasi !== id_detail_barang_mutasi
-        );
-        const { data } = await request.delete(`mutasi-barang/delitem/${id_detail_barang_mutasi}`)
-        if (data.success) {
+    // async removeDetail(id_detail_barang_mutasi) {
+    //   try {
+    //     this.rawDetailMutasi = this.rawDetailMutasi.filter(
+    //       (item) => item.id_detail_barang_mutasi !== id_detail_barang_mutasi
+    //     );
+    //     const { data } = await request.delete(`mutasi-barang/delitem/${id_detail_barang_mutasi}`)
+    //     if (data.success) {
 
-        }
-      } catch (error) {
-        console.error(error)
-      }
+    //     }
+    //   } catch (error) {
+    //     console.error(error)
+    //   }
 
-    },
+    // },
   }
 })

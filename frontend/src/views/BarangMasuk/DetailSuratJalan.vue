@@ -1,7 +1,7 @@
 <template>
   <tr class="flex flex-col flex-no wrap sm:table-row mb-2 sm:mb-0">
     <td class="text-center p-3">
-      <input id="default-checkbox" type="checkbox" value=""
+      <input id="default-checkbox" type="checkbox" v-model="checkbox"
         class="w-4 h-4 text-blue-600 bg-white border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:border-gray-600" />
     </td>
     <td class=" text-black p-3 text-center">
@@ -34,7 +34,8 @@ export default {
   data() {
     return {
       qty_terima: 0,
-      keterangan_terima: this.print.keterangan
+      keterangan_terima: this.print.keterangan === null ? '' : this.print.keterangan,
+      checkbox: false
 
     }
   },
@@ -47,22 +48,16 @@ export default {
     }
   },
   watch: {
-    // isEdit(){
-    //   if (!isEdit) {
-    //     this.qty_terima = this.print.qty_terima
-    //   } else {
-    //     this.qty_terima = this.print.qty
-    //   }
-    // },
     qty_terima(newValue, oldValue) {
       try {
         if (newValue < 0 || newValue > this.print.qty) {
-          alert("Qty Terima tidak boleh kurang dari 0/ lebih dari qty yang dikirim")
+          alert("Qty Terima tidak boleh kurang dari 0 / lebih dari qty yang dikirim")
           this.qty_terima = oldValue
           document.getElementById(`${this.print.no_invoice + this.print.id_detail_barang_mutasi}`).value = oldValue === 0 ? this.print.qty : oldValue
-        }
-        if (newValue >= 0) {
-          console.log("qty baru");
+          //this.BarangMasuk.updateTerima(this.print.id_detail_barang_mutasi,document.getElementById(`${this.print.no_invoice + this.print.id_detail_barang_mutasi}`).value, this.keterangan_terima)
+        } else {
+          //console.log("qty baru");
+          this.BarangMasuk.updateTerima(this.print.id_detail_barang_mutasi,document.getElementById(`${this.print.no_invoice + this.print.id_detail_barang_mutasi}`).value, this.keterangan_terima)
         }
       } catch (error) {
         alert("Gagal wtch qty" + error)
@@ -71,35 +66,19 @@ export default {
   },
   methods: {
     updateKeterangan() {
-      console.log("update keterangan")
+      this.BarangMasuk.updateTerima(this.print.id_detail_barang_mutasi,document.getElementById(`${this.print.no_invoice + this.print.id_detail_barang_mutasi}`).value, this.keterangan_terima)
     },
     updateQty(e) {
       this.qty_terima = e.target.value
       //console.log("update QTY", e.target.value,this.print.no_invoice + this.print.id_detail_barang_mutasi, document.getElementById(`${this.print.no_invoice + this.print.id_detail_barang_mutasi}`).value)
     },
+    updateTerima(e) {
+      this.checkbox = e;
+      this.BarangMasuk.updateTerima(this.print.id_detail_barang_mutasi,document.getElementById(`${this.print.no_invoice + this.print.id_detail_barang_mutasi}`).value, this.keterangan_terima)
+      //console.log("update check" ,e, this.print.id_detail_barang_mutasi,document.getElementById(`${this.print.no_invoice + this.print.id_detail_barang_mutasi}`).value, this.keterangan_terima)
+    }
 
   },
-  // deactivated(){
-  //   this.qty_terima = 0
-  //   this.keterangan_terima = ""
-  //   console.log("off")
-  // },
-  // unmounted() {
-  //   this.qty_terima = 0
-  //   this.keterangan_terima = ""
-  //   console.log("unmounted")
-  // },
-  // mounted() {
-  //   //console.log("before create" ,this.print)
-  //   this.qty_terima = this.print.qty
-  //   this.keterangan_terima = this.print.keterangan
-  //   // this.suppliers = this.Supplier.items
-  //   console.log("mount")
-  // },
-  // beforeCreate() {
-  //   this.qty_terima = this.print.qty
-  // //   this.keterangan_terima = this.print.keterangan
-  // }
 
 }
 </script>

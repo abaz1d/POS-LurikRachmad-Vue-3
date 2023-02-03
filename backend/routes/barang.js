@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-const fs = require("fs");
 
 var path = require('path');
 const { currencyFormatter, isLoggedIn, Response } = require('../helpers/util')
