@@ -296,13 +296,19 @@ export const useBarangStore = defineStore({
       }
     },
 
-    async removeVarian(id_varian) {
-      //console.log("id_varian removed", id_varian);
+    async removeVarian(id_varian, gambar_lama) {
+      console.log("id_varian removed", id_varian, gambar_lama);
       try {
         this.rawVarians = this.rawVarians.filter(
           (item) => item.id_varian !== id_varian
         );
-        const { data } = await request.delete(`barang/deletevar/${id_varian}`)
+        gambar_lama = gambar_lama.data.map((b) => String.fromCharCode(b)).join("")
+        // formData.append(
+        //   "gambar_lama",
+        //   gambar_lama.data.map((b) => String.fromCharCode(b)).join("")
+        // );
+
+        const { data } = await request.delete(`barang/deletevar/${id_varian}`, { data: { gambar_lama } })
         if (data.success) {
           // alert(`Sukses Hapus Data ${id_barang}`)
         }

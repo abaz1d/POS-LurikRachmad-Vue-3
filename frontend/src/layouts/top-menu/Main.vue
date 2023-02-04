@@ -114,7 +114,7 @@
           <DropdownMenu class="notification-content pt-2">
             <DropdownContent tag="div" class="notification-content__box">
               <div class="notification-content__title">Notifications</div>
-              <div v-for="(faker, fakerKey) in $_.take($f(), 5)" :key="fakerKey"
+              <!-- <div v-for="(faker, fakerKey) in $_.take($f(), 5)" :key="fakerKey"
                 class="cursor-pointer relative flex items-center" :class="{ 'mt-5': fakerKey }">
                 <div class="w-12 h-12 flex-none image-fit mr-1">
                   <img alt="Lurik Rachmad HTML" class="rounded-full" :src="faker.photos[0]" />
@@ -133,7 +133,7 @@
                     {{ faker.news[0].shortContent }}
                   </div>
                 </div>
-              </div>
+              </div> -->
             </DropdownContent>
           </DropdownMenu>
         </Dropdown>

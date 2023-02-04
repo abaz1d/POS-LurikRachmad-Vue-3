@@ -137,7 +137,7 @@
               </div>
 
               <!-- BEGIN: Display Total Harga -->
-              <div class="lg:block hidden col-span-4">
+              <div class="lg:block hidden mt-2 col-span-4">
                 <div class="intro-y box">
 
                   <div class="box flex p-2 ">

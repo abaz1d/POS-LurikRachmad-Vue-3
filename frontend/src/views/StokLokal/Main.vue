@@ -23,47 +23,7 @@
           </button>
         </ModalHeader>
         <ModalBody class="grid grid-cols-12">
-          <div class="text-center col-span-6">
-            <button class="btn btn-primary" @click="modalBarang = true">
-              Tambah Barang
-            </button>
-            <Modal backdrop="static" :show="modalBarang" @hidden="modalBarang = false">
-              <ModalHeader>
-                <h2 class="font-medium text-base mr-auto">Tambah Barang</h2>
-                <button type="button" @click="modalBarang = false"
-                  class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
-                  <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd"
-                      d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                      clip-rule="evenodd"></path>
-                  </svg>
-                  <span class="sr-only">Close modal</span>
-                </button>
-              </ModalHeader>
-              <ModalBody class="grid grid-cols-12 gap-4 gap-y-3">
-                <form @submit.prevent="isEdit ? updateBarang() : addBarang()" id="addBarangForm" class="col-span-12">
-                  <div class="col-span-12 mb-5">
-                    <label v-if="isEdit" for="pos-form-1" class="form-label">ID Barang</label>
-                    <input v-if="isEdit" id="pos-form-1" type="text" class="form-control flex-1"
-                      placeholder="Masukan Nama Barang" v-model="inputIdBarang" readonly />
-                    <label for="pos-form-1" class="form-label">Nama Barang</label>
-                    <input id="pos-form-1" type="text" class="form-control flex-1" placeholder="Masukan Nama Barang"
-                      v-model="inputNamaBarang" required />
-                  </div>
-                </form>
-              </ModalBody>
-              <ModalFooter class="text-right">
-                <button type="button" @click="resetModal()" class="btn btn-outline-secondary w-32 mr-1">
-                  Cancel
-                </button>
-                <button type="submit" form="addBarangForm" class="btn btn-primary w-32">
-                  Simpan
-                </button>
-              </ModalFooter>
-            </Modal>
-          </div>
-          <div class="text-center col-span-6">
+          <div class="text-center col-span-12">
             <button class="btn btn-pending" @click="addVarianGet">
               Tambah Varian
             </button>
@@ -201,7 +161,7 @@
                                     class="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500">
                                     <span>Upload a file</span>
                                     <input id="gambarBaru" ref="gambarBaru" @change="previewImage" name="file-upload"
-                                      type="file" class="sr-only" disabled />
+                                      type="file" class="sr-only" accept="image/jpeg, image/png" disabled />
                                   </label>
                                   <p class="pl-1">or drag and drop</p>
                                 </div>
@@ -322,18 +282,13 @@
         <div v-if="isVarian" class="text-xl mt-5">Apakah Anda yakin akan menghapus Varian <b> {{
           inputIdVarian
         }} - {{ inputNamaVarian }} </b>?</div>
-
-        <div v-else class="text-xl mt-5">Apakah Anda yakin akan menghapus Barang <b> {{ inputIdBarang }} - {{
-          inputNamaBarang
-        }} </b> ?</div>
-
       </div>
       <div class="px-5 pb-8 text-center">
         <button type="button" @click="resetModal()" class="btn btn-outline-secondary w-24 mr-1">
           Cancel
         </button>
         <button type="button" class="btn btn-danger w-24"
-          @click="isVarian ? deleteVarian() : deleteBarang(inputIdBarang)">
+          @click="deleteVarian()">
           Delete
         </button>
       </div>
@@ -392,7 +347,6 @@ import moment from "moment";
 const Barang = useBarangStore();
 
 const modal_utama = ref(false);
-const modalBarang = ref(false);
 const modalVarian = ref(false);
 const deleteConfirmationModal = ref(false);
 const isEdit = ref(false);
@@ -413,8 +367,6 @@ const id_data = ref("");
 const daftarVarian = ref("kosong");
 
 const checkedID = ref(false);
-const inputIdBarang = ref("");
-const inputNamaBarang = ref("");
 
 const inputIdVarian = ref("");
 const inputNamaVarian = ref("");
@@ -459,40 +411,10 @@ const openMainModal = () => {
 const addVarianGet = async () => {
   data.value = await Barang.addSubvarianGet()
   //console.log("data get", data)
+  url.value = ''
   modalVarian.value = true
 };
 
-const addBarang = () => {
-  try {
-    Barang.addItem(inputNamaBarang.value).then(() => {
-      initTabulator();
-      resetModal();
-    })
-  } catch (error) {
-    alert("Gagal Tambah Data" + error);
-  }
-};
-const updateBarang = () => {
-  try {
-    Barang.updateItem({ id_barang: inputIdBarang.value, nama_barang: inputNamaBarang.value }).then(() => {
-      initTabulator();
-      resetModal();
-    });
-  } catch (error) {
-    alert(`Gagal Update data ${inputIdBarang.value}`, error);
-  }
-}
-
-const deleteBarang = () => {
-  try {
-    Barang.removeItem(inputIdBarang.value).then(() => {
-      initTabulator();
-      resetModal();
-    });
-  } catch (error) {
-    alert(`Gagal Delete Barang ${inputIdBarang.value}`, error);
-  }
-};
 
 const addVarian = () => {
   try {
@@ -570,15 +492,12 @@ const resultScan = (result) => {
 const resetModal = () => {
   id_data.value = ''
   modal_utama.value = false
-  modalBarang.value = false
   modalVarian.value = false
   deleteConfirmationModal.value = false
   isEdit.value = false
   isModalScanner.value = false
 
   checkedID.value = false;
-  inputIdBarang.value = "";
-  inputNamaBarang.value = "";
   daftarVarian.value = "kosong";
 
   inputIdVarian.value = "";
@@ -615,8 +534,9 @@ watch(filter, async (newValue, oldValue) => {
 })
 
 watch(daftarVarian, async (newValue, oldValue) => {
-  //console.log("daftar varian: ", newValue)
-  if (newValue != "kosong" || newValue !="") {
+ 
+  if (newValue !== "kosong" || newValue =="") {
+    //console.log("daftar varian: ", newValue === "kosong")
     Barang.updateSubvarianGet(newValue).then((detail) => {
       //alert("edit " + JSON.stringify(varian.gambar_varian));
       // data.value = detail
@@ -755,34 +675,9 @@ const initTabulator = () => {
         print: false,
         download: false,
         formatter(cell) {
-          const a = dom(`<div class="flex lg:justify-center items-center">
-                <a id="edit" class="flex items-center mr-3" href="javascript:;">
-                  <i data-lucide="check-square" class="w-4 h-4 mr-1"></i> Edit
-                </a>
-                <a id="delete" class="flex items-center text-danger" href="javascript:;">
-                  <i data-lucide="trash-2" class="w-4 h-4 mr-1"></i> Delete
-                </a>
+          const a = dom(`<div class="">
+                -
               </div>`);
-          dom(a).on("click", "a", function (e) {
-            if (e.id === "edit") {
-              //alert("edit " + cell.getData());
-              const barang = cell.getData()
-              //console.log("openEditModal", cell.getRow());
-              inputIdBarang.value = barang.id_barang
-              inputNamaBarang.value = barang.nama_barang
-              isEdit.value = true;
-              modalBarang.value = true;
-              //modal_utama.value = true;
-
-            } else {
-              //alert("delete" + JSON.stringify(cell.getData().id_barang));
-              //const no_invoice_del = JSON.stringify(cell.getData().id_barang)
-              inputIdBarang.value = cell.getData().id_barang;
-              inputNamaBarang.value = cell.getData().nama_barang
-              deleteConfirmationModal.value = true;
-            }
-          });
-
           return a[0];
         },
       },
@@ -1031,7 +926,7 @@ const initTabulator = () => {
                     isEdit.value = true;
                     modalVarian.value = true;
                   }).catch((e) => {
-                    alert("Error edit Get " + e);
+                    alert("Error edit Get click" + e);
                   });
 
                 } else {

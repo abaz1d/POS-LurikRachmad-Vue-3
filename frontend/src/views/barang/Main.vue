@@ -66,7 +66,7 @@
             </Modal>
           </div>
           <div class="text-center col-span-6">
-            <button class="btn btn-pending" @click="modalVarian = true">
+            <button class="btn btn-pending" @click="modalVarian = true; url = ''">
               Tambah Varian
             </button>
             <Modal backdrop="static" size="modal-xl" :show="modalVarian" @hidden="modalVarian = false">
@@ -222,7 +222,7 @@ renderQrScanner();
                                     class="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500">
                                     <span>Upload a file</span>
                                     <input id="gambarBaru" ref="gambarBaru" @change="previewImage" name="file-upload"
-                                      type="file" class="sr-only" />
+                                      type="file" class="sr-only" accept="image/jpeg, image/png" />
                                   </label>
                                   <p class="pl-1">or drag and drop</p>
                                 </div>
@@ -564,7 +564,7 @@ const updateVarian = () => {
 
 const deleteVarian = () => {
   // alert("delete" + inputIdVarian.value + inputNamaVarian.value)
-  Barang.removeVarian(inputIdVarian.value).then((data) => {
+  Barang.removeVarian(inputIdVarian.value, gambar_lama.value,).then((data) => {
     initTabulator();
     resetModal();
   }).catch((e) => {
@@ -1005,6 +1005,7 @@ const initTabulator = () => {
                   const varian = cell.getData();
                   inputIdVarian.value = varian.id_varian;
                   inputNamaVarian.value = varian.nama_varian;
+                  gambar_lama.value = varian.gambar_varian
                   isVarian.value = true;
                   deleteConfirmationModal.value = true;
                   // gambar_lama.value = varian.gambar_varian
@@ -1125,7 +1126,6 @@ const reInitOnResizeWindow = () => {
 };
 
 const getImgUrl = (gambar_varian) => {
-  //console.log('gambar_varian', import.meta.url)
   if (gambar_varian) {
     var images = gambar_varian.data
       .map((b) => String.fromCharCode(b))
@@ -1134,7 +1134,6 @@ const getImgUrl = (gambar_varian) => {
     if (isEdit) {
       url.value = gambar_lama_preview.value
     }
-
     return gambar_lama_preview.value;
   } else {
     return `${new URL(window.location.origin)}` + '404.jpeg'

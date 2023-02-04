@@ -231,7 +231,7 @@
                   class="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500">
                   <span>Upload a file</span>
                   <input id="gambarBaru" ref="gambarBaru" @change="previewImage" name="file-upload" type="file"
-                    class="sr-only" />
+                    accept="image/jpeg, image/png" class="sr-only" />
                 </label>
                 <p class="pl-1">or drag and drop</p>
               </div>
@@ -343,6 +343,11 @@ const getImgUrl = (gambar_bukti) => {
 const simpanTerima = async () => {
   if (file.value != "") {
     const data = await BarangMasuk.terimaMutasi(no_invoice.value, file.value);
+    for (let index = 0; index < suratJalanViewDetail.value.length; index++) {
+      const element = suratJalanViewDetail.value[index];
+      //console.log("centang semua",element)
+      element.updateTerima(true)
+    }
     resetModal();
   } else {
     alert("Tolong sertakan foto bukti barang telah diterima");
@@ -621,14 +626,12 @@ const initTabulator = () => {
         download: false,
         formatter(cell) {
           const a = dom(`<div class="flex lg:justify-center items-center">
-                <button class="btn btn-rounded btn-success-soft flex items-center">
                   <img
                   id="gambar${cell.getData().no_invoice}"
                   src="${getImgUrl(cell.getData().gambar_bukti)}"
                   alt="${cell.getData().gambar_bukti}"
                   data-action="zoom"
-                  class="w-8 h-8 rounded-md mr-2" >Lihat Bukti</img>
-                </button>
+                  class="w-10 h-10 rounded-md mr-2" >Lihat Bukti</img>
               </div>`)
 
           const b = dom(`<div class="flex lg:justify-center items-center">

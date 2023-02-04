@@ -134,7 +134,7 @@ module.exports = function (db) {
 			// The name of the input field (i.e. "gambar") is used to retrieve the uploaded file
 			gambar = req.files.file;
 			const filename = `A${Date.now()}-${gambar.name}`
-			uploadPath = path.join(__dirname, '/../public', 'gambar_bukti', filename);
+			uploadPath = path.join(__dirname, '..', 'public', 'gambar_bukti', filename);
 			// Use the mv() method to place the file somewhere on your server
 			gambar.mv(uploadPath, function (err) {
 				if (err) throw new Error(err)
@@ -173,7 +173,7 @@ module.exports = function (db) {
 			res.status(500).json(new Response(e, false))
 		}
 	})
-
+///----------------------------------------------------------------update
 	router.put('/upditem/:id_detail_barang_mutasi', isLoggedIn, async function (req, res, next) {
 		try {
 			const qty = parseInt(req.body.qty);

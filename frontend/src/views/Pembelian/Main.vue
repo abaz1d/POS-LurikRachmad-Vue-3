@@ -8,7 +8,7 @@
       </button>
       <!-- BEGIN: Modal Content -->
       <Modal size="modal-xl" backdrop="static" :show="modal_utama" @hidden="modal_utama = false">
-        <ModalHeader class="relative top-0 z-50 rounded-md border-b-2">
+        <ModalHeader class="relative top-0 rounded-md">
           <h2 class="hidden lg:block font-medium text-base mr-auto">
             <p class="mx-auto" v-if="isEdit">Edit Pembelian {{ no_invoice }}</p>
             <p class="mx-auto" v-else>Tambah Pembelian</p>
@@ -136,7 +136,7 @@
               </div>
 
               <!-- BEGIN: Display Total Harga -->
-              <div class="lg:block hidden col-span-4">
+              <div class="lg:block hidden mt-2 col-span-4 z-50">
                 <div class="intro-y box">
 
                   <div class="box flex p-2 ">

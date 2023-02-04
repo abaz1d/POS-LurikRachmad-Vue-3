@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-
+const fs = require('fs');
 var path = require('path');
 const { currencyFormatter, isLoggedIn, Response } = require('../helpers/util')
 
@@ -113,7 +113,7 @@ module.exports = function (db) {
       // The name of the input field (i.e. "gambar") is used to retrieve the uploaded file
       gambar = req.files.file;
       const filename = `A${Date.now()}-${gambar.name}`
-      uploadPath = path.join(__dirname, '/../public', 'gambar', filename);
+      uploadPath = path.join(__dirname, '..', 'public', 'gambar', filename);
       // Use the mv() method to place the file somewhere on your server
       gambar.mv(uploadPath, function (err) {
         if (err) throw new Error(err)
@@ -197,13 +197,14 @@ module.exports = function (db) {
 
   router.post('/editvar/:id', async function (req, res) {
     try {
+      const { gambar_lama } = req.body
       let gambar;
       let uploadPath;
 
       if (!req.files || Object.keys(req.files).length === 0) {
-        console.log('gambar lama', req.body.gambar_lama)
+        console.log('gambar lama', gambar_lama)
         db.query(`UPDATE varian SET nama_varian = $1, id_barang = $2, stok_global = $3, harga_beli_varian = $4, id_satuan = $5, id_gudang = $6, gambar_varian = $7, harga_jual_varian = $8 WHERE id_varian = $9 RETURNING * `,
-          [req.body.nama_varian, req.body.kategori_barang, req.body.stok_varian, req.body.harga_beli, req.body.satuan_varian, req.body.gudang, req.body.gambar_lama, req.body.harga_jual, req.params.id])
+          [req.body.nama_varian, req.body.kategori_barang, req.body.stok_varian, req.body.harga_beli, req.body.satuan_varian, req.body.gudang, gambar_lama, req.body.harga_jual, req.params.id])
           .then((rows) => {
             let data = rows.rows[0]
             res.json(new Response({ data }));
@@ -213,31 +214,37 @@ module.exports = function (db) {
           })
 
       } else {
-        console.log('gambar baru')
+        console.log('gambar baru', gambar_lama)
         // The name of the input field (i.e. "gambar") is used to retrieve the uploaded file
         gambar = req.files.file;
         const filename = `A${Date.now()}-${gambar.name}`
-        uploadPath = path.join(__dirname, '/../public', 'gambar', filename);
+        uploadPath = path.join(__dirname, '..', 'public', 'gambar', filename);
         //uploadPath = path.join(__dirname, '..', 'public, 'gambar', filename);
         // Use the mv() method to place the file somewhere on your server
-        gambar.mv(uploadPath, function (err) {
+        deletePath = path.join(__dirname, '..', 'public', 'gambar', gambar_lama);
+        fs.unlink(deletePath, (err) => {
           if (err) throw new Error(err)
-          //  const {id_varian, nama_barang, barang, stok, harga, satuan, gudang } = req.body
 
-          db.query(`UPDATE varian SET nama_varian = $1, id_barang = $2, stok_global = $3, harga_beli_varian = $4, id_satuan = $5, id_gudang = $6, gambar_varian = $7, harga_jual_varian = $8 WHERE id_varian = $9 RETURNING *`,
-            [req.body.nama_varian,
-            req.body.kategori_barang,
-            req.body.stok_varian,
-            req.body.harga_beli,
-            req.body.satuan_varian,
-            req.body.gudang,
-              filename,
-            req.body.harga_jual,
-            req.params.id], (err, rows) => {
-              if (err) throw new Error(err)
-              let data = rows.rows[0]
-              res.json(new Response({ data }));
-            })
+          //console.log("Delete File successfully.");
+          gambar.mv(uploadPath, function (err) {
+            if (err) throw new Error(err)
+            //  const {id_varian, nama_barang, barang, stok, harga, satuan, gudang } = req.body
+
+            db.query(`UPDATE varian SET nama_varian = $1, id_barang = $2, stok_global = $3, harga_beli_varian = $4, id_satuan = $5, id_gudang = $6, gambar_varian = $7, harga_jual_varian = $8 WHERE id_varian = $9 RETURNING *`,
+              [req.body.nama_varian,
+              req.body.kategori_barang,
+              req.body.stok_varian,
+              req.body.harga_beli,
+              req.body.satuan_varian,
+              req.body.gudang,
+                filename,
+              req.body.harga_jual,
+              req.params.id], (err, rows) => {
+                if (err) throw new Error(err)
+                let data = rows.rows[0]
+                res.json(new Response({ data }));
+              })
+          })
         })
       }
     } catch (error) {
@@ -247,10 +254,16 @@ module.exports = function (db) {
 
   router.delete('/deletevar/:id', isLoggedIn, async function (req, res, next) {
     try {
+      //console.log('delete', req.params.id, req.body.gambar_lama, req.body);
+      const { gambar_lama } = req.body
       const { data } = await db.query('DELETE FROM sub_varian WHERE id_varian = $1', [req.params.id])
       const { rows } = await db.query('DELETE FROM varian WHERE id_varian = $1', [req.params.id])
-      res.json(new Response({ message: "delete varian success" }, true))
-      //res.json(rows[0])
+      deletePath = path.join(__dirname, '..', 'public', 'gambar', gambar_lama);
+      fs.unlink(deletePath, (err) => {
+        if (err) throw new Error(err)
+        res.json(new Response({ message: "delete varian success" }, true))
+        //res.json(rows[0])
+      })
     } catch (e) {
       console.error(e)
       res.status(500).json(new Response(e, false))
