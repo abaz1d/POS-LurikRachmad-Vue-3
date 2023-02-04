@@ -627,7 +627,7 @@ const initTabulator = () => {
                   src="${getImgUrl(cell.getData().gambar_bukti)}"
                   alt="${cell.getData().gambar_bukti}"
                   data-action="zoom"
-                  class="w-4 h-4 rounded-md mr-2" >Lihat Bukti</img>
+                  class="w-8 h-8 rounded-md mr-2" >Lihat Bukti</img>
                 </button>
               </div>`)
 
