@@ -77,16 +77,12 @@
 
                           <div class="hidden sm:block col-span-6 mb-5">
                             <label for="pos-form-1" class="form-label">Nama Barang</label>
-                            <!-- <input id="pos-form-1" type="text" class="form-control flex-1"
-                              placeholder="Masukan Nama Barang" readonly /> -->
                             <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
                               <p class="text-black">{{ nama_barang_select }}</p>
                             </div>
                           </div>
                           <div class="hidden sm:block col-span-6 mb-5">
                             <label for="pos-form-1" class="form-label">Nama Varian</label>
-                            <!-- <input id="pos-form-1" type="text" class="form-control flex-1"
-                              placeholder="Masukan Nama Varian" readonly /> -->
                             <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
                               <p class="text-black">{{ nama_varian_select }}</p>
                             </div>
@@ -94,8 +90,6 @@
 
                           <div class="sm:hidden col-span-12 mb-5">
                             <label for="pos-form-1" class="form-label">Nama Barang & Varian</label>
-                            <!-- <input id="pos-form-1" type="text" class="form-control flex-1"
-                              placeholder="Masukan Nama Barang & Varian" readonly /> -->
                             <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
                               <p class="text-black">{{ nama_campur_select }}</p>
                             </div>
@@ -103,8 +97,6 @@
 
                           <div class="col-span-5 sm:col-span-4 mb-5">
                             <label for="pos-form-1" class="form-label">Harga Item</label>
-                            <!-- <input id="pos-form-1" type="text" class="form-control flex-1"
-                              placeholder="Masukan Harga Item" readonly v-model="harga_item_select" /> -->
                             <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
                               <p class="text-black">{{ currencyFormatter.format(harga_item_select) }}</p>
                             </div>
@@ -117,8 +109,6 @@
                           </div>
                           <div class="col-span-12 sm:col-span-4 mb-5">
                             <label for="pos-form-1" class="form-label">Total Harga</label>
-                            <!-- <input id="pos-form-1" type="text" class="form-control flex-1"
-                              placeholder="Masukan Total Harga" readonly /> -->
                             <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
                               <p class="text-black">{{ currencyFormatter.format(total_harga_select) }}</p>
                             </div>
@@ -296,10 +286,6 @@
               </AccordionPanel>
             </AccordionItem>
           </AccordionGroup>
-          <!-- <div class="object-right mr-1 my-3">
-            <input id="horizontal-form-3" class="form-check-input" type="checkbox" value="" />
-            <label class="form-check-label" for="horizontal-form-3">Data Telah Benar</label>
-          </div> -->
           <button type="button" @click="modal_utama = false; resetModal()" class="btn btn-outline-secondary w-32 mr-1">
             Cancel
           </button>
