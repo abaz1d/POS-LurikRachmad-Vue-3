@@ -7,7 +7,7 @@ const showSearchDropdown = () => {
 };
 const hideSearchDropdown = (e) => {
   searchDropdown.value = false;
-  console.log("search dropdown", e, Router)
+  //console.log("search dropdown", e, Router)
 };
 
 export { searchDropdown, showSearchDropdown, hideSearchDropdown };
