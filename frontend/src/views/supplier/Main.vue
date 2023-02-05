@@ -303,7 +303,7 @@ export default {
           {
             title: "ID SUPPLIER",
             // minWidth: 200,
-            minWidth: 200,
+            minWidth: 150,
             responsive: 0,
             field: "id_supplier",
             vertAlign: "middle",
@@ -338,7 +338,7 @@ export default {
           },
           {
             title: "ALAMAT",
-            minWidth: 500,
+            minWidth: 300,
             headerHozAlign: "center",
             field: "alamat_supplier",
             hozAlign: "center",
@@ -351,7 +351,7 @@ export default {
             download: false,
             formatter(cell) {
               return `<div>
-                <div class="font-medium whitespace-nowrap">${cell.getData().alamat_supplier
+                <div class="font-medium whitespace-normal">${cell.getData().alamat_supplier
                 }</div>
               </div>`;
             },

@@ -304,7 +304,7 @@ export default {
           },
           {
             title: "KETERANGAN SATUAN",
-            minWidth: 500,
+            minWidth: 300,
             headerHozAlign: "center",
             field: "keterangan_satuan",
             hozAlign: "center",
@@ -317,7 +317,7 @@ export default {
             download: false,
             formatter(cell) {
               return `<div>
-                <div class="font-medium whitespace-nowrap">${cell.getData().keterangan_satuan
+                <div class="font-medium whitespace-normal">${cell.getData().keterangan_satuan
                 }</div>
               </div>`;
             },

@@ -322,7 +322,7 @@ export default {
           },
           {
             title: "ALAMAT",
-            minWidth: 500,
+            minWidth: 300,
             headerHozAlign: "center",
             field: "alamat_pelanggan",
             hozAlign: "center",
@@ -335,7 +335,7 @@ export default {
             download: false,
             formatter(cell) {
               return `<div>
-                <div class="font-medium whitespace-nowrap">${cell.getData().alamat_pelanggan
+                <div class="font-medium whitespace-normal">${cell.getData().alamat_pelanggan
                 }</div>
               </div>`;
             },

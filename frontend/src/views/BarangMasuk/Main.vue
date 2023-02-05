@@ -466,7 +466,7 @@ const initTabulator = () => {
 
       // For HTML table
       {
-        width: 40,
+        width: 20,
         print: false,
         download: false,
         tooltip: false,
@@ -475,7 +475,7 @@ const initTabulator = () => {
         formatter(cell) {
           const a = dom(`<div class="flex lg:justify-center items-center ml-6">
                 <a id="edit" class="flex items-center mr-3" href="javascript:;">
-                  <i data-lucide="printer" class="w-4 h-4 mr-1"></i> 
+                  <i data-lucide="printer" class="w-4 h-4"></i> 
                 </a>
               </div>`);
           dom(a).on("click", function (e) {
@@ -519,7 +519,7 @@ const initTabulator = () => {
       {
         title: "TANGGAL",
         headerHozAlign: "center",
-        minWidth: 200,
+        minWidth: 150,
         field: "tanggal_mutasi",
         hozAlign: "center",
         vertAlign: "middle",
@@ -574,7 +574,7 @@ const initTabulator = () => {
       },
       {
         title: "EKSPEDISI & INVOICE",
-        minWidth: 250,
+        minWidth: 200,
         headerHozAlign: "center",
         field: "status",
         hozAlign: "center",
@@ -597,7 +597,7 @@ const initTabulator = () => {
       },
       {
         title: "STATUS",
-        minWidth: 200,
+        minWidth: 100,
         headerHozAlign: "center",
         field: "status",
         hozAlign: "center",
@@ -617,7 +617,7 @@ const initTabulator = () => {
       {
         title: "ACTIONS",
         headerHozAlign: "center",
-        minWidth: 200,
+        minWidth: 150,
         responsive: 1,
         field: "actions",
         hozAlign: "center",

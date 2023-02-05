@@ -58,8 +58,10 @@
                 <div class="absolute inset-y-0 right-0 flex items-center px-2">
                   <input class="hidden js-password-toggle" @click="showPassword()" id="toggle" type="checkbox" />
                   <label
-                    class="bg-gray-300 hover:bg-gray-400 rounded px-2 py-1 text-sm text-gray-600 font-mono cursor-pointer js-password-label"
-                    for="toggle">show</label>
+                    class="bg-gray-200 hover:bg-gray-300 rounded px-2 py-1 text-sm text-gray-600 font-mono cursor-pointer js-password-label"
+                    for="toggle">
+                    <EyeIcon />
+                  </label>
                 </div>
                 <input @keyup.enter="isLoading = true" v-model="input_password"
                   class=" form-control w-full py-3 px-3 pr-16 js-password" id="password" type="password"
@@ -75,7 +77,8 @@
               <a href="">Lupa Password?</a>
             </div>
             <div class="intro-x mt-5 xl:mt-8 text-center xl:text-left">
-              <button v-if="isLoading" class="cursor-progress btn btn-primary py-3 px-4 w-full xl:w-32 xl:mr-3 align-top">
+              <button v-if="isLoading"
+                class="cursor-progress btn btn-primary py-3 px-4 w-full xl:w-32 xl:mr-3 align-top">
                 <Loader-2Icon class="w-4 h-4 mr-2 animate-spin" />
                 <p class="hidden xl:block ml-1">Loading ...</p>
               </button>
@@ -123,6 +126,7 @@
 </template>
 
 <script setup>
+import { createElement, Eye, EyeOff } from "lucide";
 import { useAuthStore } from "@/stores/auth";
 import { RouterLink } from "vue-router";
 import { onMounted, ref, provide, watch, reactive, toRefs } from "vue";
@@ -149,17 +153,18 @@ const basicNonStickyNotificationToggle = () => {
   basicNonStickyNotification.value.showToast();
 };
 
-
 const showPassword = () => {
   const password = document.querySelector('.js-password'),
     passwordLabel = document.querySelector('.js-password-label')
 
   if (password.type === 'password') {
     password.type = 'text'
-    passwordLabel.innerHTML = 'hide'
+    //passwordLabel.appendChild(createElement(EyeOff))
+    passwordLabel.replaceChild(createElement(EyeOff), passwordLabel.childNodes[0]);
   } else {
     password.type = 'password'
-    passwordLabel.innerHTML = 'show'
+    //passwordLabel.appendChild(createElement(Eye))
+    passwordLabel.replaceChild(createElement(Eye), passwordLabel.childNodes[0]);
   }
   password.focus()
 }

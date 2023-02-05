@@ -427,7 +427,7 @@ const initTabulatorProduk = () => {
     dataLoaderLoading: dataLoaderLoading,
     pagination: "remote",
     paginationSize: 3,
-    paginationSizeSelector: [10, 20, 30, 40, 50, 100],
+    paginationSizeSelector: [3,5],
     layout: "fitDataFill",
     // responsiveLayout: "collapse",
     placeholder: "Tida ada Data di temukan",
@@ -439,7 +439,7 @@ const initTabulatorProduk = () => {
 
         var el = document.createElement("div");
         el.style.backgroundColor = "white smoke";
-        el.innerText = cell.getColumn().getField() + " - " + cell.getValue(); //return cells "field - value";
+        el.innerText = cell.getData().id_varian + " - " + cell.getData().nama_varian; //return cells "field - value";
 
         return el;
       },
@@ -458,7 +458,7 @@ const initTabulatorProduk = () => {
       {
         title: "PRODUK TERLARIS",
         minWidth: 390,
-        field: "nama_varian",
+        field: "qty",
         // hozAlign: "center",
         // vertAlign: "middle",
         print: false,
@@ -508,7 +508,7 @@ const initTabulatorOutlet = () => {
     dataLoaderLoading: dataLoaderLoading,
     pagination: "remote",
     paginationSize: 3,
-    paginationSizeSelector: [10, 20, 30, 40, 50, 100],
+    paginationSizeSelector: [3,5],
     layout: "fitColumns",
     // responsiveLayout: "collapse",
     placeholder: "Tida ada Data di temukan",
@@ -520,7 +520,7 @@ const initTabulatorOutlet = () => {
 
         var el = document.createElement("div");
         el.style.backgroundColor = "white smoke";
-        el.innerText = cell.getColumn().getField() + " - " + cell.getValue(); //return cells "field - value";
+        el.innerText = cell.getData().id_outlet + " - " + cell.getData().nama_outlet; //return cells "field - value";
 
         return el;
       },
@@ -539,7 +539,7 @@ const initTabulatorOutlet = () => {
       {
         title: "OUTLET TERLARIS",
         minWidth: 390,
-        field: "nama_outlet",
+        field: "total_jual",
         // hozAlign: "center",
         // vertAlign: "middle",
         print: false,
@@ -548,14 +548,14 @@ const initTabulatorOutlet = () => {
           const a = dom(`<div class="intro-x">
               <div class="box py-1 flex items-center zoom-in">
                 
-                <div class="ml-5 mr-auto">
+                <div class="ml-5 mr-autoc">
                   <div class="font-medium">
                     ${cell.getData().id_outlet} - ${cell.getData().nama_outlet} 
                     <p class="text-success my-0.5">
                       ${cell.getData().kontak_outlet}
                     </p>
                   </div>
-                  <div class="text-slate-500 text-xs mt-0.5">
+                  <div class="text-slate-500 text-xs mt-0.5 whitespace-normal">
                     ${cell.getData().alamat_outlet}
                   </div>
                 </div>

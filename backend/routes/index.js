@@ -113,9 +113,9 @@ module.exports = function (db) {
                   if (err) return res.status(500).json(new Response(err, false))
                   db.query(`SELECT count(no_invoice) AS totalbeli FROM pembelian`, (err, totalbeli) => {
                     if (err) return res.status(500).json(new Response(err, false))
-                    db.query(`SELECT penjualan_detail.id_varian, varian.nama_varian, varian.gambar_varian, barang.nama_barang, penjualan_detail.qty, satuan.nama_satuan FROM public.penjualan_detail LEFT JOIN varian ON penjualan_detail.id_varian = varian.id_varian LEFT JOIN barang ON varian.id_barang = barang.id_barang LEFT JOIN satuan ON varian.id_satuan = satuan.id_satuan ORDER BY qty DESC`, (err, topproduct) => {
+                    db.query(`SELECT v.id_varian, v.nama_varian, v.gambar_varian, b.nama_barang, s.nama_satuan, sum(pd.qty) as qty FROM penjualan_detail pd LEFT JOIN varian v ON pd.id_varian = v.id_varian LEFT JOIN barang b ON v.id_barang = b.id_barang LEFT JOIN satuan s ON v.id_satuan = s.id_satuan GROUP BY v.id_varian, b.nama_barang, s.nama_satuan ORDER BY qty DESC LIMIT 5`, (err, topproduct) => {
                       if (err) return res.status(500).json(new Response(err, false))
-                      db.query(`SELECT * FROM public.outlet`, (err, topoutlet) => {
+                      db.query(`SELECT o.*, COUNT(p.id_outlet) as total_jual FROM penjualan AS p LEFT JOIN outlet o ON p.id_outlet = o.id_outlet GROUP BY o.id_outlet ORDER BY total_jual DESC LIMIT 5`, (err, topoutlet) => {
                         if (err) return res.status(500).json(new Response(err, false))
                         res.json(new Response({
                           profit: profit.rows[0].profit,

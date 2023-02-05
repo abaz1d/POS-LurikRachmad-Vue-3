@@ -27,7 +27,7 @@
         <div class="intro-x relative mr-3 sm:mr-6">
           <div class="search hidden sm:block">
             <input type="text" class="search__input form-control border-transparent" placeholder="Search..."
-              @focus="showSearchDropdown" @blur="hideSearchDropdown" />
+              @focus="showSearchDropdown" @blur="hideSearchDropdown($event.target.value); $event.target.value = ''" />
             <SearchIcon class="search__icon dark:text-slate-500" />
           </div>
           <a class="notification notification--light sm:hidden">
@@ -429,6 +429,8 @@ const Auth = useAuthStore();
 const logoutConfirmationModal = ref(false);
 const profilModal = ref(false);
 const data = ref([])
+
+const searchData = ref("")
 
 const dataFilter = ref()
 

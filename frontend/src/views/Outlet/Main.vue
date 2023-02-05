@@ -263,12 +263,7 @@ export default {
     },
 
     initTabulator() {
-      this.tabulator = new Tabulator(this.$refs.tableRef, {
-        // ajaxURL: "https://dummy-data.left4code.com",
-        // ajaxFiltering: true,
-        // ajaxSorting: true,
-        //ajaxLoaderLoading:"<span>Loading Data</span>",
-        printAsHtml: true,
+      this.tabulator = new Tabulator(this.$refs.tableRef, {printAsHtml: true,
         printStyled: true,
         printHeader: `<h1 class='text-2xl p-2 m-2 text-center border-y-2 border-black'>Tabel Outlet<h1>`,
         printFooter: `<h2 class='p-2 m-2 text-center mt-4'>${moment(Date.now()).format("DD MMM YYYY HH:SS")}<h2>`,
@@ -293,7 +288,7 @@ export default {
           {
             title: "ID OUTLET",
             // minWidth: 200,
-            minWidth: 200,
+            minWidth: 150,
             responsive: 0,
             field: "id_outlet",
             vertAlign: "middle",
@@ -328,7 +323,7 @@ export default {
           },
           {
             title: "ALAMAT",
-            minWidth: 500,
+            minWidth: 300,
             headerHozAlign: "center",
             field: "alamat_outlet",
             hozAlign: "center",
@@ -341,7 +336,7 @@ export default {
             download: false,
             formatter(cell) {
               return `<div>
-                <div class="font-medium whitespace-nowrap">${cell.getData().alamat_outlet
+                <div class="font-medium whitespace-normal">${cell.getData().alamat_outlet
                 }</div>
               </div>`;
             },

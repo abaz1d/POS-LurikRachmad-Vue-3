@@ -661,7 +661,7 @@ const initTabulator = () => {
 
       // For HTML table
       {
-        width: 40,
+        width: 20,
         print: false,
         download: false,
         tooltip: false,
@@ -714,7 +714,7 @@ const initTabulator = () => {
       {
         title: "TANGGAL",
         headerHozAlign: "center",
-        minWidth: 200,
+        minWidth: 150,
         field: "tanggal_mutasi",
         hozAlign: "center",
         vertAlign: "middle",
@@ -769,7 +769,7 @@ const initTabulator = () => {
       },
       {
         title: "EKSPEDISI & INVOICE",
-        minWidth: 250,
+        minWidth: 200,
         headerHozAlign: "center",
         field: "status",
         hozAlign: "center",
@@ -792,7 +792,7 @@ const initTabulator = () => {
       },
       {
         title: "STATUS",
-        minWidth: 200,
+        minWidth: 100,
         headerHozAlign: "center",
         field: "status",
         hozAlign: "center",
@@ -812,7 +812,7 @@ const initTabulator = () => {
       {
         title: "ACTIONS",
         headerHozAlign: "center",
-        minWidth: 200,
+        minWidth: 150,
         responsive: 1,
         field: "actions",
         hozAlign: "center",
