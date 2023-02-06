@@ -55,6 +55,7 @@
     "tom-select": "^1.7.5",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6",
+    "vue3-loading-screen": "^1.0.3",
     "xlsx": "^0.16.9",
     "zoom-vanilla.js": "^2.0.6"
   },

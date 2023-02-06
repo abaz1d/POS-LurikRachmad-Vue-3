@@ -375,7 +375,12 @@
       </div>
     </div>
   </div>
-
+  <div v-show="isLoading" wire:loading
+      class="fixed top-0 left-0 right-0 bottom-0 w-full h-screen z-50 overflow-hidden bg-gray-700 opacity-75 flex flex-col items-center justify-center">
+      <Loader2Icon class="motion-safe:animate-spin stroke-[10px] text-white h-12 w-12 mb-4" />
+      <h2 class="text-center text-white text-xl font-semibold">Loading...</h2>
+      <p class="w-1/3 text-center text-white">Ini mungkin memakan waktu beberapa detik, tolong jangan tutup halaman ini.</p>
+    </div>
 
   <ModalDatabaseError ref="modalErrorRef" />
 </template>
@@ -392,6 +397,7 @@ import { createIcons, icons, Loader2 } from "lucide";
 import moment from "moment";
 import { useAuthStore } from "@/stores/auth";
 const Auth = useAuthStore();
+const isLoading = ref(false);
 
 const publicPath = import.meta.env.VITE_APP_BASE_API;
 const Dashboard = useDashboardStore();
@@ -413,18 +419,9 @@ const fullCalender = ref();
 const isSave = ref(false);
 const data = ref([]);
 
-
-const template = document.createElement('template');
-template.innerHTML = '<div style="display:inline-block;" class="d-flex flex-row">' +
-  '<div>Loading... </div>' +
-  '<div class="ml-2 activity-sm" data-role="activity" data-type="atom" data-style="dark"></div>' +
-  '</div>';
-const dataLoaderLoading = template.content.firstChild;
-
 const initTabulatorProduk = () => {
   tabulatorProduk.value = new Tabulator(tableRefProduk.value, {
     data: Dashboard.items.topproduct,
-    dataLoaderLoading: dataLoaderLoading,
     pagination: "remote",
     paginationSize: 3,
     paginationSizeSelector: [3,5],
@@ -445,15 +442,6 @@ const initTabulatorProduk = () => {
       },
     },
     columns: [
-      // {
-      //   formatter: "responsiveCollapse",
-      //   width: 40,
-      //   minWidth: 30,
-      //   hozAlign: "center",
-      //   resizable: false,
-      //   headerSort: false,
-      // },
-
       // For HTML table
       {
         title: "PRODUK TERLARIS",
@@ -505,7 +493,6 @@ const initTabulatorProduk = () => {
 const initTabulatorOutlet = () => {
   tabulatorOutlet.value = new Tabulator(tableRefOutlet.value, {
     data: Dashboard.items.topoutlet,
-    dataLoaderLoading: dataLoaderLoading,
     pagination: "remote",
     paginationSize: 3,
     paginationSizeSelector: [3,5],
@@ -526,15 +513,6 @@ const initTabulatorOutlet = () => {
       },
     },
     columns: [
-      // {
-      //   formatter: "responsiveCollapse",
-      //   width: 40,
-      //   minWidth: 30,
-      //   hozAlign: "center",
-      //   resizable: false,
-      //   headerSort: false,
-      // },
-
       // For HTML table
       {
         title: "OUTLET TERLARIS",
@@ -580,7 +558,6 @@ const initTabulatorOutlet = () => {
 const initTabulatorJual = () => {
   tabulatorJual.value = new Tabulator(tableRefJual.value, {
     data: Dashboard.items.jualHariIni,
-    dataLoaderLoading: dataLoaderLoading,
     pagination: "remote",
     paginationSize: 3,
     paginationSizeSelector: [10, 20, 30, 40, 50, 100],
@@ -601,15 +578,6 @@ const initTabulatorJual = () => {
       },
     },
     columns: [
-      // {
-      //   formatter: "responsiveCollapse",
-      //   width: 40,
-      //   minWidth: 30,
-      //   hozAlign: "center",
-      //   resizable: false,
-      //   headerSort: false,
-      // },
-
       // For HTML table
       {
         title: "PENJUALAN HARI INI",
@@ -652,7 +620,6 @@ const initTabulatorJual = () => {
 const initTabulatorBeli = () => {
   tabulatorBeli.value = new Tabulator(tableRefBeli.value, {
     data: Dashboard.items.beliHariIni,
-    dataLoaderLoading: dataLoaderLoading,
     pagination: "remote",
     paginationSize: 3,
     paginationSizeSelector: [10, 20, 30, 40, 50, 100],
@@ -673,15 +640,6 @@ const initTabulatorBeli = () => {
       },
     },
     columns: [
-      // {
-      //   formatter: "responsiveCollapse",
-      //   width: 40,
-      //   minWidth: 30,
-      //   hozAlign: "center",
-      //   resizable: false,
-      //   headerSort: false,
-      // },
-
       // For HTML table
       {
         title: "PEMBELIAN HARI INI",
@@ -786,7 +744,7 @@ watch(isSave, async (newValue, oldValue) => {
 onMounted(async function () {
   const id = Auth.items.userid
   try {
-
+    isLoading.value = true;
     data.value = await Dashboard.readItem();
     const notepad = await Dashboard.getNotepad(id)
     editorData.value = (notepad === null) ? '' : notepad
@@ -799,8 +757,10 @@ onMounted(async function () {
     initTabulatorBeli();
     reInitOnResizeWindow();
     modalErrorRef.value.errorDatabaseModal = false;
+    isLoading.value = false;
   } catch (error) {
     console.error(error)
+    isLoading.value = false;
     modalErrorRef.value.errorDatabaseModal = true;
   }
 });
@@ -808,6 +768,7 @@ onMounted(async function () {
 onBeforeUnmount(async () => {
   if (editorData.value !== "" || null) {
     simpanNotepad();
+    isLoading.value = false;
   };
   //console.log("onUnmount", editorData.value);
 });

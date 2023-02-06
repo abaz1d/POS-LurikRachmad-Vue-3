@@ -104,7 +104,6 @@ export const useBarangStore = defineStore({
     //---------------------------------------------------------------- Varian ----------------
 
     async readVarian(id_barang) {
-      const Auth = useAuthStore();
       try {
         const { data } = await request.get(`barang?id_barang=${id_barang}`);
         if (data.success) {
@@ -217,9 +216,6 @@ export const useBarangStore = defineStore({
           console.error(error);
         }
       }
-      // console.log('addVarian',
-      //     this.rawVarians
-      // )
     },
 
     async updateVarianGet(id_varian) {

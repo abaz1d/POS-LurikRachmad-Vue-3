@@ -19,7 +19,7 @@ export const useSatuanStore = defineStore({
           //console.log('rawItems', this.rawItems)
           // return this.rawItems
         }
-      } catch (error) {
+      } catch (e) {
         console.error(e);
       }
 

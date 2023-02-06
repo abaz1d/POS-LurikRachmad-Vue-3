@@ -40,11 +40,15 @@ export const useAuthStore = defineStore({
     },
 
     async logout() {
-      const { data } = await request.get("logout")
-      if (data.success) {
-        this.user = null;
-        localStorage.removeItem('user');
-        router.push('/login');
+      try {
+        const { data } = await request.get("logout")
+        if (data.success) {
+          this.user = null;
+          localStorage.removeItem('user');
+          router.push('/login');
+        }
+      } catch (error) {
+        console.error(error);
       }
     }
   },

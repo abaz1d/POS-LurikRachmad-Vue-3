@@ -670,17 +670,10 @@ watch(filter, async (newValue, oldValue) => {
   }
 })
 
-const template = document.createElement('template');
-template.innerHTML = '<div style="display:inline-block;" class="d-flex flex-row">' +
-  '<div>Loading... </div>' +
-  '<div class="ml-2 activity-sm" data-role="activity" data-type="atom" data-style="dark"></div>' +
-  '</div>';
-const dataLoaderLoading = template.content.firstChild;
 
 const initTabulator = () => {
   tabulator.value = new Tabulator(tableRef.value, {
     data: Barang.items,
-    dataLoaderLoading: dataLoaderLoading,
     printHeader: `<h1 class='text-2xl p-2 m-2 text-center border-y-2 border-black'>Tabel Barang<h1>`,
     printFooter: `<h2 class='p-2 m-2 text-center mt-4'>${moment(Date.now()).format("DD MMM YYYY HH:SS")}<h2>`,
     printAsHtml: true,

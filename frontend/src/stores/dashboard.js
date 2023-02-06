@@ -14,7 +14,7 @@ export const useDashboardStore = defineStore({
     async readItem() {
       try {
         const Auth = useAuthStore();
-        const { data } = await request.get("utama");
+        const { data } = await request.get(`${Auth.items.role !== "Super Admin" ? `utama?id_outlet=${String(Auth.items.id_outlet)}`: "utama"}`);
         if (data.success) {
           this.rawItems = data.data;
           //console.log("dashboard-store", Auth.items)
@@ -23,7 +23,7 @@ export const useDashboardStore = defineStore({
           return Auth.items
         }
       } catch (error) {
-        console.error(e);
+        console.error(error);
       }
 
     },

@@ -108,13 +108,17 @@ export const useBarangKeluarStore = defineStore({
 
     },
     async removeMutasi(no_invoice) {
-      this.rawItems = this.rawItems.filter(
-        (item) => item.no_invoice !== no_invoice
-      );
-      const { data } = await request.delete(`mutasi-barang/delete/${no_invoice}`)
+      try {
+        this.rawItems = this.rawItems.filter(
+          (item) => item.no_invoice !== no_invoice
+        );
+        const { data } = await request.delete(`mutasi-barang/delete/${no_invoice}`)
         if (data.success) {
           // alert(`Sukses Hapus Data ${id_barang}`)
         };
+      } catch (error) {
+        console.error(error);
+      }
     },
     //----------------------------------------------------------------  Detail
     async readDetailMutasi(no_invoice) {

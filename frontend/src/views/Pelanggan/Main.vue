@@ -119,6 +119,12 @@
         </Dropdown>
       </div>
     </div>
+    <div v-show="isLoading" wire:loading
+      class="fixed top-0 left-0 right-0 bottom-0 w-full h-[50vw] z-50 overflow-hidden bg-gray-700 opacity-75 flex flex-col items-center justify-center">
+      <Loader2Icon class="motion-safe:animate-spin stroke-[10px] text-white h-12 w-12 mb-4" />
+      <h2 class="text-center text-white text-xl font-semibold">Loading...</h2>
+      <p class="w-1/3 text-center text-white">Ini mungkin memakan waktu beberapa detik, tolong jangan tutup halaman ini.</p>
+    </div>
     <div class="overflow-x-auto scrollbar-hidden">
       <div id="tabulator" ref="tableRef" class="mt-5 table-report table-report--tabulator"></div>
     </div>
@@ -165,7 +171,7 @@ import { TabulatorFull as Tabulator } from 'tabulator-tables';
 import dom from "@left4code/tw-starter/dist/js/dom";
 import moment from "moment";
 
-// const Pelanggan = usePelangganStore();
+const isLoading = ref(false);
 const modal_utama = ref(false);
 const id_pelanggan = ref("");
 const nama_pelanggan = ref("");
@@ -199,6 +205,7 @@ export default {
       nama_pelanggan,
 
       modal_utama,
+      isLoading,
       alamat_pelanggan,
       kontak_pelanggan,
 
@@ -504,12 +511,15 @@ export default {
 
   },
   beforeCreate() {
+    isLoading.value = true;
     this.Pelanggan.readItem().then(() => {
       this.initTabulator();
       this.reInitOnResizeWindow();
       this.$refs.modalErrorRef.errorDatabaseModal = false;
+      isLoading.value = false;
     }).catch((error) => {
       console.error(error);
+      isLoading.value = false;
       this.$refs.modalErrorRef.errorDatabaseModal = true;
     });
   },

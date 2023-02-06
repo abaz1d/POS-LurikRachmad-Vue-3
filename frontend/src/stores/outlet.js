@@ -12,16 +12,12 @@ export const useOutletStore = defineStore({
   actions: {
     async readItem() {
       try {
-        const data = await request.get("outlet", {
-          timeout: 1000
-        });
-        if (data.status >= 200 && data.status < 300) {
-          this.rawItems =
-            /*this.rawItems.concat(res.data.rows) res.data.rows*/ data.data;
-          //console.log('rawItems', this.rawItems)
+        const {data} = await request.get("outlet");
+        if (data.success) {
+          this.rawItems = data.data;
           return this.rawItems
         }
-      } catch (error) {
+      } catch (e) {
         console.error(e);
       }
 
@@ -30,6 +26,7 @@ export const useOutletStore = defineStore({
       nama_outlet,
       alamat_outlet,
       kontak_outlet,
+      email_outlet,
     ) {
       const id_outlet = Date.now();
       this.rawItems.push({
@@ -37,20 +34,23 @@ export const useOutletStore = defineStore({
         nama_outlet,
         alamat_outlet,
         kontak_outlet,
+        email_outlet
       });
       try {
-        const data = await request.post("outlet/add", {
+        const {data} = await request.post("outlet/add", {
           nama_outlet,
           alamat_outlet,
           kontak_outlet,
+          email_outlet
         });
-
-        this.rawItems = this.rawItems.map((item) => {
-          if (item.id_outlet === id_outlet) {
-            return data.data;
-          }
-          return item;
-        });
+        if (data.success) {
+          this.rawItems = this.rawItems.map((item) => {
+            if (item.id_outlet === id_outlet) {
+              return data.data;
+            }
+            return item;
+          });
+        }
       } catch (e) {
         console.error(e);
       }
@@ -62,7 +62,7 @@ export const useOutletStore = defineStore({
       request
         .get(`outlet/delete/${id_outlet}`)
         .then((res) => {
-          if (res.status >= 200 && res.status < 300) {
+          if (res.success) {
             // alert(`Sukses Hapus Data ${id_outlet}`)
           }
         })
@@ -73,6 +73,7 @@ export const useOutletStore = defineStore({
       let nama_outlet = outlet.nama_outlet;
       let alamat_outlet = outlet.alamat_outlet;
       let kontak_outlet = outlet.kontak_outlet;
+      let email_outlet = outlet.email_outlet;
       this.rawItems = this.rawItems.map((item) => {
         if (item.id_outlet === id_outlet) {
           return outlet;
@@ -83,7 +84,8 @@ export const useOutletStore = defineStore({
         nama_outlet,
         alamat_outlet,
         kontak_outlet,
-      }) .catch((e) => console.error(e));
+        email_outlet
+      }).catch((e) => console.error(e));
     },
   },
 });

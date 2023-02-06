@@ -9,38 +9,9 @@ module.exports = function (db) {
   router.get('/', isLoggedIn, async function (req, res) {
     try {
 
-      const { cari_id, cari_nama } = req.query
-      let search = []
-      let count = 1
-      let syntax = []
-      let sql_count = 'SELECT count(*) AS total FROM barang'
       let sql = 'SELECT * FROM barang'
-      if (cari_id) {
-        sql += ' WHERE '
-        sql_count += ' WHERE '
-        search.push(`%${cari_id}%`)
-        syntax.push(`id_barang ilike '%' || $${count++} || '%'`)
-        count++
-      }
-      if (cari_nama) {
-        if (!sql.includes(' WHERE ')) {
-          sql += ' WHERE '
-          sql_count += ' WHERE '
-        }
-        search.push(`%${cari_nama}%`)
-        syntax.push(` nama_barang ilike '%' || $${count++} || '%'`)
-        count++
-      }
-
-      if (syntax.length > 0) {
-        sql += syntax.join(' AND ')
-
-
-        sql_count += syntax.join(' AND ')
-        sql_count += ` GROUP BY id_barang ORDER BY id_barang ASC`
-      }
       sql += ` ORDER BY id_barang ASC`
-      db.query(sql, search, (err, barang) => {
+      db.query(sql, (err, barang) => {
         if (err) throw new Error(err)
         const id_barang = req.query.id_barang ? req.query.id_barang : '';
         const id_outlet = req.query.id_outlet ? req.query.id_outlet : '';
@@ -52,7 +23,7 @@ module.exports = function (db) {
           reqSQL = 'SELECT v.gambar_varian, b.id_barang, b.nama_barang, v.id_varian, v.nama_varian, v.stok_global, s.nama_satuan, v.harga_beli_varian, v.harga_jual_varian FROM varian as v LEFT JOIN barang as b ON v.id_barang = b.id_barang LEFT JOIN satuan AS s ON v.id_satuan = s.id_satuan WHERE v.id_barang = $1;'
           argumentSQL = [id_barang]
         } else {
-          reqSQL = 'SELECT sv.id_sub_varian, v.gambar_varian, b.id_barang, b.nama_barang, v.id_varian, v.nama_varian, sv.stok_varian, s.nama_satuan, o.nama_outlet, v.harga_beli_varian, v.harga_jual_varian FROM sub_varian AS sv  LEFT JOIN varian AS v ON sv.id_varian = v.id_varian LEFT JOIN barang AS b ON v.id_barang = b.id_barang LEFT JOIN outlet AS o ON sv.id_outlet = o.id_outlet LEFT JOIN satuan AS s ON v.id_satuan = s.id_satuan WHERE b.id_barang = $1 AND o.id_outlet = $2'
+          reqSQL = 'SELECT sv.id_sub_varian, v.gambar_varian, b.id_barang, b.nama_barang, v.id_varian, v.nama_varian, sv.stok_varian, s.nama_satuan, o.nama_outlet, v.harga_beli_varian, v.harga_jual_varian FROM sub_varian AS sv LEFT JOIN varian AS v ON sv.id_varian = v.id_varian LEFT JOIN barang AS b ON v.id_barang = b.id_barang LEFT JOIN outlet AS o ON sv.id_outlet = o.id_outlet LEFT JOIN satuan AS s ON v.id_satuan = s.id_satuan WHERE b.id_barang = $1 AND o.id_outlet = $2'
           argumentSQL = [id_barang, id_outlet]
         }
         db.query(reqSQL, argumentSQL, (err, varian) => {

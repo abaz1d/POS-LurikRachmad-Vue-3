@@ -4,7 +4,7 @@
       class="border border-b-0 border-gray-200 rounded-t-xl focus:border-4 focus:border-blue-200 dark:focus:border-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-800 group/item hover:stroke-sky-500 grid grid-cols-6 gap-2 md:pr-1 min-w-max">
 
       <div class="col min-w-max text-center mb-2">
-        <a href="javascript:void(0)"
+        <a href="javascript:;"
           class="underline decoration-dotted m-2">{{ pembelian.no_invoice }}</a>
 
       </div>
@@ -49,7 +49,7 @@
       <div class="mr-2 ml-2 overflow-auto">
         <h2 class="md:text-center text-left m-2" @click="$emit('openInvoice', pembelian.no_invoice, pembelian.total_harga_beli, pembelian.total_bayar_beli, pembelian.kembalian_beli)">
           Tabel Detail
-          <a href="javascript:void(0)" class="text-danger">{{
+          <a href="javascript:;" class="text-danger">{{
               pembelian.no_invoice
           }}</a>
           <PrinterIcon class="w-4 h-4 ml-2 inline-block cursor-pointer" />

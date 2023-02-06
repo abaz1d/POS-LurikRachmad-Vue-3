@@ -24,7 +24,7 @@ CREATE OR REPLACE FUNCTION update_mutasi_barang() RETURNS TRIGGER AS $set_mutasi
             
         ELSIF (TG_OP = 'DELETE') THEN
             --update stok
-            SELECT id_outlet_pengirim, id_outlet_penerima INTO pengirim, penerima FROM mutasi_barang WHERE no_invoice = NEW.no_invoice;
+            SELECT id_outlet_pengirim, id_outlet_penerima INTO pengirim, penerima FROM mutasi_barang WHERE no_invoice = OLD.no_invoice;
             SELECT stok_varian INTO stok_lama FROM sub_varian WHERE id_varian = OLD.id_varian AND id_outlet = pengirim;
             UPDATE sub_varian SET stok_varian = stok_lama + OLD.qty_terima WHERE id_varian = OLD.id_varian AND id_outlet = pengirim;
             SELECT stok_varian INTO stok_lama FROM sub_varian WHERE id_varian = OLD.id_varian AND id_outlet = pengirim;

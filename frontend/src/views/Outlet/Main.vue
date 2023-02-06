@@ -31,6 +31,11 @@
               <input id="pos-form-1" type="number" class="form-control flex-1" placeholder="Masukan Telepon Outlet"
                 v-model="kontak_outlet" required />
             </div>
+            <div class="col-span-12 mb-5">
+              <label for="pos-form-1" class="form-label mb-1">Email Outlet</label>
+              <input id="pos-form-1" type="email" class="form-control flex-1" placeholder="Masukan Email Outlet"
+                v-model="email_outlet" required />
+            </div>
           </form>
         </ModalBody>
         <ModalFooter class="text-right">
@@ -119,6 +124,12 @@
         </Dropdown>
       </div>
     </div>
+    <div v-show="isLoading" wire:loading
+      class="fixed top-0 left-0 right-0 bottom-0 w-full h-[50vw] z-50 overflow-hidden bg-gray-700 opacity-75 flex flex-col items-center justify-center">
+      <Loader2Icon class="motion-safe:animate-spin stroke-[10px] text-white h-12 w-12 mb-4" />
+      <h2 class="text-center text-white text-xl font-semibold">Loading...</h2>
+      <p class="w-1/3 text-center text-white">Ini mungkin memakan waktu beberapa detik, tolong jangan tutup halaman ini.</p>
+    </div>
     <div class="overflow-x-auto scrollbar-hidden">
       <div id="tabulator" ref="tableRef" class="mt-5 table-report table-report--tabulator"></div>
     </div>
@@ -170,6 +181,8 @@ const id_outlet = ref("");
 const nama_outlet = ref("");
 const alamat_outlet = ref("");
 const kontak_outlet = ref();
+const email_outlet = ref("");
+const isLoading = ref(false);
 const deleteConfirmationModal = ref(false);
 const isEdit = ref(false);
 
@@ -200,6 +213,8 @@ export default {
       modal_utama,
       alamat_outlet,
       kontak_outlet,
+      email_outlet,
+      isLoading,
 
       //tableRef,
       tabulator,
@@ -215,6 +230,7 @@ export default {
           nama_outlet.value,
           alamat_outlet.value,
           kontak_outlet.value,
+          email_outlet.value,
         ).then(() => {
           this.modal_utama = false;
           this.initTabulator();
@@ -222,6 +238,7 @@ export default {
         nama_outlet.value = "";
         alamat_outlet.value = "";
         kontak_outlet.value = "";
+        email_outlet.value = "";
 
       } catch (error) {
         alert("Gagal Tambah Data" + error);
@@ -234,6 +251,7 @@ export default {
           nama_outlet: this.nama_outlet,
           alamat_outlet: this.alamat_outlet,
           kontak_outlet: this.kontak_outlet,
+          email_outlet: this.email_outlet,
         }).then(() => {
           this.initTabulator();
           this.isEdit = false;
@@ -242,6 +260,7 @@ export default {
           this.nama_outlet = ""
           this.alamat_outlet = ""
           this.kontak_outlet = ""
+          this.email_outlet = ""
         });
         //console.log("update", this.id_outlet, this.nama_outlet, this.alamat_outlet, this.kontak_outlet,
 
@@ -362,6 +381,26 @@ export default {
             },
           },
           {
+            title: "EMAIL",
+            headerHozAlign: "center",
+            minWidth: 200,
+            field: "email_outlet",
+            hozAlign: "center",
+            vertAlign: "middle",
+            print: false,
+            editor: "input",
+            editable: false, cellDblClick: function (e, cell) {
+              cell.edit(true);
+            },
+            download: false,
+            formatter(cell) {
+              return `<div>
+                <div class="font-medium whitespace-nowrap">${cell.getData().email_outlet
+                }</div>
+              </div>`;
+            },
+          },
+          {
             title: "ACTIONS",
             headerHozAlign: "center",
             minWidth: 200,
@@ -389,6 +428,7 @@ export default {
                   nama_outlet.value = cell.getData().nama_outlet
                   alamat_outlet.value = cell.getData().alamat_outlet
                   kontak_outlet.value = cell.getData().kontak_outlet
+                  email_outlet.value = cell.getData().email_outlet
                   isEdit.value = true
                   modal_utama.value = true
                 } else {
@@ -432,6 +472,13 @@ export default {
             print: true,
             download: true,
           },
+          {
+            title: "EMAIL",
+            field: "email_outlet",
+            visible: false,
+            print: true,
+            download: true,
+          },
         ],
       });
       this.tabulator.on("renderComplete", function () {
@@ -449,6 +496,7 @@ export default {
         nama_outlet.value = cell.getData().nama_outlet
         alamat_outlet.value = cell.getData().alamat_outlet
         kontak_outlet.value = cell.getData().kontak_outlet
+        email_outlet.value = cell.getData().email_outlet
         isEdit.value = true
         modal_utama.value = true
         // console.log("aku cengar cengir", cell.getData(), this.Outlet.items)
@@ -505,15 +553,17 @@ export default {
 
   },
   beforeCreate() {
+    isLoading.value = true;
     this.Outlet.readItem().then(() => {
       this.initTabulator();
       this.reInitOnResizeWindow();
       this.$refs.modalErrorRef.errorDatabaseModal = false;
+      isLoading.value = false;
     }).catch((error) => {
       //alert(error)
       console.error(error);
       this.$refs.modalErrorRef.errorDatabaseModal = true;
-      //console.log("error: " + this.$refs.modalErrorRef)
+      isLoading.value = false;
     });
   },
 };

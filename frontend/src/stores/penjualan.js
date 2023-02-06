@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { request } from "../utils/api";
+import { useAuthStore } from "./auth";
 
 export const usePenjualanStore = defineStore({
   id: "penjualan",
@@ -24,13 +25,15 @@ export const usePenjualanStore = defineStore({
   actions: {
     async readLaporan() {
       try {
-        const data = await request.get("penjualan/laporan");
-        if (data.status >= 200 && data.status < 300) {
-          //console.log('laporan', data.data)
+        const Auth = useAuthStore();
+        const { data } = await request.get(`${Auth.items.role !== "Super Admin" ? `penjualan/laporan?id_outlet=${String(Auth.items.id_outlet)}`: "penjualan/laporan"}`);
+        //console.log('laporan', data)
+        if (data.success) {
+        
           this.rawLaporans = data.data
           // console.log('rawPenjualans', this.rawPenjualans)
           //console.log('jual')
-        //return this.rawPenjualans
+          //return this.rawPenjualans
         }
       } catch (error) {
         console.error(error)
@@ -39,15 +42,16 @@ export const usePenjualanStore = defineStore({
     },
     async readItem() {
       try {
-        const data = await request.get("penjualan");
-        if (data.status >= 200 && data.status < 300) {
+        const Auth = useAuthStore();
+        const { data } = await request.get(`${Auth.items.role !== "Super Admin" ? `penjualan?id_outlet=${String(Auth.items.id_outlet)}`: "penjualan"}`);
+        if (data.success) {
           this.rawVarians = data.data.varian;
           this.rawPenjualans = data.data.penjualan;
           this.rawDetails = data.data.details;
           //console.log('data', data.data.varian)
           // console.log('rawPenjualans', this.rawPenjualans)
           //console.log('jual')
-        return this.rawPenjualans
+          return this.rawPenjualans
         }
       } catch (error) {
         console.error(error)
@@ -65,8 +69,8 @@ export const usePenjualanStore = defineStore({
       // console.log('rawPenjualanDetail', this.rawPenjualanDetail)
       this.rawPenjualans.push({ no_invoice, tanggal_penjualan, total_harga_jual, total_bayar_jual, kembalian })
       try {
-        const data = await request.post('penjualan/upjual', { no_invoice, total_harga_jual, total_bayar_jual, kembalian })
-        if (data.status >= 200 && data.status < 300) {
+        const { data } = await request.post('penjualan/upjual', { no_invoice, total_harga_jual, total_bayar_jual, kembalian })
+        if (data.success) {
 
           this.rawPenjualans = this.rawPenjualans.map((item) => {
             if (item.tanggal_penjualan == tanggal_penjualan) {
@@ -102,8 +106,8 @@ export const usePenjualanStore = defineStore({
       // this.rawPenjualanDetail.push({ no_invoice, id_varian, qty });
       // console.log('rawPenjualanDetail', this.rawPenjualanDetail)
       try {
-        const data = await request.post('penjualan/additem', { no_invoice, id_varian, qty })
-        if (data.status >= 200 && data.status < 300) {
+        const { data } = await request.post('penjualan/additem', { no_invoice, id_varian, qty })
+        if (data.success) {
           this.readDetailPenjualan(noInvoice)
           return data.data
         }
@@ -114,7 +118,7 @@ export const usePenjualanStore = defineStore({
     },
     async readDetailPenjualan(no_invoice) {
       try {
-        const data = await request.get(`/penjualan/details/${no_invoice}`)
+        const { data } = await request.get(`/penjualan/details/${no_invoice}`)
         //console.log('data', data.data)
         this.rawPenjualanDetail = data.data;
         //console.log('rawPenjualanDetail', this.rawPenjualanDetail, this.rawDetails)
@@ -123,11 +127,27 @@ export const usePenjualanStore = defineStore({
         console.error(error);
       }
     },
-
+    async updateDetail(id_detail_jual, qty) {
+      try {
+        const { data } = await request.put(`penjualan/upditem/${id_detail_jual}`, { qty: qty })
+        if (data.success) {
+          let dataBaru = data.data[0]
+          this.rawPenjualanDetail = this.rawPenjualanDetail.map((item) => {
+            if (item.id_detail_jual === dataBaru.id_detail_jual ) {
+              return dataBaru
+            }
+            return item;
+          })
+          console.log("data", this.rawPenjualanDetail)
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
     async removeItem(id_detail_jual, noInvoice) {
       try {
-        const data = await request.delete(`penjualan/delitem/${id_detail_jual}`, { data: { no_invoice: noInvoice } })
-        if (data.status >= 200 && data.status < 300) {
+        const { data } = await request.delete(`penjualan/delitem/${id_detail_jual}`, { data: { no_invoice: noInvoice } })
+        if (data.success) {
           // console.log('dalam', data)
           this.rawPenjualanDetail = this.rawPenjualanDetail.filter(
             (item) => item.id_detail_jual !== id_detail_jual
@@ -143,27 +163,12 @@ export const usePenjualanStore = defineStore({
       }
 
     },
-    updateItem(penjualan) {
-      let id_varian = penjualan.id_varian;
-      let nama_satuan = penjualan.nama_satuan;
-      let keterangan_satuan = penjualan.keterangan_satuan;
-      this.rawPenjualans = this.rawPenjualans.map((item) => {
-        if (item.id_varian === id_varian) {
-          return penjualan;
-        }
-        return item;
-      });
-      request.post(`penjualan/edit/${id_varian}`, {
-        nama_satuan,
-        keterangan_satuan,
-      });
-    },
 
     // ---------------------------------------------------------------- Detail ----------------------------------------------------------------
     async readDetail(no_invoice) {
       try {
-        const data = await request.get(`penjualan?noInvoice=${no_invoice}`);
-        if (data.status >= 200 && data.status < 300) {
+        const { data } = await request.get(`penjualan?noInvoice=${no_invoice}`);
+        if (data.success) {
           this.rawDetails = data.data.details;
           this.rawPrints = data.data.print.rows;
 
@@ -188,14 +193,14 @@ export const usePenjualanStore = defineStore({
 
     async readDetailItem(id_varian) {
       try {
-        const data = await request.get(`/penjualan/barang/${id_varian}`)
+        const { data } = await request.get(`/penjualan/barang/${id_varian}`)
         // .then((data) => {
         //   // console.log('data.data', data.data);
         //   return data.data
         // })
         console.log('data.data', data.data);
-        //if (data.status >= 200 && data.status < 300) {
-        return data.data
+        //if (data.success) {
+        return data.data[0]
         // }
       } catch (error) {
         console.error(error)
@@ -205,8 +210,9 @@ export const usePenjualanStore = defineStore({
 
     async startTransaction() {
       try {
-        const data = await request.post('/penjualan/create')
-        //if (data.status >= 200 && data.status < 300) {
+        const Auth = useAuthStore();
+        const { data } = await request.post(`/penjualan/create?id_outlet=${String(Auth.items.id_outlet)}`)
+        //if (data.success) {
         // console.log('data.data', data.data);
         return data.data
         // }

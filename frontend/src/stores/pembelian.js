@@ -124,7 +124,15 @@ export const usePembelianStore = defineStore({
         console.error(error);
       }
     },
-
+    async updateDetail(id_detail_jual, qty) {
+      try {
+        const { data } = await request.put(`pembelian/upditem/${id_detail_jual}`, { qty: qty })
+        if (data.success) {
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
     async removeItem(id_detail_beli, noInvoice) {
       try {
         const data = await request.delete(`pembelian/delitem/${id_detail_beli}`, { data: { no_invoice: noInvoice } })
@@ -157,7 +165,7 @@ export const usePembelianStore = defineStore({
       request.post(`pembelian/edit/${id_varian}`, {
         nama_satuan,
         keterangan_satuan,
-      });
+      }).catch((e) => console.error(e));
     },
 
     // ---------------------------------------------------------------- Detail ----------------------------------------------------------------

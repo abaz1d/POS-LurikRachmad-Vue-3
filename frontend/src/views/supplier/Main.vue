@@ -125,6 +125,12 @@
         </Dropdown>
       </div>
     </div>
+    <div v-show="isLoading" wire:loading
+      class="fixed top-0 left-0 right-0 bottom-0 w-full h-[50vw] z-50 overflow-hidden bg-gray-700 opacity-75 flex flex-col items-center justify-center">
+      <Loader2Icon class="motion-safe:animate-spin stroke-[10px] text-white h-12 w-12 mb-4" />
+      <h2 class="text-center text-white text-xl font-semibold">Loading...</h2>
+      <p class="w-1/3 text-center text-white">Ini mungkin memakan waktu beberapa detik, tolong jangan tutup halaman ini.</p>
+    </div>
     <div class="overflow-x-auto scrollbar-hidden">
       <div id="tabulator" ref="tableRef" class="mt-5 table-report table-report--tabulator"></div>
     </div>
@@ -170,6 +176,7 @@ import moment from "moment";
 
 // const Supplier = useSupplierStore();
 const modal_utama = ref(false);
+const isLoading = ref(false);
 const id_supplier = ref("");
 const nama_supplier = ref("");
 const alamat_supplier = ref("");
@@ -206,6 +213,7 @@ export default {
       alamat_supplier,
       telepon_supplier,
       email_supplier,
+      isLoading,
 
       //tableRef,
       tabulator,
@@ -274,10 +282,6 @@ export default {
 
     initTabulator() {
       this.tabulator = new Tabulator(this.$refs.tableRef, {
-        // ajaxURL: "https://dummy-data.left4code.com",
-        // ajaxFiltering: true,
-        // ajaxSorting: true,
-        //ajaxLoaderLoading:"<span>Loading Data</span>",
         printAsHtml: true,
         printStyled: true,
         printHeader: `<h1 class='text-2xl p-2 m-2 text-center border-y-2 border-black'>Tabel Supplier<h1>`,
@@ -549,10 +553,13 @@ export default {
 
   },
   beforeCreate() {
+    isLoading.value = true;
     this.Supplier.readItem().then(() => {
       this.initTabulator();
       this.reInitOnResizeWindow();
+      isLoading.value = false;
     }).catch((error) => {
+      isLoading.value = false;
       alert(error)
     });
     // this.suppliers = this.Supplier.items

@@ -1,26 +1,26 @@
 CREATE OR REPLACE FUNCTION update_penjualan() RETURNS TRIGGER AS $set_penjualan$
     DECLARE
-    id_outlet VARCHAR;
+    outlet VARCHAR;
     stok_lama INTEGER;
     sum_harga NUMERIC;
     BEGIN
         IF (TG_OP = 'INSERT') THEN
             --update stok
-            SELECT id_outlet INTO id_outlet FROM penjualan WHERE no_invoice = NEW.no_invoice;
-            SELECT stok_varian INTO stok_lama FROM sub_varian WHERE id_varian = NEW.id_varian AND id_outlet = id_outlet;
-            UPDATE sub_varian SET stok_varian = stok_lama - NEW.qty WHERE id_varian = NEW.id_varian AND id_outlet = id_outlet;
+            SELECT id_outlet INTO outlet FROM penjualan WHERE no_invoice = NEW.no_invoice;
+            SELECT stok_varian INTO stok_lama FROM sub_varian WHERE id_varian = NEW.id_varian AND id_outlet = outlet;
+            UPDATE sub_varian SET stok_varian = stok_lama - NEW.qty WHERE id_varian = NEW.id_varian AND id_outlet = outlet;
 
         ELSIF (TG_OP = 'UPDATE') THEN
             --update stok
-            SELECT id_outlet INTO id_outlet FROM penjualan WHERE no_invoice = NEW.no_invoice;
-            SELECT stok_varian INTO stok_lama FROM sub_varian WHERE id_varian = NEW.id_varian AND id_outlet = id_outlet;
-            UPDATE sub_varian SET stok_varian = stok_lama + OLD.qty - NEW.qty WHERE id_varian = NEW.id_varian AND id_outlet = id_outlet;
+            SELECT id_outlet INTO outlet FROM penjualan WHERE no_invoice = NEW.no_invoice;
+            SELECT stok_varian INTO stok_lama FROM sub_varian WHERE id_varian = NEW.id_varian AND id_outlet = outlet;
+            UPDATE sub_varian SET stok_varian = stok_lama + OLD.qty - NEW.qty WHERE id_varian = NEW.id_varian AND id_outlet = outlet;
             
         ELSIF (TG_OP = 'DELETE') THEN
             --update stok
-            SELECT id_outlet INTO id_outlet FROM penjualan WHERE no_invoice = NEW.no_invoice;
-            SELECT stok_varian INTO stok_lama FROM sub_varian WHERE id_varian = OLD.id_varian AND id_outlet = id_outlet;
-            UPDATE sub_varian SET stok_varian = stok_lama + OLD.qty WHERE id_varian = OLD.id_varian AND id_outlet = id_outlet;
+            SELECT id_outlet INTO outlet FROM penjualan WHERE no_invoice = NEW.no_invoice;
+            SELECT stok_varian INTO stok_lama FROM sub_varian WHERE id_varian = OLD.id_varian AND id_outlet = outlet;
+            UPDATE sub_varian SET stok_varian = stok_lama + OLD.qty WHERE id_varian = OLD.id_varian AND id_outlet = outlet;
 
         END IF;
         -- update penjualan

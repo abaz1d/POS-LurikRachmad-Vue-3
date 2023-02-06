@@ -18,7 +18,7 @@ CREATE OR REPLACE FUNCTION update_pembelian() RETURNS TRIGGER AS $set_pembelian$
             
         ELSIF (TG_OP = 'DELETE') THEN
             --update stok
-            SELECT id_outlet INTO id_outlet FROM pembelian WHERE no_invoice = NEW.no_invoice;
+            SELECT id_outlet INTO id_outlet FROM pembelian WHERE no_invoice = OLD.no_invoice;
             SELECT stok_varian INTO stok_lama FROM varian WHERE id_varian = OLD.id_varian AND id_outlet = id_outlet;
             UPDATE varian SET stok_varian = stok_lama - OLD.qty WHERE id_varian = OLD.id_varian AND id_outlet = id_outlet;
 

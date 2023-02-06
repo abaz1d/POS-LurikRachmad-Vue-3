@@ -115,6 +115,12 @@
         </Dropdown>
       </div>
     </div>
+    <div v-show="isLoading" wire:loading
+      class="fixed top-0 left-0 right-0 bottom-0 w-full h-[50vw] z-50 overflow-hidden bg-gray-700 opacity-75 flex flex-col items-center justify-center">
+      <Loader2Icon class="motion-safe:animate-spin stroke-[10px] text-white h-12 w-12 mb-4" />
+      <h2 class="text-center text-white text-xl font-semibold">Loading...</h2>
+      <p class="w-1/3 text-center text-white">Ini mungkin memakan waktu beberapa detik, tolong jangan tutup halaman ini.</p>
+    </div>
     <div class="overflow-x-auto scrollbar-hidden">
       <div id="tabulator" ref="tableRef" class="mt-5 table-report table-report--tabulator"></div>
     </div>
@@ -160,6 +166,7 @@ import moment from "moment";
 
 // const Satuan = useSatuanStore();
 const modal_utama = ref(false);
+const isLoading = ref(false);
 const id_satuan = ref("");
 const nama_satuan = ref("");
 const keterangan_satuan = ref("");
@@ -189,7 +196,7 @@ export default {
 
       modal_utama,
       keterangan_satuan,
-      //tableRef,
+      isLoading,
       tabulator,
       filter,
       isEdit
@@ -457,17 +464,15 @@ export default {
 
   },
   beforeCreate() {
+    isLoading.value = true;
     this.Satuan.readItem().then(() => {
       this.initTabulator();
       this.reInitOnResizeWindow();
+      isLoading.value = false;
     }).catch((error) => {
       alert(error)
+      isLoading.value = false;
     });
-    // this.satuans = this.Satuan.items
   },
-  // mounted() {
-  //   this.initTabulator();
-  //   this.reInitOnResizeWindow();
-  // }
 };
 </script>

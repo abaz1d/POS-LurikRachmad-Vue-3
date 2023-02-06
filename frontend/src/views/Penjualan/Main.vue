@@ -189,7 +189,9 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr v-for="detail in Penjualan.penjualanDetail" :key="detail.id_barang" :detail="detail">
+                          <DetailPenjualan v-for="detail in Penjualan.penjualanDetail" :key="detail.id_barang"
+                            :detail="detail" @openModalRemove="openModalRemove" />
+                          <!-- <tr v-for="detail in Penjualan.penjualanDetail" :key="detail.id_barang" :detail="detail">
                             <td @click="openModalRemove(detail)"
                               class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer hover:bg-slate-500">
                               <TrashIcon class="text-danger w-4 h-4 p-0" />
@@ -198,7 +200,7 @@
                             <td>{{ detail.qty }}</td>
                             <td>{{ currencyFormatter.format(detail.harga_detail_jual) }}</td>
                             <td>{{ currencyFormatter.format(detail.total_harga_detail_jual) }}</td>
-                          </tr>
+                          </tr> -->
                         </tbody>
                       </table>
                     </div>
@@ -372,8 +374,14 @@
         </Dropdown>
       </div>
     </div>
-    <div class="overflow-x-auto scrollbar-hidden">
-      <div id="tabulator" ref="tableJualRef" class="mt-5 table-report table-report--tabulator"></div>
+    <div v-show="isLoading" wire:loading
+      class="fixed intro-y top-0 left-0 right-0 bottom-0 w-full h-[50vw] z-50 overflow-hidden bg-gray-700 opacity-75 flex flex-col items-center justify-center">
+      <Loader2Icon class="motion-safe:animate-spin stroke-[10px] text-white h-12 w-12 mb-4" />
+      <h2 class="text-center text-white text-xl font-semibold">Loading...</h2>
+      <p class="w-1/3 text-center text-white">Ini mungkin memakan waktu beberapa detik, tolong jangan tutup halaman ini.</p>
+    </div>
+    <div v-show="!isLoading" class="overflow-x-auto scrollbar-hidden">
+      <div id="tabulator" ref="tableJualRef" class="mt-5 intro-y table-report table-report--tabulator"></div>
     </div>
   </div>
   <!-- END: HTML Table Data -->
@@ -469,6 +477,7 @@ import dom from "@left4code/tw-starter/dist/js/dom";
 import qrcode from "@/components/qrcode/QrCode.vue";
 import { currencyFormatter } from "@/utils/helper";
 import PrintInvoice from "./PrintInvoice.vue";
+import DetailPenjualan from "./DetailPenjualan.vue";
 import moment from "moment";
 import html2canvas from 'html2canvas';
 
@@ -477,6 +486,7 @@ const Penjualan = usePenjualanStore();
 const modal_utama = ref(false);
 const deleteConfirmationModal = ref(false);
 const isEdit = ref(false);
+const isLoading = ref(false);
 const isModalScanner = ref(false);
 const qrScanner = ref()
 const tableJualRef = ref();
@@ -546,7 +556,7 @@ const addItem = () => {
 
 const onPrintInvoice = (e) => {
   const id = document.getElementById(`modalPrintInvoice`);
-
+  isLoading.value = true;
   html2canvas(id, {
     // scale: 2,
     useCORS: true,
@@ -557,6 +567,7 @@ const onPrintInvoice = (e) => {
     barcodeImgTag.href = canvas.toDataURL();
     barcodeImgTag.target = "_blank";
     barcodeImgTag.click();
+    isLoading.value = false;
   });
 };
 
@@ -666,7 +677,6 @@ watch(item_select, async (e) => {
   try {
     // console.log("item_select" , e)
     Penjualan.readDetailItem(e).then((data) => {
-      // console.log('data.data', data);
       nama_barang_select.value = data.nama_barang,
         nama_varian_select.value = data.nama_varian,
         nama_campur_select.value = `${data.nama_barang} - ${data.nama_varian} | ${data.stok_varian}`,
@@ -742,26 +752,13 @@ watch(filter, async (newValue, oldValue) => {
   }
 })
 
-const template = document.createElement('template');
-template.innerHTML = '<div style="display:inline-block;" class="d-flex flex-row">' +
-  '<div>Loading... </div>' +
-  '<div class="ml-2 activity-sm" data-role="activity" data-type="atom" data-style="dark"></div>' +
-  '</div>';
-const dataLoaderLoading = template.content.firstChild;
-
 const initTabulator = () => {
   tabulator.value = new Tabulator(tableJualRef.value, {
     data: Penjualan.penjualans,
-    dataLoaderLoading: dataLoaderLoading,
     printHeader: `<h1 class='text-2xl p-2 m-2 text-center border-y-2 border-black'>Tabel Penjualan<h1>`,
     printFooter: `<h2 class='p-2 m-2 text-center mt-4'>${moment(Date.now()).format("DD MMM YYYY HH:SS")}<h2>`,
     printAsHtml: true,
     printStyled: true,
-    printFormatter: function (tableHolderElement, tableElement) {
-      //subTable.redraw()
-      //console.log(tableHolderElement, tableElement)
-    },
-    //height: "50vh",
     pagination: "remote",
     paginationSize: 10,
     paginationSizeSelector: [10, 20, 30, 40, 50, 100],
@@ -771,10 +768,6 @@ const initTabulator = () => {
     columnDefaults: {
       resizable: true,
       tooltip: function (e, cell, onRendered) {
-        //e - mouseover event
-        //cell - cell component
-        //onRendered - onRendered callback registration function
-
         var el = document.createElement("div");
         el.style.backgroundColor = "white smoke";
         el.innerText = cell.getColumn().getField() + " - " + cell.getValue(); //return cells "field - value";
@@ -813,7 +806,6 @@ const initTabulator = () => {
           return a[0];
         }, cellClick: function (e, cell) {
           const penjualan = cell.getData()
-          console.log("openEditModal", cell.getRow());
 
           Penjualan.readDetail(penjualan.no_invoice).then((data) => {
             no_invoice.value = penjualan.no_invoice;
@@ -931,7 +923,6 @@ const initTabulator = () => {
             if (e.id === "edit") {
               //alert("edit " + cell.getData());
               const penjualan = cell.getData()
-              console.log("openEditModal", cell.getRow());
 
               Penjualan.readDetailPenjualan(penjualan.no_invoice).then((data) => {
                 no_invoice.value = penjualan.no_invoice;
@@ -1234,15 +1225,19 @@ const onPrint = () => {
 
 onMounted(async function () {
   try {
+    isLoading.value = true;
     const data = await Penjualan.readItem()
     initTabulator();
     reInitOnResizeWindow();
     basicNonStickyNotificationToggle();
+    isLoading.value = false;
   } catch (error) {
     alert("onMounted" + error)
+    isLoading.value = false;
   }
 });
 onBeforeUnmount(() => {
+  isLoading.value = false;
   basicNonStickyNotification.value.hideToast()
 });
 </script>

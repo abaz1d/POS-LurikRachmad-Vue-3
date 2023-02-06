@@ -1,17 +1,6 @@
 <template>
   <div class="intro-y flex flex-col sm:flex-row items-center mt-8">
     <h2 class="text-lg font-medium mr-auto">Laporan Pembelian</h2>
-    <!-- <div class="w-full sm:w-auto flex mt-4 sm:mt-0">
-      <button class="btn btn-primary shadow-md mb-3 mr-2 pr-5">
-        <PrinterIcon class="w-4 h-4 mr-2" />
-        Cetak <p class="hidden xl:block ml-1">Pembelian</p>
-      </button>
-
-      <a href="" class="ml-auto sm:ml-0 btn px-2 h-10 box flex items-center text-primary">
-        <RefreshCcwIcon class="w-4 h-4 sm:mr-3 sm:m-0 m-2" />
-        <p class="sm:block hidden">Reload Data</p>
-      </a>
-    </div> -->
   </div>
   <!-- BEGIN: HTML Table Data -->
   <div class="intro-y box p-5 mt-5">
@@ -57,11 +46,11 @@
         </div>
       </form>
       <div class="flex mt-5 sm:mt-0">
-        <button v-if="isLoading" id="tabulator-print" class="btn btn-primary w-1/2 sm:w-auto mr-2" disabled>
+        <button v-if="isPrint" id="tabulator-print" class="btn btn-primary w-1/2 sm:w-auto mr-2" disabled>
           <Loader-2Icon class="w-4 h-4 mr-2 animate-spin" />
           <p class="hidden xl:block ml-1">Loading ...</p>
         </button>
-        <button v-else id="tabulator-print" class="btn btn-primary w-1/2 sm:w-auto mr-2" @click="isLoading = true">
+        <button v-else id="tabulator-print" class="btn btn-primary w-1/2 sm:w-auto mr-2" @click="isPrint = true">
           <PrinterIcon class="w-4 h-4 mr-2" /> Cetak <p class="hidden xl:block ml-1">Pembelian</p>
         </button>
         <Dropdown class="w-1/2 sm:w-auto">
@@ -92,6 +81,12 @@
         </a>
       </div>
     </div>
+    <div v-show="isLoading" wire:loading
+      class="fixed top-0 left-0 right-0 bottom-0 w-full h-[50vw] z-50 overflow-hidden bg-gray-700 opacity-75 flex flex-col items-center justify-center">
+      <Loader2Icon class="motion-safe:animate-spin stroke-[10px] text-white h-12 w-12 mb-4" />
+      <h2 class="text-center text-white text-xl font-semibold">Loading...</h2>
+      <p class="w-1/3 text-center text-white">Ini mungkin memakan waktu beberapa detik, tolong jangan tutup halaman ini.</p>
+    </div>
     <div class="overflow-x-auto scrollbar-hidden">
       <div id="tabulator" ref="tableBeliRef" class="mt-5 table-report table-report--tabulator"></div>
     </div>
@@ -111,7 +106,8 @@ import moment from "moment";
 
 const Pembelian = usePembelianStore();
 
-const isLoading = ref(false);
+const isLoading = ref(false)
+const isPrint = ref(false);
 const tableBeliRef = ref();
 const tabulator = ref();
 const filter = reactive({
@@ -120,9 +116,10 @@ const filter = reactive({
   value: "",
 });
 
-watch(isLoading, async (newValue, oldValue) => {
+watch(isPrint, async (newValue, oldValue) => {
   try {
     if (newValue === true) {
+      isLoading.value = true;
       setTimeout(() => (onPrint()), 50);
     }
   } catch (error) {
@@ -139,18 +136,10 @@ watch(filter, async (newValue, oldValue) => {
   }
 })
 
-const template = document.createElement('template');
-template.innerHTML = '<div style="display:inline-block;" class="d-flex flex-row">' +
-  '<div>Loading... </div>' +
-  '<div class="ml-2 activity-sm" data-role="activity" data-type="atom" data-style="dark"></div>' +
-  '</div>';
-const dataLoaderLoading = template.content.firstChild;
 
 const initTabulator = () => {
   tabulator.value = new Tabulator(tableBeliRef.value, {
     data: Pembelian.laporans,
-    dataLoaderLoading: dataLoaderLoading,
-    groupToggleElement: "header",
     groupHeader: function (value, count, data, group) {
       return `
       <span class='text-center w-screen overflow-hidden whitespace-nowrap mt-2'>
@@ -429,25 +418,22 @@ const onExportHtml = () => {
 
 // Print
 const onPrint = async () => {
-  await tabulator.value.getGroups().map((g) => {
-    //console.log("g", g.show())
-    if (g.show != true) {
-      g.show()
-      
-    }
-  });
+isLoading.value = false;
   //console.log("grup", tabulator.value.getGroups().show())
-  // tabulator.value.print();
-  isLoading.value = false;
+  tabulator.value.print();
+  isPrint.value = false;
 };
 
 onMounted(async function () {
   try {
+    isLoading.value = true;
     const data = await Pembelian.readLaporan()
     initTabulator();
     reInitOnResizeWindow();
+    isLoading.value = false;
   } catch (error) {
     alert("onMounted" + error)
+    isLoading.value = false;
   }
 });
 

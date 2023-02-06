@@ -73,6 +73,12 @@
         </Dropdown>
       </div>
     </div>
+    <div v-show="isLoading" wire:loading
+      class="fixed top-0 left-0 right-0 bottom-0 w-full h-[50vw] z-50 overflow-hidden bg-gray-700 opacity-75 flex flex-col items-center justify-center">
+      <Loader2Icon class="motion-safe:animate-spin stroke-[10px] text-white h-12 w-12 mb-4" />
+      <h2 class="text-center text-white text-xl font-semibold">Loading...</h2>
+      <p class="w-1/3 text-center text-white">Ini mungkin memakan waktu beberapa detik, tolong jangan tutup halaman ini.</p>
+    </div>
     <div class="overflow-x-auto scrollbar-hidden">
       <div id="tabulator" ref="tableRef" class="mt-5 table-report table-report--tabulator"></div>
     </div>
@@ -295,7 +301,7 @@ import moment from "moment";
 import html2canvas from 'html2canvas';
 
 const BarangMasuk = useBarangMasukStore();
-
+const isLoading = ref(false);
 const isEdit = ref(false);
 const modalErrorRef = ref();
 const tableRef = ref();
@@ -429,17 +435,10 @@ watch(filter, async (newValue, oldValue) => {
   }
 })
 
-const template = document.createElement('template');
-template.innerHTML = '<div style="display:inline-block;" class="d-flex flex-row">' +
-  '<div>Loading... </div>' +
-  '<div class="ml-2 activity-sm" data-role="activity" data-type="atom" data-style="dark"></div>' +
-  '</div>';
-const dataLoaderLoading = template.content.firstChild;
 
 const initTabulator = () => {
   tabulator.value = new Tabulator(tableRef.value, {
     data: BarangMasuk.items,
-    dataLoaderLoading: dataLoaderLoading,
     printHeader: `<h1 class='text-2xl p-2 m-2 text-center border-y-2 border-black'>Tabel Barang Masuk<h1>`,
     printFooter: `<h2 class='p-2 m-2 text-center mt-4'>${moment(Date.now()).format("DD MMM YYYY HH:SS")}<h2>`,
     printAsHtml: true,
@@ -641,23 +640,6 @@ const initTabulator = () => {
               </div>`);
 
           dom(a).on("click", function (e) {
-            //$(`#gambar${cell.getData().no_invoice}`).click(); 
-            // alert("Gambar Bukti")
-            // const mutasi = cell.getData()
-            // data_utama.value = mutasi
-            // //console.log("data utama",mutasi);
-
-            // BarangMasuk.readDetail(mutasi.no_invoice).then((data) => {
-            //   no_invoice.value = mutasi.no_invoice;
-            //   // waktu.value = mutasi.tanggal_mutasi;
-            //   // outlet_select.value = mutasi.penerima
-
-            //   //suratJalanViewDetail.value.resetTable()
-            //   isEdit.value = true;
-            //   isInvoice.value = true;
-            // }).catch((e) => {
-            //   alert("gagal open invoice" + e);
-            // });
           });
 
           dom(b).on("click", function (e) {
@@ -843,19 +825,22 @@ const onPrint = () => {
 };
 
 onMounted(() => {
+  isLoading.value = true;
   BarangMasuk.readItem().then((data) => {
     initTabulator();
     reInitOnResizeWindow();
     basicNonStickyNotificationToggle();
     modalErrorRef.value.errorDatabaseModal = false;
+    isLoading.value = false;
   }).catch((error) => {
     alert("onMounted" + error)
-    //modalErrorRef.value.errorDatabaseModal = true;
+    isLoading.value = false;
   });
 });
 
 onBeforeUnmount(() => {
-  basicNonStickyNotification.value.hideToast()
+  basicNonStickyNotification.value.hideToast();
+  isLoading.value = false;
 });
 
 </script>

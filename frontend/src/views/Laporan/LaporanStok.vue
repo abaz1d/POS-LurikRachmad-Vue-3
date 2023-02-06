@@ -45,11 +45,11 @@
         </div>
       </form>
       <div class="flex mt-5 sm:mt-0">
-        <button v-if="isLoading" id="tabulator-print" class="btn btn-primary w-1/2 sm:w-auto mr-2" disabled>
+        <button v-if="isPrint" id="tabulator-print" class="btn btn-primary w-1/2 sm:w-auto mr-2" disabled>
           <Loader-2Icon class="w-4 h-4 mr-2 animate-spin" />
           <p class="hidden xl:block ml-1">Loading ...</p>
         </button>
-        <button v-else id="tabulator-print" class="btn btn-primary w-1/2 sm:w-auto mr-2" @click="isLoading = true">
+        <button v-else id="tabulator-print" class="btn btn-primary w-1/2 sm:w-auto mr-2" @click="isPrint = true">
           <PrinterIcon class="w-4 h-4 mr-2" /> Cetak <p class="hidden xl:block ml-1">Penjualan</p>
         </button>
         <Dropdown class="w-1/2 sm:w-auto">
@@ -68,9 +68,9 @@
               <DropdownItem @click="onExportXlsx">
                 <FileTextIcon class="w-4 h-4 mr-2" /> Export XLSX
               </DropdownItem>
-              <DropdownItem @click="onExportHtml">
+              <!-- <DropdownItem @click="onExportHtml">
                 <FileTextIcon class="w-4 h-4 mr-2" /> Export HTML
-              </DropdownItem>
+              </DropdownItem> -->
             </DropdownContent>
           </DropdownMenu>
         </Dropdown>
@@ -79,6 +79,12 @@
           <p class="sm:block hidden">Reload Data</p>
         </a>
       </div>
+    </div>
+    <div v-show="isLoading" wire:loading
+      class="fixed top-0 left-0 right-0 bottom-0 w-full h-[50vw] z-50 overflow-hidden bg-gray-700 opacity-75 flex flex-col items-center justify-center">
+      <Loader2Icon class="motion-safe:animate-spin stroke-[10px] text-white h-12 w-12 mb-4" />
+      <h2 class="text-center text-white text-xl font-semibold">Loading...</h2>
+      <p class="w-1/3 text-center text-white">Ini mungkin memakan waktu beberapa detik, tolong jangan tutup halaman ini.</p>
     </div>
     <div class="overflow-x-auto scrollbar-hidden">
       <div id="tabulator" ref="tableRef" class="mt-5 table-report table-report--tabulator"></div>
@@ -105,6 +111,7 @@ import html2canvas from 'html2canvas';
 
 const Barang = useBarangStore();
 
+const isPrint = ref(false);
 const isLoading = ref(false);
 const tableRef = ref();
 const tabulator = ref();
@@ -139,9 +146,10 @@ watch(filter, async (newValue, oldValue) => {
   }
 })
 
-watch(isLoading, async (newValue, oldValue) => {
+watch(isPrint, async (newValue, oldValue) => {
   try {
     if (newValue === true) {
+      isLoading.value = true;
       setTimeout(() => (onPrint()), 50);
     }
   } catch (error) {
@@ -149,19 +157,10 @@ watch(isLoading, async (newValue, oldValue) => {
   }
 })
 
-const template = document.createElement('template');
-template.innerHTML = '<div style="display:inline-block;" class="d-flex flex-row">' +
-  '<div>Loading... </div>' +
-  '<div class="ml-2 activity-sm" data-role="activity" data-type="atom" data-style="dark"></div>' +
-  '</div>';
-const dataLoaderLoading = template.content.firstChild;
-
 const initTabulator = () => {
   tabulator.value = new Tabulator(tableRef.value, {
     data: Barang.laporans,
-    dataLoaderLoading: dataLoaderLoading,
     rowHeight: 150,
-    groupToggleElement: "header",
     groupBy: "nama_barang", 
     printFormatter: function (tableHolderElement, tableElement) {
       JsBarcode(".barcode").init();
@@ -220,7 +219,7 @@ const initTabulator = () => {
 
           return a[0];
         }, cellClick: function (e, cell) {
-          //const id = `#${cell.getData().id_varian}`;
+          isLoading.value = true;
           const id = document.getElementById(`${cell.getData().id_varian}`);
           //console.log("w", window)
           var scale
@@ -239,6 +238,7 @@ const initTabulator = () => {
             barcodeImgTag.href = canvas.toDataURL();
             barcodeImgTag.target = "_blank";
             barcodeImgTag.click();
+            isLoading.value = false;
           });
         }
       },
@@ -515,27 +515,25 @@ const onExportHtml = () => {
 // Print
 const onPrint = async () => {
   JsBarcode(".barcode").init();
-  await tabulator.value.getGroups().map((g) => {
-    if (g.show != true) {
-      g.show()
-
-    }
-  });
   //console.log("grup", tabulator.value.getGroups().show())
   tabulator.value.print();
+  isPrint.value = false;
   isLoading.value = false;
 };
 
 onMounted(async function () {
   try {
+    isLoading.value = true;
     Barang.readLaporan().then(() => {
       initTabulator();
       reInitOnResizeWindow();
+      isLoading.value = false;
     }).catch((e) => {
       modalErrorRef.value.errorDatabaseModal = true;
+      isLoading.value = false;
     });
   } catch (error) {
-    //alert("onMounted" + error)
+    isLoading.value = false;
     modalErrorRef.value.errorDatabaseModal = true;
   }
 });
