@@ -583,6 +583,7 @@ const resetModal = () => {
   kembalian.value = 0
 
   itemDel.value = ""
+  BarangKeluar.rawDetailMutasi = []
 }
 
 watch(item_select, async (e) => {

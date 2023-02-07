@@ -26,10 +26,10 @@ export const usePenjualanStore = defineStore({
     async readLaporan() {
       try {
         const Auth = useAuthStore();
-        const { data } = await request.get(`${Auth.items.role !== "Super Admin" ? `penjualan/laporan?id_outlet=${String(Auth.items.id_outlet)}`: "penjualan/laporan"}`);
+        const { data } = await request.get(`${Auth.items.role !== "Super Admin" ? `penjualan/laporan?id_outlet=${String(Auth.items.id_outlet)}` : "penjualan/laporan"}`);
         //console.log('laporan', data)
         if (data.success) {
-        
+
           this.rawLaporans = data.data
           // console.log('rawPenjualans', this.rawPenjualans)
           //console.log('jual')
@@ -43,12 +43,12 @@ export const usePenjualanStore = defineStore({
     async readItem() {
       try {
         const Auth = useAuthStore();
-        const { data } = await request.get(`${Auth.items.role !== "Super Admin" ? `penjualan?id_outlet=${String(Auth.items.id_outlet)}`: "penjualan"}`);
+        const { data } = await request.get(`${Auth.items.role !== "Super Admin" ? `penjualan?id_outlet=${String(Auth.items.id_outlet)}` : "penjualan"}`);
         if (data.success) {
           this.rawVarians = data.data.varian;
           this.rawPenjualans = data.data.penjualan;
           this.rawDetails = data.data.details;
-          //console.log('data', data.data.varian)
+         // console.log('data', data.data)
           // console.log('rawPenjualans', this.rawPenjualans)
           //console.log('jual')
           return this.rawPenjualans
@@ -61,20 +61,22 @@ export const usePenjualanStore = defineStore({
       }
 
     },
-    async addPenjualan(no_invoice, total_harga_global, total_bayar_global, kembalian) {
-      const tanggal_penjualan = Date.now();
+    async addPenjualan(no_invoice, waktu, total_harga_global, total_bayar_global, kembalian, isEdit) {
+      const tanggal_penjualan = waktu
       const total_harga_jual = total_harga_global
       const total_bayar_jual = total_bayar_global
       // this.rawPenjualanDetail.push({ no_invoice, id_varian, qty });
       // console.log('rawPenjualanDetail', this.rawPenjualanDetail)
+      if (!isEdit) {
       this.rawPenjualans.push({ no_invoice, tanggal_penjualan, total_harga_jual, total_bayar_jual, kembalian })
+      }
       try {
         const { data } = await request.post('penjualan/upjual', { no_invoice, total_harga_jual, total_bayar_jual, kembalian })
         if (data.success) {
 
           this.rawPenjualans = this.rawPenjualans.map((item) => {
-            if (item.tanggal_penjualan == tanggal_penjualan) {
-              console.log('data', no_invoice, item.tanggal_penjualan, tanggal_penjualan, item.tanggal_penjualan === tanggal_penjualan)
+            if (item.no_invoice == no_invoice) {
+              //console.log('data', no_invoice, item.tanggal_penjualan, tanggal_penjualan, item.tanggal_penjualan === tanggal_penjualan)
               return data.data[0]
             }
             return item;
@@ -127,18 +129,20 @@ export const usePenjualanStore = defineStore({
         console.error(error);
       }
     },
-    async updateDetail(id_detail_jual, qty) {
+    async updateDetail(id_detail_jual, no_invoice, qty) {
       try {
-        const { data } = await request.put(`penjualan/upditem/${id_detail_jual}`, { qty: qty })
+        //console.log("up", id_detail_jual, no_invoice, qty);
+        const { data } = await request.put(`penjualan/upditem/${id_detail_jual}`, { qty: qty, no_invoice: no_invoice })
         if (data.success) {
-          let dataBaru = data.data[0]
+          let dataBaru = data.data.detail
           this.rawPenjualanDetail = this.rawPenjualanDetail.map((item) => {
-            if (item.id_detail_jual === dataBaru.id_detail_jual ) {
+            if (item.id_detail_jual === dataBaru.id_detail_jual) {
               return dataBaru
             }
             return item;
           })
-          console.log("data", this.rawPenjualanDetail)
+          //console.log("data", data.data)
+          return data.data.rows[0];
         }
       } catch (error) {
         console.error(error);
@@ -199,7 +203,7 @@ export const usePenjualanStore = defineStore({
         //   // console.log('data.data', data.data);
         //   return data.data
         // })
-        console.log('data.data', data.data);
+        //console.log('data.data', data.data);
         //if (data.success) {
         return data.data[0]
         // }

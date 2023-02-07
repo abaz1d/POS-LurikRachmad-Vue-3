@@ -20,17 +20,13 @@ module.exports = function (db) {
             }
             const { rows } = await db.query(reqSQL, argumentSQL);
             const details = await db.query('SELECT dp.*, v.nama_varian FROM penjualan_detail as dp LEFT JOIN varian as v ON dp.id_varian = v.id_varian WHERE dp.no_invoice = $1 ORDER BY dp.id_detail_jual', [noInvoice]);
-            const varian = await db.query('SELECT var.*, b.id_barang, b.nama_barang FROM varian as var LEFT JOIN barang as b ON var.id_barang = b.id_barang ORDER BY var.id_barang');
+            const varian = await db.query('SELECT sv.*,v.nama_varian, b.id_barang, b.nama_barang FROM sub_varian as sv LEFT JOIN varian v ON sv.id_varian = v.id_varian LEFT JOIN barang as b ON v.id_barang = b.id_barang WHERE sv.id_outlet = $1 ORDER BY b.id_barang', [id_outlet]);
             const print = await db.query('SELECT dp.*,pe.*, v.nama_varian, b.nama_barang FROM penjualan_detail as dp LEFT JOIN varian as v ON dp.id_varian = v.id_varian LEFT JOIN barang as b ON b.id_barang = v.id_barang LEFT JOIN penjualan as pe ON dp.no_invoice = pe.no_invoice WHERE dp.no_invoice = $1', [noInvoice]);
-            const totaljual = await db.query(`SELECT count(no_invoice) AS totaljual FROM penjualan`)
-            const totalbeli = await db.query(`SELECT count(no_invoice) AS totalbeli FROM pembelian`)
             res.json(new Response({
                 penjualan: rows,
                 details: details.rows,
                 varian: varian.rows,
                 print,
-                totaljual: totaljual.rows[0].totaljual,
-                totalbeli: totalbeli.rows[0].totalbeli,
             }))
         } catch (e) {
             console.error(e);
@@ -118,17 +114,19 @@ module.exports = function (db) {
         }
     })
     router.put('/upditem/:id_detail_jual', isLoggedIn, async function (req, res, next) {
-		try {
-			const qty = parseInt(req.body.qty);
-			const id = parseInt(req.params.id_detail_jual);
-			//console.log("updte itm", id,qty, req.body);
-			const { rows } = await db.query('UPDATE penjualan_detail SET qty = $1 WHERE id_detail_jual = $2 RETURNING *', [qty, id])
-			res.json(new Response(rows, true))
-		} catch (e) {
-			console.log(e)
-			res.status(500).json(new Response(e, false))
-		}
-	})
+        try {
+            const qty = parseInt(req.body.qty);
+            const id = parseInt(req.params.id_detail_jual);
+            //console.log("updte itm", id,qty, req.body);
+            const detail = await db.query('WITH updated AS (UPDATE penjualan_detail SET qty = $1 WHERE id_detail_jual = $2 RETURNING *) SELECT updated.*, v.nama_varian FROM updated LEFT JOIN varian v ON updated.id_varian = v.id_varian', [qty, id])
+            const { rows } = await db.query('SELECT * FROM penjualan WHERE no_invoice = $1', [req.body.no_invoice])
+            //console.log("updte itm", rows, detail.rows[0]);
+            res.json(new Response({ rows, detail: detail.rows[0] }, true))
+        } catch (e) {
+            console.log(e)
+            res.status(500).json(new Response(e, false))
+        }
+    })
 
     router.delete('/delitem/:id_detail_jual', isLoggedIn, async function (req, res, next) {
         try {

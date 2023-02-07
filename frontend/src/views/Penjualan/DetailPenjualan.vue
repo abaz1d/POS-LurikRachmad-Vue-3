@@ -10,29 +10,39 @@ export default {
   props: {
     detail: { type: Object, required: true }
   },
-  emits: ["openModalRemove"],
+  emits: ["openModalRemove", "updateTotalHargaJual"],
   data() {
     return {
       id: this.detail.id_detail_jual,
       id_varian: this.detail.id_varian,
       nama_varian: this.detail.nama_varian,
-      qty: this.detail.qty
+      qty: this.detail.qty,
+      no_invoice: this.detail.no_invoice
     }
   },
   watch: {
     qty(e) {
       //console.log("watch qty ", e);
-      this.update(e)
+      if (e !== 0) {
+        this.update(e)
+      } else {
+        this.qty = 1
+      }
     }
   },
   methods: {
-    update(e) {
-      // console.log("watch qty ", this.id, e);
-      this.Penjualan.updateDetail(this.id, e);
+    async update(e) {
+      try {
+        const data = await this.Penjualan.updateDetail(this.id, this.no_invoice, e);
+        console.log("watch qty ", this.detail);
+        this.$emit("updateTotalHargaJual", data.total_harga_jual)
+      } catch (error) {
+        console.error(error)
+      }
     },
     openModal_Remove(detail) {
       this.$emit("openModalRemove", detail)
-    }
+    },
   }
 }
 </script>
@@ -43,9 +53,8 @@ export default {
     </td>
     <td>{{ detail.id_varian }} - {{ detail.nama_varian }}</td>
     <td>
-      <MinusIcon @click="qty = qty - 1" class="text-danger fill-daanger w-6 h-6 cursor-pointer inline-block" /> 
-      <input
-        v-model="qty" id="pos-form-1" type="number" class="w-24 form-control flex-1" placeholder="Masukan Qty"
+      <MinusIcon @click="qty = qty - 1" class="text-danger fill-daanger w-6 h-6 cursor-pointer inline-block" />
+      <input v-model="qty" id="pos-form-1" type="number" class="w-24 form-control flex-1" placeholder="Masukan Qty"
         required />
       <PlusIcon @click="qty = qty + 1" class="text-success fill-success w-6 h-6 cursor-pointer inline-block" />
     </td>

@@ -105,7 +105,7 @@
                           <div class="col-span-5 sm:col-span-4 mb-5">
                             <label for="pos-form-1" class="form-label">Qty</label>
                             <input id="pos-form-1" type="text" class="form-control flex-1" placeholder="Masukan Qty"
-                              required v-model="qty_select" :disabled="qty_select == 0" />
+                              required v-model="qty_select" :disabled="total_harga_select == 0" />
                           </div>
                           <div class="col-span-12 sm:col-span-4 mb-5">
                             <label for="pos-form-1" class="form-label">Total Harga</label>
@@ -116,7 +116,7 @@
 
                         </div>
                         <button type="button" @click="addItem()" class="btn btn-primary w-20 mt-3"
-                          :disabled="qty_select == 0">
+                          :disabled="total_harga_select == 0">
                           Tambah
                         </button>
                       </div>
@@ -190,7 +190,8 @@
                         </thead>
                         <tbody>
                           <DetailPenjualan v-for="detail in Penjualan.penjualanDetail" :key="detail.id_barang"
-                            :detail="detail" @openModalRemove="openModalRemove" />
+                            :detail="detail" @openModalRemove="openModalRemove"
+                            @updateTotalHargaJual="updateTotalHargaJual" />
                           <!-- <tr v-for="detail in Penjualan.penjualanDetail" :key="detail.id_barang" :detail="detail">
                             <td @click="openModalRemove(detail)"
                               class="sticky left-0 bg-slate-200 p-0 w-5 cursor-pointer hover:bg-slate-500">
@@ -378,7 +379,8 @@
       class="fixed intro-y top-0 left-0 right-0 bottom-0 w-full h-[50vw] z-50 overflow-hidden bg-gray-700 opacity-75 flex flex-col items-center justify-center">
       <Loader2Icon class="motion-safe:animate-spin stroke-[10px] text-white h-12 w-12 mb-4" />
       <h2 class="text-center text-white text-xl font-semibold">Loading...</h2>
-      <p class="w-1/3 text-center text-white">Ini mungkin memakan waktu beberapa detik, tolong jangan tutup halaman ini.</p>
+      <p class="w-1/3 text-center text-white">Ini mungkin memakan waktu beberapa detik, tolong jangan tutup halaman ini.
+      </p>
     </div>
     <div v-show="!isLoading" class="overflow-x-auto scrollbar-hidden">
       <div id="tabulator" ref="tableJualRef" class="mt-5 intro-y table-report table-report--tabulator"></div>
@@ -535,7 +537,7 @@ const startTransaction = () => {
   Penjualan.startTransaction().then((data) => {
     no_invoice.value = data.no_invoice;
     waktu.value = data.tanggal_penjualan;
-    console.log('start transactions', data);
+    //console.log('start transactions', data);
   })
 };
 
@@ -546,8 +548,8 @@ const addItem = () => {
     qty_select.value
   ).then((data) => {
     //console.log('data.data', stok, qty_select);
-    total_harga_global.value = data.total_harga_jual
-    stok.value = stok.value - qty_select.value
+    total_harga_global.value = +data.total_harga_jual
+    stok.value = +stok.value - +qty_select.value
     nama_campur_select.value = `${nama_barang_select.value} - ${nama_varian_select.value} | ${stok.value}`
   }).catch((e) => {
     alert("addItem" + e)
@@ -570,6 +572,11 @@ const onPrintInvoice = (e) => {
     isLoading.value = false;
   });
 };
+
+const updateTotalHargaJual = (total) => {
+  total_harga_global.value = +total
+  //console.log("watch qty ", total_harga_global.value, total);
+}
 
 const openModalRemove = (item) => {
   //console.log(item)
@@ -594,26 +601,14 @@ const simpanPenjualan = () => {
   const total_harga_global_now = total_harga_global.value
   const total_bayar_global_now = total_bayar_global.value
   const kembalian_now = kembalian.value
-
-  // tabulator.value.updateData([{
-  //   // id: index_select.value,
-  //   no_invoice_now,
-  //   tanggal_penjualan: Date.now(),
-  //   total_harga_jual: currencyFormatter.format(total_harga_global.value),
-  //   total_bayar_jual: currencyFormatter.format(total_bayar_global.value),
-  //   kembalian_now
-  // }]);
-  console.log('data', Penjualan.penjualanDetail.length);
   if (Penjualan.penjualanDetail.length !== 0 && total_bayar_global.value >= total_harga_global.value) {
-    Penjualan.addPenjualan(no_invoice_now, total_harga_global_now, total_bayar_global_now, kembalian_now).then((data) => {
+    Penjualan.addPenjualan(no_invoice_now, waktu.value, total_harga_global_now, total_bayar_global_now, kembalian_now, isEdit.value).then((data) => {
       resetModal();
       isEdit.value = false;
       modal_utama.value = false;
       // tabulator.value.clearData()
       // tabulator.value.setData(data);
-      initTabulator()
-
-
+      initTabulator();
     }).catch((e) => {
       alert("Simpan Error: " + e)
     });
@@ -671,23 +666,26 @@ const resetModal = () => {
   kembalian.value = 0
 
   itemDel.value = ""
+  Penjualan.rawPenjualanDetail = []
 }
 
 watch(item_select, async (e) => {
   try {
     // console.log("item_select" , e)
-    Penjualan.readDetailItem(e).then((data) => {
-      nama_barang_select.value = data.nama_barang,
-        nama_varian_select.value = data.nama_varian,
-        nama_campur_select.value = `${data.nama_barang} - ${data.nama_varian} | ${data.stok_varian}`,
+    if (e !== "kosong") {
+      Penjualan.readDetailItem(e).then((data) => {
+        nama_barang_select.value = data.nama_barang,
+          nama_varian_select.value = data.nama_varian,
+          nama_campur_select.value = `${data.nama_barang} - ${data.nama_varian} | ${data.stok_varian}`,
 
-        harga_item_select.value = data.harga_jual_varian,
-        stok.value = data.stok_varian,
-        qty_select.value = 1,
-        total_harga_select.value = data.harga_jual_varian
-    }).catch((e) => {
-      throw e
-    });
+          harga_item_select.value = data.harga_jual_varian,
+          stok.value = data.stok_varian,
+          qty_select.value = 1,
+          total_harga_select.value = data.harga_jual_varian
+      }).catch((e) => {
+        throw e
+      });
+    }
   } catch (error) {
     alert("Gagal pilih barang" + error)
   }
@@ -701,11 +699,11 @@ watch(qty_select, async (newValue, oldValue) => {
     if (newValue > stok_now) {
       alert("Stok tersisa hanya " + stok_now);
       qty_select.value = oldValue;
-    } else if (newValue === "" || newValue == 0) {
+    } else if (newValue === "") {
       alert("Minimal Qty harus 1");
       qty_select.value = 1;
     } else {
-      console.log("Minimal Qty harus", total_harga_select.value, harga_item_select_now, qty);
+      //console.log("Minimal Qty harus", total_harga_select.value, harga_item_select_now, qty);
       total_harga_select.value = +harga_item_select_now * +qty
     }
   } catch (error) {
