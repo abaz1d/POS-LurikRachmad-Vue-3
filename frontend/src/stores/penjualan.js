@@ -109,7 +109,7 @@ export const usePenjualanStore = defineStore({
         const { data } = await request.post('penjualan/additem', { no_invoice, id_varian, qty })
         if (data.success) {
           this.readDetailPenjualan(noInvoice)
-          return data.data
+          return data.data[0]
         }
         //console.log('data',data)
       } catch (e) {
@@ -193,7 +193,8 @@ export const usePenjualanStore = defineStore({
 
     async readDetailItem(id_varian) {
       try {
-        const { data } = await request.get(`/penjualan/barang/${id_varian}`)
+        const Auth = useAuthStore();
+        const { data } = await request.get(`/penjualan/barang/${id_varian}?id_outlet=${String(Auth.items.id_outlet)}`)
         // .then((data) => {
         //   // console.log('data.data', data.data);
         //   return data.data
@@ -214,7 +215,7 @@ export const usePenjualanStore = defineStore({
         const { data } = await request.post(`/penjualan/create?id_outlet=${String(Auth.items.id_outlet)}`)
         //if (data.success) {
         // console.log('data.data', data.data);
-        return data.data
+        return data.data[0]
         // }
       } catch (error) {
         console.error(error)

@@ -111,14 +111,14 @@
             <BellIcon class="notification__icon dark:text-slate-500" />
           </DropdownToggle> -->
           <DropdownToggle tag="div" role="button"
-            class="inline-block relative notification notification--light cursor-pointer mt-0.5">
-            <BellIcon class="notification__icon dark:text-slate-500" />
-            <span class="motion-safe:animate-ping absolute top-0 right-1 block h-1 w-1 rounded-full ring-2 ring-green-200 bg-green-400"></span>
-            <span class="absolute top-0 right-1 block h-1 w-1 rounded-full ring-2 ring-green-200 bg-green-400"></span>
+            class="inline-block relative notification notification--light cursor-pointer mt-1">
+            <BellIcon class="notification__icon text-white stroke-2 fill-white" />
+            <span class="motion-safe:animate-ping absolute top-0 right-0.5 block h-1.5 w-1.5 rounded-full ring-2 ring-green-300 bg-green-400"></span>
+            <span class="absolute top-0 right-0.5 block h-1.5 w-1.5 rounded-full ring-2 ring-green-300 bg-green-400"></span>
           </DropdownToggle>
           <DropdownMenu class="notification-content pt-2">
             <DropdownContent tag="div" class="notification-content__box">
-              <div class="notification-content__title">Notifications</div>
+              <div class="notification-content__title">Status Database</div>
               <!-- <div v-for="(faker, fakerKey) in $_.take($f(), 5)" :key="fakerKey"
                 class="cursor-pointer relative flex items-center" :class="{ 'mt-5': fakerKey }">
                 <div class="w-12 h-12 flex-none image-fit mr-1">

@@ -535,8 +535,8 @@ const startTransaction = () => {
   Penjualan.startTransaction().then((data) => {
     no_invoice.value = data.no_invoice;
     waktu.value = data.tanggal_penjualan;
+    console.log('start transactions', data);
   })
-  console.log('start transactions');
 };
 
 const addItem = () => {
@@ -701,11 +701,12 @@ watch(qty_select, async (newValue, oldValue) => {
     if (newValue > stok_now) {
       alert("Stok tersisa hanya " + stok_now);
       qty_select.value = oldValue;
-    } else if (newValue === "") {
+    } else if (newValue === "" || newValue == 0) {
       alert("Minimal Qty harus 1");
       qty_select.value = 1;
     } else {
-      total_harga_select.value = harga_item_select_now * qty
+      console.log("Minimal Qty harus", total_harga_select.value, harga_item_select_now, qty);
+      total_harga_select.value = +harga_item_select_now * +qty
     }
   } catch (error) {
     alert("Gagal wtch qty" + error)

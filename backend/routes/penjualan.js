@@ -71,7 +71,8 @@ module.exports = function (db) {
     //v
     router.get('/barang/:id_varian', isLoggedIn, async function (req, res, next) {
         try {
-            const { rows } = await db.query('SELECT var.*, b.id_barang, b.nama_barang FROM varian as var LEFT JOIN barang as b ON var.id_barang = b.id_barang WHERE id_varian = $1', [req.params.id_varian])
+            const id_outlet = req.query.id_outlet ? req.query.id_outlet : '';
+            const { rows } = await db.query('SELECT sv.*,v.nama_varian, b.id_barang, b.nama_barang, v.harga_jual_varian FROM sub_varian sv LEFT JOIN varian v ON sv.id_varian = v.id_varian LEFT JOIN barang b ON v.id_barang = b.id_barang WHERE v.id_varian = $1 AND sv.id_outlet = $2', [req.params.id_varian, id_outlet])
             res.json(new Response(rows, true))
         } catch (e) {
             res.status(500).json(new Response(e, false))

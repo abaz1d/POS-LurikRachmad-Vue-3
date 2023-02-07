@@ -19,7 +19,8 @@
         <SearchIcon class="search__icon dark:text-slate-500" />
       </div>
       <a class="notification notification--light sm:hidden">
-        <SearchIcon class="notification__icon text-black dark:text-slate-500 hover:border-gray-300" @click="searchModal = true;" />
+        <SearchIcon class="notification__icon text-black dark:text-slate-500 hover:border-gray-300"
+          @click="searchModal = true;" />
       </a>
       <div class="search-result" :class="{ show: searchDropdown }">
         <div class="search-result__content">
@@ -94,8 +95,11 @@
     <!-- END: Search -->
     <!-- BEGIN: Notifications -->
     <Dropdown class="intro-x mr-auto sm:mr-6">
-      <DropdownToggle tag="div" role="button" class="notification notification--bullet cursor-pointer">
-        <BellIcon class="notification__icon dark:text-slate-500" />
+      <DropdownToggle tag="div" role="button"
+        class="inline-block relative notification notification--light cursor-pointer mt-1">
+        <BellIcon class="notification__icon text-white stroke-2 stroke-slate-500 fill-white" />
+        <span class="motion-safe:animate-ping absolute top-0 right-0.5 block h-1.5 w-1.5 rounded-full ring-2 ring-green-300 bg-green-400"></span>
+        <span class="absolute top-0 right-0.5 block h-1.5 w-1.5 rounded-full ring-2 ring-green-300 bg-green-400"></span>
       </DropdownToggle>
       <DropdownMenu class="notification-content pt-2">
         <DropdownContent tag="div" class="notification-content__box">
@@ -319,8 +323,8 @@
     </ModalBody>
   </Modal>
   <!-- END:Profile Content -->
-    <!-- BEGIN:Search Content -->
-    <Modal :show="searchModal" @hidden="searchModal = false">
+  <!-- BEGIN:Search Content -->
+  <Modal :show="searchModal" @hidden="searchModal = false">
     <ModalHeader class="flex items-center justify-center rounded-lg">
       <div class="relative mt-1 w-full">
         <input type="text" id="password"
@@ -341,73 +345,73 @@
       </div>
     </ModalHeader>
     <ModalBody>
-        <div class="search-result__content">
-          <div class="search-result__content__title mb-1">Pages</div>
-          <div class="mb-5">
-            <RouterLink to="/penjualan" class="flex items-center">
-              <div
-                class="w-8 h-8 bg-success/20 dark:bg-success/10 text-success flex items-center justify-center rounded-full">
-                <CornerLeftUpIcon class="w-4 h-4" />
-              </div>
-              <div class="ml-3">Penjualan</div>
-            </RouterLink>
-            <RouterLink to="/pembelian" class="flex items-center mt-2">
-              <div class="w-8 h-8 bg-pending/10 text-pending flex items-center justify-center rounded-full">
-                <CornerLeftDownIcon class="w-4 h-4" />
-              </div>
-              <div class="ml-3">Pembelian</div>
-            </RouterLink>
-            <div v-if="data.role == 'Super Admin'" class="flex items-center mt-2">
-              <div
-                class="w-8 h-8 bg-primary/10 dark:bg-primary/20 text-primary/80 flex items-center justify-center rounded-full">
-                <UsersIcon class="w-4 h-4" />
-              </div>
-              <div class="ml-3">Semua Akun</div>
+      <div class="search-result__content">
+        <div class="search-result__content__title mb-1">Pages</div>
+        <div class="mb-5">
+          <RouterLink to="/penjualan" class="flex items-center">
+            <div
+              class="w-8 h-8 bg-success/20 dark:bg-success/10 text-success flex items-center justify-center rounded-full">
+              <CornerLeftUpIcon class="w-4 h-4" />
             </div>
-          </div>
-          <div class="search-result__content__title">Jenis User & Hak Aksesnya</div>
-          <div class="mb-5">
-            <a href="#" class="flex items-center mt-3 zoom-in">
-              <div
-                class="w-8 h-8 bg-white stroke-2 stroke-black p-auto rounded-full overflow-hidden shadow-lg image-fit zoom-in scale-110">
-                <CrownIcon
-                  class="w-6 h-6 object-fill stroke-2 stroke-black fill-yellow-200 bg-white mt-1 mx-auto rounded-full" />
-              </div>
-              <div class="ml-3"><kbd
-                  class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">Super
-                  Admin</kbd></div>
-              <div class="ml-auto w-auto truncate text-slate-500 text-xs text-right pr-3">
-                Semua Menu/ Fitur
-              </div>
-            </a>
-            <a href="#" class="flex items-center mt-3 zoom-in">
-              <div
-                class="w-8 h-8 bg-white stroke-2 stroke-black p-auto rounded-full overflow-hidden shadow-lg image-fit zoom-in scale-110">
-                <UserIcon
-                  class="w-6 h-6 object-fill stroke-2 stroke-black fill-yellow-200 bg-white mt-1 mx-auto rounded-full" />
-              </div>
-              <div class="ml-3"><kbd
-                  class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">Admin</kbd>
-              </div>
-              <div class="ml-auto w-auto truncate text-slate-500 text-xs text-right pr-3">
-                Kecuali SEMUA AKUN & PENGATURAN DATA
-              </div>
-            </a>
-            <a href="#" class="flex items-center mt-3 zoom-in">
-              <div
-                class="w-8 h-8 bg-white stroke-2 stroke-black p-auto rounded-full overflow-hidden shadow-lg image-fit zoom-in scale-110">
-                <HardHatIcon
-                  class="w-6 h-6 object-fill stroke-2 stroke-black fill-yellow-200 bg-white mt-1 mx-auto rounded-full" />
-              </div>
-              <div class="ml-3"><kbd
-                  class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">Operator</kbd>
-              </div>
-              <div class="ml-auto w-auto truncate text-slate-500 text-xs text-right pr-3">
-                Beberapa Menu/ Fitur TRANSAKSI & LAPORAN
-              </div>
-            </a>
+            <div class="ml-3">Penjualan</div>
+          </RouterLink>
+          <RouterLink to="/pembelian" class="flex items-center mt-2">
+            <div class="w-8 h-8 bg-pending/10 text-pending flex items-center justify-center rounded-full">
+              <CornerLeftDownIcon class="w-4 h-4" />
+            </div>
+            <div class="ml-3">Pembelian</div>
+          </RouterLink>
+          <div v-if="data.role == 'Super Admin'" class="flex items-center mt-2">
+            <div
+              class="w-8 h-8 bg-primary/10 dark:bg-primary/20 text-primary/80 flex items-center justify-center rounded-full">
+              <UsersIcon class="w-4 h-4" />
+            </div>
+            <div class="ml-3">Semua Akun</div>
           </div>
         </div>
+        <div class="search-result__content__title">Jenis User & Hak Aksesnya</div>
+        <div class="mb-5">
+          <a href="#" class="flex items-center mt-3 zoom-in">
+            <div
+              class="w-8 h-8 bg-white stroke-2 stroke-black p-auto rounded-full overflow-hidden shadow-lg image-fit zoom-in scale-110">
+              <CrownIcon
+                class="w-6 h-6 object-fill stroke-2 stroke-black fill-yellow-200 bg-white mt-1 mx-auto rounded-full" />
+            </div>
+            <div class="ml-3"><kbd
+                class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">Super
+                Admin</kbd></div>
+            <div class="ml-auto w-auto truncate text-slate-500 text-xs text-right pr-3">
+              Semua Menu/ Fitur
+            </div>
+          </a>
+          <a href="#" class="flex items-center mt-3 zoom-in">
+            <div
+              class="w-8 h-8 bg-white stroke-2 stroke-black p-auto rounded-full overflow-hidden shadow-lg image-fit zoom-in scale-110">
+              <UserIcon
+                class="w-6 h-6 object-fill stroke-2 stroke-black fill-yellow-200 bg-white mt-1 mx-auto rounded-full" />
+            </div>
+            <div class="ml-3"><kbd
+                class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">Admin</kbd>
+            </div>
+            <div class="ml-auto w-auto truncate text-slate-500 text-xs text-right pr-3">
+              Kecuali SEMUA AKUN & PENGATURAN DATA
+            </div>
+          </a>
+          <a href="#" class="flex items-center mt-3 zoom-in">
+            <div
+              class="w-8 h-8 bg-white stroke-2 stroke-black p-auto rounded-full overflow-hidden shadow-lg image-fit zoom-in scale-110">
+              <HardHatIcon
+                class="w-6 h-6 object-fill stroke-2 stroke-black fill-yellow-200 bg-white mt-1 mx-auto rounded-full" />
+            </div>
+            <div class="ml-3"><kbd
+                class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500">Operator</kbd>
+            </div>
+            <div class="ml-auto w-auto truncate text-slate-500 text-xs text-right pr-3">
+              Beberapa Menu/ Fitur TRANSAKSI & LAPORAN
+            </div>
+          </a>
+        </div>
+      </div>
     </ModalBody>
   </Modal>
   <!-- END:Search Content -->
