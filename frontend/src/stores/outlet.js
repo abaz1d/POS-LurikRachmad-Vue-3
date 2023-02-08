@@ -63,7 +63,6 @@ export const useOutletStore = defineStore({
         .get(`outlet/delete/${id_outlet}`)
         .then((res) => {
           if (res.success) {
-            // alert(`Sukses Hapus Data ${id_outlet}`)
           }
         })
         .catch((e) => console.error(e));

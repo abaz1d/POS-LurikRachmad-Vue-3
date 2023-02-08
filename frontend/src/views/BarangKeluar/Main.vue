@@ -413,11 +413,11 @@ const imageAssets = import.meta.globEager(
 const itemDel = ref("");
 const data_select = {
   option: function (data, escape) {
-    return `<div><img class="w-auto h-6 inline-block mr-2" src="${
+    return `<div><img width="100" height="100" class="w-auto h-6 inline-block mr-2" src="${
       imageAssets[data.src].default}">${data.text}</div>`;
   },
   item: function (item, escape) {
-    return `<div><img class="w-auto h-6 inline-block mr-2" src="${imageAssets[item.src].default}">${item.text}</div>`;
+    return `<div><img width="100" height="100" class="w-auto h-6 inline-block mr-2" src="${imageAssets[item.src].default}">${item.text}</div>`;
   }
 }
 

@@ -36,9 +36,6 @@
             class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0" placeholder="Search..." />
         </div>
         <div class="mt-2 xl:mt-0">
-          <!-- <button id="tabulator-html-filter-go" type="button" class="btn btn-primary w-full sm:w-16" @click="onFilter">
-            Go
-          </button> -->
           <button id="tabulator-html-filter-reset" type="button"
             class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1" @click="onResetFilter">
             Reset
@@ -62,16 +59,10 @@
             <DropdownContent>
               <DropdownItem @click="onExportCsv">
                 <FileTextIcon class="w-4 h-4 mr-2" /> Export CSV
-              </DropdownItem>
-              <!-- <DropdownItem @click="onExportJson">
-                <FileTextIcon class="w-4 h-4 mr-2" /> Export JSON
-              </DropdownItem> -->
+              </DropdownItem> 
               <DropdownItem @click="onExportXlsx">
                 <FileTextIcon class="w-4 h-4 mr-2" /> Export XLSX
-              </DropdownItem>
-              <!-- <DropdownItem @click="onExportHtml">
-                <FileTextIcon class="w-4 h-4 mr-2" /> Export HTML
-              </DropdownItem> -->
+              </DropdownItem> 
             </DropdownContent>
           </DropdownMenu>
         </Dropdown>
@@ -103,9 +94,7 @@ import { createIcons, icons } from "lucide";
 import { TabulatorFull as Tabulator } from 'tabulator-tables';
 import { currencyFormatter } from "@/utils/helper";
 import moment from "moment";
-
 const Pembelian = usePembelianStore();
-
 const isLoading = ref(false)
 const isPrint = ref(false);
 const tableBeliRef = ref();
@@ -225,14 +214,9 @@ const initTabulator = () => {
     columnDefaults: {
       //resizable: true,
       tooltip: function (e, cell, onRendered) {
-        //e - mouseover event
-        //cell - cell component
-        //onRendered - onRendered callback registration function
-
         var el = document.createElement("div");
         el.style.backgroundColor = "white smoke";
-        el.innerText = cell.getColumn().getField() + " - " + cell.getValue(); //return cells "field - value";
-
+        el.innerText = cell.getColumn().getField() + " - " + cell.getValue(); 
         return el;
       },
     },
@@ -245,23 +229,6 @@ const initTabulator = () => {
         resizable: false,
         headerSort: false,
       },
-
-      // For HTML table
-      // {
-      //   title: "NO INVOICE",
-      //   minWidth: 200,
-      //   responsive: 0,
-      //   field: "no_invoice",
-      //   vertAlign: "middle",
-      //   print: false,
-      //   download: false,
-      //   formatter(cell) {
-      //     return `<div>
-      //           <div class="font-medium whitespace-nowrap">${cell.getData().no_invoice
-      //       }</div>
-      //         </div>`;
-      //   },
-      // },
       {
         title: "NAMA VARIAN",
         minWidth: 200,
@@ -398,10 +365,6 @@ const onExportCsv = () => {
   tabulator.value.download("csv", "data.csv");
 };
 
-const onExportJson = () => {
-  tabulator.value.download("json", "data.json");
-};
-
 const onExportXlsx = () => {
   const win = window;
   win.XLSX = xlsx;
@@ -410,16 +373,9 @@ const onExportXlsx = () => {
   });
 };
 
-const onExportHtml = () => {
-  tabulator.value.download("html", "data.html", {
-    style: true,
-  });
-};
-
 // Print
 const onPrint = async () => {
 isLoading.value = false;
-  //console.log("grup", tabulator.value.getGroups().show())
   tabulator.value.print();
   isPrint.value = false;
 };

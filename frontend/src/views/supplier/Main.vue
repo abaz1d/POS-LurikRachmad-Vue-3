@@ -111,15 +111,9 @@
               <DropdownItem @click="onExportCsv">
                 <FileTextIcon class="w-4 h-4 mr-2" /> Export CSV
               </DropdownItem>
-              <!-- <DropdownItem @click="onExportJson">
-                <FileTextIcon class="w-4 h-4 mr-2" /> Export JSON
-              </DropdownItem> -->
               <DropdownItem @click="onExportXlsx">
                 <FileTextIcon class="w-4 h-4 mr-2" /> Export XLSX
               </DropdownItem>
-              <!-- <DropdownItem @click="onExportHtml">
-                <FileTextIcon class="w-4 h-4 mr-2" /> Export HTML
-              </DropdownItem> -->
             </DropdownContent>
           </DropdownMenu>
         </Dropdown>
@@ -173,9 +167,6 @@ import { createIcons, icons } from "lucide";
 import { TabulatorFull as Tabulator } from 'tabulator-tables';
 import dom from "@left4code/tw-starter/dist/js/dom";
 import moment from "moment";
-
-// const Supplier = useSupplierStore();
-const modal_utama = ref(false);
 const isLoading = ref(false);
 const id_supplier = ref("");
 const nama_supplier = ref("");
@@ -184,38 +175,27 @@ const telepon_supplier = ref();
 const email_supplier = ref("");
 const deleteConfirmationModal = ref(false);
 const isEdit = ref(false);
-
-// const tableRef = ref("");
 const tabulator = ref();
 const filter = reactive({
   field: "id_supplier",
   type: "like",
   value: "",
 });
-
-
-
 export default {
   setup() {
     const Supplier = useSupplierStore();
     return { Supplier, moment, };
   },
-  // components: {
-  //   SupplierList,
-  // },
   data() {
     return {
       deleteConfirmationModal,
       id_supplier,
       nama_supplier,
-
       modal_utama,
       alamat_supplier,
       telepon_supplier,
       email_supplier,
       isLoading,
-
-      //tableRef,
       tabulator,
       filter,
       isEdit
@@ -224,7 +204,6 @@ export default {
   methods: {
     addSupplier() {
       try {
-        // console.log("addSupplier", nama_supplier.value, alamat_supplier.value)
         this.Supplier.addItem(
           nama_supplier.value,
           alamat_supplier.value,
@@ -261,8 +240,6 @@ export default {
           this.telepon_supplier = ""
           this.email_supplier = ""
         });
-        //console.log("update", this.id_supplier, this.nama_supplier, this.alamat_supplier, this.telepon_supplier, this.email_supplier)
-
       } catch (error) {
         alert(`Gagal Update data ${id_supplier}` + error);
       }
@@ -302,11 +279,9 @@ export default {
             resizable: false,
             headerSort: false,
           },
-
           // For HTML table
           {
             title: "ID SUPPLIER",
-            // minWidth: 200,
             minWidth: 150,
             responsive: 0,
             field: "id_supplier",
@@ -419,11 +394,8 @@ export default {
                   <i data-lucide="trash-2" class="w-4 h-4 mr-1"></i> Delete
                 </a>
               </div>`);
-              // const func = deleteConfirmationModal
               dom(a).on("click", "a", function (e) {
-                // On click actions
                 if (e.id === "edit") {
-                  //alert("edit" + cell.getData().id_supplier);
                   id_supplier.value = cell.getData().id_supplier
                   nama_supplier.value = cell.getData().nama_supplier
                   alamat_supplier.value = cell.getData().alamat_supplier
@@ -435,14 +407,11 @@ export default {
                   id_supplier.value = cell.getData().id_supplier
                   nama_supplier.value = cell.getData().nama_supplier
                   deleteConfirmationModal.value = true
-                  //console.log("hapus", id_supplier.value, nama_supplier.value)
                 }
               });
               return a[0]
-
             },
           },
-
           // For print format
           {
             title: "ID SUPPLIER",
@@ -482,7 +451,6 @@ export default {
         ],
       });
       this.tabulator.on("renderComplete", function () {
-        //subTable.redraw();
         createIcons({
           icons,
           "stroke-width": 1.5,
@@ -491,7 +459,6 @@ export default {
         });
       });
       this.tabulator.on("cellEdited", function (cell) {
-        //cell - cell component
         id_supplier.value = cell.getData().id_supplier
         nama_supplier.value = cell.getData().nama_supplier
         alamat_supplier.value = cell.getData().alamat_supplier
@@ -499,7 +466,6 @@ export default {
         email_supplier.value = cell.getData().email_supplier
         isEdit.value = true
         modal_utama.value = true
-        // console.log("aku cengar cengir", cell.getData(), this.Supplier.items)
       });
     },
     reInitOnResizeWindow() {
@@ -527,11 +493,6 @@ export default {
     onExportCsv() {
       this.tabulator.download("csv", "data.csv");
     },
-
-    onExportJson() {
-      this.tabulator.download("json", "data.json");
-    },
-
     onExportXlsx() {
       const win = window;
       win.XLSX = xlsx;
@@ -539,13 +500,6 @@ export default {
         sheetName: "Data Supplier",
       });
     },
-
-    onExportHtml() {
-      this.tabulator.download("html", "data.html", {
-        style: true,
-      });
-    },
-
     // Print
     onPrint() {
       this.tabulator.print();
@@ -562,11 +516,6 @@ export default {
       isLoading.value = false;
       alert(error)
     });
-    // this.suppliers = this.Supplier.items
-  },
-  // mounted() {
-  //   this.initTabulator();
-  //   this.reInitOnResizeWindow();
-  // }
+  }
 };
 </script>

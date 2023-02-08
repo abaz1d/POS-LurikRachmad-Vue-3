@@ -110,15 +110,9 @@
               <DropdownItem @click="onExportCsv">
                 <FileTextIcon class="w-4 h-4 mr-2" /> Export CSV
               </DropdownItem>
-              <!-- <DropdownItem @click="onExportJson">
-                <FileTextIcon class="w-4 h-4 mr-2" /> Export JSON
-              </DropdownItem> -->
               <DropdownItem @click="onExportXlsx">
                 <FileTextIcon class="w-4 h-4 mr-2" /> Export XLSX
               </DropdownItem>
-              <!-- <DropdownItem @click="onExportHtml">
-                <FileTextIcon class="w-4 h-4 mr-2" /> Export HTML
-              </DropdownItem> -->
             </DropdownContent>
           </DropdownMenu>
         </Dropdown>
@@ -167,15 +161,12 @@
 <script>
 import { useOutletStore } from "@/stores/outlet";
 import ModalDatabaseError from "@/components/modal-error/Main.vue";
-// import OutletList from "./OutletList.vue";
 import { ref, reactive } from "vue";
 import xlsx from "xlsx";
 import { createIcons, icons } from "lucide";
 import { TabulatorFull as Tabulator } from 'tabulator-tables';
 import dom from "@left4code/tw-starter/dist/js/dom";
 import moment from "moment";
-
-// const Outlet = useOutletStore();
 const modal_utama = ref(false);
 const id_outlet = ref("");
 const nama_outlet = ref("");
@@ -185,17 +176,12 @@ const email_outlet = ref("");
 const isLoading = ref(false);
 const deleteConfirmationModal = ref(false);
 const isEdit = ref(false);
-
-// const tableRef = ref("");
 const tabulator = ref();
 const filter = reactive({
   field: "id_outlet",
   type: "like",
   value: "",
 });
-
-
-
 export default {
   setup() {
     const Outlet = useOutletStore();
@@ -209,14 +195,11 @@ export default {
       deleteConfirmationModal,
       id_outlet,
       nama_outlet,
-
       modal_utama,
       alamat_outlet,
       kontak_outlet,
       email_outlet,
       isLoading,
-
-      //tableRef,
       tabulator,
       filter,
       isEdit
@@ -225,7 +208,6 @@ export default {
   methods: {
     addOutlet() {
       try {
-        // console.log("addOutlet", nama_outlet.value, alamat_outlet.value)
         this.Outlet.addItem(
           nama_outlet.value,
           alamat_outlet.value,
@@ -239,7 +221,6 @@ export default {
         alamat_outlet.value = "";
         kontak_outlet.value = "";
         email_outlet.value = "";
-
       } catch (error) {
         alert("Gagal Tambah Data" + error);
       }
@@ -262,8 +243,6 @@ export default {
           this.kontak_outlet = ""
           this.email_outlet = ""
         });
-        //console.log("update", this.id_outlet, this.nama_outlet, this.alamat_outlet, this.kontak_outlet,
-
       } catch (error) {
         alert(`Gagal Update data ${id_outlet}` + error);
       }
@@ -306,7 +285,6 @@ export default {
           // For HTML table
           {
             title: "ID OUTLET",
-            // minWidth: 200,
             minWidth: 150,
             responsive: 0,
             field: "id_outlet",
@@ -419,11 +397,8 @@ export default {
                   <i data-lucide="trash-2" class="w-4 h-4 mr-1"></i> Delete
                 </a>
               </div>`);
-              // const func = deleteConfirmationModal
               dom(a).on("click", "a", function (e) {
-                // On click actions
                 if (e.id === "edit") {
-                  //alert("edit" + cell.getData().id_outlet);
                   id_outlet.value = cell.getData().id_outlet
                   nama_outlet.value = cell.getData().nama_outlet
                   alamat_outlet.value = cell.getData().alamat_outlet
@@ -435,7 +410,6 @@ export default {
                   id_outlet.value = cell.getData().id_outlet
                   nama_outlet.value = cell.getData().nama_outlet
                   deleteConfirmationModal.value = true
-                  //console.log("hapus", id_outlet.value, nama_outlet.value)
                 }
               });
               return a[0]
@@ -491,7 +465,6 @@ export default {
         });
       });
       this.tabulator.on("cellEdited", function (cell) {
-        //cell - cell component
         id_outlet.value = cell.getData().id_outlet
         nama_outlet.value = cell.getData().nama_outlet
         alamat_outlet.value = cell.getData().alamat_outlet
@@ -499,7 +472,6 @@ export default {
         email_outlet.value = cell.getData().email_outlet
         isEdit.value = true
         modal_utama.value = true
-        // console.log("aku cengar cengir", cell.getData(), this.Outlet.items)
       });
     },
     reInitOnResizeWindow() {
@@ -527,11 +499,6 @@ export default {
     onExportCsv() {
       this.tabulator.download("csv", "data.csv");
     },
-
-    onExportJson() {
-      this.tabulator.download("json", "data.json");
-    },
-
     onExportXlsx() {
       const win = window;
       win.XLSX = xlsx;
@@ -539,13 +506,6 @@ export default {
         sheetName: "Data Outlet",
       });
     },
-
-    onExportHtml() {
-      this.tabulator.download("html", "data.html", {
-        style: true,
-      });
-    },
-
     // Print
     onPrint() {
       this.tabulator.print();
@@ -560,7 +520,6 @@ export default {
       this.$refs.modalErrorRef.errorDatabaseModal = false;
       isLoading.value = false;
     }).catch((error) => {
-      //alert(error)
       console.error(error);
       this.$refs.modalErrorRef.errorDatabaseModal = true;
       isLoading.value = false;

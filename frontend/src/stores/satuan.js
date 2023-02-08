@@ -14,10 +14,7 @@ export const useSatuanStore = defineStore({
       try {
         const data = await request.get("satuan");
         if (data.status >= 200 && data.status < 300) {
-          this.rawItems =
-          /*this.rawItems.concat(res.data.rows) res.data.rows*/ data.data;
-          //console.log('rawItems', this.rawItems)
-          // return this.rawItems
+          this.rawItems = data.data;
         }
       } catch (e) {
         console.error(e);
@@ -51,7 +48,6 @@ export const useSatuanStore = defineStore({
         .get(`satuan/delete/${id_satuan}`)
         .then((res) => {
           if (res.status >= 200 && res.status < 300) {
-            // alert(`Sukses Hapus Data ${id_satuan}`)
           }
         })
         .catch((e) => console.error(e));

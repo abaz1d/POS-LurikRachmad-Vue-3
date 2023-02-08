@@ -19,7 +19,6 @@ export const useAuthStore = defineStore({
           email_user,
           password
         });
-        console.log('user', data.data)
 
         if (data.success) {
           this.user = data.data;
@@ -43,9 +42,9 @@ export const useAuthStore = defineStore({
       try {
         const { data } = await request.get("logout")
         if (data.success) {
-          this.user = null;
-          localStorage.removeItem('user');
           router.push('/login');
+          localStorage.removeItem('user');
+          this.user = null;
         }
       } catch (error) {
         console.error(error);

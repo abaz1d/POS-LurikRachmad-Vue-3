@@ -210,7 +210,7 @@ renderQrScanner();
 
                               <div v-else class="col-span-5 md:col-span-2 relative image-fit cursor-pointer zoom-in"
                                 style="height: 9rem">
-                                <img class="imgUp rounded-md" alt="Lurik Rachmad" :src="url" />
+                                <img width="100" height="100" class="imgUp rounded-md" alt="Lurik Rachmad" :src="url" />
                                 <Tippy content="Remove this image?" @click="url = null"
                                   class="tooltip w-5 h-5 flex items-center justify-center absolute rounded-full text-white bg-danger right-0 top-0 -mr-2 -mt-2">
                                   <XIcon class="w-4 h-4" />
@@ -250,10 +250,7 @@ renderQrScanner();
           </div>
         </ModalBody>
         <ModalFooter class="text-right">
-          <!-- <button type="button" @click="modal_utama = false" class="btn btn-outline-secondary w-32 mr-1">
-            Cancel
-          </button>
-          <button type="submit" form="addSatuanForm" class="btn btn-primary w-32">Simpan</button> -->
+
         </ModalFooter>
       </Modal>
       <a href="" class="ml-auto sm:ml-0 btn px-2 h-10 box flex items-center text-primary">
@@ -293,9 +290,6 @@ renderQrScanner();
             class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0" placeholder="Search..." />
         </div>
         <div class="mt-2 xl:mt-0">
-          <!-- <button id="tabulator-html-filter-go" type="button" class="btn btn-primary w-full sm:w-16" @click="onFilter">
-            Go
-          </button> -->
           <button id="tabulator-html-filter-reset" type="button"
             class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1" @click="onResetFilter">
             Reset
@@ -315,16 +309,10 @@ renderQrScanner();
             <DropdownContent>
               <DropdownItem @click="onExportCsv">
                 <FileTextIcon class="w-4 h-4 mr-2" /> Export CSV
-              </DropdownItem>
-              <!-- <DropdownItem @click="onExportJson">
-                <FileTextIcon class="w-4 h-4 mr-2" /> Export JSON
-              </DropdownItem> -->
+              </DropdownItem> 
               <DropdownItem @click="onExportXlsx">
                 <FileTextIcon class="w-4 h-4 mr-2" /> Export XLSX
-              </DropdownItem>
-              <!-- <DropdownItem @click="onExportHtml">
-                <FileTextIcon class="w-4 h-4 mr-2" /> Export HTML
-              </DropdownItem> -->
+              </DropdownItem> 
             </DropdownContent>
           </DropdownMenu>
         </Dropdown>
@@ -430,9 +418,6 @@ const filter = reactive({
   value: "",
 });
 var subTable
-// const isInvoice = ref(false)
-// const data_jual = ref([])
-
 const checkedID = ref(false);
 const inputIdBarang = ref("");
 const inputNamaBarang = ref("");
@@ -546,7 +531,6 @@ const addVarian = () => {
 
 const updateVarian = () => {
   try {
-    //console.log("Update Tambah Data", file.value);
     Barang.updateVarian({
       id_varian: inputIdVarian.value,
       nama_varian: inputNamaVarian.value,
@@ -610,11 +594,9 @@ const resetModal = () => {
   deleteConfirmationModal.value = false
   isEdit.value = false
   isModalScanner.value = false
-
   checkedID.value = false;
   inputIdBarang.value = "";
   inputNamaBarang.value = "";
-
   inputIdVarian.value = "";
   inputNamaVarian.value = "";
   inputGambarVarian.value = "";
@@ -625,9 +607,6 @@ const resetModal = () => {
   kategoriBarangVarian.value = "kosong";
   stokGlobal.value = 0;
   stokTerpakai.value = 0;
-
-  //data.value = "";
-
   url.value = null;
   file.value = null;
   isVarian.value = false;
@@ -645,7 +624,6 @@ watch(stokGlobal, async (newValue, oldValue) => {
 
 watch(filter, async (newValue, oldValue) => {
   try {
-    //console.log("filter: ", newValue)
     onFilter()
   } catch (error) {
     alert("Gagal wtch filter" + error)
@@ -669,14 +647,9 @@ const initTabulator = () => {
     columnDefaults: {
       resizable: true,
       tooltip: function (e, cell, onRendered) {
-        //e - mouseover event
-        //cell - cell component
-        //onRendered - onRendered callback registration function
-
         var el = document.createElement("div");
         el.style.backgroundColor = "white smoke";
-        el.innerText = cell.getColumn().getField() + " - " + cell.getValue(); //return cells "field - value";
-
+        el.innerText = cell.getColumn().getField() + " - " + cell.getValue(); 
         return el;
       },
     },
@@ -742,9 +715,7 @@ const initTabulator = () => {
               </div>`);
           dom(a).on("click", "a", function (e) {
             if (e.id === "edit") {
-              //alert("edit " + cell.getData());
               const barang = cell.getData()
-              //console.log("openEditModal", cell.getRow());
               inputIdBarang.value = barang.id_barang
               inputNamaBarang.value = barang.nama_barang
               isEdit.value = true;
@@ -752,8 +723,6 @@ const initTabulator = () => {
               //modal_utama.value = true;
 
             } else {
-              //alert("delete" + JSON.stringify(cell.getData().id_barang));
-              //const no_invoice_del = JSON.stringify(cell.getData().id_barang)
               inputIdBarang.value = cell.getData().id_barang;
               inputNamaBarang.value = cell.getData().nama_barang
               deleteConfirmationModal.value = true;
@@ -840,6 +809,7 @@ const initTabulator = () => {
           alt="${cell.getData().gambar_varian}"
           data-action="zoom"
           class="w-20 rounded-md"
+          width="100" height="100"
         />
       </div>
       <div>
@@ -965,22 +935,11 @@ const initTabulator = () => {
               </div>`);
               dom(a).on("click", "a", function (e) {
                 if (e.id === "edit") {
-                  //alert("edit " + JSON.stringify(cell.getData()));
                   const varian = cell.getData()
-                  //getImgUrl(varian.gambar_varian)
                   url.value = getImgUrl(varian.gambar_varian)
-                  // console.log("openEditModal", cell.getRow());
-                  // inputIdBarang.value = varian.id_barang
-                  // inputNamaBarang.value = varian.nama_barang
-                  // isEdit.value = true;
-                  // modalVarian.value = true;
                   Barang.updateVarianGet(varian.id_varian).then((detail) => {
                     console.log("detail", detail)
-                    //alert("edit " + JSON.stringify(varian.gambar_varian));
                     data.value = detail
-
-                    //console.log("edit ", detail.item.gambar_varian, varian.gambar_varian);
-                    //previewImage(detail.item.gambar_varian)
                     gambar_lama.value = detail.item.gambar_varian
                     file.value = ''
                     inputIdVarian.value = detail.item.id_varian
@@ -992,7 +951,6 @@ const initTabulator = () => {
                     stokTerpakai.value = detail.item.stok_terpakai
                     hargaBeliVarian.value = detail.item.harga_beli_varian
                     hargaJualVarian.value = detail.item.harga_jual_varian
-
                     isEdit.value = true;
                     modalVarian.value = true;
                   }).catch((e) => {
@@ -1000,18 +958,12 @@ const initTabulator = () => {
                   });
 
                 } else {
-                  //alert("delete" + JSON.stringify(cell.getData()));
                   const varian = cell.getData();
                   inputIdVarian.value = varian.id_varian;
                   inputNamaVarian.value = varian.nama_varian;
                   gambar_lama.value = varian.gambar_varian
                   isVarian.value = true;
                   deleteConfirmationModal.value = true;
-                  // gambar_lama.value = varian.gambar_varian
-                  //const no_invoice_del = JSON.stringify(cell.getData().id_barang)
-                  // inputIdBarang.value = cell.getData().id_barang;
-                  // inputNamaBarang.value = cell.getData().nama_barang
-                  // deleteConfirmationModal.value = true;
                 }
               });
 
@@ -1156,22 +1108,11 @@ const onResetFilter = () => {
 const onExportCsv = () => {
   tabulator.value.download("csv", "data.csv");
 };
-
-const onExportJson = () => {
-  tabulator.value.download("json", "data.json");
-};
-
 const onExportXlsx = () => {
   const win = window;
   win.XLSX = xlsx;
   tabulator.value.download("xlsx", "data.xlsx", {
     sheetName: "Products",
-  });
-};
-
-const onExportHtml = () => {
-  tabulator.value.download("html", "data.html", {
-    style: true,
   });
 };
 

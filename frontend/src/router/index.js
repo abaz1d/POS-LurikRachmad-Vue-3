@@ -5,12 +5,10 @@ import SideMenu from "@/layouts/side-menu/Main.vue";
 import SimpleMenu from "@/layouts/simple-menu/Main.vue";
 import TopMenu from "@/layouts/top-menu/Main.vue";
 import Dashboard from "@/views/Dashboard/Main.vue";
-import Page2 from "@/views/page-2/Main.vue";
 import Satuan from "@/views/Satuan/Main.vue";
 import BarangKeluar from "@/views/BarangKeluar/Main.vue";
 import Barang from "@/views/Barang/Main.vue";
 import Login from "@/views/Login/Main.vue";
-import Register from "@/views/Register/Main.vue";
 import ErrorPage from "@/views/ErrorPage/Main.vue";
 import Supplier from "@/views/Supplier/Main.vue";
 import Outlet from "@/views/Outlet/Main.vue";
@@ -34,12 +32,6 @@ const routes = [
         path: "/",
         name: "top-menu-dashboard",
         component: Dashboard,
-        meta: { authorize: [] }
-      },
-      {
-        path: "page-2",
-        name: "top-menu-page-2",
-        component: Page2,
         meta: { authorize: [] }
       },
       {
@@ -145,12 +137,6 @@ const routes = [
         meta: { authorize: [] }
       },
       {
-        path: "page-2",
-        name: "side-menu-page-2",
-        component: Page2,
-        meta: { authorize: [] }
-      },
-      {
         path: "satuan",
         name: "side-menu-satuan",
         component: Satuan,
@@ -253,12 +239,6 @@ const routes = [
         meta: { authorize: [] }
       },
       {
-        path: "page-2",
-        name: "simple-menu-page-2",
-        component: Page2,
-        meta: { authorize: [] }
-      },
-      {
         path: "satuan",
         name: "simple-menu-satuan",
         component: Satuan,
@@ -354,11 +334,6 @@ const routes = [
     path: "/login",
     name: "login",
     component: Login,
-  },
-  {
-    path: "/register",
-    name: "register",
-    component: Register,
   },
   {
     path: "/error-page",

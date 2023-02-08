@@ -12,13 +12,9 @@ export const usePelangganStore = defineStore({
   actions: {
     async readItem() {
       try {
-        const data = await request.get("pelanggan", {
-          timeout: 1000
-        });
+        const data = await request.get("pelanggan");
         if (data.status >= 200 && data.status < 300) {
           this.rawItems = data.data;
-          //console.log('rawItems', this.rawItems)
-          // return this.rawItems
         }
       } catch (e) {
         console.error(e);
@@ -62,7 +58,6 @@ export const usePelangganStore = defineStore({
         .get(`pelanggan/delete/${id_pelanggan}`)
         .then((res) => {
           if (res.status >= 200 && res.status < 300) {
-            // alert(`Sukses Hapus Data ${id_pelanggan}`)
           }
         })
         .catch((e) => console.error(e));

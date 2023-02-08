@@ -11,8 +11,10 @@
       </div>
       <div class="bg-white mt-20 lg:mt-0 lg:ml-auto lg:text-right">
         <div class="font-philosopher bg-white text-xl text-primary font-medium"> <b> Lurik Rachmad </b></div>
-        <div class="bg-white mt-1 text-black">{{ String(Auth.items.nama_outlet) }} - {{ String(Auth.items.kontak_outlet) }}</div>
-        <div class="bg-white mt-1 text-black w-96 break-words">{{ String(Auth.items.alamat_outlet) }}</div>
+        <div class="bg-white mt-1 text-black">{{ auth.nama_outlet }} - {{
+          auth.kontak_outlet
+        }}</div>
+        <div class="bg-white mt-1 text-black w-96 break-words">{{ auth.alamat_outlet }}</div>
       </div>
     </div>
     <div class="bg-white px-5  sm:px-16 py-10 sm:py-20">
@@ -80,8 +82,8 @@
     <!-- <hr>
     <div class="grid justify-items-center items-center">
       <div class="font-philosopher bg-white text-xl text-primary font-medium"> <b> Lurik Rachmad </b></div>
-      <div class="bg-white mt-1 text-black">{{ String(Auth.items.nama_outlet) }} - {{ String(Auth.items.kontak_outlet) }}</div>
-      <div class="bg-white mt-1 text-black w-96 break-words">{{ String(Auth.items.alamat_outlet) }}</div>
+      <div class="bg-white mt-1 text-black">{{ String(auth.nama_outlet) }} - {{ String(auth.kontak_outlet) }}</div>
+      <div class="bg-white mt-1 text-black w-96 break-words">{{ String(auth.alamat_outlet) }}</div>
     </div> -->
   </div>
 </template>
@@ -89,7 +91,9 @@
 <script>
 import { currencyFormatter } from "@/utils/helper";
 import { useAuthStore } from "@/stores/auth";
+import { ref } from "vue";
 import moment from "moment";
+const auth = ref()
 
 export default {
   setup() {
@@ -106,7 +110,7 @@ export default {
   data() {
     return {
       // no_invoice: this.prints[0].no_invoice,
-
+      auth
     }
   },
   props: {
@@ -129,6 +133,9 @@ export default {
       type: Number,
     }
   },
-
-}
+  beforeCreate() {
+    auth.value = this.Auth.items
+    //console.log(auth.value.nama_outlet)
+  }
+};
 </script>

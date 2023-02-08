@@ -34,27 +34,10 @@ export const useUserStore = defineStore({
       password,
     ) {
       const id_users = Date.now();
-      this.rawItems.push({
-        id_users,
-        username,
-        role,
-        id_outlet: outlet,
-        email_user,
-        password,
-      });
+      this.rawItems.push({ id_users, username, role, id_outlet: outlet, email_user, password, });
       try {
-        const { data } = await request.post("users/add", {
-          id_users,
-          username,
-          role,
-          id_outlet: outlet,
-          email_user,
-          password,
-        });
-
-        console.log("add", data);
+        const { data } = await request.post("users/add", { id_users, username, role, id_outlet: outlet, email_user, password, });
         if (data.success) {
-
           this.rawItems = this.rawItems.map((item) => {
             if (item.id_users === id_users) {
               return data.data.data
@@ -75,7 +58,6 @@ export const useUserStore = defineStore({
           .get(`users/delete/${id_users}`)
           .then((data) => {
             if (data.success) {
-              // alert(`Sukses Hapus Data ${id_users}`)
             }
           })
           .catch((e) => console.error(e));
@@ -94,25 +76,11 @@ export const useUserStore = defineStore({
         let password = user.password;
 
         if (password === "") {
-          //console.log("password lama: ", password)
-          item = {
-            username,
-            role,
-            id_outlet,
-            email_user,
-          }
+          item = { username, role, id_outlet, email_user, }
         } else {
-          //console.log("password baru: ", password)
-          item = {
-            username,
-            role,
-            id_outlet,
-            email_user,
-            password,
-          }
+          item = {username, role, id_outlet, email_user,password}
         }
         const { data } = await request.post(`users/edit/${id_users}`, item)
-       //console.log("data",data)
         if (data.success) {
           this.rawItems = this.rawItems.map((item) => {
             if (item.id_users === id_users) {

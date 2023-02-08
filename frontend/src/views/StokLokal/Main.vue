@@ -149,11 +149,7 @@
 
                               <div v-else class="col-span-5 md:col-span-2 relative image-fit cursor-pointer zoom-in"
                                 style="height: 9rem">
-                                <img class="imgUp rounded-md" alt="Lurik Rachmad" :src="url" />
-                                <!-- <Tippy content="Remove this image?" @click="url = null"
-                                  class="tooltip w-5 h-5 flex items-center justify-center absolute rounded-full text-white bg-danger right-0 top-0 -mr-2 -mt-2">
-                                  <XIcon class="w-4 h-4" />
-                                </Tippy> -->
+                                <img width="100" height="100" class="imgUp rounded-md" alt="Lurik Rachmad" :src="url" />
                               </div>
                               <div>
                                 <div class="flex text-sm text-gray-600">
@@ -189,10 +185,6 @@
           </div>
         </ModalBody>
         <ModalFooter class="text-right">
-          <!-- <button type="button" @click="modal_utama = false" class="btn btn-outline-secondary w-32 mr-1">
-            Cancel
-          </button>
-          <button type="submit" form="addSatuanForm" class="btn btn-primary w-32">Simpan</button> -->
         </ModalFooter>
       </Modal>
       <a href="" class="ml-auto sm:ml-0 btn px-2 h-10 box flex items-center text-primary">
@@ -232,9 +224,6 @@
             class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0" placeholder="Search..." />
         </div>
         <div class="mt-2 xl:mt-0">
-          <!-- <button id="tabulator-html-filter-go" type="button" class="btn btn-primary w-full sm:w-16" @click="onFilter">
-            Go
-          </button> -->
           <button id="tabulator-html-filter-reset" type="button"
             class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1" @click="onResetFilter">
             Reset
@@ -255,15 +244,9 @@
               <DropdownItem @click="onExportCsv">
                 <FileTextIcon class="w-4 h-4 mr-2" /> Export CSV
               </DropdownItem>
-              <!-- <DropdownItem @click="onExportJson">
-                <FileTextIcon class="w-4 h-4 mr-2" /> Export JSON
-              </DropdownItem> -->
               <DropdownItem @click="onExportXlsx">
                 <FileTextIcon class="w-4 h-4 mr-2" /> Export XLSX
               </DropdownItem>
-              <!-- <DropdownItem @click="onExportHtml">
-                <FileTextIcon class="w-4 h-4 mr-2" /> Export HTML
-              </DropdownItem> -->
             </DropdownContent>
           </DropdownMenu>
         </Dropdown>
@@ -301,7 +284,6 @@
     </ModalBody>
   </Modal>
   <!-- END: Delete Confirmation Modal -->
-
   <Modal size="modal-xl" backdrop="static" :show="isModalScanner" @hidden="isModalScanner = false">
     <ModalHeader>
       <div class="text-center mt-2">
@@ -349,9 +331,7 @@ import dom from "@left4code/tw-starter/dist/js/dom";
 import qrcode from "@/components/qrcode/QrCode.vue";
 import { currencyFormatter } from "@/utils/helper";
 import moment from "moment";
-
 const Barang = useBarangStore();
-
 const modal_utama = ref(false);
 const modalVarian = ref(false);
 const deleteConfirmationModal = ref(false);
@@ -368,13 +348,9 @@ const filter = reactive({
   value: "",
 });
 var subTable
-// const isInvoice = ref(false)
-// const data_jual = ref([])
 const id_data = ref("");
 const daftarVarian = ref("kosong");
-
 const checkedID = ref(false);
-
 const inputIdVarian = ref("");
 const inputNamaVarian = ref("");
 const inputGambarVarian = ref("");
@@ -388,18 +364,13 @@ const stokTersisa = ref(0);
 const stokTerpakai = ref(0);
 const stokTersedia = ref(0);
 const outlet = ref("");
-
-
 const data = ref([]);
-
 const url = ref(null);
 const file = ref(null);
 const isVarian = ref(false);
 const gambar_lama = ref("");
 const gambar_lama_preview = ref("");
-
 const publicPath = import.meta.env.VITE_APP_BASE_API;
-
 // Basic non sticky notification
 const basicNonStickyNotification = ref();
 provide("bind[basicNonStickyNotification]", (el) => {
@@ -421,7 +392,6 @@ const addVarianGet = async () => {
   url.value = ''
   modalVarian.value = true
 };
-
 
 const addVarian = () => {
   try {
@@ -447,7 +417,6 @@ const addVarian = () => {
 
 const updateVarian = () => {
   try {
-    //console.log("Update Tambah Data", file.value);
     Barang.updateSubvarian({
       id_sub_varian: id_data.value,
       id_varian: inputIdVarian.value,
@@ -463,7 +432,6 @@ const updateVarian = () => {
 };
 
 const deleteVarian = () => {
-  // alert("delete" + inputIdVarian.value + inputNamaVarian.value)
   Barang.removeSubvarian({ id_sub_varian: id_data.value, id_varian: inputIdVarian.value }).then((data) => {
     initTabulator();
     resetModal();
@@ -476,11 +444,7 @@ const previewImage = (e) => {
   file.value = e.target.files[0];
   url.value = URL.createObjectURL(file.value);
 };
-
-//defineExpose({ qrScanner })
-
 const renderQrScanner = () => {
-  //qrScanner.renderQrScanner();
   qrScanner.value.renderQrScanner();
 }
 
@@ -489,7 +453,6 @@ const closeQrScanner = () => {
 }
 
 const resultScan = (result) => {
-  // ntar di concat ma id outlet
   inputIdVarian.value = result;
   console.log("hasil", inputIdVarian)
   isModalScanner.value = false;
@@ -503,10 +466,8 @@ const resetModal = () => {
   deleteConfirmationModal.value = false
   isEdit.value = false
   isModalScanner.value = false
-
   checkedID.value = false;
   daftarVarian.value = "kosong";
-
   inputIdVarian.value = "";
   inputNamaVarian.value = "";
   inputGambarVarian.value = "";
@@ -520,9 +481,6 @@ const resetModal = () => {
   stokTersisa.value = 0;
   stokTersedia.value = 0;
   outlet.value = "";
-
-  //data.value = "";
-
   url.value = null;
   file.value = null;
   isVarian.value = false;
@@ -533,7 +491,6 @@ const resetModal = () => {
 
 watch(filter, async (newValue, oldValue) => {
   try {
-    //console.log("filter: ", newValue)
     onFilter()
   } catch (error) {
     alert("Gagal wtch filter" + error)
@@ -545,14 +502,8 @@ watch(daftarVarian, async (newValue, oldValue) => {
   if (newValue !== "kosong" || newValue =="") {
     //console.log("daftar varian: ", newValue === "kosong")
     Barang.updateSubvarianGet(newValue).then((detail) => {
-      //alert("edit " + JSON.stringify(varian.gambar_varian));
-      // data.value = detail
-      //gambar_lama.value = detail.item.gambar_varian
       file.value = ''
       url.value = getImgUrl(detail.item.gambar_varian)
-
-      //id_data.value = detail.item.id_sub_varian
-
       inputIdVarian.value = detail.item.id_varian
       inputNamaVarian.value = detail.item.nama_varian
       kategoriBarangVarian.value = `${detail.item.id_barang} - ${detail.item.nama_barang}`
@@ -566,8 +517,6 @@ watch(daftarVarian, async (newValue, oldValue) => {
       hargaJualVarian.value = detail.item.harga_jual_varian
       outlet.value = detail.item.nama_outlet
       stokTersedia.value = parseInt(+stokLokal.value + +stokTersisa.value)
-      // isEdit.value = true;
-      // modalVarian.value = true;
     }).catch((e) => {
       alert("Error edit Get " + e);
     });
@@ -613,14 +562,9 @@ const initTabulator = () => {
     columnDefaults: {
       resizable: true,
       tooltip: function (e, cell, onRendered) {
-        //e - mouseover event
-        //cell - cell component
-        //onRendered - onRendered callback registration function
-
         var el = document.createElement("div");
         el.style.backgroundColor = "white smoke";
-        el.innerText = cell.getColumn().getField() + " - " + cell.getValue(); //return cells "field - value";
-
+        el.innerText = cell.getColumn().getField() + " - " + cell.getValue();
         return el;
       },
     },
@@ -633,7 +577,6 @@ const initTabulator = () => {
         resizable: false,
         headerSort: false,
       },
-
       // For HTML table
       {
         title: "ID BARANG",
@@ -699,33 +642,24 @@ const initTabulator = () => {
       },
     ],
     rowFormatter: function (row) {
-      //create and style holder elements
       var holderEl = document.createElement("div");
       var tableEl = document.createElement("div");
       holderEl.style.display = "none"
-
       const id = row.getData().id_barang;
-
       holderEl.style.boxSizing = "border-box";
       holderEl.style.padding = "10px 30px 10px 10px";
       holderEl.style.borderTop = "1px solid #333";
       holderEl.style.borderBotom = "1px solid #333";
       holderEl.setAttribute('class', "subTable" + id + "");
-
-
       tableEl.style.border = "1px solid #333";
       tableEl.style.display = "none"
       tableEl.setAttribute('class', "subTable" + id + "");
-
       holderEl.appendChild(tableEl);
-
       row.getElement().appendChild(holderEl);
-
       subTable = new Tabulator(tableEl, {
         printAsHtml: true,
         printStyled: true,
         layout: "fitColumns",
-
         rowHeight: "25px",
         responsiveLayout: "collapse",
         layout: "fitColumns",
@@ -753,7 +687,7 @@ const initTabulator = () => {
             formatter(cell) {
               return `<div class=" text-center p-auto">
                 <div class="mb-2">
-        <img
+        <img width="100" height="100"
           src="${getImgUrl(cell.getData().gambar_varian)}"
           alt="${cell.getData().gambar_varian}"
           data-action="zoom"
@@ -899,17 +833,13 @@ const initTabulator = () => {
               </div>`);
               dom(a).on("click", "a", function (e) {
                 if (e.id === "edit") {
-                  //alert("edit " + JSON.stringify(cell.getData()));
                   const varian = cell.getData()
                   getImgUrl(varian.gambar_varian)
                   Barang.updateSubvarianGet(varian.id_varian).then((detail) => {
-                    //alert("edit " + JSON.stringify(varian.gambar_varian));
                     data.value = detail
                     gambar_lama.value = detail.item.gambar_varian
                     file.value = ''
-
                     id_data.value = detail.item.id_sub_varian
-
                     inputIdVarian.value = detail.item.id_varian
                     inputNamaVarian.value = detail.item.nama_varian
                     kategoriBarangVarian.value = `${detail.item.id_barang} - ${detail.item.nama_barang}`
@@ -921,8 +851,6 @@ const initTabulator = () => {
                     hargaBeliVarian.value = detail.item.harga_beli_varian
                     hargaJualVarian.value = detail.item.harga_jual_varian
                     stokTersedia.value = parseInt(+stokLokal.value + +stokTersisa.value)
-                    //console.log("stoktersedi", stokTersedia.value)
-
                     isEdit.value = true;
                     modalVarian.value = true;
                   }).catch((e) => {
@@ -930,19 +858,12 @@ const initTabulator = () => {
                   });
 
                 } else {
-                  //alert("delete" + JSON.stringify(cell.getData()));
                   const varian = cell.getData();
-                  //console.log("varian", varian);
                   id_data.value = varian.id_sub_varian;
                   inputIdVarian.value = varian.id_varian;
                   inputNamaVarian.value = varian.nama_varian;
                   isVarian.value = true;
                   deleteConfirmationModal.value = true;
-                  // gambar_lama.value = varian.gambar_varian
-                  //const no_invoice_del = JSON.stringify(cell.getData().id_barang)
-                  // inputIdBarang.value = cell.getData().id_barang;
-                  // inputNamaBarang.value = cell.getData().nama_barang
-                  // deleteConfirmationModal.value = true;
                 }
               });
 
@@ -1019,7 +940,6 @@ const initTabulator = () => {
     },
   });
   tabulator.value.on("renderComplete", function () {
-    //subTable.redraw();
     createIcons({
       icons,
       "stroke-width": 1.5,
@@ -1030,11 +950,9 @@ const initTabulator = () => {
   tabulator.value.on("rowDblClick", async function (e, row) {
     const id = row.getData().id_barang;
     try {
-
       await Barang.readVarianOutlet(id).then(
         (data) => {
           tabulator.value.replaceData(data)
-          //console.log("rowClick", data);
         }).catch((e) => {
           throw e;
         });
@@ -1063,15 +981,12 @@ const reInitOnResizeWindow = () => {
 };
 
 const getImgUrl = (gambar_varian) => {
-  //console.log('gambar_varian', import.meta.url)
   if (gambar_varian) {
     var images = gambar_varian.data
       .map((b) => String.fromCharCode(b))
       .join("");
     gambar_lama_preview.value = new URL(`${publicPath}gambar/${images}`).href;
-    //if (isEdit) {
       url.value = gambar_lama_preview.value
-    //}
 
     return gambar_lama_preview.value;
   } else {

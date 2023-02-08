@@ -28,8 +28,6 @@
             </div>
             <div class="col-span-12 mb-5">
               <label for="pos-form-3" class="form-label mb-1">Role</label>
-              <!-- <input id="pos-form-3" type="text" class="form-control flex-1" placeholder="Masukan Role" v-model="role"
-                required /> -->
               <TomSelect v-model="role" class="w-full" required>
                 <option value="role" disabled>
                   &gt-- Pilih Role --&lt
@@ -47,8 +45,6 @@
             </div>
             <div class="col-span-12 mb-5">
               <label for="pos-form-4" class="form-label mb-1">Outlet</label>
-              <!-- <input id="pos-form-4" type="text" class="form-control flex-1" placeholder="Masukan Outlet"
-                v-model="outlet" required /> -->
               <TomSelect v-model="outlet" class="w-full" required>
                 <option value="id_outlet" disabled>
                   &gt-- Pilih Outlet --&lt
@@ -153,15 +149,9 @@
               <DropdownItem @click="onExportCsv">
                 <FileTextIcon class="w-4 h-4 mr-2" /> Export CSV
               </DropdownItem>
-              <!-- <DropdownItem @click="onExportJson">
-                <FileTextIcon class="w-4 h-4 mr-2" /> Export JSON
-              </DropdownItem> -->
               <DropdownItem @click="onExportXlsx">
                 <FileTextIcon class="w-4 h-4 mr-2" /> Export XLSX
               </DropdownItem>
-              <!-- <DropdownItem @click="onExportHtml">
-                <FileTextIcon class="w-4 h-4 mr-2" /> Export HTML
-              </DropdownItem> -->
             </DropdownContent>
           </DropdownMenu>
         </Dropdown>
@@ -208,18 +198,14 @@
 </template>
 
 <script>
-//import bcrypt from "bcrypt";
 import { useUserStore } from "@/stores/user";
 import ModalDatabaseError from "@/components/modal-error/Main.vue";
-// import UserList from "./UserList.vue";
 import { ref, reactive } from "vue";
 import xlsx from "xlsx";
 import { createIcons, icons } from "lucide";
 import { TabulatorFull as Tabulator } from 'tabulator-tables';
 import dom from "@left4code/tw-starter/dist/js/dom";
 import moment from "moment";
-
-// const User = useUserStore();
 const modal_utama = ref(false);
 const isLoading = ref(false);
 const id_users = ref("");
@@ -232,17 +218,12 @@ const password_baru = ref("");
 const deleteConfirmationModal = ref(false);
 const isEdit = ref(false);
 const passEdit = ref(false);
-
-// const tableRef = ref("");
 const tabulator = ref();
 const filter = reactive({
   field: "id_users",
   type: "like",
   value: "",
 });
-
-
-
 export default {
   setup() {
     const User = useUserStore();
@@ -263,8 +244,6 @@ export default {
       password,
       password_baru,
       isLoading,
-
-      //tableRef,
       tabulator,
       filter,
       isEdit,
@@ -277,7 +256,6 @@ export default {
       deleteConfirmationModal.value = false;
       isEdit.value = false;
       passEdit.value = false;
-
       id_users.value = "";
       username.value = "";
       role.value = "role";
@@ -288,19 +266,11 @@ export default {
     },
     addUser() {
       try {
-        // console.log("addUser", username.value, email_user.value)
-        this.User.addItem(
-          username.value,
-          role.value,
-          outlet.value,
-          email_user.value,
-          password.value,
+        this.User.addItem( username.value, role.value, outlet.value, email_user.value, password.value,
         ).then(() => {
           this.resetModal();
           this.initTabulator();
         })
-
-
       } catch (error) {
         alert("Gagal Tambah Data" + error);
       }
@@ -316,7 +286,6 @@ export default {
           }
         } else {
           finalPassword = "";
-          //console.log("Password Lama")
         }
         this.User.updateItem({
           id_users: this.id_users,
@@ -329,8 +298,6 @@ export default {
           this.initTabulator();
           this.resetModal();
         });
-        //console.log("update", this.id_users, this.username, this.email_user, this.password,
-
       } catch (error) {
         alert(`Gagal Update data ${id_users}` + error);
       }
@@ -506,32 +473,26 @@ export default {
                   <i data-lucide="trash-2" class="w-4 h-4 mr-1"></i> Delete
                 </a>
               </div>`);
-              // const func = deleteConfirmationModal
               dom(a).on("click", "a", function (e) {
-                // On click actions
                 if (e.id === "edit") {
-
                   id_users.value = cell.getData().id_users
                   username.value = cell.getData().username
                   email_user.value = cell.getData().email_user
                   role.value = cell.getData().role
                   outlet.value = cell.getData().id_outlet
                   password.value = cell.getData().password
-
                   isEdit.value = true
                   modal_utama.value = true
                 } else {
                   id_users.value = cell.getData().id_users
                   username.value = cell.getData().username
                   deleteConfirmationModal.value = true
-                  //console.log("hapus", id_users.value, username.value)
                 }
               });
               return a[0]
 
             },
           },
-
           // For print format
           {
             title: "ID USER",
@@ -589,7 +550,6 @@ export default {
         ],
       });
       this.tabulator.on("renderComplete", function () {
-        //subTable.redraw();
         createIcons({
           icons,
           "stroke-width": 1.5,
@@ -598,7 +558,6 @@ export default {
         });
       });
       this.tabulator.on("cellEdited", function (cell) {
-        //cell - cell component
         id_users.value = cell.getData().id_users
         username.value = cell.getData().username
         role.value = cell.getData().role
@@ -607,7 +566,6 @@ export default {
         password.value = cell.getData().password
         isEdit.value = true
         modal_utama.value = true
-        // console.log("aku cengar cengir", cell.getData(), this.User.items)
       });
     },
     reInitOnResizeWindow() {
@@ -635,11 +593,6 @@ export default {
     onExportCsv() {
       this.tabulator.download("csv", "data.csv");
     },
-
-    onExportJson() {
-      this.tabulator.download("json", "data.json");
-    },
-
     onExportXlsx() {
       const win = window;
       win.XLSX = xlsx;
@@ -647,13 +600,6 @@ export default {
         sheetName: "Data User",
       });
     },
-
-    onExportHtml() {
-      this.tabulator.download("html", "data.html", {
-        style: true,
-      });
-    },
-
     // Print
     onPrint() {
       this.tabulator.print();
@@ -671,7 +617,6 @@ export default {
       isLoading.value = false;
       console.error(error);
       this.$refs.modalErrorRef.errorDatabaseModal = true;
-      //console.log("error: " + this.$refs.modalErrorRef)
     });
   },
 };

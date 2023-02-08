@@ -105,15 +105,9 @@
               <DropdownItem @click="onExportCsv">
                 <FileTextIcon class="w-4 h-4 mr-2" /> Export CSV
               </DropdownItem>
-              <!-- <DropdownItem @click="onExportJson">
-                <FileTextIcon class="w-4 h-4 mr-2" /> Export JSON
-              </DropdownItem> -->
               <DropdownItem @click="onExportXlsx">
                 <FileTextIcon class="w-4 h-4 mr-2" /> Export XLSX
               </DropdownItem>
-              <!-- <DropdownItem @click="onExportHtml">
-                <FileTextIcon class="w-4 h-4 mr-2" /> Export HTML
-              </DropdownItem> -->
             </DropdownContent>
           </DropdownMenu>
         </Dropdown>
@@ -163,14 +157,12 @@
 <script>
 import { usePelangganStore } from "@/stores/pelanggan";
 import ModalDatabaseError from "@/components/modal-error/Main.vue";
-// import PelangganList from "./PelangganList.vue";
 import { ref, reactive } from "vue";
 import xlsx from "xlsx";
 import { createIcons, icons } from "lucide";
 import { TabulatorFull as Tabulator } from 'tabulator-tables';
 import dom from "@left4code/tw-starter/dist/js/dom";
 import moment from "moment";
-
 const isLoading = ref(false);
 const modal_utama = ref(false);
 const id_pelanggan = ref("");
@@ -179,17 +171,12 @@ const alamat_pelanggan = ref("");
 const kontak_pelanggan = ref();
 const deleteConfirmationModal = ref(false);
 const isEdit = ref(false);
-
-// const tableRef = ref("");
 const tabulator = ref();
 const filter = reactive({
   field: "id_pelanggan",
   type: "like",
   value: "",
 });
-
-
-
 export default {
   setup() {
     const Pelanggan = usePelangganStore();
@@ -203,13 +190,10 @@ export default {
       deleteConfirmationModal,
       id_pelanggan,
       nama_pelanggan,
-
       modal_utama,
       isLoading,
       alamat_pelanggan,
       kontak_pelanggan,
-
-      //tableRef,
       tabulator,
       filter,
       isEdit
@@ -218,7 +202,6 @@ export default {
   methods: {
     addPelanggan() {
       try {
-        // console.log("addPelanggan", nama_pelanggan.value, alamat_pelanggan.value)
         this.Pelanggan.addItem(
           nama_pelanggan.value,
           alamat_pelanggan.value,
@@ -251,8 +234,6 @@ export default {
           this.alamat_pelanggan = ""
           this.kontak_pelanggan = ""
         });
-        //console.log("update", this.id_pelanggan, this.nama_pelanggan, this.alamat_pelanggan, this.kontak_pelanggan,
-
       } catch (error) {
         alert(`Gagal Update data ${id_pelanggan}` + error);
       }
@@ -296,7 +277,6 @@ export default {
           // For HTML table
           {
             title: "ID PELANGGAN",
-            // minWidth: 200,
             minWidth: 200,
             responsive: 0,
             field: "id_pelanggan",
@@ -386,11 +366,9 @@ export default {
                   <i data-lucide="trash-2" class="w-4 h-4 mr-1"></i> Delete
                 </a>
               </div>`);
-              // const func = deleteConfirmationModal
               dom(a).on("click", "a", function (e) {
                 // On click actions
                 if (e.id === "edit") {
-                  //alert("edit" + cell.getData().id_pelanggan);
                   id_pelanggan.value = cell.getData().id_pelanggan
                   nama_pelanggan.value = cell.getData().nama_pelanggan
                   alamat_pelanggan.value = cell.getData().alamat_pelanggan
@@ -401,14 +379,11 @@ export default {
                   id_pelanggan.value = cell.getData().id_pelanggan
                   nama_pelanggan.value = cell.getData().nama_pelanggan
                   deleteConfirmationModal.value = true
-                  //console.log("hapus", id_pelanggan.value, nama_pelanggan.value)
                 }
               });
               return a[0]
-
             },
           },
-
           // For print format
           {
             title: "ID PELANGGAN",
@@ -450,14 +425,12 @@ export default {
         });
       });
       this.tabulator.on("cellEdited", function (cell) {
-        //cell - cell component
         id_pelanggan.value = cell.getData().id_pelanggan
         nama_pelanggan.value = cell.getData().nama_pelanggan
         alamat_pelanggan.value = cell.getData().alamat_pelanggan
         kontak_pelanggan.value = cell.getData().kontak_pelanggan
         isEdit.value = true
         modal_utama.value = true
-        // console.log("aku cengar cengir", cell.getData(), this.Pelanggan.items)
       });
     },
     reInitOnResizeWindow() {
@@ -485,11 +458,6 @@ export default {
     onExportCsv() {
       this.tabulator.download("csv", "data.csv");
     },
-
-    onExportJson() {
-      this.tabulator.download("json", "data.json");
-    },
-
     onExportXlsx() {
       const win = window;
       win.XLSX = xlsx;
@@ -497,13 +465,6 @@ export default {
         sheetName: "Data Pelanggan",
       });
     },
-
-    onExportHtml() {
-      this.tabulator.download("html", "data.html", {
-        style: true,
-      });
-    },
-
     // Print
     onPrint() {
       this.tabulator.print();

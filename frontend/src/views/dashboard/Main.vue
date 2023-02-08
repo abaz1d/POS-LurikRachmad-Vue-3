@@ -160,7 +160,6 @@
                   </div>
                 </div>
               </div>
-
             </TabPanel>
           </TabPanels>
         </TabGroup>
@@ -430,14 +429,9 @@ const initTabulatorProduk = () => {
     placeholder: "Tida ada Data di temukan",
     columnDefaults: {
       tooltip: function (e, cell, onRendered) {
-        //e - mouseover event
-        //cell - cell component
-        //onRendered - onRendered callback registration function
-
         var el = document.createElement("div");
         el.style.backgroundColor = "white smoke";
-        el.innerText = cell.getData().id_varian + " - " + cell.getData().nama_varian; //return cells "field - value";
-
+        el.innerText = cell.getData().id_varian + " - " + cell.getData().nama_varian;
         return el;
       },
     },
@@ -455,7 +449,8 @@ const initTabulatorProduk = () => {
           return `<div class="intro-x min-w-fit sm:min-w-max">
               <div class="box px-5 py-3 flex items-center zoom-in">
                 <div class="w-10 h-10 flex-none image-fit rounded-full overflow-hidden">
-                  <img
+                  <img decoding="async" loading="lazy"
+                  width="100" height="100"
           src="${getImgUrl(cell.getData().gambar_varian)}"
           alt="${cell.getData().gambar_varian}"
           data-action="zoom"
@@ -500,12 +495,7 @@ const initTabulatorOutlet = () => {
     // responsiveLayout: "collapse",
     placeholder: "Tida ada Data di temukan",
     columnDefaults: {
-      tooltip: function (e, cell, onRendered) {
-        //e - mouseover event
-        //cell - cell component
-        //onRendered - onRendered callback registration function
-
-        var el = document.createElement("div");
+      tooltip: function (e, cell, onRendered) {     var el = document.createElement("div");
         el.style.backgroundColor = "white smoke";
         el.innerText = cell.getData().id_outlet + " - " + cell.getData().nama_outlet; //return cells "field - value";
 
@@ -513,13 +503,10 @@ const initTabulatorOutlet = () => {
       },
     },
     columns: [
-      // For HTML table
       {
         title: "OUTLET TERLARIS",
         minWidth: 390,
         field: "total_jual",
-        // hozAlign: "center",
-        // vertAlign: "middle",
         print: false,
         download: false,
         formatter(cell) {
@@ -545,7 +532,6 @@ const initTabulatorOutlet = () => {
     ],
   });
   tabulatorProduk.value.on("renderComplete", function () {
-    //subTable.redraw();
     createIcons({
       icons,
       "stroke-width": 1.5,
@@ -566,10 +552,6 @@ const initTabulatorJual = () => {
     placeholder: "Tida ada Data di temukan",
     columnDefaults: {
       tooltip: function (e, cell, onRendered) {
-        //e - mouseover event
-        //cell - cell component
-        //onRendered - onRendered callback registration function
-
         var el = document.createElement("div");
         el.style.backgroundColor = "white smoke";
         el.innerText = cell.getColumn().getField() + " - " + cell.getValue(); //return cells "field - value";
@@ -583,8 +565,6 @@ const initTabulatorJual = () => {
         title: "PENJUALAN HARI INI",
         minWidth: 390,
         field: "no_invoice",
-        // hozAlign: "center",
-        // vertAlign: "middle",
         print: false,
         download: false,
         formatter(cell) {
@@ -628,14 +608,9 @@ const initTabulatorBeli = () => {
     placeholder: "Tida ada Data di temukan",
     columnDefaults: {
       tooltip: function (e, cell, onRendered) {
-        //e - mouseover event
-        //cell - cell component
-        //onRendered - onRendered callback registration function
-
         var el = document.createElement("div");
         el.style.backgroundColor = "white smoke";
-        el.innerText = cell.getColumn().getField() + " - " + cell.getValue(); //return cells "field - value";
-
+        el.innerText = cell.getColumn().getField() + " - " + cell.getValue();
         return el;
       },
     },
@@ -645,14 +620,11 @@ const initTabulatorBeli = () => {
         title: "PEMBELIAN HARI INI",
         minWidth: 390,
         field: "no_invoice",
-        // hozAlign: "center",
-        // vertAlign: "middle",
         print: false,
         download: false,
         formatter(cell) {
           const a = dom(`<div class="intro-x">
               <div class="box py-1 flex items-center zoom-in">
-                
                 <div class="ml-5 mr-auto">
                   <div class="font-medium">
                     ${cell.getData().no_invoice}
@@ -669,7 +641,6 @@ const initTabulatorBeli = () => {
     ],
   });
   tabulatorJual.value.on("renderComplete", function () {
-    //subTable.redraw();
     createIcons({
       icons,
       "stroke-width": 1.5,
@@ -697,7 +668,6 @@ const reInitOnResizeWindow = () => {
 };
 
 const getImgUrl = (gambar_varian) => {
-  //console.log('gambar_varian',gambar_varian)
   var images = gambar_varian.data
     .map((b) => String.fromCharCode(b))
     .join("");
@@ -712,7 +682,6 @@ const simpanNotepad = async () => {
   const notepad = editorData.value
   await Dashboard.updateNotepad(id, notepad)
   isSave.value = false;
-  //console.log("simpanNotepad", editorData.value)
 }
 
 const importantNotesRef = ref();
@@ -748,7 +717,6 @@ onMounted(async function () {
     data.value = await Dashboard.readItem();
     const notepad = await Dashboard.getNotepad(id)
     editorData.value = (notepad === null) ? '' : notepad
-    //console.log("onUnmount", editorData.value, notepad, id);
     if (Auth.items.role == 'Super Admin') {
       initTabulatorProduk();
       initTabulatorOutlet();
@@ -770,7 +738,6 @@ onBeforeUnmount(async () => {
     simpanNotepad();
     isLoading.value = false;
   };
-  //console.log("onUnmount", editorData.value);
 });
 
 </script>

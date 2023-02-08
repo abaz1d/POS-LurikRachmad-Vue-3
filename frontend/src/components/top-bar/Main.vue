@@ -95,7 +95,7 @@
     <!-- END: Search -->
     <!-- BEGIN: Notifications -->
     <Dropdown class="intro-x mr-auto sm:mr-6">
-      <DropdownToggle tag="div" role="button"
+      <DropdownToggle tag="div" role="button" aria-label="notif"
         class="inline-block relative notification notification--light cursor-pointer mt-1">
         <BellIcon class="notification__icon text-white stroke-2 stroke-slate-500 fill-white" />
         <span class="motion-safe:animate-ping absolute top-0 right-0.5 block h-1.5 w-1.5 rounded-full ring-2 ring-green-300 bg-green-400"></span>
@@ -103,45 +103,21 @@
       </DropdownToggle>
       <DropdownMenu class="notification-content pt-2">
         <DropdownContent tag="div" class="notification-content__box">
-          <div class="notification-content__title">Notifications</div>
-          <!-- <div v-for="(faker, fakerKey) in $_.take($f(), 5)" :key="fakerKey"
-            class="cursor-pointer relative flex items-center" :class="{ 'mt-5': fakerKey }">
-            <div class="w-12 h-12 flex-none image-fit mr-1">
-              <img alt="Lurik Rachmad HTML" class="rounded-full" :src="faker.photos[0]" />
-              <div
-                class="w-3 h-3 bg-success absolute right-0 bottom-0 rounded-full border-2 border-white dark:border-darkmode-600">
-              </div>
-            </div>
-            <div class="ml-2 overflow-hidden">
-              <div class="flex items-center">
-                <a href="javascript:;" class="font-medium truncate mr-5">
-                  {{ faker.users[0].name }}</a>
-                <div class="text-xs text-slate-400 ml-auto whitespace-nowrap">
-                  {{ faker.times[0] }}
-                </div>
-              </div>
-              <div class="w-full truncate text-slate-500 mt-0.5">
-                {{ faker.news[0].shortContent }}
-              </div>
-            </div>
-          </div> -->
+          <div class="notification-content__title">Status Database</div>
         </DropdownContent>
       </DropdownMenu>
     </Dropdown>
     <!-- END: Notifications -->
     <!-- BEGIN: Account Menu -->
     <Dropdown class="intro-x w-8 h-8">
-      <DropdownToggle tag="div" role="button"
+      <DropdownToggle tag="div" role="button" aria-label="user"
         class="w-8 h-8 bg-white stroke-2 stroke-black p-auto rounded-full overflow-hidden shadow-lg image-fit zoom-in scale-110">
-        <!-- <img alt="Lurik Rachmad HTML" :src="$f()[9].photos[0]" /> -->
-        <!-- <div class="bg-white w-8 h-8 m-auto p-auto rounded-full"> -->
         <CrownIcon v-if="data.role == 'Super Admin'"
           class="w-6 h-6 object-fill stroke-2 stroke-black fill-yellow-200 bg-white mt-1 mx-auto rounded-full" />
         <UserIcon v-else-if="data.role == 'Admin'"
           class="w-6 h-6 object-fill stroke-2 stroke-black fill-yellow-200 bg-white mt-1 mx-auto rounded-full" />
         <HardHatIcon v-else
           class="w-6 h-6 object-fill stroke-2 stroke-black fill-yellow-200 bg-white mt-1 mx-auto rounded-full" />
-        <!-- </div> -->
       </DropdownToggle>
       <DropdownMenu class="w-56">
         <DropdownContent class="bg-primary text-white">
@@ -167,19 +143,11 @@
             <HelpCircleIcon class="w-4 h-4 mr-2" /> Bantuan
           </DropdownItem>
           <DropdownDivider class="border-white/[0.08]" />
-          <!-- <RouterLink to="/login" class="nav-link active">
-            <DropdownItem class="hover:bg-white/5 btn-danger justify-center">
-              <LogOutIcon class="w-4 h-4 mr-2" />
-              Logout
-            </DropdownItem>
-          </RouterLink> -->
-          <!-- <RouterLink to="/login" class="nav-link active"> -->
           <DropdownItem @click="logoutConfirmationModal = true"
             class="hover:bg-white/5 bg-danger justify-center text-white">
             <LogOutIcon class="w-4 h-4 mr-2" />
             Logout
           </DropdownItem>
-          <!-- </RouterLink> -->
         </DropdownContent>
       </DropdownMenu>
     </Dropdown>

@@ -117,7 +117,7 @@
           <div class="min-w-max bg-white">
             <div class="grid sm:grid-cols-3 bg-white">
               <div class="col mx-auto sm:ml-40">
-                <img alt="Lurik Rachmad HTML" class="w-24 " src="@/assets/images/logo-gold.svg" />
+                <img width="100" height="100" alt="Lurik Rachmad HTML" class="w-24 " src="@/assets/images/logo-gold.svg" />
               </div>
               <div class="col-span-2 hidden sm:block mr-40">
                 <div class="grid justify-items-center items-center bg-white">
@@ -225,7 +225,7 @@
             </svg>
 
             <div v-else class="col-span-5 md:col-span-2 relative image-fit cursor-pointer zoom-in" style="height: 9rem">
-              <img class="imgUp rounded-md" alt="Lurik Rachmad" :src="url" />
+              <img width="100" height="100" class="imgUp rounded-md" alt="Lurik Rachmad" :src="url" />
               <Tippy content="Remove this image?" @click="url = null"
                 class="tooltip w-5 h-5 flex items-center justify-center absolute rounded-full text-white bg-danger right-0 top-0 -mr-2 -mt-2">
                 <XIcon class="w-4 h-4" />
@@ -626,6 +626,7 @@ const initTabulator = () => {
         formatter(cell) {
           const a = dom(`<div class="flex lg:justify-center items-center">
                   <img
+                  width="100" height="100"
                   id="gambar${cell.getData().no_invoice}"
                   src="${getImgUrl(cell.getData().gambar_bukti)}"
                   alt="${cell.getData().gambar_bukti}"

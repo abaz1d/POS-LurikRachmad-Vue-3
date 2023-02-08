@@ -61,16 +61,10 @@
             <DropdownContent>
               <DropdownItem @click="onExportCsv">
                 <FileTextIcon class="w-4 h-4 mr-2" /> Export CSV
-              </DropdownItem>
-              <!-- <DropdownItem @click="onExportJson">
-                <FileTextIcon class="w-4 h-4 mr-2" /> Export JSON
-              </DropdownItem> -->
+              </DropdownItem> 
               <DropdownItem @click="onExportXlsx">
                 <FileTextIcon class="w-4 h-4 mr-2" /> Export XLSX
-              </DropdownItem>
-              <!-- <DropdownItem @click="onExportHtml">
-                <FileTextIcon class="w-4 h-4 mr-2" /> Export HTML
-              </DropdownItem> -->
+              </DropdownItem> 
             </DropdownContent>
           </DropdownMenu>
         </Dropdown>
@@ -108,9 +102,7 @@ import dom from "@left4code/tw-starter/dist/js/dom";
 import moment from "moment";
 import JsBarcode from "jsbarcode"
 import html2canvas from 'html2canvas';
-
 const Barang = useBarangStore();
-
 const isPrint = ref(false);
 const isLoading = ref(false);
 const tableRef = ref();
@@ -121,25 +113,10 @@ const filter = reactive({
   type: "like",
   value: "",
 });
-
 const publicPath = import.meta.env.VITE_APP_BASE_API;
-
-// Basic non sticky notification
-const basicNonStickyNotification = ref();
-provide("bind[basicNonStickyNotification]", (el) => {
-  // Binding
-  basicNonStickyNotification.value = el;
-});
-const basicNonStickyNotificationToggle = () => {
-  // Show notification
-  basicNonStickyNotification.value.showToast();
-};
-
-
 
 watch(filter, async (newValue, oldValue) => {
   try {
-    //console.log("filter: ", newValue)
     onFilter()
   } catch (error) {
     alert("Gagal wtch filter" + error)
@@ -178,14 +155,9 @@ const initTabulator = () => {
     columnDefaults: {
       resizable: true,
       tooltip: function (e, cell, onRendered) {
-        //e - mouseover event
-        //cell - cell component
-        //onRendered - onRendered callback registration function
-
         var el = document.createElement("div");
         el.style.backgroundColor = "white smoke";
-        el.innerText = cell.getColumn().getField() + " - " + cell.getValue(); //return cells "field - value";
-
+        el.innerText = cell.getColumn().getField() + " - " + cell.getValue();
         return el;
       },
     },
@@ -254,7 +226,7 @@ const initTabulator = () => {
           return `
         <div class=" text-center p-auto mt-2">
           <div class="mb-2">
-            <img
+            <img width="100" height="100"
             src="${getImgUrl(cell.getData().gambar_varian)}"
             alt="${cell.getData().gambar_varian}"
             data-action="zoom"
@@ -278,7 +250,7 @@ const initTabulator = () => {
         formatter(cell) {
           return `
           <div>
-              <img class="barcode" 
+              <img class="barcode"  width="100" height="100"
               data-action="zoom" 
               id='${cell.getData().id_varian}'
               jsbarcode-value='${cell.getData().id_varian}'
@@ -391,7 +363,7 @@ const initTabulator = () => {
         formatterPrint(cell) {
           return `
           <div>
-            <img class="barcode" 
+            <img class="barcode" width="100" height="100"
               data-action="zoom"
               jsbarcode-value='${cell.getData().id_varian}'
               jsbarcode-textmargin="0"
@@ -419,7 +391,8 @@ const initTabulator = () => {
         visible: false,
         print: true,
         download: true,
-      }, {
+      }, 
+      {
         title: "SATUAN",
         field: "id_satuan",
         visible: false,
@@ -467,12 +440,9 @@ const reInitOnResizeWindow = () => {
 };
 
 const getImgUrl = (gambar_varian) => {
-  // console.log('gambar_varian',gambar_varian.data)
   var images = gambar_varian.data
     .map((b) => String.fromCharCode(b))
     .join("");
-
-
   return new URL(`${publicPath}gambar/${images}`).href;
 }
 
@@ -493,11 +463,6 @@ const onResetFilter = () => {
 const onExportCsv = () => {
   tabulator.value.download("csv", "data.csv");
 };
-
-const onExportJson = () => {
-  tabulator.value.download("json", "data.json");
-};
-
 const onExportXlsx = () => {
   const win = window;
   win.XLSX = xlsx;
@@ -505,13 +470,6 @@ const onExportXlsx = () => {
     sheetName: "Products",
   });
 };
-
-const onExportHtml = () => {
-  tabulator.value.download("html", "data.html", {
-    style: true,
-  });
-};
-
 // Print
 const onPrint = async () => {
   JsBarcode(".barcode").init();

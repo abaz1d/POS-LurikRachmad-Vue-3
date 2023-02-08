@@ -7,8 +7,8 @@
       <!-- BEGIN: Side Menu -->
       <nav class="side-nav">
         <router-link :to="{ name: 'side-menu-dashboard' }" tag="a" class="intro-x flex items-center pl-5 pt-4">
-          <img alt="Lurik Rachmad HTML" class="w-6 block dark:hidden" src="@/assets/images/logo.svg" />
-          <img alt="Lurik Rachmad HTML" class="w-6 hidden dark:block" src="@/assets/images/logo-gold.svg" />
+          <img width="100" height="100" alt="Lurik Rachmad HTML" class="w-6 block dark:hidden" src="@/assets/images/logo.svg" />
+          <img width="100" height="100" alt="Lurik Rachmad HTML" class="w-6 hidden dark:block" src="@/assets/images/logo-gold.svg" />
           <span class="font-philosopher hidden xl:block text-white dark:text-[#CDA562] text-lg ml-3"><b> Lurik Rachmad
             </b> </span>
         </router-link>

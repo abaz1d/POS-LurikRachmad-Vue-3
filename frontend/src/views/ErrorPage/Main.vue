@@ -8,6 +8,7 @@
       >
         <div class="-intro-x lg:mr-20">
           <img
+          width="100" height="100"
             alt="Lurik Rachmad HTML"
             class="h-48 lg:h-auto"
             src="@/assets/images/error-illustration.svg"

@@ -8,8 +8,8 @@
       <div class="top-bar-boxed flex items-center">
         <!-- BEGIN: Logo -->
         <router-link :to="{ name: 'top-menu-dashboard' }" tag="a" class="-intro-x hidden md:flex">
-          <img alt="Lurik Rachmad HTML" class="w-6 block dark:hidden" src="@/assets/images/logo.svg" />
-          <img alt="Lurik Rachmad HTML" class="w-6 hidden dark:block" src="@/assets/images/logo-gold.svg" />
+          <img width="100" height="100" alt="Lurik Rachmad HTML" class="w-6 block dark:hidden" src="@/assets/images/logo.svg" />
+          <img width="100" height="100" alt="Lurik Rachmad HTML" class="w-6 hidden dark:block" src="@/assets/images/logo-gold.svg" />
           <span class="font-philosopher text-white dark:text-[#CDA562] text-xl ml-3"> <b> Lurik Rachmad </b> </span>
         </router-link>
         <!-- END: Logo -->
@@ -106,11 +106,7 @@
         <!-- END: Search -->
         <!-- BEGIN: Notifications -->
         <Dropdown class="intro-x mr-4 sm:mr-6">
-          <!-- <DropdownToggle tag="div" role="button"
-            class="notification notification--light notification--bullet cursor-pointer">
-            <BellIcon class="notification__icon dark:text-slate-500" />
-          </DropdownToggle> -->
-          <DropdownToggle tag="div" role="button"
+          <DropdownToggle tag="div" role="button" aria-label="notif"
             class="inline-block relative notification notification--light cursor-pointer mt-1">
             <BellIcon class="notification__icon text-white stroke-2 fill-white" />
             <span class="motion-safe:animate-ping absolute top-0 right-0.5 block h-1.5 w-1.5 rounded-full ring-2 ring-green-300 bg-green-400"></span>
@@ -119,36 +115,14 @@
           <DropdownMenu class="notification-content pt-2">
             <DropdownContent tag="div" class="notification-content__box">
               <div class="notification-content__title">Status Database</div>
-              <!-- <div v-for="(faker, fakerKey) in $_.take($f(), 5)" :key="fakerKey"
-                class="cursor-pointer relative flex items-center" :class="{ 'mt-5': fakerKey }">
-                <div class="w-12 h-12 flex-none image-fit mr-1">
-                  <img alt="Lurik Rachmad HTML" class="rounded-full" :src="faker.photos[0]" />
-                  <div class="w-3 h-3 bg-success absolute right-0 bottom-0 rounded-full border-2 border-white"></div>
-                </div>
-                <div class="ml-2 overflow-hidden">
-                  <div class="flex items-center">
-                    <a href="javascript:;" class="font-medium truncate mr-5">{{
-                      faker.users[0].name
-                    }}</a>
-                    <div class="text-xs text-slate-400 ml-auto whitespace-nowrap">
-                      {{ faker.times[0] }}
-                    </div>
-                  </div>
-                  <div class="w-full truncate text-slate-500 mt-0.5">
-                    {{ faker.news[0].shortContent }}
-                  </div>
-                </div>
-              </div> -->
             </DropdownContent>
           </DropdownMenu>
         </Dropdown>
         <!-- END: Notifications -->
         <!-- BEGIN: Account Menu -->
         <Dropdown class="intro-x w-8 h-8">
-          <DropdownToggle tag="div" role="button"
+          <DropdownToggle tag="div" role="button" aria-label="user"
             class="w-8 h-8 bg-white stroke-2 stroke-black p-auto rounded-full overflow-hidden shadow-lg image-fit zoom-in scale-110">
-            <!-- <img alt="Lurik Rachmad HTML" :src="$f()[9].photos[0]" /> -->
-            <!-- <div class="bg-white w-8 h-8 m-auto p-auto rounded-full"> -->
             <CrownIcon v-if="data.role == 'Super Admin'"
               class="w-6 h-6 object-fill stroke-2 stroke-black fill-yellow-200 bg-white mt-1 mx-auto rounded-full" />
             <UserIcon v-else-if="data.role == 'Admin'"
@@ -184,7 +158,6 @@
                 <HelpCircleIcon class="w-4 h-4 mr-2" /> Bantuan
               </DropdownItem>
               <DropdownDivider class="border-white/[0.08]" />
-              <!-- <RouterLink to="/login" class="nav-link active"> -->
               <DropdownItem @click="logoutConfirmationModal = true"
                 class="hover:bg-white/5 bg-danger justify-center text-white">
                 <LogOutIcon class="w-4 h-4 mr-2" />

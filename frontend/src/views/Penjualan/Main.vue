@@ -360,16 +360,10 @@
             <DropdownContent>
               <DropdownItem @click="onExportCsv">
                 <FileTextIcon class="w-4 h-4 mr-2" /> Export CSV
-              </DropdownItem>
-              <!-- <DropdownItem @click="onExportJson">
-                <FileTextIcon class="w-4 h-4 mr-2" /> Export JSON
-              </DropdownItem> -->
+              </DropdownItem> 
               <DropdownItem @click="onExportXlsx">
                 <FileTextIcon class="w-4 h-4 mr-2" /> Export XLSX
-              </DropdownItem>
-              <!-- <DropdownItem @click="onExportHtml">
-                <FileTextIcon class="w-4 h-4 mr-2" /> Export HTML
-              </DropdownItem> -->
+              </DropdownItem> 
             </DropdownContent>
           </DropdownMenu>
         </Dropdown>
@@ -471,6 +465,7 @@ closeQrScanner();
 <script setup>
 import $ from "jquery";
 import { usePenjualanStore } from "@/stores/penjualan";
+import { useAuthStore } from "@/stores/auth";
 import { ref, provide, reactive, onMounted, onBeforeUnmount, watch } from "vue";
 import xlsx from "xlsx";
 import { createIcons, icons } from "lucide";
@@ -484,6 +479,7 @@ import moment from "moment";
 import html2canvas from 'html2canvas';
 
 const Penjualan = usePenjualanStore();
+const Auth = useAuthStore();
 
 const modal_utama = ref(false);
 const deleteConfirmationModal = ref(false);
@@ -521,6 +517,7 @@ const total_bayar_global = ref(0);
 const kembalian = ref(0);
 
 const itemDel = ref("");
+const auth = ref();
 
 // Basic non sticky notification
 const basicNonStickyNotification = ref();
@@ -910,9 +907,21 @@ const initTabulator = () => {
         print: false,
         download: false,
         formatter(cell) {
-          const a = dom(`<div class="flex lg:justify-center items-center">
-                <a id="edit" class="flex items-center mr-3" href="javascript:;">
+          const a = auth.value.role !== "Super Admin" ? dom(`<div class="flex lg:justify-center items-center">
+                <a id="edit" class="flex items-center mr-3 text-primary" href="javascript:;">
                   <i data-lucide="check-square" class="w-4 h-4 mr-1"></i> Edit
+                </a>
+                <a id="retur" class="flex items-center" href="javascript:;">
+                  <i data-lucide="undo" class="w-4 h-4 mr-1"></i> Retur
+                </a>
+              </div>`)
+            :
+            dom(`<div class="flex lg:justify-center items-center">
+                <a id="edit" class="flex items-center mr-4 text-primary" href="javascript:;">
+                  <i data-lucide="check-square" class="w-4 h-4 mr-1"></i> Edit
+                </a>
+                <a id="retur" class="flex items-center mr-4" href="javascript:;">
+                  <i data-lucide="undo" class="w-4 h-4 mr-1"></i> Retur
                 </a>
                 <a id="delete" class="flex items-center text-danger" href="javascript:;">
                   <i data-lucide="trash-2" class="w-4 h-4 mr-1"></i> Delete
@@ -936,6 +945,8 @@ const initTabulator = () => {
               }).catch((e) => {
                 alert("gagal open edit" + e);
               });
+            } else if (e.id === "retur") {
+              alert("retur")
             } else {
               //alert("delete" + JSON.stringify(cell.getData().no_invoice));
               //const no_invoice_del = JSON.stringify(cell.getData().no_invoice)
@@ -1224,6 +1235,7 @@ const onPrint = () => {
 
 onMounted(async function () {
   try {
+    auth.value = Auth.items
     isLoading.value = true;
     const data = await Penjualan.readItem()
     initTabulator();

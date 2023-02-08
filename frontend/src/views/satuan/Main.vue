@@ -6,7 +6,6 @@
         <PlusIcon class="w-4 h-4 mr-2" />
         <p class="hidden xl:block mr-1">Satuan</p> Baru
       </button>
-
       <!-- BEGIN: Modal Content -->
       <Modal backdrop="static" :show="modal_utama" @hidden="modal_utama = false">
         <ModalHeader>
@@ -101,15 +100,9 @@
               <DropdownItem @click="onExportCsv">
                 <FileTextIcon class="w-4 h-4 mr-2" /> Export CSV
               </DropdownItem>
-              <!-- <DropdownItem @click="onExportJson">
-                <FileTextIcon class="w-4 h-4 mr-2" /> Export JSON
-              </DropdownItem> -->
               <DropdownItem @click="onExportXlsx">
                 <FileTextIcon class="w-4 h-4 mr-2" /> Export XLSX
               </DropdownItem>
-              <!-- <DropdownItem @click="onExportHtml">
-                <FileTextIcon class="w-4 h-4 mr-2" /> Export HTML
-              </DropdownItem> -->
             </DropdownContent>
           </DropdownMenu>
         </Dropdown>
@@ -156,15 +149,12 @@
 
 <script>
 import { useSatuanStore } from "@/stores/satuan";
-// import SatuanList from "./SatuanList.vue";
 import { ref, reactive } from "vue";
 import xlsx from "xlsx";
 import { createIcons, icons } from "lucide";
 import { TabulatorFull as Tabulator } from 'tabulator-tables';
 import dom from "@left4code/tw-starter/dist/js/dom";
 import moment from "moment";
-
-// const Satuan = useSatuanStore();
 const modal_utama = ref(false);
 const isLoading = ref(false);
 const id_satuan = ref("");
@@ -172,17 +162,12 @@ const nama_satuan = ref("");
 const keterangan_satuan = ref("");
 const deleteConfirmationModal = ref(false);
 const isEdit = ref(false);
-
-// const tableRef = ref("");
 const tabulator = ref();
 const filter = reactive({
   field: "id_satuan",
   type: "like",
   value: "",
 });
-
-
-
 export default {
   setup() {
     const Satuan = useSatuanStore();
@@ -193,7 +178,6 @@ export default {
       deleteConfirmationModal,
       id_satuan,
       nama_satuan,
-
       modal_utama,
       keterangan_satuan,
       isLoading,
@@ -205,14 +189,12 @@ export default {
   methods: {
     addSatuan() {
       try {
-        // console.log("addSatuan", nama_satuan.value, keterangan_satuan.value)
         this.Satuan.addItem(nama_satuan.value, keterangan_satuan.value).then(() => {
           this.modal_utama = false;
           this.initTabulator();
         })
         nama_satuan.value = "";
         keterangan_satuan.value = "";
-
       } catch (error) {
         alert("Gagal Tambah Data", error);
       }
@@ -231,7 +213,6 @@ export default {
           this.nama_satuan = ""
           this.keterangan_satuan = ""
         });
-
       } catch (error) {
         alert(`Gagal Update data ${id_satuan}`, error);
       }
@@ -248,7 +229,6 @@ export default {
         alert(`Gagal Delete Satuan ${id_satuan}` + error);
       }
     },
-
     initTabulator() {
       this.tabulator = new Tabulator(this.$refs.tableRef, {
         printAsHtml: true,
@@ -276,7 +256,7 @@ export default {
           {
             title: "ID SATUAN",
             // minWidth: 200,
-            minWidth: 200,
+            minWidth: 150,
             responsive: 0,
             field: "id_satuan",
             vertAlign: "middle",
@@ -292,7 +272,7 @@ export default {
           {
             title: "NAMA SATUAN",
             headerHozAlign: "center",
-            minWidth: 200,
+            minWidth: 150,
             field: "nama_satuan",
             hozAlign: "center",
             vertAlign: "middle",
@@ -311,7 +291,7 @@ export default {
           },
           {
             title: "KETERANGAN SATUAN",
-            minWidth: 300,
+            minWidth: 400,
             headerHozAlign: "center",
             field: "keterangan_satuan",
             hozAlign: "center",
@@ -348,11 +328,8 @@ export default {
                   <i data-lucide="trash-2" class="w-4 h-4 mr-1"></i> Delete
                 </a>
               </div>`);
-              // const func = deleteConfirmationModal
               dom(a).on("click", "a", function (e) {
-                // On click actions
                 if (e.id === "edit") {
-                  //alert("edit" + cell.getData().id_satuan);
                   id_satuan.value = cell.getData().id_satuan
                   nama_satuan.value = cell.getData().nama_satuan
                   keterangan_satuan.value = cell.getData().keterangan_satuan
@@ -362,7 +339,6 @@ export default {
                   id_satuan.value = cell.getData().id_satuan
                   nama_satuan.value = cell.getData().nama_satuan
                   deleteConfirmationModal.value = true
-                  //console.log("hapus", id_satuan.value, nama_satuan.value)
                 }
               });
               return a[0]
@@ -395,7 +371,6 @@ export default {
         ],
       });
       this.tabulator.on("renderComplete", function () {
-        //subTable.redraw();
         createIcons({
           icons,
           "stroke-width": 1.5,
@@ -404,13 +379,11 @@ export default {
         });
       });
       this.tabulator.on("cellEdited", function (cell) {
-        //cell - cell component
         id_satuan.value = cell.getData().id_satuan
         nama_satuan.value = cell.getData().nama_satuan
         keterangan_satuan.value = cell.getData().keterangan_satuan
         isEdit.value = true
         modal_utama.value = true
-        // console.log("aku cengar cengir", cell.getData(), this.Satuan.items)
       });
     },
     reInitOnResizeWindow() {
@@ -439,10 +412,6 @@ export default {
       this.tabulator.download("csv", "data.csv");
     },
 
-    onExportJson() {
-      this.tabulator.download("json", "data.json");
-    },
-
     onExportXlsx() {
       const win = window;
       win.XLSX = xlsx;
@@ -450,13 +419,6 @@ export default {
         sheetName: "Data Satuan",
       });
     },
-
-    onExportHtml() {
-      this.tabulator.download("html", "data.html", {
-        style: true,
-      });
-    },
-
     // Print
     onPrint() {
       this.tabulator.print();

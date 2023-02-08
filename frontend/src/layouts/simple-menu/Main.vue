@@ -11,8 +11,9 @@
             alt="Lurik Rachmad HTML"
             class="w-6 block dark:hidden"
             src="@/assets/images/logo.svg"
+            width="100" height="100"
           />
-          <img alt="Lurik Rachmad HTML" class="w-6 hidden dark:block" src="@/assets/images/logo-gold.svg" />
+          <img width="100" height="100" alt="Lurik Rachmad HTML" class="w-6 hidden dark:block" src="@/assets/images/logo-gold.svg" />
         </a>
         <div class="side-nav__devider my-6"></div>
         <ul>

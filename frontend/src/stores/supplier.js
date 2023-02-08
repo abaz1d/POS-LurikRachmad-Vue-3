@@ -12,14 +12,9 @@ export const useSupplierStore = defineStore({
   actions: {
     async readItem() {
       try {
-        const data = await request.get("supplier", {
-          timeout: 1000
-        });
+        const data = await request.get("supplier");
         if (data.status >= 200 && data.status < 300) {
-          this.rawItems =
-            /*this.rawItems.concat(res.data.rows) res.data.rows*/ data.data;
-          //console.log('rawItems', this.rawItems)
-          // return this.rawItems
+          this.rawItems = data.data;
         }
       } catch (e) {
         console.error(e);
@@ -66,13 +61,11 @@ export const useSupplierStore = defineStore({
         .get(`supplier/delete/${id_supplier}`)
         .then((res) => {
           if (res.status >= 200 && res.status < 300) {
-            // alert(`Sukses Hapus Data ${id_supplier}`)
           }
         })
         .catch((e) => console.error(e));
     },
     async updateItem(supplier) {
-      //console.log(`Updating` ,supplier.id_supplier)
       let id_supplier = supplier.id_supplier;
       let nama_supplier = supplier.nama_supplier;
       let alamat_supplier = supplier.alamat_supplier;

@@ -3,7 +3,7 @@
     <div class="min-w-max bg-white">
       <div class="grid sm:grid-cols-3 bg-white">
         <div class="col mx-auto sm:ml-40">
-          <img alt="Lurik Rachmad HTML" class="w-24 " src="@/assets/images/logo-gold.svg" />
+          <img width="100" height="100" alt="Lurik Rachmad HTML" class="w-24 " src="@/assets/images/logo-gold.svg" />
         </div>
         <div class="col-span-2 hidden sm:block mr-40">
           <div class="grid justify-items-center items-center bg-white">

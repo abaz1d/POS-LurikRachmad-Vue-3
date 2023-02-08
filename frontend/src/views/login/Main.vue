@@ -5,18 +5,10 @@
       <div class="block xl:grid grid-cols-2 gap-4">
         <!-- BEGIN: Login Info -->
         <div class="hidden xl:flex flex-col min-h-screen">
-          <!-- <a href="" class="-intro-x flex items-center pt-5">
-            <img
-              alt="Lurik Rachmad HTML"
-              class="w-6"
-              src="@/assets/images/logo.svg"
-            />
-            <span class="font-philosopher text-white text-lg ml-3"> <b> Lurik Rachmad </b> </span>
-          </a> -->
           <div class="my-auto">
-            <img alt="Lurik Rachmad HTML" class="-intro-x w-1/2 -mt-16 fill-[#CDA562] hidden dark:block"
+            <img alt="Lurik Rachmad HTML" width="100" height="100" class="-intro-x w-1/2 -mt-16 fill-[#CDA562] hidden dark:block"
               src="@/assets/images/logo-gold.svg" />
-            <img alt="Lurik Rachmad HTML" class="-intro-x w-1/2 -mt-16 fill-white block dark:hidden"
+            <img alt="Lurik Rachmad HTML" width="100" height="100" class="-intro-x w-1/2 -mt-16 fill-white block dark:hidden"
               src="@/assets/images/logo.svg" />
             <div
               class="intro-x font-philosopher text-white dark:text-[#CDA562] font-medium ml-16 text-4xl leading-tight mt-10">
@@ -33,10 +25,10 @@
           <div
             class="my-auto mx-auto xl:ml-20 bg-white dark:bg-darkmode-600 xl:bg-transparent px-5 sm:px-8 py-8 xl:p-0 rounded-md shadow-md xl:shadow-none w-full sm:w-3/4 lg:w-2/4 xl:w-auto">
             <div class="xl:hidden">
-              <img alt="Lurik Rachmad HTML"
+              <img alt="Lurik Rachmad HTML" width="100" height="100"
                 class="intro-x -mt-[120px] mb-3 text-slate-400 xl:hidden text-center w-1/5 mx-auto hidden dark:block"
                 src="@/assets/images/logo-gold.svg" />
-              <img alt="Lurik Rachmad HTML"
+              <img alt="Lurik Rachmad HTML" width="100" height="100"
                 class="intro-x -mt-[120px] mb-3 text-slate-400 xl:hidden text-center w-1/5 mx-auto block dark:hidden"
                 src="@/assets/images/logo.svg" />
             </div>
@@ -50,10 +42,6 @@
             <div class="intro-x mt-8">
               <input v-model="input_email" type="email" class="intro-x login__input form-control py-3 px-4 block mb-4"
                 placeholder="Email: super@gmail.com" />
-
-              <!-- <input v-model="input_password" type="password" class="intro-x login__input form-control py-3 px-4 block mt-4"
-                placeholder="Password" /> -->
-
               <div class="intro-x relative w-full">
                 <div class="absolute inset-y-0 right-0 flex items-center px-2">
                   <input class="hidden js-password-toggle" @click="showPassword()" id="toggle" type="checkbox" />
@@ -74,7 +62,7 @@
                 <input id="remember-me" type="checkbox" class="form-check-input border mr-2" />
                 <label class="cursor-pointer select-none" for="remember-me">Ingat Saya</label>
               </div>
-              <a href="">Lupa Password?</a>
+              <a href="https://api.whatsapp.com/send/?phone=%2B6281548993484&text=I+want+to+order+Lurik+Rachmad&type=phone_number&app_absent=0">Lupa Password?</a>
             </div>
             <div class="intro-x mt-5 xl:mt-8 text-center xl:text-left">
               <button v-if="isLoading"
@@ -86,13 +74,6 @@
                 class="btn btn-primary py-3 px-4 w-full xl:w-32 xl:mr-3 align-top">
                 Login
               </button>
-              <!-- <RouterLink to="/register" class="">
-                <button
-                  class="btn btn-outline-secondary py-3 px-4 w-full xl:w-32 mt-3 xl:mt-0 align-top"
-                >
-                  Register
-                </button>
-              </RouterLink> -->
             </div>
             <Alert v-if="gagalLogin" class="intro-x alert-danger flex items-center mt-3 sm:-mb-14 mb-2 text-base"
               v-slot="{ dismiss }">
@@ -103,9 +84,9 @@
             </Alert>
             <div class="intro-x mt-10 xl:mt-24 text-slate-600 dark:text-slate-500 text-center xl:text-left">
               Dengan masuk aplikasi, Anda telah setuju dengan
-              <a class="text-primary dark:text-slate-200" href="">Peraturan</a>
+              <a class="text-primary dark:text-slate-200" href="https://lurikrachmad.co.id/en/terms-of-use/">Peraturan</a>
               &
-              <a class="text-primary dark:text-slate-200" href="">Ketentuan</a>
+              <a class="text-primary dark:text-slate-200" href="https://lurikrachmad.co.id/en/terms-of-use/">Ketentuan</a>
               di <span class="font-philosopher text-[#CDA562] drop-shadow-2xl"> <b> Lurik Rachmad </b> </span>
             </div>
           </div>
@@ -128,20 +109,15 @@
 <script setup>
 import { createElement, Eye, EyeOff } from "lucide";
 import { useAuthStore } from "@/stores/auth";
-import { RouterLink } from "vue-router";
 import { onMounted, ref, provide, watch, reactive, toRefs } from "vue";
 import DarkModeSwitcher from "@/components/dark-mode-switcher/Main.vue";
 import dom from "@left4code/tw-starter/dist/js/dom";
-
 const Auth = useAuthStore();
-
 const isLoading = ref(false);
 const gagalLogin = ref(false);
 const dataPopup = ref("")
-
 const input_email = ref("")
 const input_password = ref("")
-
 // Basic non sticky notification
 const basicNonStickyNotification = ref();
 provide("bind[basicNonStickyNotification]", (el) => {
@@ -182,14 +158,9 @@ watch(isLoading, async (newValue, oldValue) => {
 const onLogin = () => {
   const email_user = input_email.value
   const password = input_password.value
-
-  //console.log(email_user, password)
-
   if (email_user.length > 0 && password.length > 0) {
-    //alert(email + password)
     Auth.login(email_user, password)
       .then((data) => {
-
         if (data.success == false) {
           dataPopup.value = data.data.message
           gagalLogin.value = true
@@ -209,15 +180,12 @@ const onLogin = () => {
         alert("Gagal Login " + JSON.stringify(error))
         isLoading.value = false;
       });
-
   } else {
     dataPopup.value = "Email dan Password tidak boleh kosong !"
     gagalLogin.value = true
-    //alert("Email dan Password tidak boleh kosong !")
     isLoading.value = false;
   }
 }
-
 onMounted(() => {
   dom("body").removeClass("main").removeClass("error-page").addClass("login");
 });
