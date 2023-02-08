@@ -1,6 +1,6 @@
 import dom from "@left4code/tw-starter/dist/js/dom";
 import TomSelect from "tom-select";
-import _, { clone } from "lodash";
+import _ from "lodash";
 
 const setValue = (el, props) => {
   if (props.modelValue.length) {
@@ -9,9 +9,7 @@ const setValue = (el, props) => {
 };
 
 const init = (originalEl, clonedEl, props, emit, computedOptions) => {
-  //console.log("init", props.options.create)
-  // On option add
-  if (Array.isArray(props.modelValue)|| props.options.create) {
+  if (Array.isArray(props.modelValue) || props.options.create) {
     computedOptions = {
       onOptionAdd: function (value) {
         // Add new option
@@ -59,9 +57,7 @@ const updateValue = (
   computedOptions
 ) => {
   // Remove old options
-  for (const [optionKey, option] of Object.entries(
-    clonedEl.TomSelect.options
-  )) {
+  for (const [option] of Object.entries(clonedEl.TomSelect.options)) {
     if (
       !getOptions(dom(clonedEl).prev().children()).filter((optionEl) => {
         return optionEl.value === option.value;

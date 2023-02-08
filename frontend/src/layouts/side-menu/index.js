@@ -55,11 +55,11 @@ const linkTo = (menu, router, event) => {
   }
 };
 
-const enter = (el, done) => {
+const enter = (el) => {
   dom(el).slideDown(300);
 };
 
-const leave = (el, done) => {
+const leave = (el) => {
   dom(el).slideUp(300);
 };
 

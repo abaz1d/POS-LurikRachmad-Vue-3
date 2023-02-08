@@ -21,23 +21,16 @@ export const useBarangStore = defineStore({
     async readLaporan() {
       try {
         const { data } = await request.get("barang/laporan");
-        //console.log('data.l', data.data)
         if (data.success) {
-          //console.log('laporan', data.data)
-          this.rawLaporans = data.data.rows
-          // console.log('rawPenjualans', this.rawPenjualans)
-          //console.log('jual')
-          //return this.rawPenjualans
+          this.rawLaporans = data.data.rows;
         }
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
-
     },
     async readItem() {
       try {
         const { data } = await request.get("barang");
-        //console.log('data.data', data)
         if (data.success) {
           this.rawItems = data.data.barang;
           this.rawVarians = data.data.varian;
@@ -45,15 +38,15 @@ export const useBarangStore = defineStore({
       } catch (error) {
         console.error(error);
       }
-
     },
 
     async addItem(nama_barang) {
       const id_barang = Date.now();
       this.rawItems.push({ id_barang, nama_barang });
       try {
-        const { data } = await request.post("barang/addbarang", { nama_barang });
-        //console.log("add", data.success);
+        const { data } = await request.post("barang/addbarang", {
+          nama_barang,
+        });
         if (data.success) {
           this.rawItems = this.rawItems.map((item) => {
             if (item.id_barang === id_barang) {
@@ -73,16 +66,14 @@ export const useBarangStore = defineStore({
         this.rawItems = this.rawItems.filter(
           (item) => item.id_barang !== id_barang
         );
-        const { data } = await request.delete(`barang/deletebar/${id_barang}`)
-        //console.log('data.data', data);
+        const { data } = await request.delete(`barang/deletebar/${id_barang}`);
         if (data.success) {
-          // alert(`Sukses Hapus Data ${id_barang}`)
+          return data.success;
         }
       } catch (error) {
         console.error(error);
       }
     },
-
     async updateItem(barang) {
       try {
         let id_barang = barang.id_barang;
@@ -93,16 +84,16 @@ export const useBarangStore = defineStore({
           }
           return item;
         });
-        const { data } = await request.post(`barang/editbar/${id_barang}`, { nama_barang })
+        const { data } = await request.post(`barang/editbar/${id_barang}`, {
+          nama_barang,
+        });
         if (data.success) {
+          return data.success;
         }
       } catch (error) {
         console.error(error);
       }
     },
-
-    //---------------------------------------------------------------- Varian ----------------
-
     async readVarian(id_barang) {
       try {
         const { data } = await request.get(`barang?id_barang=${id_barang}`);
@@ -112,21 +103,17 @@ export const useBarangStore = defineStore({
           this.rawVarians.map((varian) => {
             this.rawItems = this.rawItems.map((barang) => {
               if (varian.id_barang === barang.id_barang) {
-                return { ...barang, serviceHistory: this.rawVarians }
+                return { ...barang, serviceHistory: this.rawVarians };
               }
-              return barang
-            })
-            return varian
-          })
-
-          //console.log('data.data', this.rawVarians)
-          // console.log('this.rawVarians', this.rawVarians)
-          return this.rawItems
+              return barang;
+            });
+            return varian;
+          });
+          return this.rawItems;
         }
       } catch (error) {
         console.error(error);
       }
-
     },
 
     async addVarianGet() {
@@ -141,7 +128,6 @@ export const useBarangStore = defineStore({
       } catch (error) {
         console.error(error);
       }
-
     },
 
     async addVarian(varian) {
@@ -205,7 +191,6 @@ export const useBarangStore = defineStore({
             formData,
             headers
           );
-          //console.log("data", data);
           this.rawVarians = this.rawVarians.map((item) => {
             if (item.id_varian === varian.id_varian) {
               return data.data;
@@ -221,19 +206,17 @@ export const useBarangStore = defineStore({
     async updateVarianGet(id_varian) {
       try {
         const { data } = await request.get(`barang/editvar/${id_varian}`);
-        //console.log('data.data', data.data)
         if (data.success) {
           return data.data;
         }
       } catch (error) {
         console.error(error);
       }
-
     },
 
     async updateVarian(varian) {
-      const file = varian.file_baru
-      const gambar_lama = varian.gambarLama
+      const file = varian.file_baru;
+      const gambar_lama = varian.gambarLama;
       const formData = new FormData();
 
       formData.append("id_varian", varian.id_varian);
@@ -249,10 +232,7 @@ export const useBarangStore = defineStore({
         "gambar_lama",
         gambar_lama.data.map((b) => String.fromCharCode(b)).join("")
       );
-
-      //const headers = { "Content-Type": "application/x-www-form-urlencoded" };
       const headers = { "Content-Type": "multipart/form-data" };
-      //console.log("varian update ", varian)
       try {
         if (file === "" || file === null) {
           const { data } = await request.post(
@@ -270,13 +250,12 @@ export const useBarangStore = defineStore({
             });
           }
         } else {
-          console.log("file_baru")
+          console.log("file_baru");
           formData.append("file", file);
           const { data } = await request.post(
             `barang/editvar/${varian.id_varian}`,
             formData,
-            headers,
-            { timeout: 3 }
+            headers
           );
           if (data.success) {
             this.rawVarians = this.rawVarians.map((item) => {
@@ -298,26 +277,22 @@ export const useBarangStore = defineStore({
         this.rawVarians = this.rawVarians.filter(
           (item) => item.id_varian !== id_varian
         );
-        gambar_lama = gambar_lama.data.map((b) => String.fromCharCode(b)).join("")
-        // formData.append(
-        //   "gambar_lama",
-        //   gambar_lama.data.map((b) => String.fromCharCode(b)).join("")
-        // );
-
-        const { data } = await request.delete(`barang/deletevar/${id_varian}`, { data: { gambar_lama } })
+        gambar_lama = gambar_lama.data
+          .map((b) => String.fromCharCode(b))
+          .join("");
+        const { data } = await request.delete(`barang/deletevar/${id_varian}`, {
+          data: { gambar_lama },
+        });
         if (data.success) {
-          // alert(`Sukses Hapus Data ${id_barang}`)
+          return data.success;
         }
       } catch (error) {
         console.error("error delete varian", error);
       }
     },
-
-    //----------------------------------------------------------------Sub Varian --------------------------------
     async addSubvarianGet() {
       try {
         const { data } = await request.get("barang/addsubvarian");
-        //console.log("data", data.data.varian);
         if (data.success) {
           this.rawDatas = data.data.varian;
           return data.data.varian;
@@ -327,16 +302,11 @@ export const useBarangStore = defineStore({
       } catch (error) {
         console.error(error);
       }
-
     },
 
     async addSubvarian(varian) {
-
       const Auth = useAuthStore();
-      //const id_varian = Date.now();
       const formData = new FormData();
-
-      //formData.append("id_sub_varian", varian.id_sub_varian);
       formData.append("id_varian", varian.id_varian);
       formData.append("id_outlet", String(Auth.items.id_outlet));
       formData.append("stok_varian", varian.stok_varian);
@@ -358,7 +328,6 @@ export const useBarangStore = defineStore({
           formData,
           headers
         );
-        //console.log("data add", data.data.data);
         if (data.success) {
           this.rawVarians = this.rawVarians.map((item) => {
             if (item.id_varian === varian.id_varian) {
@@ -375,7 +344,11 @@ export const useBarangStore = defineStore({
     async readVarianOutlet(id_barang) {
       try {
         const Auth = useAuthStore();
-        const { data } = await request.get(`barang?id_barang=${id_barang}&id_outlet=${String(Auth.items.id_outlet)}`);
+        const { data } = await request.get(
+          `barang?id_barang=${id_barang}&id_outlet=${String(
+            Auth.items.id_outlet
+          )}`
+        );
 
         if (data.success) {
           this.rawVarians = data.data.varian;
@@ -383,36 +356,33 @@ export const useBarangStore = defineStore({
           this.rawVarians.map((varian) => {
             this.rawItems = this.rawItems.map((barang) => {
               if (varian.id_barang === barang.id_barang) {
-                return { ...barang, serviceHistory: this.rawVarians }
+                return { ...barang, serviceHistory: this.rawVarians };
               }
-              return barang
-            })
-            //console.log('data.data', data.data.varian, varian)
-            return varian
-          })
-
-          // console.log('data.data', request, Auth.items.id_outlet)
-          //console.log('this.rawVarians', this.rawVarians)
-          return this.rawItems
+              return barang;
+            });
+            return varian;
+          });
+          return this.rawItems;
         }
       } catch (error) {
         console.error(error);
       }
-
     },
 
     async updateSubvarianGet(id_varian) {
       try {
         const Auth = useAuthStore();
-        const { data } = await request.get(`barang/editsubvar/${id_varian}?id_outlet=${String(Auth.items.id_outlet)}`);
-        //console.log('data.data', data.data)
+        const { data } = await request.get(
+          `barang/editsubvar/${id_varian}?id_outlet=${String(
+            Auth.items.id_outlet
+          )}`
+        );
         if (data.success) {
           return data.data;
         }
       } catch (error) {
         console.error(error);
       }
-
     },
 
     async updateSubvarian(varian) {
@@ -429,10 +399,8 @@ export const useBarangStore = defineStore({
         const { data } = await request.post(
           `barang/editsubvar/${varian.id_sub_varian}`,
           formData,
-          headers,
-          { timeout: 3 }
+          headers
         );
-        //console.log('data.data', data.data.data)
         if (data.success) {
           this.rawVarians = this.rawVarians.map((item) => {
             if (item.id_varian === varian.id_varian) {
@@ -451,16 +419,15 @@ export const useBarangStore = defineStore({
         this.rawVarians = this.rawVarians.filter(
           (item) => item.id_varian !== varian.id_varian
         );
-        const { data } = await request.delete(`barang/deletesubvar/${varian.id_sub_varian}`)
-        // console.log('data.data', data);
-        // if (data.success) {
-        //   // alert(`Sukses Hapus Data ${id_barang}`)
-        // }
+        const { data } = await request.delete(
+          `barang/deletesubvar/${varian.id_sub_varian}`
+        );
+        if (data.success) {
+          return data.success;
+        }
       } catch (error) {
         console.error(error);
       }
-
     },
-
   },
 });

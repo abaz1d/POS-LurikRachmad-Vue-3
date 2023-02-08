@@ -19,7 +19,6 @@ export const useSatuanStore = defineStore({
       } catch (e) {
         console.error(e);
       }
-
     },
     async addItem(nama_satuan, keterangan_satuan) {
       const id_satuan = Date.now();
@@ -48,6 +47,7 @@ export const useSatuanStore = defineStore({
         .get(`satuan/delete/${id_satuan}`)
         .then((res) => {
           if (res.status >= 200 && res.status < 300) {
+            return res.status;
           }
         })
         .catch((e) => console.error(e));
@@ -56,17 +56,19 @@ export const useSatuanStore = defineStore({
       let id_satuan = satuan.id_satuan;
       let nama_satuan = satuan.nama_satuan;
       let keterangan_satuan = satuan.keterangan_satuan;
-      console.log("id_satuan", satuan.id_satuan)
+      console.log("id_satuan", satuan.id_satuan);
       this.rawItems = this.rawItems.map((item) => {
         if (item.id_satuan === id_satuan) {
           return satuan;
         }
         return item;
       });
-      request.post(`satuan/edit/${id_satuan}`, {
-        nama_satuan,
-        keterangan_satuan,
-      }).catch((e) => console.error(e));
+      request
+        .post(`satuan/edit/${id_satuan}`, {
+          nama_satuan,
+          keterangan_satuan,
+        })
+        .catch((e) => console.error(e));
     },
   },
 });

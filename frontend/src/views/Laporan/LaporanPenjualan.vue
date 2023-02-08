@@ -7,9 +7,14 @@
     <div class="flex flex-col sm:flex-row sm:items-end xl:items-start">
       <form id="tabulator-html-filter-form" class="xl:flex sm:mr-auto">
         <div class="sm:flex items-center sm:mr-4">
-          <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2">Field</label>
-          <select id="tabulator-html-filter-field" v-model="filter.field"
-            class="form-select w-full sm:w-32 2xl:w-full mt-2 sm:mt-0 sm:w-auto">
+          <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2"
+            >Field</label
+          >
+          <select
+            id="tabulator-html-filter-field"
+            v-model="filter.field"
+            class="form-select w-full sm:w-32 2xl:w-full mt-2 sm:mt-0 sm:w-auto"
+          >
             <option value="no_invoice">No Invoice</option>
             <option value="tanggal_penjualan">Tanggal Penjualan</option>
             <option value="total_harga_jual">Total Harga Jual</option>
@@ -18,9 +23,14 @@
           </select>
         </div>
         <div class="sm:flex items-center sm:mr-4 mt-2 xl:mt-0">
-          <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2">Type</label>
-          <select id="tabulator-html-filter-type" v-model="filter.type"
-            class="form-select w-full mt-2 sm:mt-0 sm:w-auto">
+          <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2"
+            >Type</label
+          >
+          <select
+            id="tabulator-html-filter-type"
+            v-model="filter.type"
+            class="form-select w-full mt-2 sm:mt-0 sm:w-auto"
+          >
             <option value="like" selected>like</option>
             <option value="=">=</option>
             <option value="<">&lt;</option>
@@ -31,24 +41,46 @@
           </select>
         </div>
         <div class="sm:flex items-center sm:mr-4 mt-2 xl:mt-0">
-          <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2">Value</label>
-          <input id="tabulator-html-filter-value" v-model="filter.value" type="text"
-            class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0" placeholder="Search..." />
+          <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2"
+            >Value</label
+          >
+          <input
+            id="tabulator-html-filter-value"
+            v-model="filter.value"
+            type="text"
+            class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0"
+            placeholder="Search..."
+          />
         </div>
         <div class="mt-2 xl:mt-0">
-          <button id="tabulator-html-filter-reset" type="button"
-            class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1" @click="onResetFilter">
+          <button
+            id="tabulator-html-filter-reset"
+            type="button"
+            class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1"
+            @click="onResetFilter"
+          >
             Reset
           </button>
         </div>
       </form>
       <div class="flex mt-5 sm:mt-0">
-        <button v-if="isPrint" id="tabulator-print" class="btn btn-primary w-1/2 sm:w-auto mr-2" disabled>
+        <button
+          v-if="isPrint"
+          id="tabulator-print"
+          class="btn btn-primary w-1/2 sm:w-auto mr-2"
+          disabled
+        >
           <Loader-2Icon class="w-4 h-4 mr-2 animate-spin" />
           <p class="hidden xl:block ml-1">Loading ...</p>
         </button>
-        <button v-else id="tabulator-print" class="btn btn-primary w-1/2 sm:w-auto mr-2" @click="isPrint = true">
-          <PrinterIcon class="w-4 h-4 mr-2" /> Cetak <p class="hidden xl:block ml-1">Penjualan</p>
+        <button
+          v-else
+          id="tabulator-print"
+          class="btn btn-primary w-1/2 sm:w-auto mr-2"
+          @click="isPrint = true"
+        >
+          <PrinterIcon class="w-4 h-4 mr-2" /> Cetak
+          <p class="hidden xl:block ml-1">Penjualan</p>
         </button>
         <Dropdown class="w-1/2 sm:w-auto">
           <DropdownToggle class="btn btn-outline-secondary w-full sm:w-auto">
@@ -59,44 +91,57 @@
             <DropdownContent>
               <DropdownItem @click="onExportCsv">
                 <FileTextIcon class="w-4 h-4 mr-2" /> Export CSV
-              </DropdownItem> 
+              </DropdownItem>
               <DropdownItem @click="onExportXlsx">
                 <FileTextIcon class="w-4 h-4 mr-2" /> Export XLSX
-              </DropdownItem> 
+              </DropdownItem>
             </DropdownContent>
           </DropdownMenu>
         </Dropdown>
-        <a href="" class="ml-auto sm:ml-2 btn px-2 h-10 box flex items-center text-primary">
+        <a
+          href=""
+          class="ml-auto sm:ml-2 btn px-2 h-10 box flex items-center text-primary"
+        >
           <RefreshCcwIcon class="w-4 h-4 sm:mr-3 sm:m-0 m-2" />
           <p class="sm:block hidden">Reload Data</p>
         </a>
       </div>
     </div>
-    <div v-show="isLoading" wire:loading
-      class="fixed top-0 left-0 right-0 bottom-0 w-full h-[50vw] z-50 overflow-hidden bg-gray-700 opacity-75 flex flex-col items-center justify-center">
-      <Loader2Icon class="motion-safe:animate-spin stroke-[10px] text-white h-12 w-12 mb-4" />
+    <div
+      v-show="isLoading"
+      wire:loading
+      class="fixed top-0 left-0 right-0 bottom-0 w-full h-[50vw] z-50 overflow-hidden bg-gray-700 opacity-75 flex flex-col items-center justify-center"
+    >
+      <Loader2Icon
+        class="motion-safe:animate-spin stroke-[10px] text-white h-12 w-12 mb-4"
+      />
       <h2 class="text-center text-white text-xl font-semibold">Loading...</h2>
-      <p class="w-1/3 text-center text-white">Ini mungkin memakan waktu beberapa detik, tolong jangan tutup halaman ini.
+      <p class="w-1/3 text-center text-white">
+        Ini mungkin memakan waktu beberapa detik, tolong jangan tutup halaman
+        ini.
       </p>
     </div>
     <div class="overflow-x-auto scrollbar-hidden">
-      <div id="tabulator" ref="tableJualRef" class="mt-5 table-report table-report--tabulator"></div>
+      <div
+        id="tabulator"
+        ref="tableJualRef"
+        class="mt-5 table-report table-report--tabulator"
+      ></div>
     </div>
   </div>
   <!-- END: HTML Table Data -->
-
 </template>
 
 <script setup>
 import { usePenjualanStore } from "@/stores/penjualan";
-import { ref, provide, reactive, onMounted, onBeforeUnmount, watch } from "vue";
+import { ref, reactive, onMounted, watch } from "vue";
 import xlsx from "xlsx";
 import { createIcons, icons } from "lucide";
-import { TabulatorFull as Tabulator } from 'tabulator-tables';
+import { TabulatorFull as Tabulator } from "tabulator-tables";
 import { currencyFormatter } from "@/utils/helper";
 import moment from "moment";
 const Penjualan = usePenjualanStore();
-const isPrint = ref(false)
+const isPrint = ref(false);
 const isLoading = ref(false);
 const tableJualRef = ref();
 const tabulator = ref();
@@ -106,30 +151,29 @@ const filter = reactive({
   value: "",
 });
 
-watch(isPrint, async (newValue, oldValue) => {
+watch(isPrint, async (newValue) => {
   try {
     if (newValue === true) {
       isLoading.value = true;
-      setTimeout(() => (onPrint()), 50);
+      setTimeout(() => onPrint(), 50);
     }
   } catch (error) {
-    alert("Gagal wtch print" + error)
+    alert("Gagal wtch print" + error);
   }
-})
+});
 
-watch(filter, async (newValue, oldValue) => {
+watch(filter, async () => {
   try {
-    //console.log("filter: ", newValue)
-    onFilter()
+    onFilter();
   } catch (error) {
-    alert("Gagal wtch filter" + error)
+    alert("Gagal wtch filter" + error);
   }
-})
+});
 
 const initTabulator = () => {
   tabulator.value = new Tabulator(tableJualRef.value, {
     data: Penjualan.laporans,
-    groupHeader: function (value, count, data, group) {
+    groupHeader: function (value, count, data) {
       return `
       <span class='text-center w-screen overflow-hidden whitespace-nowrap mt-2'>
         <div class="table w-full">
@@ -151,30 +195,38 @@ const initTabulator = () => {
               </div>
               <div class="sm:table-cell mx-2 my-0 overflow-hidden w-96 flex items-center"> 
                 <div class="flex items-center mr-3">
-                  <i data-lucide="calendar-days" class="sm:hidden w-4 h-4 mr-2">:</i> ${moment(data[0].tanggal_penjualan).format("DD MMM YYYY HH:SS")}
+                  <i data-lucide="calendar-days" class="sm:hidden w-4 h-4 mr-2">:</i> ${moment(
+                    data[0].tanggal_penjualan
+                  ).format("DD MMM YYYY HH:SS")}
                 </div>
               </div>
               <div class="sm:table-cell mx-2 my-0 overflow-hidden w-96 flex items-center"> 
                 <div class="flex items-center mr-3">
-                  <i data-lucide="tags" class="sm:hidden w-4 h-4 mr-2">:</i> ${currencyFormatter.format(data[0].total_harga_jual)}
+                  <i data-lucide="tags" class="sm:hidden w-4 h-4 mr-2">:</i> ${currencyFormatter.format(
+                    data[0].total_harga_jual
+                  )}
                 </div>
               </div>
               <div class="sm:table-cell mx-2 my-0 overflow-hidden w-96 flex items-center"> 
                 <div class="flex items-center mr-3">
-                  <i data-lucide="wallet" class="sm:hidden w-4 h-4 mr-2">:</i> ${currencyFormatter.format(data[0].total_bayar_jual)}
+                  <i data-lucide="wallet" class="sm:hidden w-4 h-4 mr-2">:</i> ${currencyFormatter.format(
+                    data[0].total_bayar_jual
+                  )}
                 </div>
               </div>
               <div class="sm:table-cell mx-2 my-0 overflow-hidden w-96 flex items-center"> 
                 <div class="flex items-center mr-3">
-                  <i data-lucide="coins" class="sm:hidden w-4 h-4 mr-2">:</i> ${currencyFormatter.format(data[0].kembalian_jual)}
+                  <i data-lucide="coins" class="sm:hidden w-4 h-4 mr-2">:</i> ${currencyFormatter.format(
+                    data[0].kembalian_jual
+                  )}
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </span>`
+      </span>`;
     },
-    groupHeaderPrint: function (value, count, data, group) {
+    groupHeaderPrint: function (value, data) {
       return `
       <span class='text-center w-screen overflow-hidden whitespace-nowrap'>
         <div class="table w-full">
@@ -190,21 +242,30 @@ const initTabulator = () => {
           <div class="table-row-group">
             <div class="table-row overflow-hidden">
               <div class="table-cell mx-2 my-0 overflow-hidden w-96">${value}</div>
-              <div class="table-cell mx-2 my-0 overflow-hidden w-96">${moment(data[0].tanggal_penjualan).format("DD MMM YYYY HH:SS")}</div>
-              <div class="table-cell mx-2 my-0 overflow-hidden w-96">${currencyFormatter.format(data[0].total_harga_jual)}</div>
-              <div class="table-cell mx-2 my-0 overflow-hidden w-96">${currencyFormatter.format(data[0].total_bayar_jual)}</div>
-              <div class="table-cell mx-2 my-0 overflow-hidden w-96">${currencyFormatter.format(data[0].kembalian_jual)}</div>
+              <div class="table-cell mx-2 my-0 overflow-hidden w-96">${moment(
+                data[0].tanggal_penjualan
+              ).format("DD MMM YYYY HH:SS")}</div>
+              <div class="table-cell mx-2 my-0 overflow-hidden w-96">${currencyFormatter.format(
+                data[0].total_harga_jual
+              )}</div>
+              <div class="table-cell mx-2 my-0 overflow-hidden w-96">${currencyFormatter.format(
+                data[0].total_bayar_jual
+              )}</div>
+              <div class="table-cell mx-2 my-0 overflow-hidden w-96">${currencyFormatter.format(
+                data[0].kembalian_jual
+              )}</div>
             </div>
           </div>
         </div>
-      </span>`
+      </span>`;
     },
     printHeader: `<h1 class='text-2xl p-2 m-2 text-center border-y-2 border-black'>Tabel Penjualan<h1>`,
-    printFooter: `<h2 class='p-2 m-2 text-center mt-4'>${moment(Date.now()).format("DD MMM YYYY HH:SS")}<h2>`,
+    printFooter: `<h2 class='p-2 m-2 text-center mt-4'>${moment(
+      Date.now()
+    ).format("DD MMM YYYY HH:SS")}<h2>`,
     printAsHtml: true,
     printStyled: true,
     groupBy: "no_invoice",
-    //height: "50vh",
     pagination: "remote",
     paginationSize: 10,
     paginationSizeSelector: [10, 20, 30, 40, 50, 100],
@@ -212,7 +273,7 @@ const initTabulator = () => {
     responsiveLayout: "collapse",
     placeholder: "Tida ada Data di temukan",
     columnDefaults: {
-      tooltip: function (e, cell, onRendered) {
+      tooltip: function (e, cell) {
         var el = document.createElement("div");
         el.style.backgroundColor = "white smoke";
         el.innerText = cell.getColumn().getField() + " - " + cell.getValue();
@@ -238,8 +299,9 @@ const initTabulator = () => {
         download: false,
         formatter(cell) {
           return `<div>
-                <div class="font-medium whitespace-nowrap">${cell.getData().nama_varian
-            }</div>
+                <div class="font-medium whitespace-nowrap">${
+                  cell.getData().nama_varian
+                }</div>
               </div>`;
         },
       },
@@ -254,8 +316,9 @@ const initTabulator = () => {
         download: false,
         formatter(cell) {
           return `<div>
-                <div class="font-medium whitespace-nowrap">${currencyFormatter.format(cell.getData().harga_detail_jual)
-            }</div>
+                <div class="font-medium whitespace-nowrap">${currencyFormatter.format(
+                  cell.getData().harga_detail_jual
+                )}</div>
               </div>`;
         },
       },
@@ -270,8 +333,9 @@ const initTabulator = () => {
         download: false,
         formatter(cell) {
           return `<div>
-                <div class="font-medium whitespace-nowrap">${cell.getData().qty
-            }</div>
+                <div class="font-medium whitespace-nowrap">${
+                  cell.getData().qty
+                }</div>
               </div>`;
         },
       },
@@ -286,8 +350,9 @@ const initTabulator = () => {
         download: false,
         formatter(cell) {
           return `<div>
-                <div class="font-medium whitespace-nowrap">${currencyFormatter.format(cell.getData().total_harga_detail_jual)
-            }</div>
+                <div class="font-medium whitespace-nowrap">${currencyFormatter.format(
+                  cell.getData().total_harga_detail_jual
+                )}</div>
               </div>`;
         },
       },
@@ -330,7 +395,6 @@ const initTabulator = () => {
       icons,
       "stroke-width": 1.5,
       nameAttr: "data-lucide",
-
     });
   });
 };
@@ -380,16 +444,15 @@ const onPrint = () => {
 onMounted(async function () {
   try {
     isLoading.value = true;
-    const data = await Penjualan.readLaporan()
+    await Penjualan.readLaporan();
     initTabulator();
     reInitOnResizeWindow();
     isLoading.value = false;
   } catch (error) {
-    alert("onMounted" + error)
+    alert("onMounted" + error);
     isLoading.value = false;
   }
 });
-
 </script>
 <style scoped>
 table thead th:first-child {

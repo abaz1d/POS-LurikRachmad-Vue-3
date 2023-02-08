@@ -44,7 +44,7 @@ export const useSideMenuStore = defineStore("sideMenu", {
             pageName: "side-menu-stok-lokal",
             title: "Stok Lokal",
           },
-        ]
+        ],
       },
       {
         icon: "FileTextIcon",
@@ -66,7 +66,7 @@ export const useSideMenuStore = defineStore("sideMenu", {
             pageName: "side-menu-laporan-stok",
             title: "Laporan Stok",
           },
-        ]
+        ],
       },
       {
         icon: "SlidersIcon",
@@ -133,18 +133,18 @@ export const useSideMenuStore = defineStore("sideMenu", {
     ],
   }),
   getters: {
-    items: (state) => state.menu.filter((item) => {
-      const Auth = useAuthStore();
-      const Role = Auth.items.role
-      const Title = item.title
+    items: (state) =>
+      state.menu.filter((item) => {
+        const Auth = useAuthStore();
+        const Role = Auth.items.role;
+        const Title = item.title;
 
-      //Jika Role Selain Super Admin Menu Pengaturan Data Tidak Tersedia
-      if (Role !== 'Super Admin') {
-        return Title !== 'Pengaturan Data'
-     
-      } else {
-        return item
-      }
-    })
-  }
+        //Jika Role Selain Super Admin Menu Pengaturan Data Tidak Tersedia
+        if (Role !== "Super Admin") {
+          return Title !== "Pengaturan Data";
+        } else {
+          return item;
+        }
+      }),
+  },
 });

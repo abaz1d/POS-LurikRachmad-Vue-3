@@ -24,8 +24,12 @@ export const useBarangKeluarStore = defineStore({
   actions: {
     async readItem() {
       try {
-        const Auth = useAuthStore()
-        const { data } = await request.get(`mutasi-barang/barang-keluar?id_outlet=${String(Auth.items.id_outlet)}`);
+        const Auth = useAuthStore();
+        const { data } = await request.get(
+          `mutasi-barang/barang-keluar?id_outlet=${String(
+            Auth.items.id_outlet
+          )}`
+        );
         if (data.success) {
           this.rawItems = data.data.barang_keluar;
           this.rawVarians = data.data.varian;
@@ -33,16 +37,17 @@ export const useBarangKeluarStore = defineStore({
           this.rawDetails = data.data.details;
         }
       } catch (error) {
-        console.error(error)
-        this.rawVarians = { error }
-        this.rawPembelians = { error }
-        this.rawDetails = { error }
+        console.error(error);
+        this.rawVarians = { error };
+        this.rawPembelians = { error };
+        this.rawDetails = { error };
       }
-
     },
     async readDetail(no_invoice) {
       try {
-        const { data } = await request.get(`mutasi-barang/barang-keluar?noInvoice=${no_invoice}`);
+        const { data } = await request.get(
+          `mutasi-barang/barang-keluar?noInvoice=${no_invoice}`
+        );
         if (data.success) {
           this.rawDetails = data.data.details;
           this.rawPrints = data.data.print.rows;
@@ -50,33 +55,35 @@ export const useBarangKeluarStore = defineStore({
           this.rawDetails.map((detail) => {
             this.rawItems = this.rawItems.map((mutasi) => {
               if (detail.no_invoice === mutasi.no_invoice) {
-                return { ...mutasi, serviceHistory: this.rawDetails }
+                return { ...mutasi, serviceHistory: this.rawDetails };
               }
-              return mutasi
-            })
-            return detail
-          })
-          return this.rawItems
+              return mutasi;
+            });
+            return detail;
+          });
+          return this.rawItems;
         }
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
-
     },
     async addMutasi(no_invoice, outlet_penerima, tanggal, ekspedisi, no_resi) {
-      const Auth = useAuthStore()
-      const tanggal_mutasi = tanggal === '' ? Date.now() : tanggal;
+      const tanggal_mutasi = tanggal === "" ? Date.now() : tanggal;
       try {
-        const { data } = await request.post('mutasi-barang/upmutasi', { no_invoice, outlet_penerima, ekspedisi, no_resi })
+        const { data } = await request.post("mutasi-barang/upmutasi", {
+          no_invoice,
+          outlet_penerima,
+          ekspedisi,
+          no_resi,
+        });
         if (data.success) {
-
           this.rawItems = this.rawItems.map((item) => {
             if (item.tanggal_mutasi == tanggal_mutasi) {
-              return data.data.rows[0]
+              return data.data.rows[0];
             }
             return item;
           });
-          return this.rawItems
+          return this.rawItems;
         }
       } catch (e) {
         console.error(e);
@@ -84,38 +91,44 @@ export const useBarangKeluarStore = defineStore({
     },
     async startMutation() {
       try {
-        const Auth = useAuthStore()
-        const { data } = await request.post(`mutasi-barang/create?id_outlet=${String(Auth.items.id_outlet)}`)
+        const Auth = useAuthStore();
+        const { data } = await request.post(
+          `mutasi-barang/create?id_outlet=${String(Auth.items.id_outlet)}`
+        );
         if (data.success) {
           this.rawItems.push(data.data.rows);
-          //console.log(`mutasi`, this.rawItems)
           return data.data.rows;
         }
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
     },
     async readDetailItem(id_varian) {
       try {
-        const Auth = useAuthStore()
-        const { data } = await request.get(`mutasi-barang/barang/${id_varian}?id_outlet=${String(Auth.items.id_outlet)}`)
+        const Auth = useAuthStore();
+        const { data } = await request.get(
+          `mutasi-barang/barang/${id_varian}?id_outlet=${String(
+            Auth.items.id_outlet
+          )}`
+        );
         if (data.success) {
-          return data.data.rows
+          return data.data.rows;
         }
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
-
     },
     async removeMutasi(no_invoice) {
       try {
         this.rawItems = this.rawItems.filter(
           (item) => item.no_invoice !== no_invoice
         );
-        const { data } = await request.delete(`mutasi-barang/delete/${no_invoice}`)
+        const { data } = await request.delete(
+          `mutasi-barang/delete/${no_invoice}`
+        );
         if (data.success) {
           // alert(`Sukses Hapus Data ${id_barang}`)
-        };
+        }
       } catch (error) {
         console.error(error);
       }
@@ -123,7 +136,9 @@ export const useBarangKeluarStore = defineStore({
     //----------------------------------------------------------------  Detail
     async readDetailMutasi(no_invoice) {
       try {
-        const { data } = await request.get(`mutasi-barang/details/${no_invoice}`)
+        const { data } = await request.get(
+          `mutasi-barang/details/${no_invoice}`
+        );
         if (data.success) {
           this.rawDetailMutasi = data.data.rows;
           return data.data.rows;
@@ -133,13 +148,16 @@ export const useBarangKeluarStore = defineStore({
       }
     },
     async addDetailMutasi(noInvoice, id_varian, qty) {
-      const id = Date.now();
-      const no_invoice = String(noInvoice)
+      const no_invoice = String(noInvoice);
       try {
-        const { data } = await request.post('mutasi-barang/additem', { no_invoice, id_varian, qty })
+        const { data } = await request.post("mutasi-barang/additem", {
+          no_invoice,
+          id_varian,
+          qty,
+        });
         if (data.success) {
-          this.readDetailMutasi(noInvoice)
-          return data.data
+          this.readDetailMutasi(noInvoice);
+          return data.data;
         }
       } catch (e) {
         console.error(e);
@@ -147,11 +165,15 @@ export const useBarangKeluarStore = defineStore({
     },
     async updateDetail(id_detail_barang_mutasi, qty) {
       try {
-        const { data } = await request.put(`mutasi-barang/upditem/${id_detail_barang_mutasi}`, { qty: qty })
+        const { data } = await request.put(
+          `mutasi-barang/upditem/${id_detail_barang_mutasi}`,
+          { qty: qty }
+        );
         if (data.success) {
+          return data.success;
         }
-      } catch (error) {
-        console.error(error);
+      } catch (e) {
+        console.error(e);
       }
     },
     async removeDetail(id_detail_barang_mutasi) {
@@ -159,14 +181,15 @@ export const useBarangKeluarStore = defineStore({
         this.rawDetailMutasi = this.rawDetailMutasi.filter(
           (item) => item.id_detail_barang_mutasi !== id_detail_barang_mutasi
         );
-        const { data } = await request.delete(`mutasi-barang/delitem/${id_detail_barang_mutasi}`)
+        const { data } = await request.delete(
+          `mutasi-barang/delitem/${id_detail_barang_mutasi}`
+        );
         if (data.success) {
-
+          return data.success;
         }
-      } catch (error) {
-        console.error(error)
+      } catch (e) {
+        console.error(e);
       }
-
     },
-  }
-})
+  },
+});

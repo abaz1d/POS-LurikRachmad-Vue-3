@@ -5,9 +5,8 @@ import router from "@/router";
 export const useAuthStore = defineStore({
   id: "authorization",
   state: () => ({
-    user: JSON.parse(localStorage.getItem('user')),
-    returnUrl: null
-
+    user: JSON.parse(localStorage.getItem("user")),
+    returnUrl: null,
   }),
   getters: {
     items: (state) => state.user,
@@ -17,7 +16,7 @@ export const useAuthStore = defineStore({
       try {
         const { data } = await request.post("auth", {
           email_user,
-          password
+          password,
         });
 
         if (data.success) {
@@ -25,30 +24,28 @@ export const useAuthStore = defineStore({
           // return this.user
 
           // store user details and jwt in local storage to keep user logged in between page refreshes
-          localStorage.setItem('user', JSON.stringify(this.user));
+          localStorage.setItem("user", JSON.stringify(this.user));
 
           // redirect to previous url or default to home page
-          router.push(this.returnUrl || '/');
+          router.push(this.returnUrl || "/");
         }
         return data;
-
       } catch (error) {
         console.error(error);
       }
-
     },
 
     async logout() {
       try {
-        const { data } = await request.get("logout")
+        const { data } = await request.get("logout");
         if (data.success) {
-          router.push('/login');
-          localStorage.removeItem('user');
+          router.push("/login");
+          localStorage.removeItem("user");
           this.user = null;
         }
       } catch (error) {
         console.error(error);
       }
-    }
+    },
   },
 });

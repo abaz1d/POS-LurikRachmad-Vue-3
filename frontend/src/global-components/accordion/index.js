@@ -65,7 +65,7 @@ const AccordionGroup = defineComponent({
       },
     },
   },
-  setup(props, { slots, attrs, emit }) {
+  setup(props, { slots, emit }) {
     const accordionDirective = resolveDirective("accordion");
     return () =>
       withDirectives(
@@ -83,7 +83,7 @@ const AccordionGroup = defineComponent({
 
 const AccordionItem = defineComponent({
   name: "AccordionItem",
-  setup(props, { slots, attrs, emit }) {
+  setup(props, { slots }) {
     return () =>
       h(
         "div",
@@ -103,7 +103,7 @@ const Accordion = defineComponent({
       default: "",
     },
   },
-  setup(props, { slots, attrs, emit }) {
+  setup(props, { slots }) {
     return () =>
       h(
         "div",
@@ -134,7 +134,7 @@ const AccordionPanel = defineComponent({
       default: "",
     },
   },
-  setup(props, { slots, attrs, emit }) {
+  setup(props, { slots }) {
     return () =>
       h(
         "div",

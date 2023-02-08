@@ -19,7 +19,6 @@ export const useSupplierStore = defineStore({
       } catch (e) {
         console.error(e);
       }
-
     },
     async addItem(
       nama_supplier,
@@ -61,6 +60,7 @@ export const useSupplierStore = defineStore({
         .get(`supplier/delete/${id_supplier}`)
         .then((res) => {
           if (res.status >= 200 && res.status < 300) {
+            return res.status;
           }
         })
         .catch((e) => console.error(e));
@@ -77,12 +77,14 @@ export const useSupplierStore = defineStore({
         }
         return item;
       });
-      request.post(`supplier/edit/${id_supplier}`, {
-        nama_supplier,
-        alamat_supplier,
-        telepon_supplier,
-        email_supplier,
-      }).catch((e) => console.error(e));
+      request
+        .post(`supplier/edit/${id_supplier}`, {
+          nama_supplier,
+          alamat_supplier,
+          telepon_supplier,
+          email_supplier,
+        })
+        .catch((e) => console.error(e));
     },
   },
 });

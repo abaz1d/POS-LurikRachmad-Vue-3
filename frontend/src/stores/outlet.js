@@ -12,36 +12,30 @@ export const useOutletStore = defineStore({
   actions: {
     async readItem() {
       try {
-        const {data} = await request.get("outlet");
+        const { data } = await request.get("outlet");
         if (data.success) {
           this.rawItems = data.data;
-          return this.rawItems
+          return this.rawItems;
         }
       } catch (e) {
         console.error(e);
       }
-
     },
-    async addItem(
-      nama_outlet,
-      alamat_outlet,
-      kontak_outlet,
-      email_outlet,
-    ) {
+    async addItem(nama_outlet, alamat_outlet, kontak_outlet, email_outlet) {
       const id_outlet = Date.now();
       this.rawItems.push({
         id_outlet,
         nama_outlet,
         alamat_outlet,
         kontak_outlet,
-        email_outlet
+        email_outlet,
       });
       try {
-        const {data} = await request.post("outlet/add", {
+        const { data } = await request.post("outlet/add", {
           nama_outlet,
           alamat_outlet,
           kontak_outlet,
-          email_outlet
+          email_outlet,
         });
         if (data.success) {
           this.rawItems = this.rawItems.map((item) => {
@@ -63,6 +57,7 @@ export const useOutletStore = defineStore({
         .get(`outlet/delete/${id_outlet}`)
         .then((res) => {
           if (res.success) {
+            return res.success;
           }
         })
         .catch((e) => console.error(e));
@@ -79,12 +74,14 @@ export const useOutletStore = defineStore({
         }
         return item;
       });
-      request.post(`outlet/edit/${id_outlet}`, {
-        nama_outlet,
-        alamat_outlet,
-        kontak_outlet,
-        email_outlet
-      }).catch((e) => console.error(e));
+      request
+        .post(`outlet/edit/${id_outlet}`, {
+          nama_outlet,
+          alamat_outlet,
+          kontak_outlet,
+          email_outlet,
+        })
+        .catch((e) => console.error(e));
     },
   },
 });

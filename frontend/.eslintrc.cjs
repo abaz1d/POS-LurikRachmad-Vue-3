@@ -3,6 +3,14 @@ require("@rushstack/eslint-patch/modern-module-resolution");
 
 module.exports = {
   root: true,
+  rules: {
+    "vue/multi-word-component-names": 0,
+  },
+  env: {
+    browser: true,
+    amd: true,
+    node: true,
+  },
   extends: [
     "plugin:vue/vue3-essential",
     "eslint:recommended",

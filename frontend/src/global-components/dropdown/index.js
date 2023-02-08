@@ -70,7 +70,7 @@ const Dropdown = defineComponent({
       },
     },
   },
-  setup(props, { slots, attrs, emit }) {
+  setup(props, { slots, emit }) {
     const dropdownRef = ref();
     const dropdownRefTemp = ref();
 
@@ -124,7 +124,7 @@ const DropdownToggle = defineComponent({
       default: "button",
     },
   },
-  setup(props, { slots, attrs, emit }) {
+  setup(props, { slots }) {
     return () =>
       h(
         props.tag,
@@ -141,7 +141,7 @@ const DropdownToggle = defineComponent({
 // Dropdown menu
 const DropdownMenu = defineComponent({
   name: "DropdownMenu",
-  setup(props, { slots, attrs, emit }) {
+  setup(props, { slots }) {
     return () =>
       h(
         "div",
@@ -162,7 +162,7 @@ const DropdownContent = defineComponent({
       default: "ul",
     },
   },
-  setup(props, { slots, attrs, emit }) {
+  setup(props, { slots }) {
     return () =>
       h(
         props.tag,
@@ -187,7 +187,7 @@ const DropdownItem = defineComponent({
       default: "",
     },
   },
-  setup(props, { slots, attrs, emit }) {
+  setup(props, { slots }) {
     return () =>
       h("li", [
         h(
@@ -214,7 +214,7 @@ const DropdownHeader = defineComponent({
       default: "",
     },
   },
-  setup(props, { slots, attrs, emit }) {
+  setup(props, { slots }) {
     return () =>
       h("li", [
         h(
@@ -241,7 +241,7 @@ const DropdownFooter = defineComponent({
       default: "",
     },
   },
-  setup(props, { slots, attrs, emit }) {
+  setup(props, { slots }) {
     return () =>
       h("li", [
         h(
@@ -268,7 +268,7 @@ const DropdownDivider = defineComponent({
       default: "",
     },
   },
-  setup(props, { slots, attrs, emit }) {
+  setup(props) {
     return () =>
       h("li", [
         h(props.tag, {

@@ -49,7 +49,7 @@ const Alert = defineComponent({
       },
     },
   },
-  setup(props, { slots, attrs, emit }) {
+  setup(props, { slots, emit }) {
     const alertRef = ref();
     const alertDirective = resolveDirective("alert");
 

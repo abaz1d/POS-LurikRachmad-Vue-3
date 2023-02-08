@@ -12,7 +12,8 @@
           alt="Lurik Rachmad HTML"
           class="w-6"
           src="@/assets/images/logo.svg"
-          width="100" height="100"
+          width="100"
+          height="100"
         />
       </a>
       <a href="javascript:;" class="mobile-menu-toggler">

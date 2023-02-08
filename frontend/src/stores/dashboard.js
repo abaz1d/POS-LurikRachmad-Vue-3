@@ -14,35 +14,42 @@ export const useDashboardStore = defineStore({
     async readItem() {
       try {
         const Auth = useAuthStore();
-        const { data } = await request.get(`${Auth.items.role !== "Super Admin" ? `utama?id_outlet=${String(Auth.items.id_outlet)}`: "utama"}`);
+        const { data } = await request.get(
+          `${
+            Auth.items.role !== "Super Admin"
+              ? `utama?id_outlet=${String(Auth.items.id_outlet)}`
+              : "utama"
+          }`
+        );
         if (data.success) {
           this.rawItems = data.data;
-          return Auth.items
+          return Auth.items;
         }
       } catch (error) {
         console.error(error);
       }
-
     },
     async getNotepad(id) {
       try {
         const { data } = await request.get(`users/editnotepad/${id}`);
         if (data.success) {
-          return data.data.notepad
+          return data.data.notepad;
         }
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
     },
     async updateNotepad(id, notepad) {
       try {
-        const { data } = await request.post(`users/editnotepad/${id}`, { notepad });
+        const { data } = await request.post(`users/editnotepad/${id}`, {
+          notepad,
+        });
         if (data.success) {
-          return data.data.notepad
+          return data.data.notepad;
         }
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
-    }
+    },
   },
 });

@@ -25,7 +25,7 @@ export default {
         window.scroll(0, window.pageYOffset - 50);
       }, 16.66);
     },
-    scrollListener: function (e) {
+    scrollListener: function () {
       this.visible = window.scrollY > 150;
     },
   },

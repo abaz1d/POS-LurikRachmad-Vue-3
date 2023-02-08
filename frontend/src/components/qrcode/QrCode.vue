@@ -4,9 +4,9 @@ import { Html5QrcodeScanner } from "html5-qrcode";
 export default {
   name: "qrcode",
   data() {
-    let html5QrcodeScanner = ""
+    let html5QrcodeScanner = "";
     return {
-      html5QrcodeScanner
+      html5QrcodeScanner,
     };
   },
   props: {
@@ -28,12 +28,10 @@ export default {
       "qr-code-full-region",
       config
     );
-    // this.html5QrcodeScanner.render(this.onScanSuccess);
   },
   methods: {
     onScanSuccess(decodedText, decodedResult) {
       this.$emit("resultScan", decodedText, decodedResult);
-      // console.log(`Scan result: ${decodedText}`, decodedResult);
     },
     renderQrScanner() {
       this.html5QrcodeScanner.render(this.onScanSuccess);

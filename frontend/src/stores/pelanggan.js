@@ -19,13 +19,8 @@ export const usePelangganStore = defineStore({
       } catch (e) {
         console.error(e);
       }
-
     },
-    async addItem(
-      nama_pelanggan,
-      alamat_pelanggan,
-      kontak_pelanggan,
-    ) {
+    async addItem(nama_pelanggan, alamat_pelanggan, kontak_pelanggan) {
       const id_pelanggan = Date.now();
       this.rawItems.push({
         id_pelanggan,
@@ -58,6 +53,7 @@ export const usePelangganStore = defineStore({
         .get(`pelanggan/delete/${id_pelanggan}`)
         .then((res) => {
           if (res.status >= 200 && res.status < 300) {
+            return res.status;
           }
         })
         .catch((e) => console.error(e));
@@ -73,11 +69,13 @@ export const usePelangganStore = defineStore({
         }
         return item;
       });
-      request.post(`pelanggan/edit/${id_pelanggan}`, {
-        nama_pelanggan,
-        alamat_pelanggan,
-        kontak_pelanggan,
-      }) .catch((e) => console.error(e));
+      request
+        .post(`pelanggan/edit/${id_pelanggan}`, {
+          nama_pelanggan,
+          alamat_pelanggan,
+          kontak_pelanggan,
+        })
+        .catch((e) => console.error(e));
     },
   },
 });

@@ -9,7 +9,7 @@ export const useUserStore = defineStore({
   }),
   getters: {
     items: (state) => state.rawItems,
-    outlets: (state) => state.rawOutlets
+    outlets: (state) => state.rawOutlets,
   },
   actions: {
     async readItem() {
@@ -17,30 +17,37 @@ export const useUserStore = defineStore({
         const { data } = await request.get("users");
         //console.log('rawItems users',data, this.rawItems)
         if (data.success) {
-          this.rawItems = data.data.rows
-          this.rawOutlets = data.data.outlet
-          return this.rawItems
+          this.rawItems = data.data.rows;
+          this.rawOutlets = data.data.outlet;
+          return this.rawItems;
         }
       } catch (error) {
         console.error(error);
       }
-
     },
-    async addItem(
-      username,
-      role,
-      outlet,
-      email_user,
-      password,
-    ) {
+    async addItem(username, role, outlet, email_user, password) {
       const id_users = Date.now();
-      this.rawItems.push({ id_users, username, role, id_outlet: outlet, email_user, password, });
+      this.rawItems.push({
+        id_users,
+        username,
+        role,
+        id_outlet: outlet,
+        email_user,
+        password,
+      });
       try {
-        const { data } = await request.post("users/add", { id_users, username, role, id_outlet: outlet, email_user, password, });
+        const { data } = await request.post("users/add", {
+          id_users,
+          username,
+          role,
+          id_outlet: outlet,
+          email_user,
+          password,
+        });
         if (data.success) {
           this.rawItems = this.rawItems.map((item) => {
             if (item.id_users === id_users) {
-              return data.data.data
+              return data.data.data;
             }
             return item;
           });
@@ -58,6 +65,7 @@ export const useUserStore = defineStore({
           .get(`users/delete/${id_users}`)
           .then((data) => {
             if (data.success) {
+              return data.success;
             }
           })
           .catch((e) => console.error(e));
@@ -67,7 +75,7 @@ export const useUserStore = defineStore({
     },
     async updateItem(user) {
       try {
-        let item
+        let item;
         let id_users = user.id_users;
         let username = user.username;
         let role = user.role;
@@ -76,15 +84,15 @@ export const useUserStore = defineStore({
         let password = user.password;
 
         if (password === "") {
-          item = { username, role, id_outlet, email_user, }
+          item = { username, role, id_outlet, email_user };
         } else {
-          item = {username, role, id_outlet, email_user,password}
+          item = { username, role, id_outlet, email_user, password };
         }
-        const { data } = await request.post(`users/edit/${id_users}`, item)
+        const { data } = await request.post(`users/edit/${id_users}`, item);
         if (data.success) {
           this.rawItems = this.rawItems.map((item) => {
             if (item.id_users === id_users) {
-              return data.data.data
+              return data.data.data;
             }
             return item;
           });

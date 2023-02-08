@@ -4,10 +4,7 @@
   <ScrollTopComponent>
     <ChevronUpIcon
       class="w-11 h-11 dark:stroke-white"
-      style="
-        /*box-shadow: 0 0 25px yellow, 0 0 15px yellow;*/
-        border-radius: 50px;
-      "
+      style="border-radius: 50px"
     />
   </ScrollTopComponent>
 
@@ -33,10 +30,6 @@
         "
       />
     </div>
-    <!-- <div
-      :class="{ 'dark-mode-switcher__toggle--active': darkMode }"
-      class="dark-mode-switcher__toggle border"
-    ></div> -->
     <div v-else class="text-slate-600 dark:text-slate-200 rounded-full">
       <MoonIcon
         class="w-8 h-8"

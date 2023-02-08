@@ -75,7 +75,7 @@ const Modal = defineComponent({
       },
     },
   },
-  setup(props, { slots, attrs, emit }) {
+  setup(props, { slots, emit }) {
     const modalRef = ref();
     const bindInstance = () => {
       if (props.refKey) {
@@ -133,7 +133,7 @@ const Modal = defineComponent({
 // Modal header
 const ModalHeader = defineComponent({
   name: "ModalHeader",
-  setup(props, { slots, attrs, emit }) {
+  setup(props, { slots }) {
     return () =>
       h(
         "div",
@@ -148,7 +148,7 @@ const ModalHeader = defineComponent({
 // Modal body
 const ModalBody = defineComponent({
   name: "ModalBody",
-  setup(props, { slots, attrs, emit }) {
+  setup(props, { slots }) {
     return () =>
       h(
         "div",
@@ -163,7 +163,7 @@ const ModalBody = defineComponent({
 // Modal footer
 const ModalFooter = defineComponent({
   name: "ModalFooter",
-  setup(props, { slots, attrs, emit }) {
+  setup(props, { slots }) {
     return () =>
       h(
         "div",

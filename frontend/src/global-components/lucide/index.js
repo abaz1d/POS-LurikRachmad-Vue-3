@@ -5,7 +5,7 @@ const icons = [];
 for (const [key, icon] of Object.entries(lucideIcons)) {
   icons[`${key}Icon`] = defineComponent({
     name: `${key}Icon`,
-    setup(props, { slots, attrs, emit }) {
+    setup() {
       return () =>
         h(icon, {
           class: "lucide",

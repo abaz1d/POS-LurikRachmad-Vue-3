@@ -92,7 +92,7 @@ const TabGroup = defineComponent({
       },
     },
   },
-  setup(props, { slots, attrs, emit }) {
+  setup(props, { slots, emit }) {
     const tabDirective = resolveDirective("tab");
     provide("tabWrapperProps", props);
     return () =>
@@ -115,7 +115,7 @@ const TabList = defineComponent({
       },
     },
   },
-  setup(props, { slots, attrs, emit }) {
+  setup(props, { slots, emit }) {
     const tabDirective = resolveDirective("tab");
     const tabWrapperProps = inject("tabWrapperProps");
     return () =>
@@ -149,7 +149,7 @@ const Tab = defineComponent({
       default: "",
     },
   },
-  setup(props, { slots, attrs, emit }) {
+  setup(props, { slots }) {
     return () =>
       h(
         "li",
@@ -174,7 +174,7 @@ const Tab = defineComponent({
 
 const TabPanels = defineComponent({
   name: "TabPanels",
-  setup(props, { slots, attrs, emit }) {
+  setup(props, { slots }) {
     return () =>
       h(
         "div",
@@ -188,7 +188,7 @@ const TabPanels = defineComponent({
 
 const TabPanel = defineComponent({
   name: "TabPanel",
-  setup(props, { slots, attrs, emit }) {
+  setup(props, { slots }) {
     return () =>
       h(
         "div",

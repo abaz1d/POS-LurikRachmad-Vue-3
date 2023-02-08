@@ -7,9 +7,14 @@
     <div class="flex flex-col sm:flex-row sm:items-end xl:items-start">
       <form id="tabulator-html-filter-form" class="xl:flex sm:mr-auto">
         <div class="sm:flex items-center sm:mr-4">
-          <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2">Field</label>
-          <select id="tabulator-html-filter-field" v-model="filter.field"
-            class="form-select w-full sm:w-32 2xl:w-full mt-2 sm:mt-0 sm:w-auto">
+          <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2"
+            >Field</label
+          >
+          <select
+            id="tabulator-html-filter-field"
+            v-model="filter.field"
+            class="form-select w-full sm:w-32 2xl:w-full mt-2 sm:mt-0 sm:w-auto"
+          >
             <option value="id_varian">ID Varian</option>
             <option value="nama_varian">Nama Varian</option>
             <option value="id_barang">ID Barang</option>
@@ -17,9 +22,14 @@
           </select>
         </div>
         <div class="sm:flex items-center sm:mr-4 mt-2 xl:mt-0">
-          <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2">Type</label>
-          <select id="tabulator-html-filter-type" v-model="filter.type"
-            class="form-select w-full mt-2 sm:mt-0 sm:w-auto">
+          <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2"
+            >Type</label
+          >
+          <select
+            id="tabulator-html-filter-type"
+            v-model="filter.type"
+            class="form-select w-full mt-2 sm:mt-0 sm:w-auto"
+          >
             <option value="like" selected>like</option>
             <option value="=">=</option>
             <option value="<">&lt;</option>
@@ -30,27 +40,49 @@
           </select>
         </div>
         <div class="sm:flex items-center sm:mr-4 mt-2 xl:mt-0">
-          <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2">Value</label>
-          <input id="tabulator-html-filter-value" v-model="filter.value" type="text"
-            class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0" placeholder="Search..." />
+          <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2"
+            >Value</label
+          >
+          <input
+            id="tabulator-html-filter-value"
+            v-model="filter.value"
+            type="text"
+            class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0"
+            placeholder="Search..."
+          />
         </div>
         <div class="mt-2 xl:mt-0">
           <!-- <button id="tabulator-html-filter-go" type="button" class="btn btn-primary w-full sm:w-16" @click="onFilter">
             Go
           </button> -->
-          <button id="tabulator-html-filter-reset" type="button"
-            class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1" @click="onResetFilter">
+          <button
+            id="tabulator-html-filter-reset"
+            type="button"
+            class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1"
+            @click="onResetFilter"
+          >
             Reset
           </button>
         </div>
       </form>
       <div class="flex mt-5 sm:mt-0">
-        <button v-if="isPrint" id="tabulator-print" class="btn btn-primary w-1/2 sm:w-auto mr-2" disabled>
+        <button
+          v-if="isPrint"
+          id="tabulator-print"
+          class="btn btn-primary w-1/2 sm:w-auto mr-2"
+          disabled
+        >
           <Loader-2Icon class="w-4 h-4 mr-2 animate-spin" />
           <p class="hidden xl:block ml-1">Loading ...</p>
         </button>
-        <button v-else id="tabulator-print" class="btn btn-primary w-1/2 sm:w-auto mr-2" @click="isPrint = true">
-          <PrinterIcon class="w-4 h-4 mr-2" /> Cetak <p class="hidden xl:block ml-1">Penjualan</p>
+        <button
+          v-else
+          id="tabulator-print"
+          class="btn btn-primary w-1/2 sm:w-auto mr-2"
+          @click="isPrint = true"
+        >
+          <PrinterIcon class="w-4 h-4 mr-2" /> Cetak
+          <p class="hidden xl:block ml-1">Penjualan</p>
         </button>
         <Dropdown class="w-1/2 sm:w-auto">
           <DropdownToggle class="btn btn-outline-secondary w-full sm:w-auto">
@@ -61,47 +93,61 @@
             <DropdownContent>
               <DropdownItem @click="onExportCsv">
                 <FileTextIcon class="w-4 h-4 mr-2" /> Export CSV
-              </DropdownItem> 
+              </DropdownItem>
               <DropdownItem @click="onExportXlsx">
                 <FileTextIcon class="w-4 h-4 mr-2" /> Export XLSX
-              </DropdownItem> 
+              </DropdownItem>
             </DropdownContent>
           </DropdownMenu>
         </Dropdown>
-        <a href="" class="ml-auto sm:ml-2 btn px-2 h-10 box flex items-center text-primary">
+        <a
+          href=""
+          class="ml-auto sm:ml-2 btn px-2 h-10 box flex items-center text-primary"
+        >
           <RefreshCcwIcon class="w-4 h-4 sm:mr-3 sm:m-0 m-2" />
           <p class="sm:block hidden">Reload Data</p>
         </a>
       </div>
     </div>
-    <div v-show="isLoading" wire:loading
-      class="fixed top-0 left-0 right-0 bottom-0 w-full h-[50vw] z-50 overflow-hidden bg-gray-700 opacity-75 flex flex-col items-center justify-center">
-      <Loader2Icon class="motion-safe:animate-spin stroke-[10px] text-white h-12 w-12 mb-4" />
+    <div
+      v-show="isLoading"
+      wire:loading
+      class="fixed top-0 left-0 right-0 bottom-0 w-full h-[50vw] z-50 overflow-hidden bg-gray-700 opacity-75 flex flex-col items-center justify-center"
+    >
+      <Loader2Icon
+        class="motion-safe:animate-spin stroke-[10px] text-white h-12 w-12 mb-4"
+      />
       <h2 class="text-center text-white text-xl font-semibold">Loading...</h2>
-      <p class="w-1/3 text-center text-white">Ini mungkin memakan waktu beberapa detik, tolong jangan tutup halaman ini.</p>
+      <p class="w-1/3 text-center text-white">
+        Ini mungkin memakan waktu beberapa detik, tolong jangan tutup halaman
+        ini.
+      </p>
     </div>
     <div class="overflow-x-auto scrollbar-hidden">
-      <div id="tabulator" ref="tableRef" class="mt-5 table-report table-report--tabulator"></div>
+      <div
+        id="tabulator"
+        ref="tableRef"
+        class="mt-5 table-report table-report--tabulator"
+      ></div>
     </div>
   </div>
   <!-- END: HTML Table Data -->
 
   <ModalDatabaseError ref="modalErrorRef" />
-
 </template>
 
 <script setup>
 import { useBarangStore } from "@/stores/barang";
 import ModalDatabaseError from "@/components/modal-error/Main.vue";
-import { ref, provide, reactive, onMounted, onBeforeUnmount, watch } from "vue";
+import { ref, reactive, onMounted, watch } from "vue";
 import xlsx from "xlsx";
 import { createIcons, icons } from "lucide";
-import { TabulatorFull as Tabulator } from 'tabulator-tables';
+import { TabulatorFull as Tabulator } from "tabulator-tables";
 import { currencyFormatter } from "@/utils/helper";
 import dom from "@left4code/tw-starter/dist/js/dom";
 import moment from "moment";
-import JsBarcode from "jsbarcode"
-import html2canvas from 'html2canvas';
+import JsBarcode from "jsbarcode";
+import html2canvas from "html2canvas";
 const Barang = useBarangStore();
 const isPrint = ref(false);
 const isLoading = ref(false);
@@ -115,35 +161,37 @@ const filter = reactive({
 });
 const publicPath = import.meta.env.VITE_APP_BASE_API;
 
-watch(filter, async (newValue, oldValue) => {
+watch(filter, async () => {
   try {
-    onFilter()
+    onFilter();
   } catch (error) {
-    alert("Gagal wtch filter" + error)
+    alert("Gagal wtch filter" + error);
   }
-})
+});
 
-watch(isPrint, async (newValue, oldValue) => {
+watch(isPrint, async (newValue) => {
   try {
     if (newValue === true) {
       isLoading.value = true;
-      setTimeout(() => (onPrint()), 50);
+      setTimeout(() => onPrint(), 50);
     }
   } catch (error) {
-    alert("Gagal wtch print" + error)
+    alert("Gagal wtch print" + error);
   }
-})
+});
 
 const initTabulator = () => {
   tabulator.value = new Tabulator(tableRef.value, {
     data: Barang.laporans,
     rowHeight: 150,
-    groupBy: "nama_barang", 
-    printFormatter: function (tableHolderElement, tableElement) {
+    groupBy: "nama_barang",
+    printFormatter: function () {
       JsBarcode(".barcode").init();
     },
     printHeader: `<h1 class='text-2xl p-2 m-2 text-center border-y-2 border-black'>Tabel Barang<h1>`,
-    printFooter: `<h2 class='p-2 m-2 text-center mt-4'>${moment(Date.now()).format("DD MMM YYYY HH:SS")}<h2>`,
+    printFooter: `<h2 class='p-2 m-2 text-center mt-4'>${moment(
+      Date.now()
+    ).format("DD MMM YYYY HH:SS")}<h2>`,
     printAsHtml: true,
     printStyled: true,
     pagination: "remote",
@@ -154,7 +202,7 @@ const initTabulator = () => {
     placeholder: "Tida ada Data di temukan",
     columnDefaults: {
       resizable: true,
-      tooltip: function (e, cell, onRendered) {
+      tooltip: function (e, cell) {
         var el = document.createElement("div");
         el.style.backgroundColor = "white smoke";
         el.innerText = cell.getColumn().getField() + " - " + cell.getValue();
@@ -162,7 +210,6 @@ const initTabulator = () => {
       },
     },
     columns: [
-
       // For HTML table
       {
         formatter: "responsiveCollapse",
@@ -179,26 +226,23 @@ const initTabulator = () => {
         download: false,
         hozAlign: "center",
         vertAlign: "middle",
-        formatter(cell) {
+        formatter() {
           const a = dom(`<div class="flex lg:justify-center items-center ml-6">
                 <a class="flex items-center mr-3" href="javascript:;">
                   <i data-lucide="printer" class="w-4 h-4 mr-1"></i> 
                 </a>
               </div>`);
-          dom(a).on("click", function (e) {
-
-          });
-
           return a[0];
-        }, cellClick: function (e, cell) {
+        },
+        cellClick: function (e, cell) {
           isLoading.value = true;
           const id = document.getElementById(`${cell.getData().id_varian}`);
           //console.log("w", window)
-          var scale
+          var scale;
           if (window.innerWidth - 100 > 640) {
-            scale = 3
+            scale = 3;
           } else {
-            scale = 9
+            scale = 9;
           }
           html2canvas(id, {
             scale: scale,
@@ -212,7 +256,7 @@ const initTabulator = () => {
             barcodeImgTag.click();
             isLoading.value = false;
           });
-        }
+        },
       },
       {
         title: "GAMBAR & ID",
@@ -226,7 +270,7 @@ const initTabulator = () => {
           return `
         <div class=" text-center p-auto mt-2">
           <div class="mb-2">
-            <img width="100" height="100"
+            <img width="100" height="100" decoding="async" loading="lazy"
             src="${getImgUrl(cell.getData().gambar_varian)}"
             alt="${cell.getData().gambar_varian}"
             data-action="zoom"
@@ -250,7 +294,7 @@ const initTabulator = () => {
         formatter(cell) {
           return `
           <div>
-              <img class="barcode"  width="100" height="100"
+              <img class="barcode"  width="100" height="100" decoding="async" loading="lazy"
               data-action="zoom" 
               id='${cell.getData().id_varian}'
               jsbarcode-value='${cell.getData().id_varian}'
@@ -269,8 +313,9 @@ const initTabulator = () => {
         download: false,
         formatter(cell) {
           return `<div>
-      <div class="font-medium whitespace-nowrap">${cell.getData().nama_barang
-            }</div>
+      <div class="font-medium whitespace-nowrap">${
+        cell.getData().nama_barang
+      }</div>
     </div>`;
         },
       },
@@ -284,8 +329,9 @@ const initTabulator = () => {
         download: false,
         formatter(cell) {
           return `<div>
-      <div class="font-medium whitespace-nowrap">${cell.getData().nama_varian
-            }</div>
+      <div class="font-medium whitespace-nowrap">${
+        cell.getData().nama_varian
+      }</div>
     </div>`;
         },
       },
@@ -299,8 +345,9 @@ const initTabulator = () => {
         download: false,
         formatter(cell) {
           return `<div>
-      <div class="font-medium whitespace-nowrap">${cell.getData().stok_global
-            }</div>
+      <div class="font-medium whitespace-nowrap">${
+        cell.getData().stok_global
+      }</div>
     </div>`;
         },
       },
@@ -315,8 +362,9 @@ const initTabulator = () => {
         download: false,
         formatter(cell) {
           return `<div>
-      <div class="font-medium whitespace-nowrap">${cell.getData().nama_satuan
-            }</div>
+      <div class="font-medium whitespace-nowrap">${
+        cell.getData().nama_satuan
+      }</div>
     </div>`;
         },
       },
@@ -331,8 +379,9 @@ const initTabulator = () => {
         download: false,
         formatter(cell) {
           return `<div>
-      <div class="font-medium whitespace-nowrap">${currencyFormatter.format(cell.getData().harga_beli_varian)
-            }</div>
+      <div class="font-medium whitespace-nowrap">${currencyFormatter.format(
+        cell.getData().harga_beli_varian
+      )}</div>
     </div>`;
         },
       },
@@ -347,8 +396,9 @@ const initTabulator = () => {
         download: false,
         formatter(cell) {
           return `<div>
-      <div class="font-medium whitespace-nowrap">${currencyFormatter.format(cell.getData().harga_jual_varian)
-            }</div>
+      <div class="font-medium whitespace-nowrap">${currencyFormatter.format(
+        cell.getData().harga_jual_varian
+      )}</div>
     </div>`;
         },
       },
@@ -363,7 +413,7 @@ const initTabulator = () => {
         formatterPrint(cell) {
           return `
           <div>
-            <img class="barcode" width="100" height="100"
+            <img class="barcode" width="100" height="100" decoding="async" loading="lazy"
               data-action="zoom"
               jsbarcode-value='${cell.getData().id_varian}'
               jsbarcode-textmargin="0"
@@ -391,7 +441,7 @@ const initTabulator = () => {
         visible: false,
         print: true,
         download: true,
-      }, 
+      },
       {
         title: "SATUAN",
         field: "id_satuan",
@@ -440,11 +490,9 @@ const reInitOnResizeWindow = () => {
 };
 
 const getImgUrl = (gambar_varian) => {
-  var images = gambar_varian.data
-    .map((b) => String.fromCharCode(b))
-    .join("");
+  var images = gambar_varian.data.map((b) => String.fromCharCode(b)).join("");
   return new URL(`${publicPath}gambar/${images}`).href;
-}
+};
 
 // Filter function
 const onFilter = () => {
@@ -473,7 +521,6 @@ const onExportXlsx = () => {
 // Print
 const onPrint = async () => {
   JsBarcode(".barcode").init();
-  //console.log("grup", tabulator.value.getGroups().show())
   tabulator.value.print();
   isPrint.value = false;
   isLoading.value = false;
@@ -482,22 +529,22 @@ const onPrint = async () => {
 onMounted(async function () {
   try {
     isLoading.value = true;
-    Barang.readLaporan().then(() => {
-      initTabulator();
-      reInitOnResizeWindow();
-      isLoading.value = false;
-    }).catch((e) => {
-      modalErrorRef.value.errorDatabaseModal = true;
-      isLoading.value = false;
-    });
-  } catch (error) {
+    Barang.readLaporan()
+      .then(() => {
+        initTabulator();
+        reInitOnResizeWindow();
+        isLoading.value = false;
+      })
+      .catch((e) => {
+        console.error(e);
+        modalErrorRef.value.errorDatabaseModal = true;
+        isLoading.value = false;
+      });
+  } catch (e) {
+    console.error(e);
     isLoading.value = false;
     modalErrorRef.value.errorDatabaseModal = true;
   }
 });
-
 </script>
-<style scoped>
-
-</style>
-
+<style scoped></style>

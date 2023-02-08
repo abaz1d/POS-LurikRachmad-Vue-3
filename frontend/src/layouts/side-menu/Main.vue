@@ -6,33 +6,64 @@
     <div class="flex mt-[4.7rem] md:mt-0">
       <!-- BEGIN: Side Menu -->
       <nav class="side-nav">
-        <router-link :to="{ name: 'side-menu-dashboard' }" tag="a" class="intro-x flex items-center pl-5 pt-4">
-          <img width="100" height="100" alt="Lurik Rachmad HTML" class="w-6 block dark:hidden" src="@/assets/images/logo.svg" />
-          <img width="100" height="100" alt="Lurik Rachmad HTML" class="w-6 hidden dark:block" src="@/assets/images/logo-gold.svg" />
-          <span class="font-philosopher hidden xl:block text-white dark:text-[#CDA562] text-lg ml-3"><b> Lurik Rachmad
-            </b> </span>
+        <router-link
+          :to="{ name: 'side-menu-dashboard' }"
+          class="intro-x flex items-center pl-5 pt-4"
+        >
+          <img
+            width="100"
+            height="100"
+            alt="Lurik Rachmad HTML"
+            class="w-6 block dark:hidden"
+            src="@/assets/images/logo.svg"
+          />
+          <img
+            width="100"
+            height="100"
+            alt="Lurik Rachmad HTML"
+            class="w-6 hidden dark:block"
+            src="@/assets/images/logo-gold.svg"
+          />
+          <span
+            class="font-philosopher hidden xl:block text-white dark:text-[#CDA562] text-lg ml-3"
+            ><b> Lurik Rachmad </b>
+          </span>
         </router-link>
         <div class="side-nav__devider my-6"></div>
         <ul>
           <!-- BEGIN: First Child -->
           <template v-for="(menu, menuKey) in formattedMenu">
-            <li v-if="menu == 'devider'" :key="menu + menuKey" class="side-nav__devider my-6"></li>
+            <li
+              v-if="menu == 'devider'"
+              :key="menu + menuKey"
+              class="side-nav__devider my-6"
+            ></li>
             <li v-else :key="menu + menuKey">
-              <SideMenuTooltip tag="a" :content="menu.title" :href="
-                menu.subMenu
-                  ? 'javascript:;'
-                  : router.resolve({ name: menu.pageName }).path
-              " class="side-menu" :class="{
-  'side-menu--active': menu.active,
-  'side-menu--open': menu.activeDropdown,
-}" @click="linkTo(menu, router, $event)">
+              <SideMenuTooltip
+                tag="a"
+                :content="menu.title"
+                :href="
+                  menu.subMenu
+                    ? 'javascript:;'
+                    : router.resolve({ name: menu.pageName }).path
+                "
+                class="side-menu"
+                :class="{
+                  'side-menu--active': menu.active,
+                  'side-menu--open': menu.activeDropdown,
+                }"
+                @click="linkTo(menu, router, $event)"
+              >
                 <div class="side-menu__icon">
                   <component :is="menu.icon" />
                 </div>
                 <div class="side-menu__title">
                   {{ menu.title }}
-                  <div v-if="menu.subMenu" class="side-menu__sub-icon"
-                    :class="{ 'transform rotate-180': menu.activeDropdown }">
+                  <div
+                    v-if="menu.subMenu"
+                    class="side-menu__sub-icon"
+                    :class="{ 'transform rotate-180': menu.activeDropdown }"
+                  >
                     <ChevronDownIcon />
                   </div>
                 </div>
@@ -40,23 +71,38 @@
               <!-- BEGIN: Second Child -->
               <transition @enter="enter" @leave="leave">
                 <ul v-if="menu.subMenu && menu.activeDropdown">
-                  <li v-for="(subMenu, subMenuKey) in menu.subMenu.filter(
-                    item => { return item.title !== dataFilter }
-                     )" :key="subMenuKey">
-                    <SideMenuTooltip tag="a" :content="subMenu.title" :href="
-                      subMenu.subMenu
-                        ? 'javascript:;'
-                        : router.resolve({ name: subMenu.pageName }).path
-                    " class="side-menu" :class="{ 'side-menu--active': subMenu.active }"
-                      @click="linkTo(subMenu, router, $event)">
+                  <li
+                    v-for="(subMenu, subMenuKey) in menu.subMenu.filter(
+                      (item) => {
+                        return item.title !== dataFilter;
+                      }
+                    )"
+                    :key="subMenuKey"
+                  >
+                    <SideMenuTooltip
+                      tag="a"
+                      :content="subMenu.title"
+                      :href="
+                        subMenu.subMenu
+                          ? 'javascript:;'
+                          : router.resolve({ name: subMenu.pageName }).path
+                      "
+                      class="side-menu"
+                      :class="{ 'side-menu--active': subMenu.active }"
+                      @click="linkTo(subMenu, router, $event)"
+                    >
                       <div class="side-menu__icon">
                         <component :is="subMenu.icon" />
                       </div>
                       <div class="side-menu__title">
                         {{ subMenu.title }}
-                        <div v-if="subMenu.subMenu" class="side-menu__sub-icon" :class="{
-                          'transform rotate-180': subMenu.activeDropdown,
-                        }">
+                        <div
+                          v-if="subMenu.subMenu"
+                          class="side-menu__sub-icon"
+                          :class="{
+                            'transform rotate-180': subMenu.activeDropdown,
+                          }"
+                        >
                           <ChevronDownIcon />
                         </div>
                       </div>
@@ -64,16 +110,25 @@
                     <!-- BEGIN: Third Child -->
                     <transition @enter="enter" @leave="leave">
                       <ul v-if="subMenu.subMenu && subMenu.activeDropdown">
-                        <li v-for="(
+                        <li
+                          v-for="(
                             lastSubMenu, lastSubMenuKey
-                          ) in subMenu.subMenu" :key="lastSubMenuKey">
-                          <SideMenuTooltip tag="a" :content="lastSubMenu.title" :href="
-                            lastSubMenu.subMenu
-                              ? 'javascript:;'
-                              : router.resolve({ name: lastSubMenu.pageName })
-                                .path
-                          " class="side-menu" :class="{ 'side-menu--active': lastSubMenu.active }"
-                            @click="linkTo(lastSubMenu, router, $event)">
+                          ) in subMenu.subMenu"
+                          :key="lastSubMenuKey"
+                        >
+                          <SideMenuTooltip
+                            tag="a"
+                            :content="lastSubMenu.title"
+                            :href="
+                              lastSubMenu.subMenu
+                                ? 'javascript:;'
+                                : router.resolve({ name: lastSubMenu.pageName })
+                                    .path
+                            "
+                            class="side-menu"
+                            :class="{ 'side-menu--active': lastSubMenu.active }"
+                            @click="linkTo(lastSubMenu, router, $event)"
+                          >
                             <div class="side-menu__icon">
                               <ZapIcon />
                             </div>
@@ -125,7 +180,7 @@ const formattedMenu = ref([]);
 const sideMenuStore = useSideMenuStore();
 const sideMenu = computed(() => nestedMenu(sideMenuStore.items, route));
 const Auth = useAuthStore();
-const dataFilter = ref()
+const dataFilter = ref();
 
 provide("forceActiveMenu", (pageName) => {
   route.forceActiveMenu = pageName;
@@ -143,6 +198,6 @@ watch(
 onMounted(() => {
   dom("body").removeClass("error-page").removeClass("login").addClass("main");
   formattedMenu.value = $h.toRaw(sideMenu.value);
-  dataFilter.value = Auth.items.role == "Operator" ? "Stok Lokal" : ""
+  dataFilter.value = Auth.items.role == "Operator" ? "Stok Lokal" : "";
 });
 </script>

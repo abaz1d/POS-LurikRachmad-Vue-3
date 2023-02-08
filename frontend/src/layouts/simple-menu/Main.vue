@@ -11,9 +11,16 @@
             alt="Lurik Rachmad HTML"
             class="w-6 block dark:hidden"
             src="@/assets/images/logo.svg"
-            width="100" height="100"
+            width="100"
+            height="100"
           />
-          <img width="100" height="100" alt="Lurik Rachmad HTML" class="w-6 hidden dark:block" src="@/assets/images/logo-gold.svg" />
+          <img
+            width="100"
+            height="100"
+            alt="Lurik Rachmad HTML"
+            class="w-6 hidden dark:block"
+            src="@/assets/images/logo-gold.svg"
+          />
         </a>
         <div class="side-nav__devider my-6"></div>
         <ul>
@@ -60,7 +67,9 @@
                 <ul v-if="$h.isset(menu.subMenu) && menu.activeDropdown">
                   <li
                     v-for="(subMenu, subMenuKey) in menu.subMenu.filter(
-                      item => {return item.title !== dataFilter}
+                      (item) => {
+                        return item.title !== dataFilter;
+                      }
                     )"
                     :key="subMenuKey"
                   >
@@ -173,7 +182,7 @@ const simpleMenuStore = useSimpleMenuStore();
 const simpleMenu = computed(() => nestedMenu(simpleMenuStore.items, route));
 
 const Auth = useAuthStore();
-const dataFilter = ref()
+const dataFilter = ref();
 
 provide("forceActiveMenu", (pageName) => {
   route.forceActiveMenu = pageName;
@@ -191,6 +200,6 @@ watch(
 onMounted(() => {
   dom("body").removeClass("error-page").removeClass("login").addClass("main");
   formattedMenu.value = $h.toRaw(simpleMenu.value);
-  dataFilter.value = Auth.items.role == "Operator" ? "Stok Lokal" : ""
+  dataFilter.value = Auth.items.role == "Operator" ? "Stok Lokal" : "";
 });
 </script>

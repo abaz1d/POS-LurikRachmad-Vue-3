@@ -108,19 +108,19 @@ module.exports = function (db) {
             if (err) return res.status(500).json(new Response(err, false))
             //console.log('uangKeluar', uangKeluar.rows[0].uangkeluar)
             if (id_outlet == '') {
-              reqSQL = `SELECT no_invoice,tanggal_penjualan FROM penjualan WHERE tanggal_penjualan >= CURRENT_TIMESTAMP - interval '1d'`
+              reqSQL = `SELECT no_invoice,tanggal_penjualan FROM penjualan WHERE tanggal_penjualan >= CURRENT_DATE`
               argumentSQL = ''
             } else {
-              reqSQL = `SELECT no_invoice,tanggal_penjualan FROM penjualan WHERE tanggal_penjualan >= CURRENT_TIMESTAMP - interval '1d' AND id_outlet = $1`
+              reqSQL = `SELECT no_invoice,tanggal_penjualan FROM penjualan WHERE tanggal_penjualan >= CURRENT_DATE AND id_outlet = $1`
               argumentSQL = [id_outlet]
             }
             db.query(reqSQL, argumentSQL, (err, jual1d) => {
               if (err) return res.status(500).json(new Response(err, false))
               if (id_outlet == '') {
-                reqSQL = `SELECT no_invoice,tanggal_pembelian FROM pembelian WHERE tanggal_pembelian >= CURRENT_TIMESTAMP - interval '1d'`
+                reqSQL = `SELECT no_invoice,tanggal_pembelian FROM pembelian WHERE tanggal_pembelian >= CURRENT_DATE`
                 argumentSQL = ''
               } else {
-                reqSQL = `SELECT no_invoice,tanggal_pembelian FROM pembelian WHERE tanggal_pembelian >= CURRENT_TIMESTAMP - interval '1d' AND id_outlet = $1`
+                reqSQL = `SELECT no_invoice,tanggal_pembelian FROM pembelian WHERE tanggal_pembelian >= CURRENT_DATE AND id_outlet = $1`
                 argumentSQL = [id_outlet]
               }
               db.query(reqSQL, argumentSQL, (err, beli1d) => {

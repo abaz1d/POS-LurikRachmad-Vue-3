@@ -8,18 +8,27 @@
       >
         <div class="-intro-x lg:mr-20">
           <img
-          width="100" height="100"
+            width="100"
+            height="100"
             alt="Lurik Rachmad HTML"
             class="h-48 lg:h-auto"
             src="@/assets/images/error-illustration.svg"
           />
         </div>
         <div class="text-white mt-10 lg:mt-0">
-          <div class="intro-x text-8xl font-medium font-philosopher text-white dark:text-[#CDA562]">404</div>
-          <div class="intro-x text-xl lg:text-3xl font-medium mt-5 font-philosopher text-white dark:text-[#CDA562]">
+          <div
+            class="intro-x text-8xl font-medium font-philosopher text-white dark:text-[#CDA562]"
+          >
+            404
+          </div>
+          <div
+            class="intro-x text-xl lg:text-3xl font-medium mt-5 font-philosopher text-white dark:text-[#CDA562]"
+          >
             Halaman Tidak Ada
           </div>
-          <div class="intro-x text-lg mt-3 font-philosopher dark:text-[#CDA562] text-white">
+          <div
+            class="intro-x text-lg mt-3 font-philosopher dark:text-[#CDA562] text-white"
+          >
             Mohon maaf, halaman yang anda cari tidak di temukan.
           </div>
           <RouterLink to="/">

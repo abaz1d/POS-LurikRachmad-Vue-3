@@ -32,7 +32,7 @@ const routes = [
         path: "/",
         name: "top-menu-dashboard",
         component: Dashboard,
-        meta: { authorize: [] }
+        meta: { authorize: [] },
       },
       {
         path: "satuan",
@@ -44,7 +44,7 @@ const routes = [
         path: "barang-keluar",
         name: "top-menu-barang-keluar",
         component: BarangKeluar,
-        meta: { authorize: [] }
+        meta: { authorize: [] },
       },
       {
         path: "barang",
@@ -74,19 +74,19 @@ const routes = [
         path: "barang-masuk",
         name: "top-menu-barang-masuk",
         component: BarangMasuk,
-        meta: { authorize: [] }
+        meta: { authorize: [] },
       },
       {
         path: "penjualan",
         name: "top-menu-penjualan",
         component: Penjualan,
-        meta: { authorize: [] }
+        meta: { authorize: [] },
       },
       {
         path: "retur",
         name: "top-menu-retur",
         component: Retur,
-        meta: { authorize: [] }
+        meta: { authorize: [] },
       },
       {
         path: "stok-lokal",
@@ -98,32 +98,32 @@ const routes = [
         path: "pembelian",
         name: "top-menu-pembelian",
         component: Pembelian,
-        meta: { authorize: [] }
+        meta: { authorize: [] },
       },
       {
         path: "laporan-penjualan",
         name: "top-menu-laporan-penjualan",
         component: LaporanPenjualan,
-        meta: { authorize: [] }
+        meta: { authorize: [] },
       },
       {
         path: "laporan-pembelian",
         name: "top-menu-laporan-pembelian",
         component: LaporanPembelian,
-        meta: { authorize: [] }
+        meta: { authorize: [] },
       },
       {
         path: "laporan-stok",
         name: "top-menu-laporan-stok",
         component: LaporanStok,
-        meta: { authorize: [] }
+        meta: { authorize: [] },
       },
       {
         path: "semua-akun",
         name: "top-menu-semua-akun",
         component: Users,
         meta: { authorize: ["Super Admin"] },
-      }
+      },
     ],
   },
   {
@@ -134,7 +134,7 @@ const routes = [
         path: "dashboard",
         name: "side-menu-dashboard",
         component: Dashboard,
-        meta: { authorize: [] }
+        meta: { authorize: [] },
       },
       {
         path: "satuan",
@@ -146,7 +146,7 @@ const routes = [
         path: "barang-keluar",
         name: "side-menu-barang-keluar",
         component: BarangKeluar,
-        meta: { authorize: [] }
+        meta: { authorize: [] },
       },
       {
         path: "barang",
@@ -176,19 +176,19 @@ const routes = [
         path: "barang-masuk",
         name: "side-menu-barang-masuk",
         component: BarangMasuk,
-        meta: { authorize: [] }
+        meta: { authorize: [] },
       },
       {
         path: "penjualan",
         name: "side-menu-penjualan",
         component: Penjualan,
-        meta: { authorize: [] }
+        meta: { authorize: [] },
       },
       {
         path: "retur",
         name: "side-menu-retur",
         component: Retur,
-        meta: { authorize: [] }
+        meta: { authorize: [] },
       },
       {
         path: "stok-lokal",
@@ -200,32 +200,32 @@ const routes = [
         path: "pembelian",
         name: "side-menu-pembelian",
         component: Pembelian,
-        meta: { authorize: [] }
+        meta: { authorize: [] },
       },
       {
         path: "laporan-penjualan",
         name: "side-menu-laporan-penjualan",
         component: LaporanPenjualan,
-        meta: { authorize: [] }
+        meta: { authorize: [] },
       },
       {
         path: "laporan-pembelian",
         name: "side-menu-laporan-pembelian",
         component: LaporanPembelian,
-        meta: { authorize: [] }
+        meta: { authorize: [] },
       },
       {
         path: "laporan-stok",
         name: "side-menu-laporan-stok",
         component: LaporanStok,
-        meta: { authorize: [] }
+        meta: { authorize: [] },
       },
       {
         path: "semua-akun",
         name: "side-menu-semua-akun",
         component: Users,
         meta: { authorize: ["Super Admin"] },
-      }
+      },
     ],
   },
   {
@@ -236,7 +236,7 @@ const routes = [
         path: "dashboard",
         name: "simple-menu-dashboard",
         component: Dashboard,
-        meta: { authorize: [] }
+        meta: { authorize: [] },
       },
       {
         path: "satuan",
@@ -248,7 +248,7 @@ const routes = [
         path: "barang-keluar",
         name: "simple-menu-barang-keluar",
         component: BarangKeluar,
-        meta: { authorize: [] }
+        meta: { authorize: [] },
       },
       {
         path: "barang",
@@ -278,19 +278,19 @@ const routes = [
         path: "barang-masuk",
         name: "simple-menu-barang-masuk",
         component: BarangMasuk,
-        meta: { authorize: [] }
+        meta: { authorize: [] },
       },
       {
         path: "penjualan",
         name: "simple-menu-penjualan",
         component: Penjualan,
-        meta: { authorize: [] }
+        meta: { authorize: [] },
       },
       {
         path: "retur",
         name: "simple-menu-retur",
         component: Retur,
-        meta: { authorize: [] }
+        meta: { authorize: [] },
       },
       {
         path: "stok-lokal",
@@ -302,32 +302,32 @@ const routes = [
         path: "pembelian",
         name: "simple-menu-pembelian",
         component: Pembelian,
-        meta: { authorize: [] }
+        meta: { authorize: [] },
       },
       {
         path: "laporan-penjualan",
         name: "simple-menu-laporan-penjualan",
         component: LaporanPenjualan,
-        meta: { authorize: [] }
+        meta: { authorize: [] },
       },
       {
         path: "laporan-pembelian",
         name: "simple-menu-laporan-pembelian",
         component: LaporanPembelian,
-        meta: { authorize: [] }
+        meta: { authorize: [] },
       },
       {
         path: "laporan-stok",
         name: "simple-menu-laporan-stok",
         component: LaporanStok,
-        meta: { authorize: [] }
+        meta: { authorize: [] },
       },
       {
         path: "semua-akun",
         name: "simple-menu-semua-akun",
         component: Users,
         meta: { authorize: ["Super Admin"] },
-      }
+      },
     ],
   },
   {
@@ -355,29 +355,22 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-
   const { authorize } = to.meta;
-
-  // redirect to login page if not logged in and trying to access a restricted page
-  const publicPages = ['/login'];
+  const publicPages = ["/login"];
   const authRequired = !publicPages.includes(to.path);
   const auth = useAuthStore();
-  const currentUser = auth.items
-  //console.log("auth required", auth.user)
+  const currentUser = auth.items;
   if (authorize) {
-
     if (authRequired && !auth.user) {
       auth.returnUrl = to.fullPath;
-      //return '/login';
       return next({ path: "/login" });
     }
     if (authorize.length && !authorize.includes(currentUser.role)) {
-      //console.log('user beda', to.matched[1].props)
       alert("Role Akun Anda, Tidak Bisa Mengakses Halaman ini !");
-      return next({ path: "/" })
+      return next({ path: "/" });
     }
   }
-  next()
+  next();
 });
 
 export default router;

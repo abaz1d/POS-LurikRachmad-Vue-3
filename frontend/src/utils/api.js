@@ -6,11 +6,11 @@ export const request = axios.create({
 });
 
 request.interceptors.request.use(function (config) {
-  const token = localStorage.getItem('user');
+  const token = localStorage.getItem("user");
   if (token) {
-      config.headers.Authorization = `Bearer ${JSON.parse(token).token}`;
+    config.headers.Authorization = `Bearer ${JSON.parse(token).token}`;
   } else {
-      config.headers.Authorization = '';
+    config.headers.Authorization = "";
   }
   return config;
 });

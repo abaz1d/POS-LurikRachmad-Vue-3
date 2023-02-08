@@ -24,8 +24,10 @@ export const useBarangMasukStore = defineStore({
   actions: {
     async readItem() {
       try {
-        const Auth = useAuthStore()
-        const { data } = await request.get(`mutasi-barang/barang-masuk?id_outlet=${String(Auth.items.id_outlet)}`);
+        const Auth = useAuthStore();
+        const { data } = await request.get(
+          `mutasi-barang/barang-masuk?id_outlet=${String(Auth.items.id_outlet)}`
+        );
         if (data.success) {
           this.rawItems = data.data.barang_masuk;
           this.rawVarians = data.data.varian;
@@ -33,16 +35,17 @@ export const useBarangMasukStore = defineStore({
           this.rawDetails = data.data.details;
         }
       } catch (error) {
-        console.error(error)
-        this.rawVarians = { error }
-        this.rawPembelians = { error }
-        this.rawDetails = { error }
+        console.error(error);
+        this.rawVarians = { error };
+        this.rawPembelians = { error };
+        this.rawDetails = { error };
       }
-
     },
     async readDetail(no_invoice) {
       try {
-        const { data } = await request.get(`mutasi-barang/barang-masuk?noInvoice=${no_invoice}`);
+        const { data } = await request.get(
+          `mutasi-barang/barang-masuk?noInvoice=${no_invoice}`
+        );
         //console.log("detail",data);
         if (data.success) {
           this.rawDetails = data.data.details;
@@ -51,18 +54,17 @@ export const useBarangMasukStore = defineStore({
           this.rawDetails.map((detail) => {
             this.rawItems = this.rawItems.map((mutasi) => {
               if (detail.no_invoice === mutasi.no_invoice) {
-                return { ...mutasi, serviceHistory: this.rawDetails }
+                return { ...mutasi, serviceHistory: this.rawDetails };
               }
-              return mutasi
-            })
-            return detail
-          })
-          return this.rawItems
+              return mutasi;
+            });
+            return detail;
+          });
+          return this.rawItems;
         }
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
-
     },
     async terimaMutasi(no_invoice, file) {
       try {
@@ -72,10 +74,13 @@ export const useBarangMasukStore = defineStore({
         formData.append("status", true);
         const headers = { "Content-Type": "multipart/form-data" };
 
-        
-        const { data } = await request.put(`mutasi-barang/terima_barang`, formData, headers)
+        const { data } = await request.put(
+          `mutasi-barang/terima_barang`,
+          formData,
+          headers
+        );
         if (data.success) {
-          console.log("terima mutasi", data, no_invoice, file)
+          console.log("terima mutasi", data, no_invoice, file);
         }
       } catch (error) {
         console.error(error);
@@ -83,14 +88,21 @@ export const useBarangMasukStore = defineStore({
     },
     async updateTerima(id_detail_barang_mutasi, qty_terima, keterangan) {
       try {
-
-        const { data } = await request.put(`mutasi-barang/upd-terima/${id_detail_barang_mutasi}`, { qty_terima: qty_terima, keterangan: keterangan })
+        const { data } = await request.put(
+          `mutasi-barang/upd-terima/${id_detail_barang_mutasi}`,
+          { qty_terima: qty_terima, keterangan: keterangan }
+        );
         if (data.success) {
-          console.log("update terima", id_detail_barang_mutasi, qty_terima, keterangan)
+          console.log(
+            "update terima",
+            id_detail_barang_mutasi,
+            qty_terima,
+            keterangan
+          );
         }
       } catch (error) {
         console.error(error);
       }
     },
-  }
-})
+  },
+});
