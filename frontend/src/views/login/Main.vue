@@ -1,7 +1,7 @@
 <template>
   <div>
     <DarkModeSwitcher />
-    <div class="container sm:px-10">
+    <div class="container sm:px-10 overflow-auto">
       <div class="block xl:grid grid-cols-2 gap-4">
         <!-- BEGIN: Login Info -->
         <div class="hidden xl:flex flex-col min-h-screen">
@@ -112,7 +112,7 @@
                 >
               </div>
               <a
-                href="https://api.whatsapp.com/send/?phone=%2B6281548993484&text=I+want+to+order+Lurik+Rachmad&type=phone_number&app_absent=0"
+                href="https://api.whatsapp.com/send/?phone=%2B6281548993484&text=Saya+lupa+password+akun+POS+Lurik+Rachmad+saya,+mohon+bantuanya&type=phone_number&app_absent=0"
                 >Lupa Password?</a
               >
             </div>
@@ -151,17 +151,9 @@
               class="intro-x mt-10 xl:mt-24 text-slate-600 dark:text-slate-500 text-center xl:text-left"
             >
               Dengan masuk aplikasi, Anda telah setuju dengan
-              <a
-                class="text-primary dark:text-slate-200"
-                href="https://lurikrachmad.co.id/en/terms-of-use/"
-                >Peraturan</a
-              >
+              <RouterLink :to="{ path: '/syarat&ketentuan' }" class="text-primary dark:text-slate-200">Peraturan</RouterLink>
               &
-              <a
-                class="text-primary dark:text-slate-200"
-                href="https://lurikrachmad.co.id/en/terms-of-use/"
-                >Ketentuan</a
-              >
+              <RouterLink :to="{ path: '/syarat&ketentuan' }" class="text-primary dark:text-slate-200">Ketentuan</RouterLink>
               di
               <span class="font-philosopher text-[#CDA562] drop-shadow-2xl">
                 <b> Lurik Rachmad </b>

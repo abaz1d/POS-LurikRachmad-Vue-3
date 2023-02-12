@@ -22,6 +22,8 @@ import LaporanPenjualan from "@/views/Laporan/LaporanPenjualan.vue";
 import LaporanPembelian from "@/views/Laporan/LaporanPembelian.vue";
 import LaporanStok from "@/views/Laporan/LaporanStok.vue";
 import Users from "@/views/Users/Main.vue";
+import FAQ from "@/views/FAQ/Main.vue";
+import SKKP from "@/views/SKKP/Main.vue";
 
 const routes = [
   {
@@ -123,6 +125,12 @@ const routes = [
         name: "top-menu-semua-akun",
         component: Users,
         meta: { authorize: ["Super Admin"] },
+      },
+      {
+        path: "bantuan",
+        name: "top-menu-bantuan",
+        component: FAQ,
+        meta: { authorize: [] },
       },
     ],
   },
@@ -226,6 +234,12 @@ const routes = [
         component: Users,
         meta: { authorize: ["Super Admin"] },
       },
+      {
+        path: "bantuan",
+        name: "side-menu-bantuan",
+        component: FAQ,
+        meta: { authorize: [] },
+      },
     ],
   },
   {
@@ -328,12 +342,23 @@ const routes = [
         component: Users,
         meta: { authorize: ["Super Admin"] },
       },
+      {
+        path: "bantuan",
+        name: "simple-menu-bantuan",
+        component: FAQ,
+        meta: { authorize: [] },
+      },
     ],
   },
   {
     path: "/login",
     name: "login",
     component: Login,
+  },
+  {
+    path: "/syarat&ketentuan",
+    name: "term-page",
+    component: SKKP,
   },
   {
     path: "/error-page",
