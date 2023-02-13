@@ -12,8 +12,8 @@ export const useSupplierStore = defineStore({
   actions: {
     async readItem() {
       try {
-        const data = await request.get("supplier");
-        if (data.status >= 200 && data.status < 300) {
+        const { data } = await request.get("supplier");
+        if (data.success) {
           this.rawItems = data.data;
         }
       } catch (e) {
@@ -35,19 +35,20 @@ export const useSupplierStore = defineStore({
         email_supplier,
       });
       try {
-        const data = await request.post("supplier/add", {
+        const { data } = await request.post("supplier/add", {
           nama_supplier,
           alamat_supplier,
           telepon_supplier,
           email_supplier,
         });
-
-        this.rawItems = this.rawItems.map((item) => {
-          if (item.id_supplier === id_supplier) {
-            return data.data;
-          }
-          return item;
-        });
+        if (data.success) {
+          this.rawItems = this.rawItems.map((item) => {
+            if (item.id_supplier === id_supplier) {
+              return data.data;
+            }
+            return item;
+          });
+        }
       } catch (e) {
         console.error(e);
       }
@@ -57,7 +58,7 @@ export const useSupplierStore = defineStore({
         (item) => item.id_supplier !== id_supplier
       );
       request
-        .get(`supplier/delete/${id_supplier}`)
+        .delete(`supplier/delete/${id_supplier}`)
         .then((res) => {
           if (res.status >= 200 && res.status < 300) {
             return res.status;

@@ -800,7 +800,6 @@ const onPrintInvoice = () => {
   const id = document.getElementById(`modalPrintInvoice`);
   isLoading.value = true;
   html2canvas(id, {
-    // scale: 2,
     useCORS: true,
   }).then((canvas) => {
     var barcodeImgTag = document.createElement("a");
@@ -818,7 +817,6 @@ const updateTotalHargaJual = (total) => {
 };
 
 const openModalRemove = (item) => {
-  //console.log(item)
   itemDel.value = item;
   deleteConfirmationModal.value = true;
 };
@@ -997,6 +995,7 @@ const initTabulator = () => {
       Date.now()
     ).format("DD MMM YYYY HH:SS")}<h2>`,
     printAsHtml: true,
+    addRowPos: true,
     printStyled: true,
     pagination: "remote",
     paginationSize: 10,

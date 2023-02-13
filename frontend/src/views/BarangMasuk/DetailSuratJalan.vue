@@ -73,9 +73,7 @@ export default {
           document.getElementById(
             `${this.print.no_invoice + this.print.id_detail_barang_mutasi}`
           ).value = oldValue === 0 ? this.print.qty : oldValue;
-          //this.BarangMasuk.updateTerima(this.print.id_detail_barang_mutasi,document.getElementById(`${this.print.no_invoice + this.print.id_detail_barang_mutasi}`).value, this.keterangan_terima)
         } else {
-          //console.log("qty baru");
           this.BarangMasuk.updateTerima(
             this.print.id_detail_barang_mutasi,
             document.getElementById(
@@ -101,7 +99,6 @@ export default {
     },
     updateQty(e) {
       this.qty_terima = e.target.value;
-      //console.log("update QTY", e.target.value,this.print.no_invoice + this.print.id_detail_barang_mutasi, document.getElementById(`${this.print.no_invoice + this.print.id_detail_barang_mutasi}`).value)
     },
     updateTerima(e) {
       this.checkbox = e;
@@ -112,7 +109,6 @@ export default {
         ).value,
         this.keterangan_terima
       );
-      //console.log("update check" ,e, this.print.id_detail_barang_mutasi,document.getElementById(`${this.print.no_invoice + this.print.id_detail_barang_mutasi}`).value, this.keterangan_terima)
     },
   },
 };

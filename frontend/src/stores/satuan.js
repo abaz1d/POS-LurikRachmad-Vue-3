@@ -12,8 +12,8 @@ export const useSatuanStore = defineStore({
   actions: {
     async readItem() {
       try {
-        const data = await request.get("satuan");
-        if (data.status >= 200 && data.status < 300) {
+        const { data } = await request.get("satuan");
+        if (data.success) {
           this.rawItems = data.data;
         }
       } catch (e) {
@@ -24,17 +24,18 @@ export const useSatuanStore = defineStore({
       const id_satuan = Date.now();
       this.rawItems.push({ id_satuan, nama_satuan, keterangan_satuan });
       try {
-        const data = await request.post("satuan/add", {
+        const { data } = await request.post("satuan/add", {
           nama_satuan,
           keterangan_satuan,
         });
-
-        this.rawItems = this.rawItems.map((item) => {
-          if (item.id_satuan === id_satuan) {
-            return data.data;
-          }
-          return item;
-        });
+        if (data.success) {
+          this.rawItems = this.rawItems.map((item) => {
+            if (item.id_satuan === id_satuan) {
+              return data.data;
+            }
+            return item;
+          });
+        }
       } catch (e) {
         console.error(e);
       }
@@ -44,7 +45,7 @@ export const useSatuanStore = defineStore({
         (item) => item.id_satuan !== id_satuan
       );
       request
-        .get(`satuan/delete/${id_satuan}`)
+        .delete(`satuan/delete/${id_satuan}`)
         .then((res) => {
           if (res.status >= 200 && res.status < 300) {
             return res.status;

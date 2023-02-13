@@ -62,9 +62,6 @@
           />
         </div>
         <div class="mt-2 xl:mt-0">
-          <!-- <button id="tabulator-html-filter-go" type="button" class="btn btn-primary w-full sm:w-16" @click="onFilter">
-            Go
-          </button> -->
           <button
             id="tabulator-html-filter-reset"
             type="button"
@@ -174,7 +171,6 @@
         :mutasi="data_utama"
         :isEdit="isEdit"
       >
-        <!-- <PrintSuratJalan :prints="BarangMasuk.prints" ref="suratJalanViewDetail" :mutasi="data_utama" :isEdit="isEdit" /> -->
         <div
           class="intro-y bg-white box overflow-hidden mt-2 z-50 absolute top-0"
           style="background-color: white"
@@ -224,9 +220,7 @@
           <div
             class="flex bg-white flex-col lg:flex-row pt-10 px-5 sm:px-20 sm:pt-10 lg:pb-10 text-center sm:text-left"
           >
-            <!-- <div class="bg-white mt-1 text-black text-left text-base font-medium">Nomor : {{ mutasi.no_invoice }}</div>
-      <div class="bg-white mt-1 text-left text-black text-base font-medium">Waktu : {{ moment(mutasi.tanggal_mutasi).format("DD MMM YYYY HH:SS") }}</div> -->
-            <div
+          <div
               class="font-semibold bg-white text-primary text-left text-base"
             >
               Nomor : {{ data_utama.no_invoice }} <br />
@@ -519,7 +513,6 @@ const simpanTerima = async () => {
     await BarangMasuk.terimaMutasi(no_invoice.value, file.value);
     for (let index = 0; index < suratJalanViewDetail.value.length; index++) {
       const element = suratJalanViewDetail.value[index];
-      //console.log("centang semua",element)
       element.updateTerima(true);
     }
     resetModal();
@@ -569,7 +562,6 @@ const resetModal = () => {
 watch(check_semua, async (e) => {
   for (let index = 0; index < suratJalanViewDetail.value.length; index++) {
     const element = suratJalanViewDetail.value[index];
-    //console.log("centang semua",element)
     element.updateTerima(e);
   }
 });
@@ -590,6 +582,7 @@ const initTabulator = () => {
       Date.now()
     ).format("DD MMM YYYY HH:SS")}<h2>`,
     printAsHtml: true,
+    addRowPos: true,
     printStyled: true,
     pagination: "remote",
     paginationSize: 10,
@@ -629,17 +622,11 @@ const initTabulator = () => {
           return a[0];
         },
         cellClick: function (e, cell) {
-          //console.log("openInvoiceModal", BarangMasuk);
-          // alert("Print");
           const mutasi = cell.getData();
-
           BarangMasuk.readDetail(mutasi.no_invoice)
             .then(() => {
               no_invoice.value = mutasi.no_invoice;
-              // waktu.value = mutasi.tanggal_mutasi;
-              // outlet_select.value = mutasi.penerima
               data_utama.value = mutasi;
-
               isInvoice.value = true;
             })
             .catch((e) => {
@@ -801,7 +788,6 @@ const initTabulator = () => {
           dom(b).on("click", function () {
             const mutasi = cell.getData();
             data_utama.value = mutasi;
-            //console.log("data utama",mutasi);
 
             BarangMasuk.readDetail(mutasi.no_invoice)
               .then(() => {
@@ -895,7 +881,6 @@ const initTabulator = () => {
     ],
   });
   tabulator.value.on("renderComplete", function () {
-    //subTable.redraw();
     createIcons({
       icons,
       "stroke-width": 1.5,
@@ -908,7 +893,6 @@ const initTabulator = () => {
       await BarangMasuk.readDetail(id)
         .then((data) => {
           tabulator.value.replaceData(data);
-          //console.log("rowClick", data);
         })
         .catch((e) => {
           throw e;

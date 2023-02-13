@@ -2,13 +2,12 @@ var express = require('express');
 var router = express.Router();
 const fs = require('fs');
 var path = require('path');
-const { currencyFormatter, isLoggedIn, Response } = require('../helpers/util')
+const { isLoggedIn, Response } = require('../helpers/util')
 
 module.exports = function (db) {
 
   router.get('/', isLoggedIn, async function (req, res) {
     try {
-
       let sql = 'SELECT * FROM barang'
       sql += ` ORDER BY id_barang ASC`
       db.query(sql, (err, barang) => {
@@ -17,8 +16,6 @@ module.exports = function (db) {
         const id_outlet = req.query.id_outlet ? req.query.id_outlet : '';
         let reqSQL
         let argumentSQL
-
-        //console.log('out',req.body, req)
         if (id_outlet == '') {
           reqSQL = 'SELECT v.gambar_varian, b.id_barang, b.nama_barang, v.id_varian, v.nama_varian, v.stok_global, s.nama_satuan, v.harga_beli_varian, v.harga_jual_varian FROM varian as v LEFT JOIN barang as b ON v.id_barang = b.id_barang LEFT JOIN satuan AS s ON v.id_satuan = s.id_satuan WHERE v.id_barang = $1;'
           argumentSQL = [id_barang]
@@ -42,8 +39,6 @@ module.exports = function (db) {
   router.get('/laporan', async function (req, res, next) {
     try {
       const { rows } = await db.query('SELECT v.gambar_varian, b.nama_barang, v.id_varian, v.nama_varian, stok.stok_global, s.nama_satuan, v.harga_beli_varian, v.harga_jual_varian FROM varian as v LEFT JOIN barang as b ON v.id_barang = b.id_barang LEFT JOIN satuan AS s ON v.id_satuan = s.id_satuan LEFT JOIN (SELECT id_varian, sum(stok_varian) AS stok_global FROM sub_varian GROUP  BY 1) stok ON v.id_varian = stok.id_varian')
-      //res.redirect(`/penjualan/show/${rows[0].no_invoice}`)
-      //res.json(rows)
       res.json(new Response({ rows }));
     } catch (e) {
       res.status(500).json(new Response(e, false))
@@ -61,9 +56,7 @@ module.exports = function (db) {
             const barang = rowsB.rows
             const satuan = rowsS.rows
             const gudang = rowsG.rows
-            // res.render('barang/addvarian', { current: '', barang, satuan, gudang });
             res.json(new Response({ barang, satuan, gudang }));
-            //res.status(200).json({ barang, satuan, gudang });
           })
         })
       })
@@ -76,8 +69,6 @@ module.exports = function (db) {
     try {
       let gambar;
       let uploadPath;
-      //console.log('Uploading', req.body,req.body.id_varian, Object.keys(req.body).length, Object.keys(req.body).length > 7);
-      // console.log('Uploading', req);
       if (!req.files || Object.keys(req.files).length === 0) {
         return res.status(400).json(new Response({ message: 'No files were uploaded.' }, false))
       }
@@ -154,7 +145,6 @@ module.exports = function (db) {
       INNER JOIN gudang gud ON gud.id_gudang = var.id_gudang LEFT JOIN (SELECT id_varian, sum(stok_varian) AS stok_terpakai FROM sub_varian GROUP  BY 1) stok ON var.id_varian = stok.id_varian WHERE var.id_varian = $1`, [req.params.id], (err, rows) => {
               if (err) throw new Error(err)
               let item = rows.rows[0]
-              //res.status(200).json({ item: rows.rows[0], barang, satuan, gudang });
               res.json(new Response({ item, barang, satuan, gudang }));
 
             })
@@ -173,7 +163,6 @@ module.exports = function (db) {
       let uploadPath;
 
       if (!req.files || Object.keys(req.files).length === 0) {
-        console.log('gambar lama', gambar_lama)
         db.query(`UPDATE varian SET nama_varian = $1, id_barang = $2, stok_global = $3, harga_beli_varian = $4, id_satuan = $5, id_gudang = $6, gambar_varian = $7, harga_jual_varian = $8 WHERE id_varian = $9 RETURNING * `,
           [req.body.nama_varian, req.body.kategori_barang, req.body.stok_varian, req.body.harga_beli, req.body.satuan_varian, req.body.gudang, gambar_lama, req.body.harga_jual, req.params.id])
           .then((rows) => {
@@ -185,21 +174,14 @@ module.exports = function (db) {
           })
 
       } else {
-        console.log('gambar baru', gambar_lama)
-        // The name of the input field (i.e. "gambar") is used to retrieve the uploaded file
         gambar = req.files.file;
         const filename = `A${Date.now()}-${gambar.name}`
         uploadPath = path.join(__dirname, '..', 'public', 'gambar', filename);
-        //uploadPath = path.join(__dirname, '..', 'public, 'gambar', filename);
-        // Use the mv() method to place the file somewhere on your server
         deletePath = path.join(__dirname, '..', 'public', 'gambar', gambar_lama);
         fs.unlink(deletePath, (err) => {
           if (err) throw new Error(err)
-
-          //console.log("Delete File successfully.");
           gambar.mv(uploadPath, function (err) {
             if (err) throw new Error(err)
-            //  const {id_varian, nama_barang, barang, stok, harga, satuan, gudang } = req.body
 
             db.query(`UPDATE varian SET nama_varian = $1, id_barang = $2, stok_global = $3, harga_beli_varian = $4, id_satuan = $5, id_gudang = $6, gambar_varian = $7, harga_jual_varian = $8 WHERE id_varian = $9 RETURNING *`,
               [req.body.nama_varian,
@@ -225,7 +207,6 @@ module.exports = function (db) {
 
   router.delete('/deletevar/:id', isLoggedIn, async function (req, res, next) {
     try {
-      //console.log('delete', req.params.id, req.body.gambar_lama, req.body);
       const { gambar_lama } = req.body
       const { data } = await db.query('DELETE FROM sub_varian WHERE id_varian = $1', [req.params.id])
       const { rows } = await db.query('DELETE FROM varian WHERE id_varian = $1', [req.params.id])
@@ -233,7 +214,6 @@ module.exports = function (db) {
       fs.unlink(deletePath, (err) => {
         if (err) throw new Error(err)
         res.json(new Response({ message: "delete varian success" }, true))
-        //res.json(rows[0])
       })
     } catch (e) {
       console.error(e)
@@ -251,9 +231,7 @@ module.exports = function (db) {
          WHERE X.id_varian = Y.id_varian) = 1`, (err, rowsV) => {
         if (err) throw new Error(err)
         const varian = rowsV.rows
-        // res.render('varian/addvarian', { current: '', varian, satuan, gudang });
         res.json(new Response({ varian }));
-        //res.status(200).json({ barang, satuan, gudang });
       })
     } catch (error) {
       res.status(500).json(new Response(error, false))
@@ -281,7 +259,6 @@ module.exports = function (db) {
     LEFT JOIN satuan AS s ON v.id_satuan = s.id_satuan`,
         [id_varian, id_outlet, stok_varian])
       let data = rows[0]
-      //res.json(rows)
       res.json(new Response({ data }));
     } catch (error) {
       res.status(500).json(new Response(error, false))
@@ -317,14 +294,11 @@ module.exports = function (db) {
     WHERE v.id_varian = $1`, [req.params.id], (err, rows) => {
         if (err) throw new Error(err)
         let data = rows.rows
-        //console.log("rows",data, data.length)
         if (data.length > 1) {
           data = data.filter((data) => {
-            //console.log("item",id_outlet=== data.id_outlet)
             return data.id_outlet === id_outlet
           })
         }
-        //console.log('data',data[0]);
         res.json(new Response({ item: data[0] }));
 
       })
@@ -360,7 +334,6 @@ module.exports = function (db) {
     LEFT JOIN (SELECT id_varian, sum(stok_varian) AS stok_terpakai FROM sub_varian GROUP  BY 1) st ON sv.id_varian = st.id_varian`,
         [id_varian, id_outlet, stok_varian, req.params.id])
       let data = rows[0]
-      //res.json(rows)
       res.json(new Response({ data }));
     } catch (e) {
       res.status(500).json(new Response(e, false))
@@ -370,7 +343,6 @@ module.exports = function (db) {
   router.delete('/deletesubvar/:id', isLoggedIn, async function (req, res, next) {
     try {
       const { rows } = await db.query('DELETE FROM sub_varian WHERE id_sub_varian = $1', [req.params.id])
-
       res.json(new Response({ message: "delete sub varian success" }, true))
     } catch (e) {
       res.status(500).json(new Response(e, false))
@@ -387,7 +359,6 @@ module.exports = function (db) {
       VALUES ($1) RETURNING *`, [req.body.nama_barang])
       let data = rows[0]
       res.json(new Response({ data }));
-      //res.status(200).json(rows[0])
     } catch (error) {
       res.status(500).json(new Response(e, false))
     }
@@ -397,7 +368,6 @@ module.exports = function (db) {
   router.get('/editbar/:id', isLoggedIn, (req, res) => {
 
     db.query('SELECT * FROM barang WHERE id_barang = $1', [req.params.id], (err, rows) => {
-
       if (err) {
         return console.error(err.message);
       }
@@ -412,7 +382,6 @@ module.exports = function (db) {
       WHERE id_barang = $2`, [req.body.nama_barang, req.params.id])
       let data = rows[0]
       res.json(new Response({ data }));
-      //res.json(rows[0])
     } catch (error) {
       res.status(500).json(new Response(e, false))
     }

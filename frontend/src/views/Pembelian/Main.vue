@@ -3,8 +3,8 @@
     <h2 class="text-lg font-medium mr-auto">Pembelian</h2>
     <div class="w-full sm:w-auto flex mt-4 sm:mt-0">
       <button class="btn btn-primary shadow-md mb-3 mr-2 pr-5" @click="
-        modal_utama = true;
-      startTransaction();
+  modal_utama = true;
+startTransaction();
       ">
         <PlusIcon class="w-4 h-4 mr-2" />
         <p class="hidden xl:block mr-1">Pembelian</p>
@@ -56,8 +56,8 @@
                                 <option value="kosong" disabled>
                                   --&gt; Pilih Items &lt;--
                                 </option>
-                                <option v-for="supplier in Pembelian.suppliers" :key="supplier.id_supplier" :supplier="supplier"
-                                  :value="supplier.id_supplier">
+                                <option v-for="supplier in Pembelian.suppliers" :key="supplier.id_supplier"
+                                  :supplier="supplier" :value="supplier.id_supplier">
                                   {{ supplier.id_supplier }} -
                                   {{ supplier.nama_supplier }}
                                 </option>
@@ -108,8 +108,6 @@ renderQrScanner();
                           </div>
                           <div class="hidden sm:block col-span-6 mb-5">
                             <label for="pos-form-1" class="form-label">Nama Varian</label>
-                            <!-- <input id="pos-form-1" type="text" class="form-control flex-1"
-                              placeholder="Masukan Nama Varian" readonly /> -->
                             <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
                               <p class="text-black">{{ nama_varian_select }}</p>
                             </div>
@@ -136,12 +134,10 @@ renderQrScanner();
                           <div class="col-span-5 sm:col-span-4 mb-5">
                             <label for="pos-form-1" class="form-label">Qty</label>
                             <input id="pos-form-1" type="text" class="form-control flex-1" placeholder="Masukan Qty"
-                              required v-model="qty_select"  :disabled="total_harga_select == 0"/>
+                              required v-model="qty_select" :disabled="total_harga_select == 0" />
                           </div>
                           <div class="col-span-12 sm:col-span-4 mb-5">
                             <label for="pos-form-1" class="form-label">Total Harga</label>
-                            <!-- <input id="pos-form-1" type="text" class="form-control flex-1"
-                              placeholder="Masukan Total Harga" readonly /> -->
                             <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
                               <p class="text-black">
                                 {{
@@ -152,7 +148,7 @@ renderQrScanner();
                           </div>
                         </div>
                         <button type="button" @click="addItem()" class="btn btn-primary w-20 mt-3"
-                        :disabled="total_harga_select == 0">
+                          :disabled="total_harga_select == 0">
                           Tambah
                         </button>
                       </div>
@@ -352,8 +348,8 @@ renderQrScanner();
             </AccordionItem>
           </AccordionGroup>
           <button type="button" @click="
-            modal_utama = false;
-          resetModal();
+  modal_utama = false;
+resetModal();
           " class="btn btn-outline-secondary w-32 mr-1">
             Cancel
           </button>
@@ -491,8 +487,8 @@ renderQrScanner();
           </div>
         </div>
         <button type="button" @click="
-          isModalScanner = false;
-        closeQrScanner();
+  isModalScanner = false;
+closeQrScanner();
         " class="btn btn-danger w-24">
           Close
         </button>
@@ -617,7 +613,6 @@ const startTransaction = () => {
     no_invoice.value = data.no_invoice;
     waktu.value = data.tanggal_pembelian;
   });
-  console.log("start transactions");
 };
 
 const updateTotalHargaBeli = (total) => {
@@ -740,7 +735,6 @@ watch(item_select, async (e) => {
     if (e !== "kosong") {
       Pembelian.readDetailItem(e)
         .then((data) => {
-          // console.log('data.data', data);
           (nama_barang_select.value = data.nama_barang),
             (nama_varian_select.value = data.nama_varian),
             (nama_campur_select.value = `${data.nama_barang} - ${data.nama_varian} | ${data.stok_global}`),
@@ -763,10 +757,7 @@ watch(qty_select, async (newValue, oldValue) => {
   const harga_item_select_now = harga_item_select.value;
   const stok_now = stok.value;
   try {
-    if (newValue > stok_now) {
-      alert("Stok tersisa hanya " + stok_now);
-      qty_select.value = oldValue;
-    } else if (newValue === "") {
+    if (newValue === "") {
       alert("Minimal Qty harus 1");
       qty_select.value = 1;
     } else {
@@ -822,6 +813,7 @@ const initTabulator = () => {
     printFooter: `<h2 class='p-2 m-2 text-center mt-4'>${moment(
       Date.now()
     ).format("DD MMM YYYY HH:SS")}<h2>`,
+    addRowPos: true,
     printAsHtml: true,
     printStyled: true,
     pagination: "remote",

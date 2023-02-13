@@ -738,6 +738,7 @@ const initTabulator = () => {
       Date.now()
     ).format("DD MMM YYYY HH:SS")}<h2>`,
     printAsHtml: true,
+    addRowPos: true,
     printStyled: true,
     height: "60vh",
     pagination: "remote",

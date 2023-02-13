@@ -12,8 +12,8 @@ export const usePelangganStore = defineStore({
   actions: {
     async readItem() {
       try {
-        const data = await request.get("pelanggan");
-        if (data.status >= 200 && data.status < 300) {
+        const { data } = await request.get("pelanggan");
+        if (data.success) {
           this.rawItems = data.data;
         }
       } catch (e) {
@@ -29,18 +29,19 @@ export const usePelangganStore = defineStore({
         kontak_pelanggan,
       });
       try {
-        const data = await request.post("pelanggan/add", {
+        const { data } = await request.post("pelanggan/add", {
           nama_pelanggan,
           alamat_pelanggan,
           kontak_pelanggan,
         });
-
-        this.rawItems = this.rawItems.map((item) => {
-          if (item.id_pelanggan === id_pelanggan) {
-            return data.data;
-          }
-          return item;
-        });
+        if (data.success) {
+          this.rawItems = this.rawItems.map((item) => {
+            if (item.id_pelanggan === id_pelanggan) {
+              return data.data;
+            }
+            return item;
+          });
+        }
       } catch (e) {
         console.error(e);
       }
@@ -50,7 +51,7 @@ export const usePelangganStore = defineStore({
         (item) => item.id_pelanggan !== id_pelanggan
       );
       request
-        .get(`pelanggan/delete/${id_pelanggan}`)
+        .delete(`pelanggan/delete/${id_pelanggan}`)
         .then((res) => {
           if (res.status >= 200 && res.status < 300) {
             return res.status;

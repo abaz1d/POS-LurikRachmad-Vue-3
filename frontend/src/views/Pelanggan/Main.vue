@@ -61,7 +61,7 @@
               >
               <input
                 id="pos-form-1"
-                type="number"
+                type="text"
                 class="form-control flex-1"
                 placeholder="Masukan Telepon Pelanggan"
                 v-model="kontak_pelanggan"
@@ -530,7 +530,6 @@ export default {
         ],
       });
       this.tabulator.on("renderComplete", function () {
-        //subTable.redraw();
         createIcons({
           icons,
           "stroke-width": 1.5,

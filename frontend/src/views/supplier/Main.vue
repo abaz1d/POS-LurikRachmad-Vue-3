@@ -59,7 +59,7 @@
               >
               <input
                 id="pos-form-1"
-                type="number"
+                type="text"
                 class="form-control flex-1"
                 placeholder="Masukan Telepon Supplier"
                 v-model="telepon_supplier"
@@ -274,7 +274,6 @@
 
 <script>
 import { useSupplierStore } from "@/stores/supplier";
-// import SupplierList from "./SupplierList.vue";
 import { ref, reactive } from "vue";
 import xlsx from "xlsx";
 import { createIcons, icons } from "lucide";

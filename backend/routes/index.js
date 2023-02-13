@@ -5,28 +5,22 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 
 const path = require('path');
-const { currencyFormatter, isLoggedIn, Response } = require('../helpers/util')
-// const { isLoggedIn } = require('../helpers/util')
+const { isLoggedIn, Response } = require('../helpers/util')
 
 /* GET home page. */
 module.exports = function (db) {
   router.get('/', function (req, res) {
     res.json(new Response({ message: "Halaman Awal" }, true))
   });
-  //login
   router.post('/auth', async function (req, res) {
     try {
       const { email_user, password } = req.body
       db.query('SELECT * FROM users WHERE email_user = $1', [email_user], (err, data) => {
         if (err) {
           throw new Error(err)
-          // console.log(err)
-          // return res.send(err)
         }
 
         if (data.rows.length == 0) {
-          // req.flash('info', 'Email Tidak Terdaftar')
-          // return res.redirect('/');
           return res.json(new Response({ message: "unregistered e-mail" }, false))
         }
 
@@ -34,8 +28,6 @@ module.exports = function (db) {
           if (err) throw new Error(err)
 
           if (!result) {
-            // req.flash('info', 'Password Salah')
-            // return res.redirect('/');
             return res.json(new Response({ message: "password doesn't match" }, false))
           }
 
@@ -45,20 +37,11 @@ module.exports = function (db) {
             email: data.rows[0].email_user,
           }, process.env.SECRETKEY);
           const { rows } = await db.query(`WITH updated AS (UPDATE public.users SET token = $1 WHERE id_users = $2 RETURNING *) SELECT * FROM updated LEFT JOIN outlet ON updated.id_outlet = outlet.id_outlet;`, [token, data.rows[0].id_users])
-
-          // req.session.user = data.rows[0]
-          // if (req.session.user.role == 'Admin') {
-          //   res.redirect('/utama');
-          // } else {
-          //   res.redirect('/penjualan');
-          // }
-          //console.log("update token", rows);
           res.json(new Response({
             userid: rows[0].id_users,
             email: rows[0].email_user,
             username: rows[0].username,
             role: rows[0].role,
-            //notepad: rows[0].notepad,
 
             id_outlet: rows[0].id_outlet,
             nama_outlet: rows[0].nama_outlet,
@@ -69,7 +52,6 @@ module.exports = function (db) {
         });
       })
     } catch (error) {
-      //console.log(`gagal`, e)
       res.status(500).json(new Response(error, false))
     }
   });
@@ -84,7 +66,6 @@ module.exports = function (db) {
         const user = rows[0]
         var tokenNow = null
         const { data } = await db.query(`UPDATE public.users SET token = $1 WHERE id_users = $2 RETURNING *;`, [tokenNow, user.id_users])
-        //await user.save()
         res.json(new Response({ message: "sign out success" }, true))
       } catch (e) {
         res.json(new Response({ message: 'token invalid' }, false))

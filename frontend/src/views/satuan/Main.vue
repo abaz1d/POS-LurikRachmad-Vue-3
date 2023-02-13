@@ -351,7 +351,6 @@ export default {
           // For HTML table
           {
             title: "ID SATUAN",
-            // minWidth: 200,
             minWidth: 150,
             responsive: 0,
             field: "id_satuan",

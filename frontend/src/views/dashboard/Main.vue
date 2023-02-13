@@ -27,7 +27,6 @@
                         >
                           {{ moment(Date.now()).format("DD MMM YYYY") }}
                         </p>
-                        <!-- <CalendarDaysIcon class="w-4 h-4 ml-1 mr-1" /> -->
                       </Tippy>
                     </div>
                   </div>
@@ -603,7 +602,6 @@ const initTabulatorProduk = () => {
     ],
   });
   tabulatorProduk.value.on("renderComplete", function () {
-    //subTable.redraw();
     createIcons({
       icons,
       "stroke-width": 1.5,
@@ -674,7 +672,6 @@ const initTabulatorJual = () => {
     paginationSize: 3,
     paginationSizeSelector: [10, 20, 30, 40, 50, 100],
     layout: "fitColumns",
-    // responsiveLayout: "collapse",
     placeholder: "Tida ada Data di temukan",
     columnDefaults: {
       tooltip: function (e, cell) {
@@ -715,7 +712,6 @@ const initTabulatorJual = () => {
     ],
   });
   tabulatorJual.value.on("renderComplete", function () {
-    //subTable.redraw();
     createIcons({
       icons,
       "stroke-width": 1.5,
@@ -731,7 +727,6 @@ const initTabulatorBeli = () => {
     paginationSize: 3,
     paginationSizeSelector: [10, 20, 30, 40, 50, 100],
     layout: "fitColumns",
-    // responsiveLayout: "collapse",
     placeholder: "Tida ada Data di temukan",
     columnDefaults: {
       tooltip: function (e, cell) {
@@ -801,7 +796,6 @@ const getImgUrl = (gambar_varian) => {
 
   return image;
 };
-//----------------------------------------------------------------
 const editorData = ref("");
 const simpanNotepad = async () => {
   const id = data.value.userid;

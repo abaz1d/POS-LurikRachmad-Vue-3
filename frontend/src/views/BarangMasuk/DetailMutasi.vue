@@ -20,13 +20,11 @@ export default {
   },
   watch: {
     qty(e) {
-      //console.log("watch qty ", e);
       this.update(e);
     },
   },
   methods: {
     update(e) {
-      // console.log("watch qty ", this.id, e);
       this.BarangKeluar.updateDetail(this.id, e);
     },
     openModal_Remove(detail) {

@@ -390,7 +390,6 @@ const initTabulator = () => {
     ],
   });
   tabulator.value.on("renderComplete", function () {
-    //subTable.redraw();
     createIcons({
       icons,
       "stroke-width": 1.5,

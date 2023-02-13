@@ -34,7 +34,6 @@ module.exports = function (db) {
         }
 
     });
-    //v
     router.get('/laporan', async function (req, res, next) {
         try {
             const id_outlet = req.query.id_outlet ? req.query.id_outlet : '';
@@ -45,26 +44,20 @@ module.exports = function (db) {
                 const { rows } = await db.query('SELECT penjualan_detail.*, varian.nama_varian, penjualan.tanggal_penjualan, penjualan.total_harga_jual, penjualan.total_bayar_jual, penjualan.kembalian_jual, penjualan.id_outlet FROM public.penjualan_detail LEFT JOIN penjualan ON penjualan_detail.no_invoice = penjualan.no_invoice LEFT JOIN varian ON penjualan_detail.id_varian = varian.id_varian WHERE penjualan.id_outlet = $1 ORDER BY penjualan.tanggal_penjualan DESC', [id_outlet])
                 res.json(new Response(rows, true))
             }
-            //res.redirect(`/penjualan/show/${rows[0].no_invoice}`)
-
         } catch (e) {
             res.status(500).json(new Response(e, false))
         }
     });
-    //v
     router.post('/create', async function (req, res, next) {
         const id_outlet = req.query.id_outlet ? req.query.id_outlet : '';
         try {
             const { rows } = await db.query('INSERT INTO penjualan(id_outlet) VALUES($1) returning *', [id_outlet])
-            //res.redirect(`/penjualan/show/${rows[0].no_invoice}`)
             res.json(new Response(rows, true))
         } catch (e) {
             res.status(500).json(new Response(e, false))
         }
     });
-    //v
 
-    //v
     router.get('/barang/:id_varian', isLoggedIn, async function (req, res, next) {
         try {
             const id_outlet = req.query.id_outlet ? req.query.id_outlet : '';
@@ -74,7 +67,6 @@ module.exports = function (db) {
             res.status(500).json(new Response(e, false))
         }
     });
-    //v
     router.post('/additem', async function (req, res, next) {
         try {
             detail = await db.query('INSERT INTO penjualan_detail(no_invoice, id_varian, qty)VALUES ($1, $2, $3) returning *', [req.body.no_invoice, req.body.id_varian, req.body.qty])
@@ -84,7 +76,6 @@ module.exports = function (db) {
             res.status(500).json(new Response(e, false))
         }
     });
-    //v
     router.post('/upjual', async function (req, res, next) {
         try {
             udatejual = await db.query('UPDATE penjualan SET total_harga_jual = $1, total_bayar_jual = $2, kembalian_jual = $3 WHERE no_invoice = $4 returning *', [req.body.total_harga_jual, req.body.total_bayar_jual, req.body.kembalian, req.body.no_invoice])
@@ -94,7 +85,6 @@ module.exports = function (db) {
             res.status(500).json(new Response(e, false))
         }
     });
-    //v
     router.get('/details/:no_invoice', isLoggedIn, async function (req, res, next) {
         try {
             const { rows } = await db.query('SELECT dp.*, v.nama_varian FROM penjualan_detail as dp LEFT JOIN varian as v ON dp.id_varian = v.id_varian WHERE dp.no_invoice = $1 ORDER BY dp.id_detail_jual', [req.params.no_invoice]);
@@ -117,10 +107,8 @@ module.exports = function (db) {
         try {
             const qty = parseInt(req.body.qty);
             const id = parseInt(req.params.id_detail_jual);
-            //console.log("updte itm", id,qty, req.body);
             const detail = await db.query('WITH updated AS (UPDATE penjualan_detail SET qty = $1 WHERE id_detail_jual = $2 RETURNING *) SELECT updated.*, v.nama_varian FROM updated LEFT JOIN varian v ON updated.id_varian = v.id_varian', [qty, id])
             const { rows } = await db.query('SELECT * FROM penjualan WHERE no_invoice = $1', [req.body.no_invoice])
-            //console.log("updte itm", rows, detail.rows[0]);
             res.json(new Response({ rows, detail: detail.rows[0] }, true))
         } catch (e) {
             console.log(e)

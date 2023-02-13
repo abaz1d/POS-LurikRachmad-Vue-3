@@ -52,9 +52,6 @@
           />
         </div>
         <div class="mt-2 xl:mt-0">
-          <!-- <button id="tabulator-html-filter-go" type="button" class="btn btn-primary w-full sm:w-16" @click="onFilter">
-            Go
-          </button> -->
           <button
             id="tabulator-html-filter-reset"
             type="button"
@@ -237,7 +234,6 @@ const initTabulator = () => {
         cellClick: function (e, cell) {
           isLoading.value = true;
           const id = document.getElementById(`${cell.getData().id_varian}`);
-          //console.log("w", window)
           var scale;
           if (window.innerWidth - 100 > 640) {
             scale = 3;
@@ -466,7 +462,6 @@ const initTabulator = () => {
     ],
   });
   tabulator.value.on("renderComplete", function () {
-    //subTable.redraw();
     createIcons({
       icons,
       "stroke-width": 1.5,

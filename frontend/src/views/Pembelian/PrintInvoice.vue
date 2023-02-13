@@ -109,7 +109,6 @@ export default {
   },
   data() {
     return {
-      // no_invoice: this.prints[0].no_invoice,
       auth,
     };
   },
@@ -135,7 +134,6 @@ export default {
   },
   beforeCreate() {
     auth.value = this.Auth.items;
-    //console.log(auth.value.nama_outlet)
   },
 };
 </script>

@@ -923,6 +923,7 @@ const initTabulator = () => {
     ).format("DD MMM YYYY HH:SS")}<h2>`,
     printAsHtml: true,
     printStyled: true,
+    addRowPos: true,
     height: "60vh",
     pagination: "remote",
     paginationSize: 10,

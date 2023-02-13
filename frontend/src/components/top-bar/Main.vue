@@ -151,11 +151,11 @@ $event.target.value = '';
               <UsersIcon class="w-4 h-4 mr-2" /> Semua Akun
             </DropdownItem>
           </RouterLink>
+          <RouterLink :to="{ path: `${$route.matched[0].path + '/bantuan'}` }" replace>
           <DropdownItem class="hover:bg-white/5">
-            <RouterLink :to="{ path: `${$route.matched[0].path + '/bantuan'}`}" replace>
-              <HelpCircleIcon class="w-4 h-4 mr-2 inline-block" /> Bantuan
-            </RouterLink>
+            <HelpCircleIcon class="w-4 h-4 mr-2 inline-block" /> Bantuan
           </DropdownItem>
+          </RouterLink>
           <DropdownDivider class="border-white/[0.08]" />
           <DropdownItem @click="logoutConfirmationModal = true"
             class="hover:bg-white/5 bg-danger justify-center text-white">

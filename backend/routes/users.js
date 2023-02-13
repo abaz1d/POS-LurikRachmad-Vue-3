@@ -9,34 +9,10 @@ module.exports = function (db) {
 
   router.get('/', async function (req, res, next) {
     try {
-      let wheres = []
-      let values = []
-      let count = 1
-
-      if (req.query.cari_email) {
-        wheres.push(`email_user ilike '%' || $${count++} || '%'`);
-        values.push(req.query.cari_email);
-      }
-
-      if (req.query.cari_username) {
-        wheres.push(`username ilike '%' || $${count++} || '%'`);
-        values.push(req.query.cari_username);
-      }
-
-      if (req.query.cari_role) {
-        wheres.push(`role ilike '%' || $${count++} || '%'`);
-        values.push(req.query.cari_role);
-      }
-
-      sql = 'SELECT users.id_users, users.email_user, users.username, users.password, users.role, users.id_outlet, users.notepad, outlet.nama_outlet FROM public.users LEFT JOIN outlet ON users.id_outlet = outlet.id_outlet '
-      if (wheres.length > 0) {
-        sql += ` WHERE ${wheres.join(' AND ')}`
-      }
-
-      sql += 'ORDER BY id_users ASC';
+      sql = 'SELECT users.id_users, users.email_user, users.username, users.password, users.role, users.id_outlet, users.notepad, outlet.nama_outlet FROM public.users LEFT JOIN outlet ON users.id_outlet = outlet.id_outlet ORDER BY id_users ASC';
 
       const outlet = await db.query(`SELECT id_outlet, nama_outlet FROM public.outlet ORDER BY id_outlet ASC `)
-      const { rows } = await db.query(sql, values);
+      const { rows } = await db.query(sql);
 
       res.json(new Response({
         rows,
@@ -58,7 +34,6 @@ module.exports = function (db) {
 
   router.post('/editnotepad/:id', async function (req, res, next) {
     try {
-      //console.log("id note",req.body.notepad)
       const { rows } = await db.query(`UPDATE public.users SET notepad = $1 WHERE id_users = $2 RETURNING notepad;`, [req.body.notepad, req.params.id])
       res.json(new Response(rows[0]))
     } catch (e) {
@@ -87,7 +62,6 @@ module.exports = function (db) {
         bcrypt.hash(password, saltRounds, async function (err, hash) {
           if (err) return res.json(new Response({ message: "failed hash" }, false))
           const { rows } = await db.query('WITH inserted AS (INSERT INTO users(email_user,username,password,role,id_outlet) VALUES ($1, $2, $3, $4, $5) RETURNING *) SELECT * FROM inserted LEFT JOIN outlet ON inserted.id_outlet = outlet.id_outlet;', [email_user, username, hash, role, id_outlet])
-          // INSERT INTO users(email_user,username,password,role,id_outlet) VALUES ($1, $2, $3, $4, $5) RETURNING *
           if (err) return res.json(new Response({ message: "failed insert" }, false))
           res.json(new Response({
             data: rows[0]
@@ -112,7 +86,6 @@ module.exports = function (db) {
   });
 
   router.post('/edit/:id', async function (req, res, next) {
-    //id_outlet- token
     try {
       if (Object.keys(req.body).length > 4) {
         const { email_user, username, password, role, id_outlet } = req.body
@@ -143,8 +116,6 @@ module.exports = function (db) {
           data: rows[0]
         }))
       }
-
-      //res.json(new Response({ message: "Berhasil menghapus User" }, true))
     } catch (e) {
       res.json(new Response({ message: "failed edit user" }, false))
     }
