@@ -21,7 +21,7 @@ export const useUserStore = defineStore({
           return this.rawItems;
         }
       } catch (error) {
-        console.error(error);
+       throw new Error(error)
       }
     },
     async addItem(username, role, outlet, email_user, password) {
@@ -51,8 +51,8 @@ export const useUserStore = defineStore({
             return item;
           });
         }
-      } catch (e) {
-        console.error(e);
+      } catch (error) {
+       throw new Error(error)
       }
     },
     async removeItem(id_users) {
@@ -67,9 +67,9 @@ export const useUserStore = defineStore({
               return data.success;
             }
           })
-          .catch((e) => console.error(e));
+          .catch((error) => console.error(error));
       } catch (error) {
-        console.error(error);
+       throw new Error(error)
       }
     },
     async updateItem(user) {
@@ -97,7 +97,7 @@ export const useUserStore = defineStore({
           });
         }
       } catch (error) {
-        console.error(error);
+       throw new Error(error)
       }
     },
   },

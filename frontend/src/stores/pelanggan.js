@@ -16,8 +16,8 @@ export const usePelangganStore = defineStore({
         if (data.success) {
           this.rawItems = data.data;
         }
-      } catch (e) {
-        console.error(e);
+      } catch (error) {
+       throw new Error(error)
       }
     },
     async addItem(nama_pelanggan, alamat_pelanggan, kontak_pelanggan) {
@@ -42,8 +42,8 @@ export const usePelangganStore = defineStore({
             return item;
           });
         }
-      } catch (e) {
-        console.error(e);
+      } catch (error) {
+       throw new Error(error)
       }
     },
     async removeItem(id_pelanggan) {
@@ -57,7 +57,7 @@ export const usePelangganStore = defineStore({
             return res.status;
           }
         })
-        .catch((e) => console.error(e));
+        .catch((error) => console.error(error));
     },
     async updateItem(pelanggan) {
       let id_pelanggan = pelanggan.id_pelanggan;
@@ -76,7 +76,7 @@ export const usePelangganStore = defineStore({
           alamat_pelanggan,
           kontak_pelanggan,
         })
-        .catch((e) => console.error(e));
+        .catch((error) => console.error(error));
     },
   },
 });

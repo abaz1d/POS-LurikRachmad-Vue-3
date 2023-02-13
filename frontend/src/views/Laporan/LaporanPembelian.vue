@@ -130,10 +130,12 @@
     </div>
   </div>
   <!-- END: HTML Table Data -->
+  <ModalDatabaseError ref="modalErrorRef" />
 </template>
 
 <script setup>
 import { usePembelianStore } from "@/stores/pembelian";
+import ModalDatabaseError from "@/components/modal-error/Main.vue";
 import { ref, reactive, onMounted, watch } from "vue";
 import xlsx from "xlsx";
 import { createIcons, icons } from "lucide";
@@ -141,6 +143,7 @@ import { TabulatorFull as Tabulator } from "tabulator-tables";
 import { currencyFormatter } from "@/utils/helper";
 import moment from "moment";
 const Pembelian = usePembelianStore();
+const modalErrorRef = ref();
 const isLoading = ref(false);
 const isPrint = ref(false);
 const tableBeliRef = ref();
@@ -448,10 +451,12 @@ onMounted(async function () {
     await Pembelian.readLaporan();
     initTabulator();
     reInitOnResizeWindow();
+    modalErrorRef.value.errorDatabaseModal = false;
     isLoading.value = false;
   } catch (error) {
-    alert("onMounted" + error);
+    console.error(error);
     isLoading.value = false;
+    modalErrorRef.value.errorDatabaseModal = true;
   }
 });
 </script>

@@ -151,9 +151,17 @@
               class="intro-x mt-10 xl:mt-24 text-slate-600 dark:text-slate-500 text-center xl:text-left"
             >
               Dengan masuk aplikasi, Anda telah setuju dengan
-              <RouterLink :to="{ path: '/syarat&ketentuan' }" class="text-primary dark:text-slate-200">Peraturan</RouterLink>
+              <RouterLink
+                :to="{ path: '/syarat&ketentuan' }"
+                class="text-primary dark:text-slate-200"
+                >Peraturan</RouterLink
+              >
               &
-              <RouterLink :to="{ path: '/syarat&ketentuan' }" class="text-primary dark:text-slate-200">Ketentuan</RouterLink>
+              <RouterLink
+                :to="{ path: '/syarat&ketentuan' }"
+                class="text-primary dark:text-slate-200"
+                >Ketentuan</RouterLink
+              >
               di
               <span class="font-philosopher text-[#CDA562] drop-shadow-2xl">
                 <b> Lurik Rachmad </b>

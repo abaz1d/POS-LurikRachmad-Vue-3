@@ -129,11 +129,13 @@
       ></div>
     </div>
   </div>
+  <ModalDatabaseError ref="modalErrorRef" />
   <!-- END: HTML Table Data -->
 </template>
 
 <script setup>
 import { usePenjualanStore } from "@/stores/penjualan";
+import ModalDatabaseError from "@/components/modal-error/Main.vue";
 import { ref, reactive, onMounted, watch } from "vue";
 import xlsx from "xlsx";
 import { createIcons, icons } from "lucide";
@@ -143,6 +145,7 @@ import moment from "moment";
 const Penjualan = usePenjualanStore();
 const isPrint = ref(false);
 const isLoading = ref(false);
+const modalErrorRef = ref();
 const tableJualRef = ref();
 const tabulator = ref();
 const filter = reactive({
@@ -446,10 +449,12 @@ onMounted(async function () {
     await Penjualan.readLaporan();
     initTabulator();
     reInitOnResizeWindow();
+    modalErrorRef.value.errorDatabaseModal = false;
     isLoading.value = false;
   } catch (error) {
-    alert("onMounted" + error);
+    console.error(error);
     isLoading.value = false;
+    modalErrorRef.value.errorDatabaseModal = true;
   }
 });
 </script>

@@ -16,8 +16,8 @@ export const useSupplierStore = defineStore({
         if (data.success) {
           this.rawItems = data.data;
         }
-      } catch (e) {
-        console.error(e);
+      } catch (error) {
+       throw new Error(error)
       }
     },
     async addItem(
@@ -49,8 +49,8 @@ export const useSupplierStore = defineStore({
             return item;
           });
         }
-      } catch (e) {
-        console.error(e);
+      } catch (error) {
+       throw new Error(error)
       }
     },
     async removeItem(id_supplier) {
@@ -64,7 +64,7 @@ export const useSupplierStore = defineStore({
             return res.status;
           }
         })
-        .catch((e) => console.error(e));
+        .catch((error) => console.error(error));
     },
     async updateItem(supplier) {
       let id_supplier = supplier.id_supplier;
@@ -85,7 +85,7 @@ export const useSupplierStore = defineStore({
           telepon_supplier,
           email_supplier,
         })
-        .catch((e) => console.error(e));
+        .catch((error) => console.error(error));
     },
   },
 });

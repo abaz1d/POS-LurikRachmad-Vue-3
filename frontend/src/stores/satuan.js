@@ -16,8 +16,8 @@ export const useSatuanStore = defineStore({
         if (data.success) {
           this.rawItems = data.data;
         }
-      } catch (e) {
-        console.error(e);
+      } catch (error) {
+       throw new Error(error)
       }
     },
     async addItem(nama_satuan, keterangan_satuan) {
@@ -36,8 +36,8 @@ export const useSatuanStore = defineStore({
             return item;
           });
         }
-      } catch (e) {
-        console.error(e);
+      } catch (error) {
+       throw new Error(error)
       }
     },
     async removeItem(id_satuan) {
@@ -51,7 +51,7 @@ export const useSatuanStore = defineStore({
             return res.status;
           }
         })
-        .catch((e) => console.error(e));
+        .catch((error) => console.error(error));
     },
     async updateItem(satuan) {
       let id_satuan = satuan.id_satuan;
@@ -69,7 +69,7 @@ export const useSatuanStore = defineStore({
           nama_satuan,
           keterangan_satuan,
         })
-        .catch((e) => console.error(e));
+        .catch((error) => console.error(error));
     },
   },
 });

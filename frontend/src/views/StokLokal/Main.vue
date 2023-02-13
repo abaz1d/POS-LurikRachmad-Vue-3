@@ -632,7 +632,7 @@ const deleteVarian = () => {
       initTabulator();
       resetModal();
     })
-    .catch((e) => {
+    .catch((error) => {
       alert("removeVarian" + JSON.stringify(e));
     });
 };
@@ -703,7 +703,7 @@ watch(daftarVarian, async (newValue) => {
         outlet.value = detail.item.nama_outlet;
         stokTersedia.value = parseInt(+stokLokal.value + +stokTersisa.value);
       })
-      .catch((e) => {
+      .catch((error) => {
         alert("Error edit Get " + e);
       });
   }
@@ -1054,7 +1054,7 @@ const initTabulator = () => {
                       isEdit.value = true;
                       modalVarian.value = true;
                     })
-                    .catch((e) => {
+                    .catch((error) => {
                       alert("Error edit Get click" + e);
                     });
                 } else {
@@ -1153,8 +1153,8 @@ const initTabulator = () => {
         .then((data) => {
           tabulator.value.replaceData(data);
         })
-        .catch((e) => {
-          throw e;
+        .catch((error) => {
+             throw new Error(error)
         });
       $(".subTable" + id + "").toggle();
     } catch (error) {
@@ -1236,14 +1236,14 @@ onMounted(async function () {
             modalErrorRef.value.errorDatabaseModal = false;
             isLoading.value = false;
           })
-          .catch((e) => {
-            console.error(e);
+          .catch((error) => {
+            console.error(error);
             modalErrorRef.value.errorDatabaseModal = true;
             isLoading.value = false;
           });
       })
-      .catch((e) => {
-        console.error(e);
+      .catch((error) => {
+        console.error(error);
         modalErrorRef.value.errorDatabaseModal = true;
         isLoading.value = false;
       });

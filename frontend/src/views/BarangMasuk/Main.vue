@@ -220,7 +220,7 @@
           <div
             class="flex bg-white flex-col lg:flex-row pt-10 px-5 sm:px-20 sm:pt-10 lg:pb-10 text-center sm:text-left"
           >
-          <div
+            <div
               class="font-semibold bg-white text-primary text-left text-base"
             >
               Nomor : {{ data_utama.no_invoice }} <br />
@@ -629,7 +629,7 @@ const initTabulator = () => {
               data_utama.value = mutasi;
               isInvoice.value = true;
             })
-            .catch((e) => {
+            .catch((error) => {
               alert("gagal open invoice" + e);
             });
         },
@@ -795,7 +795,7 @@ const initTabulator = () => {
                 isEdit.value = true;
                 isInvoice.value = true;
               })
-              .catch((e) => {
+              .catch((error) => {
                 alert("gagal open invoice" + e);
               });
           });
@@ -894,8 +894,8 @@ const initTabulator = () => {
         .then((data) => {
           tabulator.value.replaceData(data);
         })
-        .catch((e) => {
-          throw e;
+        .catch((error) => {
+             throw new Error(error)
         });
       $(".subTable" + id + "").toggle();
     } catch (error) {
@@ -960,8 +960,9 @@ onMounted(() => {
       isLoading.value = false;
     })
     .catch((error) => {
-      alert("onMounted" + error);
-      isLoading.value = false;
+      console.error(error);
+    isLoading.value = false;
+    modalErrorRef.value.errorDatabaseModal = true;
     });
 });
 

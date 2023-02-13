@@ -17,8 +17,8 @@ export const useOutletStore = defineStore({
           this.rawItems = data.data;
           return this.rawItems;
         }
-      } catch (e) {
-        console.error(e);
+      } catch (error) {
+       throw new Error(error)
       }
     },
     async addItem(nama_outlet, alamat_outlet, kontak_outlet, email_outlet) {
@@ -45,8 +45,8 @@ export const useOutletStore = defineStore({
             return item;
           });
         }
-      } catch (e) {
-        console.error(e);
+      } catch (error) {
+       throw new Error(error)
       }
     },
     async removeItem(id_outlet) {
@@ -60,7 +60,7 @@ export const useOutletStore = defineStore({
             return res.success;
           }
         })
-        .catch((e) => console.error(e));
+        .catch((error) => console.error(error));
     },
     async updateItem(outlet) {
       let id_outlet = outlet.id_outlet;
@@ -81,7 +81,7 @@ export const useOutletStore = defineStore({
           kontak_outlet,
           email_outlet,
         })
-        .catch((e) => console.error(e));
+        .catch((error) => console.error(error));
     },
   },
 });

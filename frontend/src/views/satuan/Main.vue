@@ -2,20 +2,13 @@
   <div class="intro-y flex flex-col sm:flex-row items-center mt-8">
     <h2 class="text-lg font-medium mr-auto">Satuan</h2>
     <div class="w-full sm:w-auto flex mt-4 sm:mt-0">
-      <button
-        class="btn btn-primary shadow-md mb-3 mr-2 pr-5"
-        @click="modal_utama = true"
-      >
+      <button class="btn btn-primary shadow-md mb-3 mr-2 pr-5" @click="modal_utama = true">
         <PlusIcon class="w-4 h-4 mr-2" />
         <p class="hidden xl:block mr-1">Satuan</p>
         Baru
       </button>
       <!-- BEGIN: Modal Content -->
-      <Modal
-        backdrop="static"
-        :show="modal_utama"
-        @hidden="modal_utama = false"
-      >
+      <Modal backdrop="static" :show="modal_utama" @hidden="modal_utama = false">
         <ModalHeader>
           <h2 class="font-medium text-base mr-auto">
             <p class="mx-auto" v-if="isEdit">Edit Satuan {{ id_satuan }}</p>
@@ -23,52 +16,29 @@
           </h2>
         </ModalHeader>
         <ModalBody class="grid grid-cols-12 gap-4 gap-y-3">
-          <form
-            @submit.prevent="isEdit ? updateSatuan() : addSatuan()"
-            id="satuanForm"
-            class="col-span-12"
-          >
+          <form @submit.prevent="isEdit ? updateSatuan() : addSatuan()" id="satuanForm" class="col-span-12">
             <div class="col-span-12 mb-5">
               <label for="pos-form-1" class="form-label">Nama Satuan</label>
-              <input
-                id="pos-form-1"
-                type="text"
-                class="form-control flex-1"
-                placeholder="Masukan Nama Satuan"
-                v-model="nama_satuan"
-                required
-              />
+              <input id="pos-form-1" type="text" class="form-control flex-1" placeholder="Masukan Nama Satuan"
+                v-model="nama_satuan" required />
             </div>
             <div class="col-span-12">
-              <label for="pos-form-5" class="form-label"
-                >Keterangan Satuan</label
-              >
-              <textarea
-                id="pos-form-5"
-                class="form-control"
-                placeholder="Masukan Keterangan Satuan"
-                v-model="keterangan_satuan"
-                required
-              />
-              <small class="text-grey-800 text-xs"
-                >Contoh : Digunakan untuk mewakili satuan stok ketersediaan
-                barang dalam bentuk benda padat</small
-              >
+              <label for="pos-form-5" class="form-label">Keterangan Satuan</label>
+              <textarea id="pos-form-5" class="form-control" placeholder="Masukan Keterangan Satuan"
+                v-model="keterangan_satuan" required />
+              <small class="text-grey-800 text-xs">Contoh : Digunakan untuk mewakili satuan stok ketersediaan
+                barang dalam bentuk benda padat</small>
             </div>
           </form>
         </ModalBody>
         <ModalFooter class="text-right">
-          <button
-            type="button"
-            @click="
-              modal_utama = false;
-              id_satuan = '';
-              nama_satuan = '';
-              keterangan_satuan = '';
-              isEdit = false;
-            "
-            class="btn btn-outline-secondary w-32 mr-1"
-          >
+          <button type="button" @click="
+            modal_utama = false;
+          id_satuan = '';
+          nama_satuan = '';
+          keterangan_satuan = '';
+          isEdit = false;
+          " class="btn btn-outline-secondary w-32 mr-1">
             Cancel
           </button>
           <button type="submit" form="satuanForm" class="btn btn-primary w-32">
@@ -76,10 +46,7 @@
           </button>
         </ModalFooter>
       </Modal>
-      <a
-        href=""
-        class="ml-auto sm:ml-0 btn px-2 h-10 box flex items-center text-primary"
-      >
+      <a href="" class="ml-auto sm:ml-0 btn px-2 h-10 box flex items-center text-primary">
         <RefreshCcwIcon class="w-4 h-4 sm:mr-3 sm:m-0 m-2" />
         <p class="sm:block hidden">Reload Data</p>
       </a>
@@ -90,27 +57,17 @@
     <div class="flex flex-col sm:flex-row sm:items-end xl:items-start">
       <form id="tabulator-html-filter-form" class="xl:flex sm:mr-auto">
         <div class="sm:flex items-center sm:mr-4">
-          <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2"
-            >Field</label
-          >
-          <select
-            id="tabulator-html-filter-field"
-            v-model="filter.field"
-            class="form-select w-full sm:w-32 2xl:w-full mt-2 sm:mt-0 sm:w-auto"
-          >
+          <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2">Field</label>
+          <select id="tabulator-html-filter-field" v-model="filter.field"
+            class="form-select w-full sm:w-32 2xl:w-full mt-2 sm:mt-0 sm:w-auto">
             <option value="id_satuan">ID Satuan</option>
             <option value="nama_satuan">Nama Satuan</option>
           </select>
         </div>
         <div class="sm:flex items-center sm:mr-4 mt-2 xl:mt-0">
-          <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2"
-            >Type</label
-          >
-          <select
-            id="tabulator-html-filter-type"
-            v-model="filter.type"
-            class="form-select w-full mt-2 sm:mt-0 sm:w-auto"
-          >
+          <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2">Type</label>
+          <select id="tabulator-html-filter-type" v-model="filter.type"
+            class="form-select w-full mt-2 sm:mt-0 sm:w-auto">
             <option value="like" selected>like</option>
             <option value="=">=</option>
             <option value="<">&lt;</option>
@@ -121,42 +78,22 @@
           </select>
         </div>
         <div class="sm:flex items-center sm:mr-4 mt-2 xl:mt-0">
-          <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2"
-            >Value</label
-          >
-          <input
-            id="tabulator-html-filter-value"
-            v-model="filter.value"
-            type="text"
-            class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0"
-            placeholder="Search..."
-          />
+          <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2">Value</label>
+          <input id="tabulator-html-filter-value" v-model="filter.value" type="text"
+            class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0" placeholder="Search..." />
         </div>
         <div class="mt-2 xl:mt-0">
-          <button
-            id="tabulator-html-filter-go"
-            type="button"
-            class="btn btn-primary w-full sm:w-16"
-            @click="onFilter"
-          >
+          <button id="tabulator-html-filter-go" type="button" class="btn btn-primary w-full sm:w-16" @click="onFilter">
             Go
           </button>
-          <button
-            id="tabulator-html-filter-reset"
-            type="button"
-            class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1"
-            @click="onResetFilter"
-          >
+          <button id="tabulator-html-filter-reset" type="button"
+            class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1" @click="onResetFilter">
             Reset
           </button>
         </div>
       </form>
       <div class="flex mt-5 sm:mt-0">
-        <button
-          id="tabulator-print"
-          class="btn btn-outline-secondary w-1/2 sm:w-auto mr-2"
-          @click="onPrint"
-        >
+        <button id="tabulator-print" class="btn btn-outline-secondary w-1/2 sm:w-auto mr-2" @click="onPrint">
           <PrinterIcon class="w-4 h-4 mr-2" /> Print
         </button>
         <Dropdown class="w-1/2 sm:w-auto">
@@ -177,14 +114,9 @@
         </Dropdown>
       </div>
     </div>
-    <div
-      v-show="isLoading"
-      wire:loading
-      class="fixed top-0 left-0 right-0 bottom-0 w-full h-[50vw] z-50 overflow-hidden bg-gray-700 opacity-75 flex flex-col items-center justify-center"
-    >
-      <Loader2Icon
-        class="motion-safe:animate-spin stroke-[10px] text-white h-12 w-12 mb-4"
-      />
+    <div v-show="isLoading" wire:loading
+      class="fixed top-0 left-0 right-0 bottom-0 w-full h-[50vw] z-50 overflow-hidden bg-gray-700 opacity-75 flex flex-col items-center justify-center">
+      <Loader2Icon class="motion-safe:animate-spin stroke-[10px] text-white h-12 w-12 mb-4" />
       <h2 class="text-center text-white text-xl font-semibold">Loading...</h2>
       <p class="w-1/3 text-center text-white">
         Ini mungkin memakan waktu beberapa detik, tolong jangan tutup halaman
@@ -192,18 +124,11 @@
       </p>
     </div>
     <div class="overflow-x-auto scrollbar-hidden">
-      <div
-        id="tabulator"
-        ref="tableRef"
-        class="mt-5 table-report table-report--tabulator"
-      ></div>
+      <div id="tabulator" ref="tableRef" class="mt-5 table-report table-report--tabulator"></div>
     </div>
   </div>
 
-  <Modal
-    :show="deleteConfirmationModal"
-    @hidden="deleteConfirmationModal = false"
-  >
+  <Modal :show="deleteConfirmationModal" @hidden="deleteConfirmationModal = false">
     <ModalBody class="p-0">
       <div class="p-5 text-center">
         <XCircleIcon class="w-16 h-16 text-danger mx-auto mt-3" />
@@ -214,33 +139,27 @@
         </div>
       </div>
       <div class="px-5 pb-8 text-center">
-        <button
-          type="button"
-          @click="deleteConfirmationModal = false"
-          class="btn btn-outline-secondary w-24 mr-1"
-        >
+        <button type="button" @click="deleteConfirmationModal = false" class="btn btn-outline-secondary w-24 mr-1">
           Batal
         </button>
-        <button
-          type="button"
-          class="btn btn-danger w-24"
-          @click="
-            (e) => {
-              e.preventDefault();
-              deleteSatuan(id_satuan);
-            }
-          "
-        >
+        <button type="button" class="btn btn-danger w-24" @click="
+          (e) => {
+            e.preventDefault();
+            deleteSatuan(id_satuan);
+          }
+        ">
           Hapus
         </button>
       </div>
     </ModalBody>
   </Modal>
+  <ModalDatabaseError ref="modalErrorRef" />
   <!-- END: HTML Table Data -->
 </template>
 
 <script>
 import { useSatuanStore } from "@/stores/satuan";
+import ModalDatabaseError from "@/components/modal-error/Main.vue";
 import { ref, reactive } from "vue";
 import xlsx from "xlsx";
 import { createIcons, icons } from "lucide";
@@ -264,6 +183,9 @@ export default {
   setup() {
     const Satuan = useSatuanStore();
     return { Satuan, moment };
+  },
+  components: {
+    ModalDatabaseError,
   },
   data() {
     return {
@@ -359,8 +281,7 @@ export default {
             download: false,
             formatter(cell) {
               return `<div>
-                <div class="font-medium whitespace-nowrap">${
-                  cell.getData().id_satuan
+                <div class="font-medium whitespace-nowrap">${cell.getData().id_satuan
                 }</div>
               </div>`;
             },
@@ -381,8 +302,7 @@ export default {
             download: false,
             formatter(cell) {
               return `<div>
-                <div class="font-medium whitespace-nowrap">${
-                  cell.getData().nama_satuan
+                <div class="font-medium whitespace-nowrap">${cell.getData().nama_satuan
                 }</div>
               </div>`;
             },
@@ -403,8 +323,7 @@ export default {
             download: false,
             formatter(cell) {
               return `<div>
-                <div class="font-medium whitespace-normal">${
-                  cell.getData().keterangan_satuan
+                <div class="font-medium whitespace-normal">${cell.getData().keterangan_satuan
                 }</div>
               </div>`;
             },
@@ -532,11 +451,13 @@ export default {
       .then(() => {
         this.initTabulator();
         this.reInitOnResizeWindow();
+        this.$refs.modalErrorRef.errorDatabaseModal = false;
         isLoading.value = false;
       })
       .catch((error) => {
-        alert(error);
+        console.error(error);
         isLoading.value = false;
+        this.$refs.modalErrorRef.errorDatabaseModal = true;
       });
   },
 };

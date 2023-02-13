@@ -2,37 +2,55 @@
   <div class="intro-y flex flex-col sm:flex-row items-center mt-8">
     <h2 class="text-lg font-medium mr-auto">Pembelian</h2>
     <div class="w-full sm:w-auto flex mt-4 sm:mt-0">
-      <button class="btn btn-primary shadow-md mb-3 mr-2 pr-5" @click="
-  modal_utama = true;
-startTransaction();
-      ">
+      <button
+        class="btn btn-primary shadow-md mb-3 mr-2 pr-5"
+        @click="
+          modal_utama = true;
+          startTransaction();
+        "
+      >
         <PlusIcon class="w-4 h-4 mr-2" />
         <p class="hidden xl:block mr-1">Pembelian</p>
         Baru
       </button>
       <!-- BEGIN: Modal Content -->
-      <Modal size="modal-xl" backdrop="static" :show="modal_utama" @hidden="modal_utama = false">
+      <Modal
+        size="modal-xl"
+        backdrop="static"
+        :show="modal_utama"
+        @hidden="modal_utama = false"
+      >
         <ModalHeader class="relative top-0 rounded-md">
           <h2 class="hidden lg:block font-medium text-base mr-auto">
             <p class="mx-auto" v-if="isEdit">Edit Pembelian {{ no_invoice }}</p>
             <p class="mx-auto" v-else>Tambah Pembelian</p>
           </h2>
-          <div class="sm:w-auto flex mt-3 mx-auto sm:mx-0 sm:mr-0 sm:ml-4 items-center sm:items-right">
+          <div
+            class="sm:w-auto flex mt-3 mx-auto sm:mx-0 sm:mr-0 sm:ml-4 items-center sm:items-right"
+          >
             <div class="mr-2 m-auto">
-              <div class="bg-slate-200 rounded-md p-2 font-medium lg:text-base text-sm px-2">
+              <div
+                class="bg-slate-200 rounded-md p-2 font-medium lg:text-base text-sm px-2"
+              >
                 <p class="text-right text-black">{{ no_invoice }}</p>
               </div>
-              <p class="text-center bg-primary text-white rounded-md w-24 mx-auto lg:-mt-[52px] -mt-12 lg:mb-8 mb-6">
+              <p
+                class="text-center bg-primary text-white rounded-md w-24 mx-auto lg:-mt-[52px] -mt-12 lg:mb-8 mb-6"
+              >
                 NO INVOICE
               </p>
             </div>
             <div class="mr-2 m-auto">
-              <div class="bg-slate-200 rounded-md p-2 font-medium lg:text-base text-sm px-2">
+              <div
+                class="bg-slate-200 rounded-md p-2 font-medium lg:text-base text-sm px-2"
+              >
                 <p class="text-right text-black">
                   {{ moment(waktu).format("DD MMM YYYY HH:SS") }}
                 </p>
               </div>
-              <p class="text-center bg-primary text-white rounded-md w-24 mx-auto lg:-mt-[52px] -mt-12 lg:mb-8 mb-6">
+              <p
+                class="text-center bg-primary text-white rounded-md w-24 mx-auto lg:-mt-[52px] -mt-12 lg:mb-8 mb-6"
+              >
                 WAKTU
               </p>
             </div>
@@ -49,15 +67,24 @@ startTransaction();
                       <div class="flex-1 mt-0">
                         <div class="grid grid-cols-12 gap-x-2 sm:gap-x-3">
                           <div class="col-span-12 mb-5">
-                            <label for="pos-form-1" class="form-label">ID Supplier
+                            <label for="pos-form-1" class="form-label"
+                              >ID Supplier
                             </label>
                             <div class="flex w-full">
-                              <TomSelect v-model="supplier" class="w-full" required>
+                              <TomSelect
+                                v-model="supplier"
+                                class="w-full"
+                                required
+                              >
                                 <option value="kosong" disabled>
                                   --&gt; Pilih Items &lt;--
                                 </option>
-                                <option v-for="supplier in Pembelian.suppliers" :key="supplier.id_supplier"
-                                  :supplier="supplier" :value="supplier.id_supplier">
+                                <option
+                                  v-for="supplier in Pembelian.suppliers"
+                                  :key="supplier.id_supplier"
+                                  :supplier="supplier"
+                                  :value="supplier.id_supplier"
+                                >
                                   {{ supplier.id_supplier }} -
                                   {{ supplier.nama_supplier }}
                                 </option>
@@ -65,24 +92,34 @@ startTransaction();
                             </div>
                           </div>
                           <div class="sm:col-span-9 col-span-12 mb-5">
-                            <label for="pos-form-1" class="form-label">ID Barang/Item
+                            <label for="pos-form-1" class="form-label"
+                              >ID Barang/Item
                               <p class="sm:hidden form-label">& Stok</p>
                             </label>
                             <div class="flex w-full">
                               <div
                                 class="z-30 rounded-l w-10 flex items-center justify-center bg-gray-100 hover:bg-gray-300 border text-gray-600 dark:bg-dark-1 dark:border-dark-4 -mr-1 cursor-pointer"
                                 @click="
-  isModalScanner = true;
-renderQrScanner();
-                                ">
+                                  isModalScanner = true;
+                                  renderQrScanner();
+                                "
+                              >
                                 <CameraIcon class="w-4 h-4" />
                               </div>
-                              <TomSelect v-model="item_select" class="w-full" required>
+                              <TomSelect
+                                v-model="item_select"
+                                class="w-full"
+                                required
+                              >
                                 <option value="kosong" disabled>
                                   --&gt; Pilih Items &lt;--
                                 </option>
-                                <option v-for="varian in Pembelian.varians" :key="varian.id_varian" :varian="varian"
-                                  :value="varian.id_varian">
+                                <option
+                                  v-for="varian in Pembelian.varians"
+                                  :key="varian.id_varian"
+                                  :varian="varian"
+                                  :value="varian.id_varian"
+                                >
                                   {{ varian.id_barang }} -
                                   {{ varian.nama_barang }} |
                                   {{ varian.id_varian }} -
@@ -95,34 +132,58 @@ renderQrScanner();
                             </div>
                           </div>
                           <div class="hidden sm:block col-span-3 mb-5">
-                            <label for="pos-form-1" class="form-label">Stok Tersisa</label>
-                            <input v-model="stok" id="pos-form-1" type="text" class="form-control flex-1"
-                              placeholder="Masukan Stok Tersisa" readonly />
+                            <label for="pos-form-1" class="form-label"
+                              >Stok Tersisa</label
+                            >
+                            <input
+                              v-model="stok"
+                              id="pos-form-1"
+                              type="text"
+                              class="form-control flex-1"
+                              placeholder="Masukan Stok Tersisa"
+                              readonly
+                            />
                           </div>
 
                           <div class="hidden sm:block col-span-6 mb-5">
-                            <label for="pos-form-1" class="form-label">Nama Barang</label>
-                            <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
+                            <label for="pos-form-1" class="form-label"
+                              >Nama Barang</label
+                            >
+                            <div
+                              class="bg-slate-100 py-2 px-3 border-2 rounded-md"
+                            >
                               <p class="text-black">{{ nama_barang_select }}</p>
                             </div>
                           </div>
                           <div class="hidden sm:block col-span-6 mb-5">
-                            <label for="pos-form-1" class="form-label">Nama Varian</label>
-                            <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
+                            <label for="pos-form-1" class="form-label"
+                              >Nama Varian</label
+                            >
+                            <div
+                              class="bg-slate-100 py-2 px-3 border-2 rounded-md"
+                            >
                               <p class="text-black">{{ nama_varian_select }}</p>
                             </div>
                           </div>
 
                           <div class="sm:hidden col-span-12 mb-5">
-                            <label for="pos-form-1" class="form-label">Nama Barang & Varian</label>
-                            <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
+                            <label for="pos-form-1" class="form-label"
+                              >Nama Barang & Varian</label
+                            >
+                            <div
+                              class="bg-slate-100 py-2 px-3 border-2 rounded-md"
+                            >
                               <p class="text-black">{{ nama_campur_select }}</p>
                             </div>
                           </div>
 
                           <div class="col-span-5 sm:col-span-4 mb-5">
-                            <label for="pos-form-1" class="form-label">Harga Item</label>
-                            <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
+                            <label for="pos-form-1" class="form-label"
+                              >Harga Item</label
+                            >
+                            <div
+                              class="bg-slate-100 py-2 px-3 border-2 rounded-md"
+                            >
                               <p class="text-black">
                                 {{
                                   currencyFormatter.format(harga_item_select)
@@ -132,13 +193,26 @@ renderQrScanner();
                           </div>
                           <XIcon class="sm:hidden m-auto col-span-2" />
                           <div class="col-span-5 sm:col-span-4 mb-5">
-                            <label for="pos-form-1" class="form-label">Qty</label>
-                            <input id="pos-form-1" type="text" class="form-control flex-1" placeholder="Masukan Qty"
-                              required v-model="qty_select" :disabled="total_harga_select == 0" />
+                            <label for="pos-form-1" class="form-label"
+                              >Qty</label
+                            >
+                            <input
+                              id="pos-form-1"
+                              type="text"
+                              class="form-control flex-1"
+                              placeholder="Masukan Qty"
+                              required
+                              v-model="qty_select"
+                              :disabled="total_harga_select == 0"
+                            />
                           </div>
                           <div class="col-span-12 sm:col-span-4 mb-5">
-                            <label for="pos-form-1" class="form-label">Total Harga</label>
-                            <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
+                            <label for="pos-form-1" class="form-label"
+                              >Total Harga</label
+                            >
+                            <div
+                              class="bg-slate-100 py-2 px-3 border-2 rounded-md"
+                            >
                               <p class="text-black">
                                 {{
                                   currencyFormatter.format(total_harga_select)
@@ -147,8 +221,12 @@ renderQrScanner();
                             </div>
                           </div>
                         </div>
-                        <button type="button" @click="addItem()" class="btn btn-primary w-20 mt-3"
-                          :disabled="total_harga_select == 0">
+                        <button
+                          type="button"
+                          @click="addItem()"
+                          class="btn btn-primary w-20 mt-3"
+                          :disabled="total_harga_select == 0"
+                        >
                           Tambah
                         </button>
                       </div>
@@ -162,8 +240,11 @@ renderQrScanner();
               <div class="lg:block hidden mt-2 col-span-4 z-50">
                 <div class="intro-y box">
                   <div class="box flex p-2">
-                    <input type="text" class="form-control py-3 px-4 w-full bg-slate-100 border-slate-200/60 pr-10"
-                      placeholder="Use coupon code..." />
+                    <input
+                      type="text"
+                      class="form-control py-3 px-4 w-full bg-slate-100 border-slate-200/60 pr-10"
+                      placeholder="Use coupon code..."
+                    />
                     <button class="btn btn-primary ml-2">Apply</button>
                   </div>
                   <div class="box p-2 mt-2">
@@ -180,18 +261,26 @@ renderQrScanner();
                       </div>
                     </div>
 
-                    <div class="flex mt-4 pt-4 border-t border-slate-200/60 dark:border-darkmode-400">
+                    <div
+                      class="flex mt-4 pt-4 border-t border-slate-200/60 dark:border-darkmode-400"
+                    >
                       <div class="mr-auto font-medium text-base">
                         Total Bayar
                       </div>
                     </div>
-                    <div class="input-group bg-slate-200 rounded-md border-2 border-slate-200/60 mr-0">
+                    <div
+                      class="input-group bg-slate-200 rounded-md border-2 border-slate-200/60 mr-0"
+                    >
                       <div class="input-group-text my-auto text-xl">
                         <p class="text-black">Rp.</p>
                       </div>
-                      <input v-model="total_bayar_global" type="number"
-                        class="form-control flex-1 font-medium text-xl text-right" placeholder="Nominal Uang"
-                        required />
+                      <input
+                        v-model="total_bayar_global"
+                        type="number"
+                        class="form-control flex-1 font-medium text-xl text-right"
+                        placeholder="Nominal Uang"
+                        required
+                      />
                     </div>
 
                     <div class="flex mt-1 pt-4">
@@ -212,7 +301,9 @@ renderQrScanner();
               <!-- BEGIN: Detail Pembelian -->
               <div class="col-span-12 flex-col-reverse">
                 <div class="intro-y box">
-                  <div class="flex items-center px-5 py-2 border-b border-slate-200/60 dark:border-darkmode-400">
+                  <div
+                    class="flex items-center px-5 py-2 border-b border-slate-200/60 dark:border-darkmode-400"
+                  >
                     <h2 class="font-medium text-base mr-auto">
                       Detail Pembelian
                     </h2>
@@ -225,28 +316,42 @@ renderQrScanner();
                             <th class="sticky top-0 left-0 w-5 bg-slate-200">
                               #
                             </th>
-                            <th class="sticky top-0 whitespace-nowrap bg-slate-200">
+                            <th
+                              class="sticky top-0 whitespace-nowrap bg-slate-200"
+                            >
                               ID & Nama Varian
                             </th>
-                            <th class="sticky top-0 whitespace-nowrap bg-slate-200">
+                            <th
+                              class="sticky top-0 whitespace-nowrap bg-slate-200"
+                            >
                               QTY
                             </th>
-                            <th class="sticky top-0 whitespace-nowrap bg-slate-200">
+                            <th
+                              class="sticky top-0 whitespace-nowrap bg-slate-200"
+                            >
                               Harga Satuan
                             </th>
-                            <th class="sticky top-0 whitespace-nowrap bg-slate-200">
+                            <th
+                              class="sticky top-0 whitespace-nowrap bg-slate-200"
+                            >
                               Total Harga
                             </th>
                           </tr>
                         </thead>
                         <tbody>
-                          <DetailPembelian v-for="detail in Pembelian.pembelianDetail" :key="detail.id_barang"
-                            :detail="detail" @openModalRemove="openModalRemove"
-                            @updateTotalHargaBeli="updateTotalHargaBeli" />
+                          <DetailPembelian
+                            v-for="detail in Pembelian.pembelianDetail"
+                            :key="detail.id_barang"
+                            :detail="detail"
+                            @openModalRemove="openModalRemove"
+                            @updateTotalHargaBeli="updateTotalHargaBeli"
+                          />
                         </tbody>
                       </table>
                     </div>
-                    <ChevronDownIcon class="motion-safe:animate-bounce col-span-12 mt-1 mb-[-10px] block mx-auto" />
+                    <ChevronDownIcon
+                      class="motion-safe:animate-bounce col-span-12 mt-1 mb-[-10px] block mx-auto"
+                    />
                   </div>
                 </div>
               </div>
@@ -254,7 +359,9 @@ renderQrScanner();
             </div>
           </div>
         </ModalBody>
-        <ModalFooter class="text-right bottom-0 relative z-50 rounded-md sm:border-t-2 border-t-4 btm sm:btm-">
+        <ModalFooter
+          class="text-right bottom-0 relative z-50 rounded-md sm:border-t-2 border-t-4 btm sm:btm-"
+        >
           <AccordionGroup class="block lg:hidden mb-5">
             <AccordionItem>
               <Accordion>
@@ -292,13 +399,18 @@ renderQrScanner();
                   </div>
                 </div>
               </Accordion>
-              <AccordionPanel class="text-slate-600 dark:text-slate-500 leading-relaxed">
+              <AccordionPanel
+                class="text-slate-600 dark:text-slate-500 leading-relaxed"
+              >
                 <ChevronDownIcon class="animate-bounce block mx-auto" />
                 <div class="flex lg:block flex-col-reverse">
                   <div class="intro-y box">
                     <div class="box flex p-2">
-                      <input type="text" class="form-control py-3 px-4 w-full bg-slate-100 border-slate-200/60 pr-10"
-                        placeholder="Use coupon code..." />
+                      <input
+                        type="text"
+                        class="form-control py-3 px-4 w-full bg-slate-100 border-slate-200/60 pr-10"
+                        placeholder="Use coupon code..."
+                      />
                       <button class="btn btn-primary ml-2">Apply</button>
                     </div>
                     <div class="box p-2 mt-2">
@@ -315,18 +427,26 @@ renderQrScanner();
                         </div>
                       </div>
 
-                      <div class="flex mt-4 pt-4 border-t border-slate-200/60 dark:border-darkmode-400">
+                      <div
+                        class="flex mt-4 pt-4 border-t border-slate-200/60 dark:border-darkmode-400"
+                      >
                         <div class="mr-auto font-medium text-base">
                           Total Bayar
                         </div>
                       </div>
-                      <div class="input-group bg-slate-200 rounded-md border-2 border-slate-200/60 mr-0">
+                      <div
+                        class="input-group bg-slate-200 rounded-md border-2 border-slate-200/60 mr-0"
+                      >
                         <div class="input-group-text my-auto text-xl">
                           <p class="text-black">Rp.</p>
                         </div>
-                        <input v-model="total_bayar_global" type="number"
-                          class="form-control flex-1 font-medium text-xl text-right" placeholder="Nominal Uang"
-                          required />
+                        <input
+                          v-model="total_bayar_global"
+                          type="number"
+                          class="form-control flex-1 font-medium text-xl text-right"
+                          placeholder="Nominal Uang"
+                          required
+                        />
                       </div>
 
                       <div class="flex mt-1 pt-4">
@@ -347,20 +467,32 @@ renderQrScanner();
               </AccordionPanel>
             </AccordionItem>
           </AccordionGroup>
-          <button type="button" @click="
-  modal_utama = false;
-resetModal();
-          " class="btn btn-outline-secondary w-32 mr-1">
+          <button
+            type="button"
+            @click="
+              modal_utama = false;
+              resetModal();
+            "
+            class="btn btn-outline-secondary w-32 mr-1"
+          >
             Cancel
           </button>
-          <button type="button" @click="simpanPembelian()" class="object-left btn btn-primary w-32" :disabled="
-            total_bayar_global == 0 || total_bayar_global < total_harga_global
-          ">
+          <button
+            type="button"
+            @click="simpanPembelian()"
+            class="object-left btn btn-primary w-32"
+            :disabled="
+              total_bayar_global == 0 || total_bayar_global < total_harga_global
+            "
+          >
             Simpan
           </button>
         </ModalFooter>
       </Modal>
-      <a href="" class="ml-auto sm:ml-0 btn px-2 h-10 box flex items-center text-primary">
+      <a
+        href=""
+        class="ml-auto sm:ml-0 btn px-2 h-10 box flex items-center text-primary"
+      >
         <RefreshCcwIcon class="w-4 h-4 sm:mr-3 sm:m-0 m-2" />
         <p class="sm:block hidden">Reload Data</p>
       </a>
@@ -371,9 +503,14 @@ resetModal();
     <div class="flex flex-col sm:flex-row sm:items-end xl:items-start">
       <form id="tabulator-html-filter-form" class="xl:flex sm:mr-auto">
         <div class="sm:flex items-center sm:mr-4">
-          <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2">Field</label>
-          <select id="tabulator-html-filter-field" v-model="filter.field"
-            class="form-select w-full sm:w-32 2xl:w-full mt-2 sm:mt-0 sm:w-auto">
+          <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2"
+            >Field</label
+          >
+          <select
+            id="tabulator-html-filter-field"
+            v-model="filter.field"
+            class="form-select w-full sm:w-32 2xl:w-full mt-2 sm:mt-0 sm:w-auto"
+          >
             <option value="no_invoice">No Invoice</option>
             <option value="tanggal_pembelian">Tanggal Pembelian</option>
             <option value="total_harga_beli">Total Harga Beli</option>
@@ -382,9 +519,14 @@ resetModal();
           </select>
         </div>
         <div class="sm:flex items-center sm:mr-4 mt-2 xl:mt-0">
-          <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2">Type</label>
-          <select id="tabulator-html-filter-type" v-model="filter.type"
-            class="form-select w-full mt-2 sm:mt-0 sm:w-auto">
+          <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2"
+            >Type</label
+          >
+          <select
+            id="tabulator-html-filter-type"
+            v-model="filter.type"
+            class="form-select w-full mt-2 sm:mt-0 sm:w-auto"
+          >
             <option value="like" selected>like</option>
             <option value="=">=</option>
             <option value="<">&lt;</option>
@@ -395,19 +537,34 @@ resetModal();
           </select>
         </div>
         <div class="sm:flex items-center sm:mr-4 mt-2 xl:mt-0">
-          <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2">Value</label>
-          <input id="tabulator-html-filter-value" v-model="filter.value" type="text"
-            class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0" placeholder="Search..." />
+          <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2"
+            >Value</label
+          >
+          <input
+            id="tabulator-html-filter-value"
+            v-model="filter.value"
+            type="text"
+            class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0"
+            placeholder="Search..."
+          />
         </div>
         <div class="mt-2 xl:mt-0">
-          <button id="tabulator-html-filter-reset" type="button"
-            class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1" @click="onResetFilter">
+          <button
+            id="tabulator-html-filter-reset"
+            type="button"
+            class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1"
+            @click="onResetFilter"
+          >
             Reset
           </button>
         </div>
       </form>
       <div class="flex mt-5 sm:mt-0">
-        <button id="tabulator-print" class="btn btn-outline-secondary w-1/2 sm:w-auto mr-2" @click="onPrint">
+        <button
+          id="tabulator-print"
+          class="btn btn-outline-secondary w-1/2 sm:w-auto mr-2"
+          @click="onPrint"
+        >
           <PrinterIcon class="w-4 h-4 mr-2" /> Print
         </button>
         <Dropdown class="w-1/2 sm:w-auto">
@@ -428,9 +585,14 @@ resetModal();
         </Dropdown>
       </div>
     </div>
-    <div v-show="isLoading" wire:loading
-      class="fixed top-0 left-0 right-0 bottom-0 w-full h-[50vw] z-50 overflow-hidden bg-gray-700 opacity-75 flex flex-col items-center justify-center">
-      <Loader2Icon class="motion-safe:animate-spin stroke-[10px] text-white h-12 w-12 mb-4" />
+    <div
+      v-show="isLoading"
+      wire:loading
+      class="fixed top-0 left-0 right-0 bottom-0 w-full h-[50vw] z-50 overflow-hidden bg-gray-700 opacity-75 flex flex-col items-center justify-center"
+    >
+      <Loader2Icon
+        class="motion-safe:animate-spin stroke-[10px] text-white h-12 w-12 mb-4"
+      />
       <h2 class="text-center text-white text-xl font-semibold">Loading...</h2>
       <p class="w-1/3 text-center text-white">
         Ini mungkin memakan waktu beberapa detik, tolong jangan tutup halaman
@@ -438,12 +600,19 @@ resetModal();
       </p>
     </div>
     <div v-show="!isLoading" class="overflow-x-auto scrollbar-hidden">
-      <div id="tabulator" ref="tableRef" class="mt-5 table-report table-report--tabulator"></div>
+      <div
+        id="tabulator"
+        ref="tableRef"
+        class="mt-5 table-report table-report--tabulator"
+      ></div>
     </div>
   </div>
   <!-- END: HTML Table Data -->
   <!-- BEGIN: Delete Confirmation Modal -->
-  <Modal :show="deleteConfirmationModal" @hidden="deleteConfirmationModal = false">
+  <Modal
+    :show="deleteConfirmationModal"
+    @hidden="deleteConfirmationModal = false"
+  >
     <ModalBody class="p-0">
       <div class="p-5 text-center">
         <XCircleIcon class="w-16 h-16 text-danger mx-auto mt-3" />
@@ -458,14 +627,22 @@ resetModal();
         </div>
       </div>
       <div class="px-5 pb-8 text-center">
-        <button type="button" @click="deleteConfirmationModal = false" class="btn btn-outline-secondary w-24 mr-1">
+        <button
+          type="button"
+          @click="deleteConfirmationModal = false"
+          class="btn btn-outline-secondary w-24 mr-1"
+        >
           Cancel
         </button>
-        <button type="button" class="btn btn-danger w-24" @click="
-          modal_utama
-            ? removeItem(itemDel.id_detail_beli, itemDel.no_invoice)
-            : deletePembelian(no_invoice)
-        ">
+        <button
+          type="button"
+          class="btn btn-danger w-24"
+          @click="
+            modal_utama
+              ? removeItem(itemDel.id_detail_beli, itemDel.no_invoice)
+              : deletePembelian(no_invoice)
+          "
+        >
           Delete
         </button>
       </div>
@@ -473,7 +650,12 @@ resetModal();
   </Modal>
   <!-- END: Delete Confirmation Modal -->
 
-  <Modal size="modal-xl" backdrop="static" :show="isModalScanner" @hidden="isModalScanner = false">
+  <Modal
+    size="modal-xl"
+    backdrop="static"
+    :show="isModalScanner"
+    @hidden="isModalScanner = false"
+  >
     <ModalHeader>
       <div class="text-center mt-2">
         <h2 class="text-lg font-bold">QR Code Scanner</h2>
@@ -483,13 +665,22 @@ resetModal();
       <div class="text-center">
         <div class="mb-5">
           <div class="intro-y justify-center flex mt-5">
-            <qrcode v-bind:qrbox="250" v-bind:fps="10" ref="qrScanner" @resultScan="resultScan" />
+            <qrcode
+              v-bind:qrbox="250"
+              v-bind:fps="10"
+              ref="qrScanner"
+              @resultScan="resultScan"
+            />
           </div>
         </div>
-        <button type="button" @click="
-  isModalScanner = false;
-closeQrScanner();
-        " class="btn btn-danger w-24">
+        <button
+          type="button"
+          @click="
+            isModalScanner = false;
+            closeQrScanner();
+          "
+          class="btn btn-danger w-24"
+        >
           Close
         </button>
       </div>
@@ -497,16 +688,25 @@ closeQrScanner();
   </Modal>
 
   <!-- BEGIN: Basic Non Sticky Notification Content -->
-  <Notification refKey="basicNonStickyNotification" :options="{
-    duration: 5000,
-  }" class="flex flex-col sm:flex-row hover:animate-none md:animate-bounce animate-pulse">
+  <Notification
+    refKey="basicNonStickyNotification"
+    :options="{
+      duration: 5000,
+    }"
+    class="flex flex-col sm:flex-row hover:animate-none md:animate-bounce animate-pulse"
+  >
     <div class="font-medium">
       Klik 2 kali pada salah satu baris tabel untuk melihat detail transaksi!
     </div>
   </Notification>
   <!-- END: Basic Non Sticky Notification Content -->
 
-  <Modal backdrop="static" size="modal-xl" :show="isInvoice" @hidden="isInvoice = false">
+  <Modal
+    backdrop="static"
+    size="modal-xl"
+    :show="isInvoice"
+    @hidden="isInvoice = false"
+  >
     <ModalHeader>
       <h2 class="font-medium text-base mr-auto">
         <button class="btn btn-primary shadow-md mr-2" @click="onPrintInvoice">
@@ -515,7 +715,10 @@ closeQrScanner();
         <b>{{ no_invoice }}</b>
       </h2>
 
-      <div @click="resetModal()" class="sm:w-auto flex mt-4 sm:mt-0 mr-0 ml-4 items-right cursor-pointer">
+      <div
+        @click="resetModal()"
+        class="sm:w-auto flex mt-4 sm:mt-0 mr-0 ml-4 items-right cursor-pointer"
+      >
         <div class="ml-2 m-auto text-danger">
           <XIcon class="w-8 h-8 mx-auto" />
         </div>
@@ -523,8 +726,14 @@ closeQrScanner();
     </ModalHeader>
     <ModalBody class="bg-white">
       <div class="bg-white" id="modalPrintInvoice">
-        <PrintInvoice :prints="Pembelian.prints" :no_invoice="no_invoice" :waktu="waktu"
-          :total_harga_global="total_harga_global" :total_bayar_global="total_bayar_global" :kembalian="kembalian" />
+        <PrintInvoice
+          :prints="Pembelian.prints"
+          :no_invoice="no_invoice"
+          :waktu="waktu"
+          :total_harga_global="total_harga_global"
+          :total_bayar_global="total_bayar_global"
+          :kembalian="kembalian"
+        />
       </div>
     </ModalBody>
   </Modal>
@@ -630,7 +839,7 @@ const addItem = () => {
       stok.value = +stok.value - +qty_select.value;
       nama_campur_select.value = `${nama_barang_select.value} - ${nama_varian_select.value} | ${stok.value}`;
     })
-    .catch((e) => {
+    .catch((error) => {
       alert("addItem" + e);
     });
 };
@@ -648,7 +857,7 @@ const removeItem = (id_detail_beli, no_invoice) => {
       deleteConfirmationModal.value = false;
       total_harga_global.value = parseFloat(data);
     })
-    .catch((e) => {
+    .catch((error) => {
       alert("removeItem" + e);
     });
 };
@@ -677,7 +886,7 @@ const simpanPembelian = () => {
         modal_utama.value = false;
         initTabulator();
       })
-      .catch((e) => {
+      .catch((error) => {
         alert("Simpan Error: " + e);
       });
   } else {
@@ -726,8 +935,8 @@ const resetModal = () => {
   total_harga_global.value = 0;
   total_bayar_global.value = 0;
   kembalian.value = 0;
-  itemDel.value = ""
-  Pembelian.rawPembelianDetail = []
+  itemDel.value = "";
+  Pembelian.rawPembelianDetail = [];
 };
 
 watch(item_select, async (e) => {
@@ -743,8 +952,8 @@ watch(item_select, async (e) => {
             (qty_select.value = 1),
             (total_harga_select.value = data.harga_beli_varian);
         })
-        .catch((e) => {
-          throw e;
+        .catch((error) => {
+             throw new Error(error)
         });
     }
   } catch (error) {
@@ -752,10 +961,9 @@ watch(item_select, async (e) => {
   }
 });
 
-watch(qty_select, async (newValue, oldValue) => {
+watch(qty_select, async (newValue) => {
   const qty = newValue;
   const harga_item_select_now = harga_item_select.value;
-  const stok_now = stok.value;
   try {
     if (newValue === "") {
       alert("Minimal Qty harus 1");
@@ -863,7 +1071,7 @@ const initTabulator = () => {
               kembalian.value = parseFloat(pembelian.kembalian_beli);
               isInvoice.value = true;
             })
-            .catch((e) => {
+            .catch((error) => {
               alert("gagal open invoice" + e);
             });
         },
@@ -879,8 +1087,9 @@ const initTabulator = () => {
         download: false,
         formatter(cell) {
           return `<div>
-                <div class="font-medium whitespace-nowrap">${cell.getData().no_invoice
-            }</div>
+                <div class="font-medium whitespace-nowrap">${
+                  cell.getData().no_invoice
+                }</div>
               </div>`;
         },
       },
@@ -895,8 +1104,9 @@ const initTabulator = () => {
         download: false,
         formatter(cell) {
           return `<div>
-                <div class="font-medium whitespace-nowrap">${cell.getData().id_supplier
-            }</div>
+                <div class="font-medium whitespace-nowrap">${
+                  cell.getData().id_supplier
+                }</div>
               </div>`;
         },
       },
@@ -912,8 +1122,8 @@ const initTabulator = () => {
         formatter(cell) {
           return `<div>
                 <div class="font-medium whitespace-nowrap">${moment(
-            cell.getData().tanggal_pembelian
-          ).format("DD MMM YYYY HH:SS")}</div>
+                  cell.getData().tanggal_pembelian
+                ).format("DD MMM YYYY HH:SS")}</div>
               </div>`;
         },
       },
@@ -929,8 +1139,8 @@ const initTabulator = () => {
         formatter(cell) {
           return `<div>
                 <div class="font-medium whitespace-nowrap">${currencyFormatter.format(
-            cell.getData().total_harga_beli
-          )}</div>
+                  cell.getData().total_harga_beli
+                )}</div>
               </div>`;
         },
       },
@@ -946,8 +1156,8 @@ const initTabulator = () => {
         formatter(cell) {
           return `<div>
                 <div class="font-medium whitespace-nowrap">${currencyFormatter.format(
-            cell.getData().total_bayar_beli
-          )}</div>
+                  cell.getData().total_bayar_beli
+                )}</div>
               </div>`;
         },
       },
@@ -963,8 +1173,8 @@ const initTabulator = () => {
         formatter(cell) {
           return `<div>
                 <div class="font-medium whitespace-nowrap">${currencyFormatter.format(
-            cell.getData().kembalian_beli
-          )}</div>
+                  cell.getData().kembalian_beli
+                )}</div>
               </div>`;
         },
       },
@@ -1001,11 +1211,14 @@ const initTabulator = () => {
                     pembelian.total_bayar_beli
                   );
                   kembalian.value = parseFloat(pembelian.kembalian_beli);
-                  supplier.value = pembelian.id_supplier == null ? "kosong" : pembelian.id_supplier;
+                  supplier.value =
+                    pembelian.id_supplier == null
+                      ? "kosong"
+                      : pembelian.id_supplier;
                   isEdit.value = true;
                   modal_utama.value = true;
                 })
-                .catch((e) => {
+                .catch((error) => {
                   alert("gagal open edit" + e);
                 });
             } else {
@@ -1042,8 +1255,8 @@ const initTabulator = () => {
         formatter(cell) {
           return `<div>
                 <div class="font-medium whitespace-nowrap">${moment(
-            cell.getData().tanggal_pembelian
-          ).format("DD MMM YYYY HH:SS")}</div>
+                  cell.getData().tanggal_pembelian
+                ).format("DD MMM YYYY HH:SS")}</div>
               </div>`;
         },
       },
@@ -1056,8 +1269,8 @@ const initTabulator = () => {
         formatter(cell) {
           return `<div>
                 <div class="font-medium whitespace-nowrap">${currencyFormatter.format(
-            cell.getData().total_harga_beli
-          )}</div>
+                  cell.getData().total_harga_beli
+                )}</div>
               </div>`;
         },
       },
@@ -1070,8 +1283,8 @@ const initTabulator = () => {
         formatter(cell) {
           return `<div>
                 <div class="font-medium whitespace-nowrap">${currencyFormatter.format(
-            cell.getData().total_bayar_beli
-          )}</div>
+                  cell.getData().total_bayar_beli
+                )}</div>
               </div>`;
         },
       },
@@ -1084,8 +1297,8 @@ const initTabulator = () => {
         formatter(cell) {
           return `<div>
                 <div class="font-medium whitespace-nowrap">${currencyFormatter.format(
-            cell.getData().kembalian_beli
-          )}</div>
+                  cell.getData().kembalian_beli
+                )}</div>
               </div>`;
         },
       },
@@ -1123,7 +1336,8 @@ const initTabulator = () => {
             download: false,
             formatter(cell) {
               return `<div>
-                <div class="font-medium whitespace-nowrap">${cell.getData().nama_varian
+                <div class="font-medium whitespace-nowrap">${
+                  cell.getData().nama_varian
                 }</div>
               </div>`;
             },
@@ -1140,8 +1354,8 @@ const initTabulator = () => {
             formatter(cell) {
               return `<div>
                 <div class="font-medium whitespace-nowrap">${currencyFormatter.format(
-                cell.getData().harga_detail_beli
-              )}</div>
+                  cell.getData().harga_detail_beli
+                )}</div>
               </div>`;
             },
           },
@@ -1156,7 +1370,8 @@ const initTabulator = () => {
             download: false,
             formatter(cell) {
               return `<div>
-                <div class="font-medium whitespace-nowrap">${cell.getData().qty
+                <div class="font-medium whitespace-nowrap">${
+                  cell.getData().qty
                 }</div>
               </div>`;
             },
@@ -1173,8 +1388,8 @@ const initTabulator = () => {
             formatter(cell) {
               return `<div>
                 <div class="font-medium whitespace-nowrap">${currencyFormatter.format(
-                cell.getData().total_harga_detail_beli
-              )}</div>
+                  cell.getData().total_harga_detail_beli
+                )}</div>
               </div>`;
             },
           },
@@ -1226,8 +1441,8 @@ const initTabulator = () => {
         .then((data) => {
           tabulator.value.replaceData(data);
         })
-        .catch((e) => {
-          throw e;
+        .catch((error) => {
+             throw new Error(error)
         });
       $(".subTable" + id + "").toggle();
     } catch (error) {
@@ -1293,7 +1508,8 @@ onMounted(() => {
       isLoading.value = false;
     })
     .catch((error) => {
-      alert("onMounted" + error);
+      modalErrorRef.value.errorDatabaseModal = true;
+      console.error(error);
       isLoading.value = false;
     });
 });

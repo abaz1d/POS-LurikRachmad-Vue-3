@@ -26,7 +26,7 @@ export const useDashboardStore = defineStore({
           return Auth.items;
         }
       } catch (error) {
-        console.error(error);
+       throw new Error(error)
       }
     },
     async getNotepad(id) {
@@ -36,7 +36,7 @@ export const useDashboardStore = defineStore({
           return data.data.notepad;
         }
       } catch (error) {
-        console.error(error);
+       throw new Error(error)
       }
     },
     async updateNotepad(id, notepad) {
@@ -48,7 +48,7 @@ export const useDashboardStore = defineStore({
           return data.data.notepad;
         }
       } catch (error) {
-        console.error(error);
+       throw new Error(error)
       }
     },
   },

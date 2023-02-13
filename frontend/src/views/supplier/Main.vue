@@ -270,10 +270,12 @@
     </ModalBody>
   </Modal>
   <!-- END: HTML Table Data -->
+  <ModalDatabaseError ref="modalErrorRef" />
 </template>
 
 <script>
 import { useSupplierStore } from "@/stores/supplier";
+import ModalDatabaseError from "@/components/modal-error/Main.vue";
 import { ref, reactive } from "vue";
 import xlsx from "xlsx";
 import { createIcons, icons } from "lucide";
@@ -299,6 +301,9 @@ export default {
   setup() {
     const Supplier = useSupplierStore();
     return { Supplier, moment };
+  },
+  components: {
+    ModalDatabaseError,
   },
   data() {
     return {
@@ -638,11 +643,13 @@ export default {
       .then(() => {
         this.initTabulator();
         this.reInitOnResizeWindow();
+        this.$refs.modalErrorRef.errorDatabaseModal = false;
         isLoading.value = false;
       })
       .catch((error) => {
+        console.error(error);
         isLoading.value = false;
-        alert(error);
+        this.$refs.modalErrorRef.errorDatabaseModal = true;
       });
   },
 };

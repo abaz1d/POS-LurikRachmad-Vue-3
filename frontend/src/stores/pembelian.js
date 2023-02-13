@@ -30,7 +30,7 @@ export const usePembelianStore = defineStore({
           this.rawLaporans = data.data;
         }
       } catch (error) {
-        console.error(error);
+        throw new Error(error)
       }
     },
     async readItem() {
@@ -44,7 +44,7 @@ export const usePembelianStore = defineStore({
           return this.rawPembelians;
         }
       } catch (error) {
-        console.error(error);
+        throw new Error(error)
         this.rawVarians = { error };
         this.rawPembelians = { error };
         this.rawDetails = { error };
@@ -69,8 +69,8 @@ export const usePembelianStore = defineStore({
           total_harga_beli,
           total_bayar_beli,
           kembalian,
-        })
-      };
+        });
+      }
       try {
         const { data } = await request.post("pembelian/upbeli", {
           no_invoice,
@@ -87,8 +87,8 @@ export const usePembelianStore = defineStore({
             return item;
           });
         }
-      } catch (e) {
-        console.error(e);
+      } catch (error) {
+       throw new Error(error)
       }
     },
 
@@ -103,7 +103,7 @@ export const usePembelianStore = defineStore({
             return res.success;
           }
         })
-        .catch((e) => console.error(e));
+        .catch((error) => console.error(error));
     },
     async addDetailPembelian(noInvoice, id_varian, qty) {
       const no_invoice = String(noInvoice);
@@ -117,9 +117,8 @@ export const usePembelianStore = defineStore({
           this.readDetailPembelian(noInvoice);
           return data.data;
         }
-
-      } catch (e) {
-        console.error(e);
+      } catch (error) {
+       throw new Error(error)
       }
     },
     async readDetailPembelian(no_invoice) {
@@ -128,7 +127,7 @@ export const usePembelianStore = defineStore({
         this.rawPembelianDetail = data.data;
         return data.data;
       } catch (error) {
-        console.error(error);
+        throw new Error(error)
       }
     },
     async updateDetail(id_detail_beli, no_invoice, qty) {
@@ -148,7 +147,7 @@ export const usePembelianStore = defineStore({
           return data.data.rows[0];
         }
       } catch (error) {
-        console.error(error);
+        throw new Error(error)
       }
     },
     async removeItem(id_detail_beli, noInvoice) {
@@ -168,7 +167,7 @@ export const usePembelianStore = defineStore({
           }
         }
       } catch (error) {
-        console.error(error);
+        throw new Error(error)
       }
     },
     updateItem(pembelian) {
@@ -186,9 +185,9 @@ export const usePembelianStore = defineStore({
           nama_satuan,
           keterangan_satuan,
         })
-        .catch((e) => console.error(e));
+        .catch((error) => console.error(error));
     },
-async readDetail(no_invoice) {
+    async readDetail(no_invoice) {
       try {
         const { data } = await request.get(`pembelian?noInvoice=${no_invoice}`);
         if (data.success) {
@@ -207,7 +206,7 @@ async readDetail(no_invoice) {
           return this.rawPembelians;
         }
       } catch (error) {
-        console.error(error);
+        throw new Error(error)
       }
     },
 
@@ -218,7 +217,7 @@ async readDetail(no_invoice) {
           return data.data;
         }
       } catch (error) {
-        console.error(error);
+        throw new Error(error)
       }
     },
 
@@ -229,7 +228,7 @@ async readDetail(no_invoice) {
           return data.data;
         }
       } catch (error) {
-        console.error(error);
+        throw new Error(error)
       }
     },
   },

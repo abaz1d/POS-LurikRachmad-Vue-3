@@ -35,10 +35,7 @@ export const useBarangMasukStore = defineStore({
           this.rawDetails = data.data.details;
         }
       } catch (error) {
-        console.error(error);
-        this.rawVarians = { error };
-        this.rawPembelians = { error };
-        this.rawDetails = { error };
+       throw new Error(error)
       }
     },
     async readDetail(no_invoice) {
@@ -63,7 +60,7 @@ export const useBarangMasukStore = defineStore({
           return this.rawItems;
         }
       } catch (error) {
-        console.error(error);
+       throw new Error(error)
       }
     },
     async terimaMutasi(no_invoice, file) {
@@ -83,7 +80,7 @@ export const useBarangMasukStore = defineStore({
           console.log("terima mutasi", data, no_invoice, file);
         }
       } catch (error) {
-        console.error(error);
+       throw new Error(error)
       }
     },
     async updateTerima(id_detail_barang_mutasi, qty_terima, keterangan) {
@@ -101,7 +98,7 @@ export const useBarangMasukStore = defineStore({
           );
         }
       } catch (error) {
-        console.error(error);
+       throw new Error(error)
       }
     },
   },

@@ -530,13 +530,13 @@ onMounted(async function () {
         reInitOnResizeWindow();
         isLoading.value = false;
       })
-      .catch((e) => {
-        console.error(e);
+      .catch((error) => {
+        console.error(error);
         modalErrorRef.value.errorDatabaseModal = true;
         isLoading.value = false;
       });
-  } catch (e) {
-    console.error(e);
+  } catch (error) {
+    console.error(error);
     isLoading.value = false;
     modalErrorRef.value.errorDatabaseModal = true;
   }

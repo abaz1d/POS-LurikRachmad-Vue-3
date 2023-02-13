@@ -68,7 +68,11 @@
                   <li
                     v-for="(subMenu, subMenuKey) in menu.subMenu.filter(
                       (item) => {
-                        return item.title !== dataFilter1 && item.title !== dataFilter2 && item.title !== dataFilter3;
+                        return (
+                          item.title !== dataFilter1 &&
+                          item.title !== dataFilter2 &&
+                          item.title !== dataFilter3
+                        );
                       }
                     )"
                     :key="subMenuKey"
@@ -203,6 +207,7 @@ onMounted(() => {
   formattedMenu.value = $h.toRaw(simpleMenu.value);
   dataFilter1.value = Auth.items.role == "Operator" ? "Stok Lokal" : "";
   dataFilter2.value = Auth.items.role == "Super Admin" ? "" : "Pembelian";
-  dataFilter3.value = Auth.items.role == "Super Admin" ? "" : "Laporan Pembelian";
+  dataFilter3.value =
+    Auth.items.role == "Super Admin" ? "" : "Laporan Pembelian";
 });
 </script>
