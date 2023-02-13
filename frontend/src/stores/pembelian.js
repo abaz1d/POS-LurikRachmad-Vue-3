@@ -5,15 +5,16 @@ export const usePembelianStore = defineStore({
   id: "pembelian",
   state: () => ({
     rawVarians: [],
+    rawSuppliers: [],
     rawPembelians: [],
     rawDetails: [],
     rawPrints: [],
     rawLaporans: [],
-
     rawPembelianDetail: [],
   }),
   getters: {
     varians: (state) => state.rawVarians,
+    suppliers: (state) => state.rawSuppliers,
     pembelians: (state) => state.rawPembelians,
     details: (state) => state.rawDetails,
     prints: (state) => state.rawPrints,
@@ -24,13 +25,9 @@ export const usePembelianStore = defineStore({
   actions: {
     async readLaporan() {
       try {
-        const data = await request.get("pembelian/laporan");
-        if (data.status >= 200 && data.status < 300) {
-          //console.log('laporan', data.data)
+        const { data } = await request.get("pembelian/laporan");
+        if (data.success) {
           this.rawLaporans = data.data;
-          // console.log('rawpembelians', this.rawpembelians)
-          //console.log('jual')
-          //return this.rawpembelians
         }
       } catch (error) {
         console.error(error);
@@ -38,14 +35,12 @@ export const usePembelianStore = defineStore({
     },
     async readItem() {
       try {
-        const data = await request.get("pembelian");
-        if (data.status >= 200 && data.status < 300) {
+        const { data } = await request.get("pembelian");
+        if (data.success) {
           this.rawVarians = data.data.varian;
+          this.rawSuppliers = data.data.supplier;
           this.rawPembelians = data.data.pembelian;
           this.rawDetails = data.data.details;
-          // console.log('data', data.data)
-          // console.log('rawPembelians', this.rawPembelians)
-          //console.log('beli')
           return this.rawPembelians;
         }
       } catch (error) {
@@ -57,46 +52,41 @@ export const usePembelianStore = defineStore({
     },
     async addPembelian(
       no_invoice,
+      waktu,
       total_harga_global,
       total_bayar_global,
-      kembalian
+      kembalian,
+      supplier,
+      isEdit
     ) {
-      const tanggal_pembelian = Date.now();
+      const tanggal_pembelian = waktu;
       const total_harga_beli = total_harga_global;
       const total_bayar_beli = total_bayar_global;
-      // this.rawPembelianDetail.push({ no_invoice, id_varian, qty });
-      // console.log('rawPembelianDetail', this.rawPembelianDetail)
-      this.rawPembelians.push({
-        no_invoice,
-        tanggal_pembelian,
-        total_harga_beli,
-        total_bayar_beli,
-        kembalian,
-      });
-      try {
-        const data = await request.post("pembelian/upbeli", {
+      if (!isEdit) {
+        this.rawPembelians.push({
           no_invoice,
+          tanggal_pembelian,
           total_harga_beli,
           total_bayar_beli,
           kembalian,
+        })
+      };
+      try {
+        const { data } = await request.post("pembelian/upbeli", {
+          no_invoice,
+          total_harga_beli,
+          total_bayar_beli,
+          supplier,
+          kembalian,
         });
-        if (data.status >= 200 && data.status < 300) {
+        if (data.success) {
           this.rawPembelians = this.rawPembelians.map((item) => {
-            if (item.tanggal_pembelian == tanggal_pembelian) {
-              console.log(
-                "data",
-                no_invoice,
-                item.tanggal_pembelian,
-                tanggal_pembelian,
-                item.tanggal_pembelian === tanggal_pembelian
-              );
+            if (item.no_invoice == no_invoice) {
               return data.data[0];
             }
             return item;
           });
-          // return data.data
         }
-        //console.log('data',data.data, this.rawPembelians)
       } catch (e) {
         console.error(e);
       }
@@ -109,50 +99,53 @@ export const usePembelianStore = defineStore({
       request
         .get(`pembelian/delete/${no_invoice}`)
         .then((res) => {
-          if (res.status >= 200 && res.status < 300) {
-            // alert(`Sukses Hapus Data ${no_invoice}`)
+          if (res.success) {
+            return res.success;
           }
         })
         .catch((e) => console.error(e));
     },
     async addDetailPembelian(noInvoice, id_varian, qty) {
       const no_invoice = String(noInvoice);
-      // this.rawPembelianDetail.push({ no_invoice, id_varian, qty });
-      // console.log('rawPembelianDetail', this.rawPembelianDetail)
       try {
-        const data = await request.post("pembelian/additem", {
+        const { data } = await request.post("pembelian/additem", {
           no_invoice,
           id_varian,
           qty,
         });
-        if (data.status >= 200 && data.status < 300) {
+        if (data.success) {
           this.readDetailPembelian(noInvoice);
           return data.data;
         }
-        //console.log('data',data)
+
       } catch (e) {
         console.error(e);
       }
     },
     async readDetailPembelian(no_invoice) {
       try {
-        const data = await request.get(`/pembelian/details/${no_invoice}`);
-        //console.log('data', data.data)
+        const { data } = await request.get(`/pembelian/details/${no_invoice}`);
         this.rawPembelianDetail = data.data;
-        //console.log('rawPembelianDetail', data.data)
         return data.data;
       } catch (error) {
         console.error(error);
       }
     },
-    async updateDetail(id_detail_jual, qty) {
+    async updateDetail(id_detail_beli, no_invoice, qty) {
       try {
         const { data } = await request.put(
-          `pembelian/upditem/${id_detail_jual}`,
-          { qty: qty }
+          `pembelian/upditem/${id_detail_beli}`,
+          { qty: qty, no_invoice: no_invoice }
         );
         if (data.success) {
-          return data.success;
+          let dataBaru = data.data.detail;
+          this.rawPembelianDetail = this.rawPembelianDetail.map((item) => {
+            if (item.id_detail_beli === dataBaru.id_detail_beli) {
+              return dataBaru;
+            }
+            return item;
+          });
+          return data.data.rows[0];
         }
       } catch (error) {
         console.error(error);
@@ -160,12 +153,11 @@ export const usePembelianStore = defineStore({
     },
     async removeItem(id_detail_beli, noInvoice) {
       try {
-        const data = await request.delete(
+        const { data } = await request.delete(
           `pembelian/delitem/${id_detail_beli}`,
           { data: { no_invoice: noInvoice } }
         );
-        if (data.status >= 200 && data.status < 300) {
-          // console.log('dalam', data)
+        if (data.success) {
           this.rawPembelianDetail = this.rawPembelianDetail.filter(
             (item) => item.id_detail_beli !== id_detail_beli
           );
@@ -196,12 +188,10 @@ export const usePembelianStore = defineStore({
         })
         .catch((e) => console.error(e));
     },
-
-    // ---------------------------------------------------------------- Detail ----------------------------------------------------------------
-    async readDetail(no_invoice) {
+async readDetail(no_invoice) {
       try {
-        const data = await request.get(`pembelian?noInvoice=${no_invoice}`);
-        if (data.status >= 200 && data.status < 300) {
+        const { data } = await request.get(`pembelian?noInvoice=${no_invoice}`);
+        if (data.success) {
           this.rawDetails = data.data.details;
           this.rawPrints = data.data.print.rows;
 
@@ -223,15 +213,10 @@ export const usePembelianStore = defineStore({
 
     async readDetailItem(id_varian) {
       try {
-        const data = await request.get(`/pembelian/barang/${id_varian}`);
-        // .then((data) => {
-        //   // console.log('data.data', data.data);
-        //   return data.data
-        // })
-        // console.log('data.data', data.data);
-        //if (data.status >= 200 && data.status < 300) {
-        return data.data;
-        // }
+        const { data } = await request.get(`/pembelian/barang/${id_varian}`);
+        if (data.success) {
+          return data.data;
+        }
       } catch (error) {
         console.error(error);
       }
@@ -239,11 +224,10 @@ export const usePembelianStore = defineStore({
 
     async startTransaction() {
       try {
-        const data = await request.post("/pembelian/create");
-        //if (data.status >= 200 && data.status < 300) {
-        // console.log('data.data', data.data);
-        return data.data;
-        // }
+        const { data } = await request.post("/pembelian/create");
+        if (data.success) {
+          return data.data;
+        }
       } catch (error) {
         console.error(error);
       }

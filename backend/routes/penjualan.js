@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var path = require('path');
-const { currencyFormatter, isLoggedIn, Response } = require('../helpers/util')
+const { isLoggedIn, Response } = require('../helpers/util')
 
 module.exports = function (db) {
     router.get('/', isLoggedIn, async function (req, res, next) {
@@ -108,7 +108,7 @@ module.exports = function (db) {
         try {
             const { rows } = await db.query('DELETE FROM penjualan WHERE no_invoice = $1', [req.params.no_invoice])
             delPen = await db.query('DELETE FROM penjualan_detail WHERE no_invoice = $1', [req.params.no_invoice])
-            res.redirect('/penjualan')
+            res.json(new Response({ message: "delete barang success" }, true))
         } catch (e) {
             res.status(500).json(new Response(e, false))
         }

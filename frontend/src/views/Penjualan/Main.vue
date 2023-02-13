@@ -88,7 +88,7 @@
                                 required
                               >
                                 <option value="kosong" disabled>
-                                  &gt;-- Pilih Items &lt;--
+                                  --&gt; Pilih Items &lt;--
                                 </option>
                                 <option
                                   v-for="varian in Penjualan.varians"
@@ -325,9 +325,7 @@
                         </tbody>
                       </table>
                     </div>
-                    <ChevronDownIcon
-                      class="animate-bounce col-span-12 mt-1 mb-[-20px] block mx-auto"
-                    />
+                    <ChevronDownIcon class="motion-safe:animate-bounce col-span-12 mt-1 mb-[-10px] block mx-auto" />
                   </div>
                 </div>
               </div>
