@@ -1,5 +1,4 @@
 import { useAuthStore } from "@/stores/auth";
-
 import { createRouter, createWebHistory } from "vue-router";
 import SideMenu from "@/layouts/side-menu/Main.vue";
 import SimpleMenu from "@/layouts/simple-menu/Main.vue";
@@ -100,7 +99,7 @@ const routes = [
         path: "pembelian",
         name: "top-menu-pembelian",
         component: Pembelian,
-        meta: { authorize: [] },
+        meta: { authorize: ["Super Admin"] },
       },
       {
         path: "laporan-penjualan",
@@ -112,7 +111,7 @@ const routes = [
         path: "laporan-pembelian",
         name: "top-menu-laporan-pembelian",
         component: LaporanPembelian,
-        meta: { authorize: [] },
+        meta: { authorize: ["Super Admin"] },
       },
       {
         path: "laporan-stok",

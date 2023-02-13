@@ -213,7 +213,7 @@ $event.target.value = '';
           <!-- BEGIN: Second Child -->
           <ul v-if="menu.subMenu">
             <li v-for="(subMenu, subMenuKey) in menu.subMenu.filter((item) => {
-              return item.title !== dataFilter;
+              return item.title !== dataFilter1 && item.title !== dataFilter2 && item.title !== dataFilter3;
             })" :key="subMenuKey">
               <a :href="
                 subMenu.subMenu
@@ -531,10 +531,11 @@ const Auth = useAuthStore();
 const logoutConfirmationModal = ref(false);
 const profilModal = ref(false);
 const data = ref([]);
-const dataFilter = ref();
+const dataFilter1 = ref();
+const dataFilter2 = ref();
+const dataFilter3 = ref();
 const searchModal = ref(false);
 const nama_outlet = ref();
-
 const route = useRoute();
 const router = useRouter();
 const formattedMenu = ref([]);
@@ -563,7 +564,9 @@ onMounted(() => {
   dom("body").removeClass("error-page").removeClass("login").addClass("main");
   formattedMenu.value = $h.toRaw(topMenu.value);
   data.value = Auth.items;
-  dataFilter.value = data.value.role == "Operator" ? "Stok Lokal" : "";
+  dataFilter1.value = data.value.role == "Operator" ? "Stok Lokal" : "";
+  dataFilter2.value = data.value.role == "Super Admin" ? "" : "Pembelian";
+  dataFilter3.value = data.value.role == "Super Admin" ? "" : "Laporan Pembelian";
   nama_outlet.value = Auth.items.alamat_outlet;
 });
 </script>

@@ -74,7 +74,7 @@
                   <li
                     v-for="(subMenu, subMenuKey) in menu.subMenu.filter(
                       (item) => {
-                        return item.title !== dataFilter;
+                        return item.title !== dataFilter1 && item.title !== dataFilter2 && item.title !== dataFilter3;
                       }
                     )"
                     :key="subMenuKey"
@@ -180,8 +180,9 @@ const formattedMenu = ref([]);
 const sideMenuStore = useSideMenuStore();
 const sideMenu = computed(() => nestedMenu(sideMenuStore.items, route));
 const Auth = useAuthStore();
-const dataFilter = ref();
-
+const dataFilter1 = ref();
+const dataFilter2 = ref();
+const dataFilter3 = ref();
 provide("forceActiveMenu", (pageName) => {
   route.forceActiveMenu = pageName;
   formattedMenu.value = $h.toRaw(sideMenu.value);
@@ -198,6 +199,8 @@ watch(
 onMounted(() => {
   dom("body").removeClass("error-page").removeClass("login").addClass("main");
   formattedMenu.value = $h.toRaw(sideMenu.value);
-  dataFilter.value = Auth.items.role == "Operator" ? "Stok Lokal" : "";
+  dataFilter1.value = Auth.items.role == "Operator" ? "Stok Lokal" : "";
+  dataFilter2.value = Auth.items.role == "Super Admin" ? "" : "Pembelian";
+  dataFilter3.value = Auth.items.role == "Super Admin" ? "" : "Laporan Pembelian";
 });
 </script>
