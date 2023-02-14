@@ -156,6 +156,7 @@
       <DropdownMenu class="notification-content pt-2">
         <DropdownContent tag="div" class="notification-content__box">
           <div class="notification-content__title">Status Database</div>
+          <p>Terhubung</p>
         </DropdownContent>
       </DropdownMenu>
     </Dropdown>

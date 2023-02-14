@@ -957,21 +957,15 @@ const initTabulator = () => {
         download: false,
         formatter(cell) {
           const a =
-            auth.value.role !== "Super Admin"
+            auth.value.role === "Operator"
               ? dom(`<div class="flex lg:justify-center items-center">
                 <a id="edit" class="flex items-center mr-3 text-primary" href="javascript:;">
                   <i data-lucide="check-square" class="w-4 h-4 mr-1"></i> Edit
-                </a>
-                <a id="retur" class="flex items-center" href="javascript:;">
-                  <i data-lucide="undo" class="w-4 h-4 mr-1"></i> Retur
                 </a>
               </div>`)
               : dom(`<div class="flex lg:justify-center items-center">
                 <a id="edit" class="flex items-center mr-4 text-primary" href="javascript:;">
                   <i data-lucide="check-square" class="w-4 h-4 mr-1"></i> Edit
-                </a>
-                <a id="retur" class="flex items-center mr-4" href="javascript:;">
-                  <i data-lucide="undo" class="w-4 h-4 mr-1"></i> Retur
                 </a>
                 <a id="delete" class="flex items-center text-danger" href="javascript:;">
                   <i data-lucide="trash-2" class="w-4 h-4 mr-1"></i> Delete
@@ -997,8 +991,6 @@ const initTabulator = () => {
                 .catch((error) => {
                   alert("gagal open edit" + e);
                 });
-            } else if (e.id === "retur") {
-              alert("retur");
             } else {
               no_invoice.value = cell.getData().no_invoice;
               deleteConfirmationModal.value = true;
