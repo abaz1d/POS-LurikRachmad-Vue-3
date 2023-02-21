@@ -33,7 +33,7 @@
           </div>
           <RouterLink to="/">
             <button
-              class="intro-x btn py-3 px-4 text-white border-white dark:border-darkmode-400 dark:text-slate-200 mt-10 font-philosopher dark:text-[#CDA562] tracking-wide"
+              class="intro-x btn py-3 px-4 text-white border-white dark:border-darkmode-400 mt-10 font-philosopher dark:text-[#CDA562] tracking-wide"
             >
               <b> Kembali ke Dashboard</b>
             </button>

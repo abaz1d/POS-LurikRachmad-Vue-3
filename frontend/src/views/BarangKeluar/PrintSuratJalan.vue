@@ -18,7 +18,7 @@
         <div class="col-span-2 hidden sm:block mr-40">
           <div class="grid justify-items-center items-center bg-white">
             <div
-              class="font-philosopher bg-white text-4xl text-[#CDA562] font-black bg-white"
+              class="font-philosopher bg-white text-4xl text-[#CDA562] font-black"
             >
               <b> Lurik Rachmad </b>
             </div>
@@ -26,7 +26,7 @@
               Jalan Pedan – Cawas Rt 002 Rw 001 Desa/Kelurahan Beji, <br />
               Kecamatan Pedan,Kabupaten Klaten, Jawa Tengah 57468
             </div>
-            <div class="bg-white mt-1 text-black bg-white">
+            <div class="bg-white mt-1 text-black">
               <MailIcon class="inline-block w-4 m-auto bg-white" />
               <p class="inline-block underline">: lurikrachmad@gmail.com,</p>
               <PhoneIcon class="inline-block ml-1 w-4 m-auto bg-white" />

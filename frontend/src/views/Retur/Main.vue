@@ -51,23 +51,26 @@ startTransaction();
                         <div class="grid grid-cols-12 gap-x-2 sm:gap-x-3">
                           <div class="col-span-12 mb-5">
                             <label for="pos-form-1" class="form-label">Invoice</label>
-                            <div class="flex w-full">
+                            <div v-if="!isEdit" class="flex w-full">
                               <TomSelect v-model="invoice_select" class="w-full" required>
                                 <option value="kosong" disabled>
                                   &gt;-- Pilih Invoice &lt;--
                                 </option>
-                                <option v-for="penjualan in ReturJual.penjualans" :key="penjualan.no_invoice" :penjualan="penjualan"
-                                  :value="penjualan.no_invoice">
+                                <option v-for="penjualan in ReturJual.penjualans" :key="penjualan.no_invoice"
+                                  :penjualan="penjualan" :value="penjualan.no_invoice">
                                   {{ penjualan.no_invoice }} -
                                   {{ moment(penjualan.tanggal_penjualan).format("DD MMM YYYY HH:SS") }}
                                 </option>
                               </TomSelect>
                             </div>
+                            <div v-else class="bg-slate-100 py-2 px-3 border-2 rounded-md">
+                              <p class="text-black">{{ invoice_select }}</p>
+                            </div>
                           </div>
 
                           <div class="sm:col-span-9 col-span-12 mb-5">
                             <label for="pos-form-1" class="form-label">ID Barang/Item
-                              <p class="sm:hidden form-label">& Stok</p>
+                              <p class="sm:hidden form-label">& Qty Jual</p>
                             </label>
                             <div class="flex w-full">
                               <div
@@ -78,7 +81,7 @@ renderQrScanner();
                                 ">
                                 <CameraIcon class="w-4 h-4" />
                               </div>
-                              <TomSelect v-model="item_select" class="w-full" required>
+                              <select v-model="item_select" class="w-full">
                                 <option value="kosong" disabled>
                                   --&gt; Pilih Items &lt;--
                                 </option>
@@ -89,14 +92,14 @@ renderQrScanner();
                                   {{ varian.id_varian }} -
                                   {{ varian.nama_varian }}
                                 </option>
-                              </TomSelect>
+                              </select>
                             </div>
                             <div class="form-help">
                               * Pilih atau Klik Kamera untuk scan barcode.
                             </div>
                           </div>
                           <div class="hidden sm:block col-span-3 mb-5">
-                            <label for="pos-form-1" class="form-label">Stok Tersisa</label>
+                            <label for="pos-form-1" class="form-label">Qty Jual</label>
                             <input v-model="stok" id="pos-form-1" type="text" class="form-control flex-1"
                               placeholder="Masukan Stok Tersisa" readonly />
                           </div>
@@ -120,28 +123,65 @@ renderQrScanner();
                               <p class="text-black">{{ nama_campur_select }}</p>
                             </div>
                           </div>
+                          <form @submit.prevent="addItem()" id="returForm"
+                            class="grid grid-cols-12 gap-x-2 sm:gap-x-3 col-span-12">
+                            <div class="col-span-12 sm:col-span-2 mb-5">
+                              <label for="pos-form-1" class="form-label">Qty</label>
+                              <input id="pos-form-1" type="text" class="form-control flex-1" placeholder="Masukan Qty"
+                                required v-model="qty_select" :disabled="item_select == 'kosong'" />
+                            </div>
+                            <div class="col-span-12 sm:col-span-5 mb-5">
+                              <label for="pos-form-1" class="form-label">Keterangan</label>
+                              <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
+                                <textarea class="text-black w-full" name="keterangan" id="keterangan" rows="3"
+                                  v-model="keterangan_select" placeholder="Keterangan Barang" required></textarea>
+                              </div>
+                            </div>
 
-                          <div class="col-span-5 sm:col-span-2 mb-5">
-                            <label for="pos-form-1" class="form-label">Qty</label>
-                            <input id="pos-form-1" type="text" class="form-control flex-1" placeholder="Masukan Qty"
-                              required v-model="qty_select" :disabled="bukti_select == 0" />
-                          </div>
-                          <div class="col-span-5 sm:col-span-5 mb-5">
-                            <label for="pos-form-1" class="form-label">Keterangan</label>
-                            <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
-                              <textarea class="text-black" name="keterangan" id="keterangan" v-model="keterangan_select"  placeholder="Keterangan Barang"></textarea>
+                            <div class="col-span-12 sm:col-span-5 mb-5">
+                              <label for="pos-form-1" class="form-label">Gambar Bukti</label>
+                              <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
+                                <div class="space-y-1 text-center">
+                                  <svg @click="this.$refs.gambarBaru.click()" v-if="url == null || url == ''"
+                                    class="mx-auto h-12 w-12 text-gray-400 cursor-pointer" stroke="currentColor"
+                                    fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                    <path
+                                      d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                                      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                  </svg>
+
+                                  <div v-else
+                                    class="col-span-5 md:col-span-2 -mb-6 relative items-center cursor-pointer zoom-in"
+                                    style="height: 5rem">
+                                    <img width="100" height="100" class="imgUp rounded-md mx-auto h-14 w-auto"
+                                      alt="Lurik Rachmad" :src="url" decoding="async" loading="lazy" />
+                                    <Tippy content="Remove this image?" @click="url = null"
+                                      class="tooltip w-5 h-5 flex items-center justify-center absolute rounded-full text-white bg-danger right-28 top-0 -mr-2 -mt-2">
+                                      <XIcon class="w-4 h-4" />
+                                    </Tippy>
+                                  </div>
+                                  <div>
+                                    <div class="flex text-sm text-gray-600">
+                                      <label for="gambarBaru"
+                                        class="relative mx-auto cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500">
+                                        <span>Upload a file</span>
+                                        <input id="gambarBaru" ref="gambarBaru" @change="previewImage"
+                                          name="file-upload" type="file" class="sr-only" accept="image/jpeg, image/png"
+                                          required />
+                                        <span>or drag and drop</span>
+                                      </label>
+                                    </div>
+                                    <p class="text-xs text-gray-500 mb-2">
+                                      PNG, JPG, GIF up to 10MB
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                         
-                          <div class="col-span-12 sm:col-span-5 mb-5">
-                            <label for="pos-form-1" class="form-label">Gambar Bukti</label>
-                            <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
-                              <input type="file" name="bukti" id="bukti">
-                            </div>
-                          </div>
+                          </form>
                         </div>
-                        <button type="button" @click="addItem()" class="btn btn-primary w-20 mt-3"
-                          :disabled="bukti_select == ''">
+                        <button type="submit" form="returForm" class="btn btn-primary w-20 mt-3"
+                          :disabled="qty_select == 0">
                           Tambah
                         </button>
                       </div>
@@ -161,30 +201,29 @@ renderQrScanner();
                   </div>
                   <div class="px-2">
                     <div class="col-span-12 overflow-auto w-full h-56">
-                      <table class="table table-hover mt-2">
-                        <thead class="table-light">
+                      <table class="border-collapse w-full">
+                        <thead>
                           <tr>
-                            <th class="sticky top-0 left-0 w-5 bg-slate-200">
-                              #
-                            </th>
-                            <th class="sticky top-0 whitespace-nowrap bg-slate-200">
-                              ID & Nama Varian
-                            </th>
-                            <th class="sticky top-0 whitespace-nowrap bg-slate-200">
-                              QTY
-                            </th>
-                            <th class="sticky top-0 whitespace-nowrap bg-slate-200">
-                              Harga Satuan
-                            </th>
-                            <th class="sticky top-0 whitespace-nowrap bg-slate-200">
-                              Total Harga
-                            </th>
+                            <th
+                              class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
+                              #</th>
+                            <th
+                              class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
+                              ID & Nama Varian</th>
+                            <th
+                              class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
+                              QTY</th>
+                            <th
+                              class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
+                              Keterangan</th>
+                            <th
+                              class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
+                              Gambar Bukti</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <DetailReturJual v-for="detail in ReturJual.penjualanDetail" :key="detail.id_barang"
-                            :detail="detail" @openModalRemove="openModalRemove"
-                            @updateTotalHargaJual="updateTotalHargaJual" />
+                          <DetailReturJual v-for="detail in ReturJual.returJualDetail" :key="detail.id_barang"
+                            :detail="detail" @openModalRemove="openModalRemove" />
                         </tbody>
                       </table>
                     </div>
@@ -197,98 +236,6 @@ renderQrScanner();
           </div>
         </ModalBody>
         <ModalFooter class="text-right bottom-0 relative z-50 rounded-md sm:border-t-2 border-t-4 btm sm:btm-">
-          <AccordionGroup class="block lg:hidden mb-5">
-            <AccordionItem>
-              <Accordion>
-                <p class="text-center">Total Harga, Bayar & Kembalian</p>
-                <small>
-                  <p class="text-center text-sm">
-                    &gt; Klik untuk buka/ tutup &lt;
-                  </p>
-                </small>
-                <div class="grid grid-cols-12 mt-2">
-                  <div class="col-span-4 text-sm border-x-2 border-t-2">
-                    <p class="text-center">Total Harga</p>
-                  </div>
-                  <div class="col-span-4 text-sm border-x-2 border-t-2">
-                    <p class="text-center">Total Bayar</p>
-                  </div>
-                  <div class="col-span-4 text-sm border-x-2 border-t-2">
-                    <p class="text-center">Kembalian</p>
-                  </div>
-
-                  <div class="col-span-4 text-sm border-2">
-                    <p class="text-right mr-1">
-                      {{ currencyFormatter.format(total_harga_global) }}
-                    </p>
-                  </div>
-                  <div class="col-span-4 text-sm border-2">
-                    <p class="text-right mr-1">
-                      {{ currencyFormatter.format(total_bayar_global) }}
-                    </p>
-                  </div>
-                  <div class="col-span-4 text-sm border-2">
-                    <p class="text-right mr-1">
-                      {{ currencyFormatter.format(kembalian) }}
-                    </p>
-                  </div>
-                </div>
-              </Accordion>
-              <AccordionPanel class="text-slate-600 dark:text-slate-500 leading-relaxed">
-                <ChevronDownIcon class="animate-bounce block mx-auto" />
-                <div class="flex lg:block flex-col-reverse">
-                  <div class="intro-y box">
-                    <div class="box flex p-2">
-                      <input type="text" class="form-control py-3 px-4 w-full bg-slate-100 border-slate-200/60 pr-10"
-                        placeholder="Use coupon code..." />
-                      <button class="btn btn-primary ml-2">Apply</button>
-                    </div>
-                    <div class="box p-2 mt-2">
-                      <div class="flex">
-                        <div class="mr-auto font-medium text-base">
-                          Total Harga
-                        </div>
-                      </div>
-                      <div class="bg-slate-200 rounded-md p-2">
-                        <div class="font-medium text-xl">
-                          <p class="text-right text-black">
-                            {{ currencyFormatter.format(total_harga_global) }}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div class="flex mt-4 pt-4 border-t border-slate-200/60 dark:border-darkmode-400">
-                        <div class="mr-auto font-medium text-base">
-                          Total Bayar
-                        </div>
-                      </div>
-                      <div class="input-group bg-slate-200 rounded-md border-2 border-slate-200/60 mr-0">
-                        <div class="input-group-text my-auto text-xl">
-                          <p class="text-black">Rp.</p>
-                        </div>
-                        <input v-model="total_bayar_global" type="number"
-                          class="form-control flex-1 font-medium text-xl text-right" placeholder="Nominal Uang"
-                          required />
-                      </div>
-
-                      <div class="flex mt-1 pt-4">
-                        <div class="mr-auto font-medium text-base">
-                          Kembalian
-                        </div>
-                      </div>
-                      <div class="bg-slate-200 rounded-md p-2">
-                        <div class="font-medium text-xl">
-                          <p class="text-right text-black">
-                            {{ currencyFormatter.format(kembalian) }}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </AccordionPanel>
-            </AccordionItem>
-          </AccordionGroup>
           <button type="button" @click="
   modal_utama = false;
 resetModal();
@@ -296,7 +243,7 @@ resetModal();
             Cancel
           </button>
           <button type="button" @click="simpanReturJual()" class="object-left btn btn-primary w-32" :disabled="
-            total_bayar_global == 0 || total_bayar_global < total_harga_global
+            invoice_select == 'kosong'
           ">
             Simpan
           </button>
@@ -319,8 +266,6 @@ resetModal();
             <option value="id_retur">Id Retur</option>
             <option value="tanggal_pengembalian">Tanggal ReturJual</option>
             <option value="total_barang">Total Harga Jual</option>
-            <option value="total_bayar_jual">Total Bayar Jual</option>
-            <option value="kembalian_jual">Kembalian</option>
           </select>
         </div>
         <div class="sm:flex items-center sm:mr-4 mt-2 xl:mt-0">
@@ -405,7 +350,7 @@ resetModal();
         </button>
         <button type="button" class="btn btn-danger w-24" @click="
           modal_utama
-            ? removeItem(itemDel.id_detail_jual, itemDel.id_retur)
+            ? removeItem(itemDel.id_detail_retur_jual, itemDel.id_retur)
             : deleteReturJual(id_retur)
         ">
           Delete
@@ -465,8 +410,7 @@ closeQrScanner();
     </ModalHeader>
     <ModalBody class="bg-white">
       <div class="bg-white" id="modalPrintInvoice">
-        <PrintInvoice :prints="ReturJual.prints" :id_retur="id_retur" :waktu="waktu"
-          :total_harga_global="total_harga_global" :total_bayar_global="total_bayar_global" :kembalian="kembalian" />
+        <PrintInvoice :prints="ReturJual.prints" :id_retur="id_retur" :waktu="waktu" />
       </div>
     </ModalBody>
   </Modal>
@@ -484,12 +428,12 @@ import { createIcons, icons } from "lucide";
 import { TabulatorFull as Tabulator } from "tabulator-tables";
 import dom from "@left4code/tw-starter/dist/js/dom";
 import qrcode from "@/components/qrcode/QrCode.vue";
-import { currencyFormatter } from "@/utils/helper";
 import PrintInvoice from "./PrintInvoice.vue";
 import DetailReturJual from "./DetailReturJual.vue";
 import moment from "moment";
 import html2canvas from "html2canvas";
 const modalErrorRef = ref();
+const publicPath = import.meta.env.VITE_APP_BASE_API;
 const ReturJual = useReturJualStore();
 const Auth = useAuthStore();
 const modal_utama = ref(false);
@@ -509,20 +453,40 @@ var subTable;
 const isInvoice = ref(false);
 const id_retur = ref("-");
 const waktu = ref("");
+const invoice_select = ref("kosong");
 const item_select = ref("kosong");
 const stok = ref(0);
 const nama_barang_select = ref("-");
 const nama_varian_select = ref("-");
 const nama_campur_select = ref("-");
 const qty_select = ref(0);
-const keterangan_select = ref(0);
-const bukti_select = ref(0);
+const keterangan_select = ref("");
 const total_harga_global = ref(0);
 const total_bayar_global = ref(0);
 const kembalian = ref(0);
+const url = ref("");
+const file = ref("");
+const gambar_lama_preview = ref("")
 
 const itemDel = ref("");
 const auth = ref();
+const previewImage = (e) => {
+  file.value = e.target.files[0];
+  url.value = URL.createObjectURL(file.value);
+};
+
+const getImgUrl = (gambar_varian) => {
+  if (gambar_varian) {
+    var images = gambar_varian.data.map((b) => String.fromCharCode(b)).join("");
+    gambar_lama_preview.value = new URL(`${publicPath}gambar_bukti/retur_jual/${images}`).href;
+    if (isEdit.value) {
+      url.value = gambar_lama_preview.value;
+    }
+    return gambar_lama_preview.value;
+  } else {
+    return `${new URL(window.location.origin)}` + " 404.png";
+  }
+};
 
 // Basic non sticky notification
 const basicNonStickyNotification = ref();
@@ -536,22 +500,28 @@ const basicNonStickyNotificationToggle = () => {
 };
 
 const startTransaction = () => {
-  ReturJual.startTransaction().then((data) => {
-    id_retur.value = data.id_retur;
-    waktu.value = data.tanggal_pengembalian;
-  });
+  // ReturJual.startTransaction().then((data) => {
+  //   id_retur.value = data.id_retur;
+  //   waktu.value = data.tanggal_pengembalian;
+  // });
 };
 
 const addItem = () => {
   ReturJual.addDetailReturJual(
     id_retur.value,
     item_select.value,
-    qty_select.value
+    qty_select.value,
+    keterangan_select.value,
+    file.value,
   )
     .then((data) => {
-      total_harga_global.value = +data.total_barang;
+      (nama_barang_select.value = "-"),
+        (nama_varian_select.value = "-"),
+        (nama_campur_select.value = "-"),
+        (qty_select.value = 0)
+      file.value = "";
+      keterangan_select.value = "";
       stok.value = +stok.value - +qty_select.value;
-      nama_campur_select.value = `${nama_barang_select.value} - ${nama_varian_select.value} | ${stok.value}`;
     })
     .catch((e) => {
       alert("addItem" + e);
@@ -574,22 +544,18 @@ const onPrintInvoice = () => {
   });
 };
 
-const updateTotalHargaJual = (total) => {
-  total_harga_global.value = +total;
-};
-
 const openModalRemove = (item) => {
   itemDel.value = item;
   deleteConfirmationModal.value = true;
 };
 
-const removeItem = (id_detail_jual, id_retur) => {
-  ReturJual.removeItem(id_detail_jual, id_retur)
+const removeItem = (id_detail_retur_jual, id_retur) => {
+  ReturJual.removeItem(id_detail_retur_jual, id_retur)
     .then((data) => {
-      stok.value = stok.value + parseInt(itemDel.value.qty);
-      nama_campur_select.value = `${nama_barang_select.value} - ${nama_varian_select.value} | ${stok.value}`;
+      // stok.value = stok.value + parseInt(itemDel.value.qty);
+      // nama_campur_select.value = `${nama_barang_select.value} - ${nama_varian_select.value} | ${stok.value}`;
       deleteConfirmationModal.value = false;
-      total_harga_global.value = parseFloat(data);
+      // total_harga_global.value = parseFloat(data);
     })
     .catch((e) => {
       alert("removeItem" + e);
@@ -602,8 +568,7 @@ const simpanReturJual = () => {
   const total_bayar_global_now = total_bayar_global.value;
   const kembalian_now = kembalian.value;
   if (
-    ReturJual.penjualanDetail.length !== 0 &&
-    total_bayar_global.value >= total_harga_global.value
+    ReturJual.penjualanDetail.length !== 0
   ) {
     ReturJual.addReturJual(
       id_retur_now,
@@ -655,33 +620,57 @@ const resetModal = () => {
   isInvoice.value = false;
   id_retur.value = "-";
   waktu.value = "";
+  invoice_select.value = "kosong"
   item_select.value = "kosong";
   stok.value = 0;
   nama_barang_select.value = "-";
   nama_varian_select.value = "-";
   nama_campur_select.value = "-";
   qty_select.value = 0;
-  keterangan_select.value = 0;
-  bukti_select.value = 0;
+  keterangan_select.value = "";
   total_harga_global.value = 0;
   total_bayar_global.value = 0;
   kembalian.value = 0;
   itemDel.value = "";
+  url.value = "";
+  file.value = "";
+  gambar_lama_preview.value = "";
   ReturJual.rawReturJualDetail = [];
 };
 
-watch(item_select, async (e) => {
+watch(invoice_select, async (e) => {
   try {
     if (e !== "kosong") {
-      ReturJual.readDetailItem(e)
+      ReturJual.readVarians(e)
+        .then((data) => {
+          item_select.value = "kosong";
+          (nama_barang_select.value = "-"),
+            (nama_varian_select.value = "-"),
+            (nama_campur_select.value = "-"),
+            (stok.value = 0),
+            (qty_select.value = 0)
+          file.value = "";
+          keterangan_select.value = "";
+        })
+        .catch((error) => {
+          throw new Error(error)
+        });
+    }
+  } catch (error) {
+    alert("Gagal pilih barang" + error);
+  }
+});
+
+watch(item_select, async (e) => {
+  try {
+    if (e !== "kosong" && invoice_select.value !== "kosong") {
+      ReturJual.readDetailItem(e, invoice_select.value)
         .then((data) => {
           (nama_barang_select.value = data.nama_barang),
             (nama_varian_select.value = data.nama_varian),
             (nama_campur_select.value = `${data.nama_barang} - ${data.nama_varian} | ${data.stok_varian}`),
-            (keterangan_select.value = data.harga_jual_varian),
-            (stok.value = data.stok_varian),
-            (qty_select.value = 1),
-            (bukti_select.value = data.harga_jual_varian);
+            (stok.value = data.qty),
+            (qty_select.value = 1)
         })
         .catch((error) => {
           throw new Error(error)
@@ -694,7 +683,6 @@ watch(item_select, async (e) => {
 
 watch(qty_select, async (newValue, oldValue) => {
   const qty = newValue;
-  const keterangan_select_now = keterangan_select.value;
   const stok_now = stok.value;
   try {
     if (newValue > stok_now) {
@@ -704,40 +692,10 @@ watch(qty_select, async (newValue, oldValue) => {
       alert("Minimal Qty harus 1");
       qty_select.value = 1;
     } else {
-      bukti_select.value = +keterangan_select_now * +qty;
+
     }
   } catch (error) {
     alert("Gagal wtch qty" + error);
-  }
-});
-
-watch(total_bayar_global, async (newValue, oldValue) => {
-  const total_bayar_global_now = newValue;
-  const total_harga_global_now = total_harga_global.value;
-  try {
-    if (newValue === "" || newValue < 0) {
-      alert("Total Bayar tidak boleh kosong atau minus");
-      total_bayar_global.value = oldValue;
-    } else {
-      kembalian.value = total_bayar_global_now - total_harga_global_now;
-    }
-  } catch (error) {
-    alert("Gagal wtch total_bayar_globl" + error);
-  }
-});
-
-watch(total_harga_global, async (newValue, oldValue) => {
-  const total_bayar_global_now = total_bayar_global.value;
-  const total_harga_global_now = newValue;
-  try {
-    if (newValue === "" || newValue < 0) {
-      alert("Total Harga tidak boleh kosong atau minus");
-      total_harga_global.value = oldValue;
-    } else {
-      kembalian.value = total_bayar_global_now - total_harga_global_now;
-    }
-  } catch (error) {
-    alert("Gagal wtch total_harga_globl" + error);
   }
 });
 
@@ -802,16 +760,12 @@ const initTabulator = () => {
           return a[0];
         },
         cellClick: function (e, cell) {
-          const penjualan = cell.getData();
+          const retur = cell.getData();
 
-          ReturJual.readDetail(penjualan.id_retur)
+          ReturJual.readDetail(retur.id_retur)
             .then(() => {
-              id_retur.value = penjualan.id_retur;
-              waktu.value = penjualan.tanggal_pengembalian;
-              total_harga_global.value = parseFloat(penjualan.total_barang);
-              total_bayar_global.value = parseFloat(penjualan.total_bayar_jual);
-              kembalian.value = parseFloat(penjualan.kembalian_jual);
-
+              id_retur.value = retur.id_retur;
+              waktu.value = retur.tanggal_pengembalian;
               isInvoice.value = true;
             })
             .catch((e) => {
@@ -856,7 +810,6 @@ const initTabulator = () => {
         title: "INVOICE",
         headerHozAlign: "center",
         minWidth: 200,
-        responsive: 0,
         field: "no_invoice",
         vertAlign: "middle",
         hozAlign: "center",
@@ -913,23 +866,17 @@ const initTabulator = () => {
               </div>`);
           dom(a).on("click", "a", function (e) {
             if (e.id === "edit") {
-              const penjualan = cell.getData();
-              ReturJual.readDetailReturJual(penjualan.id_retur)
+              const retur = cell.getData();
+              ReturJual.readDetailReturJual(retur.id_retur)
                 .then(() => {
-                  id_retur.value = penjualan.id_retur;
-                  waktu.value = penjualan.tanggal_pengembalian;
-                  total_harga_global.value = parseFloat(
-                    penjualan.total_barang
-                  );
-                  total_bayar_global.value = parseFloat(
-                    penjualan.total_bayar_jual
-                  );
-                  kembalian.value = parseFloat(penjualan.kembalian_jual);
+                  id_retur.value = retur.id_retur;
+                  waktu.value = retur.tanggal_pengembalian;
+                  invoice_select.value = retur.no_invoice
                   isEdit.value = true;
                   modal_utama.value = true;
-                })
-                .catch((e) => {
-                  alert("gagal open edit" + e);
+                  console.log("detail value", ReturJual.returJualDetail)
+                }).catch((e) => {
+                  alert("gagal open invoice" + e);
                 });
             } else {
               id_retur.value = cell.getData().id_retur;
@@ -1001,13 +948,14 @@ const initTabulator = () => {
       row.getElement().appendChild(holderEl);
       subTable = new Tabulator(tableEl, {
         printAsHtml: true,
+        height: "100%",
         printStyled: true,
         layout: "fitColumns",
         data: row.getData().serviceHistory,
         columns: [
           // For HTML table
           {
-            title: "NAMA VARIAN",
+            title: "VARIAN",
             minWidth: 200,
             responsive: 0,
             field: "nama_varian",
@@ -1017,24 +965,8 @@ const initTabulator = () => {
             formatter(cell) {
               return `<div>
                 <div class="font-medium whitespace-nowrap">${cell.getData().nama_varian
+                } - ${cell.getData().nama_varian
                 }</div>
-              </div>`;
-            },
-          },
-          {
-            title: "HARGA ITEM",
-            headerHozAlign: "center",
-            minWidth: 200,
-            field: "harga_detail_jual",
-            hozAlign: "right",
-            vertAlign: "middle",
-            print: false,
-            download: false,
-            formatter(cell) {
-              return `<div>
-                <div class="font-medium whitespace-nowrap">${currencyFormatter.format(
-                cell.getData().harga_detail_jual
-              )}</div>
               </div>`;
             },
           },
@@ -1055,19 +987,35 @@ const initTabulator = () => {
             },
           },
           {
-            title: "TOTAL BARANG",
+            title: "KETERANGAN",
+            headerHozAlign: "center",
+            minWidth: 200,
+            field: "keterangan",
+            hozAlign: "center",
+            vertAlign: "middle",
+            print: false,
+            download: false,
+          },
+          {
+            title: "GAMBAR BUKTI",
             minWidth: 200,
             headerHozAlign: "center",
-            field: "total_harga_detail_jual",
-            hozAlign: "right",
+            field: "gambar_bukti",
+            hozAlign: "center",
             vertAlign: "middle",
             print: false,
             download: false,
             formatter(cell) {
-              return `<div>
-                <div class="font-medium whitespace-nowrap">${currencyFormatter.format(
-                cell.getData().total_harga_detail_jual
-              )}</div>
+              return `<div class=" text-center p-auto">
+                <div class="mb-2">
+                  <img decoding="async" loading="lazy"
+                    src="${getImgUrl(cell.getData().gambar_bukti)}"
+                    alt="${cell.getData().gambar_bukti}"
+                    data-action="zoom"
+                    class="w-20 rounded-md"
+                    width="100" height="100"
+                  />
+                </div>
               </div>`;
             },
           },
@@ -1081,13 +1029,6 @@ const initTabulator = () => {
             download: true,
           },
           {
-            title: "HARGA ITEM",
-            field: "harga_detail_jual",
-            visible: false,
-            print: true,
-            download: true,
-          },
-          {
             title: "QTY",
             field: "qty",
             visible: false,
@@ -1095,8 +1036,15 @@ const initTabulator = () => {
             download: true,
           },
           {
-            title: "TOTAL BARANG",
-            field: "total_harga_detail_jual",
+            title: "KETERANGAN",
+            field: "keterangan",
+            visible: false,
+            print: true,
+            download: true,
+          },
+          {
+            title: "GAMBAR BUKTI",
+            field: "gambar_bukti",
             visible: false,
             print: true,
             download: true,
