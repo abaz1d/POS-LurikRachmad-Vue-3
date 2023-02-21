@@ -13,7 +13,7 @@
           <select
             id="tabulator-html-filter-field"
             v-model="filter.field"
-            class="form-select w-full sm:w-32 2xl:w-full mt-2 sm:mt-0 sm:w-auto"
+            class="form-select w-full 2xl:w-full mt-2 sm:mt-0 sm:w-auto"
           >
             <option value="id_varian">ID Varian</option>
             <option value="nama_varian">Nama Varian</option>
@@ -181,6 +181,7 @@ const initTabulator = () => {
   tabulator.value = new Tabulator(tableRef.value, {
     data: Barang.laporans,
     rowHeight: 150,
+    height: "100%",
     groupBy: "nama_barang",
     printFormatter: function () {
       JsBarcode(".barcode").init();

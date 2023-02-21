@@ -63,7 +63,7 @@
                 <!-- BEGIN: Display Item -->
                 <div class="intro-y box">
                   <div class="p-2">
-                    <div class="flex flex-col-reverse xl:flex-row flex-col">
+                    <div class="flex xl:flex-row flex-col">
                       <div class="flex-1 mt-0">
                         <div class="grid grid-cols-12 gap-x-2 sm:gap-x-3">
                           <div class="col-span-12 mb-5">
@@ -509,7 +509,7 @@
           <select
             id="tabulator-html-filter-field"
             v-model="filter.field"
-            class="form-select w-full sm:w-32 2xl:w-full mt-2 sm:mt-0 sm:w-auto"
+            class="form-select w-full 2xl:w-full mt-2 sm:mt-0 sm:w-auto"
           >
             <option value="no_invoice">No Invoice</option>
             <option value="tanggal_pembelian">Tanggal Pembelian</option>
@@ -839,7 +839,7 @@ const addItem = () => {
       stok.value = +stok.value - +qty_select.value;
       nama_campur_select.value = `${nama_barang_select.value} - ${nama_varian_select.value} | ${stok.value}`;
     })
-    .catch((error) => {
+    .catch((e) => {
       alert("addItem" + e);
     });
 };
@@ -857,7 +857,7 @@ const removeItem = (id_detail_beli, no_invoice) => {
       deleteConfirmationModal.value = false;
       total_harga_global.value = parseFloat(data);
     })
-    .catch((error) => {
+    .catch((e) => {
       alert("removeItem" + e);
     });
 };
@@ -886,7 +886,7 @@ const simpanPembelian = () => {
         modal_utama.value = false;
         initTabulator();
       })
-      .catch((error) => {
+      .catch((e) => {
         alert("Simpan Error: " + e);
       });
   } else {
@@ -1017,6 +1017,7 @@ watch(filter, async () => {
 const initTabulator = () => {
   tabulator.value = new Tabulator(tableRef.value, {
     data: Pembelian.pembelians,
+    height: "100%",
     printHeader: `<h1 class='text-2xl p-2 m-2 text-center border-y-2 border-black'>Tabel Pembelian<h1>`,
     printFooter: `<h2 class='p-2 m-2 text-center mt-4'>${moment(
       Date.now()
@@ -1071,7 +1072,7 @@ const initTabulator = () => {
               kembalian.value = parseFloat(pembelian.kembalian_beli);
               isInvoice.value = true;
             })
-            .catch((error) => {
+            .catch((e) => {
               alert("gagal open invoice" + e);
             });
         },
@@ -1218,7 +1219,7 @@ const initTabulator = () => {
                   isEdit.value = true;
                   modal_utama.value = true;
                 })
-                .catch((error) => {
+                .catch((e) => {
                   alert("gagal open edit" + e);
                 });
             } else {

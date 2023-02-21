@@ -59,7 +59,7 @@
         <div class="sm:flex items-center sm:mr-4">
           <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2">Field</label>
           <select id="tabulator-html-filter-field" v-model="filter.field"
-            class="form-select w-full sm:w-32 2xl:w-full mt-2 sm:mt-0 sm:w-auto">
+            class="form-select w-full 2xl:w-full mt-2 sm:mt-0 sm:w-auto">
             <option value="id_satuan">ID Satuan</option>
             <option value="nama_satuan">Nama Satuan</option>
           </select>
@@ -256,6 +256,7 @@ export default {
         data: this.Satuan.items,
         pagination: "remote",
         paginationSize: 10,
+        height: "100%",
         paginationSizeSelector: [10, 20, 30, 40, 50],
         layout: "fitColumns",
         responsiveLayout: "collapse",

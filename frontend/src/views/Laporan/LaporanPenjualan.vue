@@ -176,6 +176,7 @@ watch(filter, async () => {
 const initTabulator = () => {
   tabulator.value = new Tabulator(tableJualRef.value, {
     data: Penjualan.laporans,
+    height: "100%",
     groupHeader: function (value, count, data) {
       return `
       <span class='text-center w-screen overflow-hidden whitespace-nowrap mt-2'>

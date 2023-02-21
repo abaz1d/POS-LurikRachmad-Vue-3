@@ -3,28 +3,28 @@
     <h2 class="text-lg font-medium mr-auto">Retur Penjualan</h2>
     <div class="w-full sm:w-auto flex mt-4 sm:mt-0">
       <button class="btn btn-primary shadow-md mb-3 mr-2 pr-5" @click="
-        modal_utama = true;
-      startTransaction();
+  modal_utama = true;
+startTransaction();
       ">
         <PlusIcon class="w-4 h-4 mr-2" />
-        <p class="hidden xl:block mr-1">Penjualan</p>
+        <p class="hidden xl:block mr-1">Retur</p>
         Baru
       </button>
       <!-- BEGIN: Modal Content -->
       <Modal size="modal-xl" backdrop="static" :show="modal_utama" @hidden="modal_utama = false">
         <ModalHeader class="border-b-2">
           <h2 class="hidden lg:block font-medium text-base mr-auto">
-            <p class="mx-auto" v-if="isEdit">Edit Penjualan {{ no_invoice }}</p>
-            <p class="mx-auto" v-else>Tambah Penjualan</p>
+            <p class="mx-auto" v-if="isEdit">Edit ReturJual {{ id_retur }}</p>
+            <p class="mx-auto" v-else>Tambah ReturJual</p>
           </h2>
 
           <div class="sm:w-auto flex mt-3 mx-auto sm:mx-0 sm:mr-0 sm:ml-4 items-center sm:items-right">
             <div class="mr-2 m-auto">
               <div class="bg-slate-200 rounded-md p-2 font-medium lg:text-base text-sm px-2">
-                <p class="text-right text-black">{{ no_invoice }}</p>
+                <p class="text-right text-black">{{ id_retur }}</p>
               </div>
               <p class="text-center bg-primary text-white rounded-md w-24 mx-auto lg:-mt-[52px] -mt-12 lg:mb-8 mb-6">
-                NO INVOICE
+                NO ID RETUR
               </p>
             </div>
             <div class="mr-2 m-auto">
@@ -42,13 +42,29 @@
         <ModalBody class="">
           <div class="overflow-auto sm:overflow-hidden mx-0 sm:h-3/4 h-80">
             <div class="grid grid-cols-12 gap-1 -mt-3">
-              <div class="col-span-12 lg:col-span-8">
+              <div class="col-span-12">
                 <!-- BEGIN: Display Item -->
                 <div class="intro-y box">
                   <div class="p-2">
-                    <div class="flex flex-col-reverse xl:flex-row flex-col">
+                    <div class="flex xl:flex-row flex-col">
                       <div class="flex-1 mt-0">
                         <div class="grid grid-cols-12 gap-x-2 sm:gap-x-3">
+                          <div class="col-span-12 mb-5">
+                            <label for="pos-form-1" class="form-label">Invoice</label>
+                            <div class="flex w-full">
+                              <TomSelect v-model="invoice_select" class="w-full" required>
+                                <option value="kosong" disabled>
+                                  &gt;-- Pilih Invoice &lt;--
+                                </option>
+                                <option v-for="penjualan in ReturJual.penjualans" :key="penjualan.no_invoice" :penjualan="penjualan"
+                                  :value="penjualan.no_invoice">
+                                  {{ penjualan.no_invoice }} -
+                                  {{ moment(penjualan.tanggal_penjualan).format("DD MMM YYYY HH:SS") }}
+                                </option>
+                              </TomSelect>
+                            </div>
+                          </div>
+
                           <div class="sm:col-span-9 col-span-12 mb-5">
                             <label for="pos-form-1" class="form-label">ID Barang/Item
                               <p class="sm:hidden form-label">& Stok</p>
@@ -66,7 +82,7 @@ renderQrScanner();
                                 <option value="kosong" disabled>
                                   --&gt; Pilih Items &lt;--
                                 </option>
-                                <option v-for="varian in Penjualan.varians" :key="varian.id_varian" :varian="varian"
+                                <option v-for="varian in ReturJual.varians" :key="varian.id_varian" :varian="varian"
                                   :value="varian.id_varian">
                                   {{ varian.id_barang }} -
                                   {{ varian.nama_barang }} |
@@ -105,35 +121,27 @@ renderQrScanner();
                             </div>
                           </div>
 
-                          <div class="col-span-5 sm:col-span-4 mb-5">
-                            <label for="pos-form-1" class="form-label">Harga Item</label>
-                            <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
-                              <p class="text-black">
-                                {{
-                                  currencyFormatter.format(harga_item_select)
-                                }}
-                              </p>
-                            </div>
-                          </div>
-                          <XIcon class="sm:hidden m-auto col-span-2" />
-                          <div class="col-span-5 sm:col-span-4 mb-5">
+                          <div class="col-span-5 sm:col-span-2 mb-5">
                             <label for="pos-form-1" class="form-label">Qty</label>
                             <input id="pos-form-1" type="text" class="form-control flex-1" placeholder="Masukan Qty"
-                              required v-model="qty_select" :disabled="total_harga_select == 0" />
+                              required v-model="qty_select" :disabled="bukti_select == 0" />
                           </div>
-                          <div class="col-span-12 sm:col-span-4 mb-5">
-                            <label for="pos-form-1" class="form-label">Total Harga</label>
+                          <div class="col-span-5 sm:col-span-5 mb-5">
+                            <label for="pos-form-1" class="form-label">Keterangan</label>
                             <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
-                              <p class="text-black">
-                                {{
-                                  currencyFormatter.format(total_harga_select)
-                                }}
-                              </p>
+                              <textarea class="text-black" name="keterangan" id="keterangan" v-model="keterangan_select"  placeholder="Keterangan Barang"></textarea>
+                            </div>
+                          </div>
+                         
+                          <div class="col-span-12 sm:col-span-5 mb-5">
+                            <label for="pos-form-1" class="form-label">Gambar Bukti</label>
+                            <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
+                              <input type="file" name="bukti" id="bukti">
                             </div>
                           </div>
                         </div>
                         <button type="button" @click="addItem()" class="btn btn-primary w-20 mt-3"
-                          :disabled="total_harga_select == 0">
+                          :disabled="bukti_select == ''">
                           Tambah
                         </button>
                       </div>
@@ -143,63 +151,12 @@ renderQrScanner();
                 <!-- END: Display Item -->
               </div>
 
-              <!-- BEGIN: Display Total Harga -->
-              <div class="lg:block hidden mt-2 col-span-4">
-                <div class="intro-y box">
-                  <div class="box flex p-2">
-                    <input type="text" class="form-control py-3 px-4 w-full bg-slate-100 border-slate-200/60 pr-10"
-                      placeholder="Use coupon code..." />
-                    <button class="btn btn-primary ml-2">Apply</button>
-                  </div>
-                  <div class="box p-2 mt-2">
-                    <div class="flex">
-                      <div class="mr-auto font-medium text-base">
-                        Total Harga
-                      </div>
-                    </div>
-                    <div class="bg-slate-200 rounded-md p-2">
-                      <div class="font-medium text-xl">
-                        <p class="text-right text-black">
-                          {{ currencyFormatter.format(total_harga_global) }}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div class="flex mt-4 pt-4 border-t border-slate-200/60 dark:border-darkmode-400">
-                      <div class="mr-auto font-medium text-base">
-                        Total Bayar
-                      </div>
-                    </div>
-                    <div class="input-group bg-slate-200 rounded-md border-2 border-slate-200/60 mr-0">
-                      <div class="input-group-text my-auto text-xl">
-                        <p class="text-black">Rp.</p>
-                      </div>
-                      <input v-model="total_bayar_global" type="number"
-                        class="form-control flex-1 font-medium text-xl text-right" placeholder="Nominal Uang"
-                        required />
-                    </div>
-
-                    <div class="flex mt-1 pt-4">
-                      <div class="mr-auto font-medium text-base">Kembalian</div>
-                    </div>
-                    <div class="bg-slate-200 rounded-md p-2">
-                      <div class="font-medium text-xl">
-                        <p class="text-right text-black">
-                          {{ currencyFormatter.format(kembalian) }}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- END: Display Total Harga -->
-
-              <!-- BEGIN: Detail Penjualan -->
+              <!-- BEGIN: Detail ReturJual -->
               <div class="col-span-12 flex-col-reverse">
                 <div class="intro-y box">
                   <div class="flex items-center px-5 py-2 border-b border-slate-200/60 dark:border-darkmode-400">
                     <h2 class="font-medium text-base mr-auto">
-                      Detail Penjualan
+                      Detail ReturJual
                     </h2>
                   </div>
                   <div class="px-2">
@@ -225,7 +182,7 @@ renderQrScanner();
                           </tr>
                         </thead>
                         <tbody>
-                          <DetailPenjualan v-for="detail in Penjualan.penjualanDetail" :key="detail.id_barang"
+                          <DetailReturJual v-for="detail in ReturJual.penjualanDetail" :key="detail.id_barang"
                             :detail="detail" @openModalRemove="openModalRemove"
                             @updateTotalHargaJual="updateTotalHargaJual" />
                         </tbody>
@@ -235,7 +192,7 @@ renderQrScanner();
                   </div>
                 </div>
               </div>
-              <!-- END: Detail Penjualan -->
+              <!-- END: Detail ReturJual -->
             </div>
           </div>
         </ModalBody>
@@ -333,12 +290,12 @@ renderQrScanner();
             </AccordionItem>
           </AccordionGroup>
           <button type="button" @click="
-            modal_utama = false;
-          resetModal();
+  modal_utama = false;
+resetModal();
           " class="btn btn-outline-secondary w-32 mr-1">
             Cancel
           </button>
-          <button type="button" @click="simpanPenjualan()" class="object-left btn btn-primary w-32" :disabled="
+          <button type="button" @click="simpanReturJual()" class="object-left btn btn-primary w-32" :disabled="
             total_bayar_global == 0 || total_bayar_global < total_harga_global
           ">
             Simpan
@@ -358,10 +315,10 @@ renderQrScanner();
         <div class="sm:flex items-center sm:mr-4">
           <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2">Field</label>
           <select id="tabulator-html-filter-field" v-model="filter.field"
-            class="form-select w-full sm:w-32 2xl:w-full mt-2 sm:mt-0 sm:w-auto">
-            <option value="no_invoice">No Invoice</option>
-            <option value="tanggal_penjualan">Tanggal Penjualan</option>
-            <option value="total_harga_jual">Total Harga Jual</option>
+            class="form-select w-full 2xl:w-full mt-2 sm:mt-0 sm:w-auto">
+            <option value="id_retur">Id Retur</option>
+            <option value="tanggal_pengembalian">Tanggal ReturJual</option>
+            <option value="total_barang">Total Harga Jual</option>
             <option value="total_bayar_jual">Total Bayar Jual</option>
             <option value="kembalian_jual">Kembalian</option>
           </select>
@@ -439,7 +396,7 @@ renderQrScanner();
         </div>
 
         <div v-else class="text-xl mt-5">
-          Apakah Anda yakin akan menghapus Penjualan <b> {{ no_invoice }} </b> ?
+          Apakah Anda yakin akan menghapus ReturJual <b> {{ id_retur }} </b> ?
         </div>
       </div>
       <div class="px-5 pb-8 text-center">
@@ -448,8 +405,8 @@ renderQrScanner();
         </button>
         <button type="button" class="btn btn-danger w-24" @click="
           modal_utama
-            ? removeItem(itemDel.id_detail_jual, itemDel.no_invoice)
-            : deletePenjualan(no_invoice)
+            ? removeItem(itemDel.id_detail_jual, itemDel.id_retur)
+            : deleteReturJual(id_retur)
         ">
           Delete
         </button>
@@ -472,8 +429,8 @@ renderQrScanner();
           </div>
         </div>
         <button type="button" @click="
-          isModalScanner = false;
-        closeQrScanner();
+  isModalScanner = false;
+closeQrScanner();
         " class="btn btn-danger w-24">
           Close
         </button>
@@ -497,7 +454,7 @@ renderQrScanner();
         <button class="btn btn-primary shadow-md mr-2" @click="onPrintInvoice">
           <PrinterIcon class="w-4 h-4 mr-2" /> Print
         </button>
-        <b>{{ no_invoice }}</b>
+        <b>{{ id_retur }}</b>
       </h2>
 
       <div @click="resetModal()" class="sm:w-auto flex mr-0 ml-4 items-right cursor-pointer">
@@ -508,7 +465,7 @@ renderQrScanner();
     </ModalHeader>
     <ModalBody class="bg-white">
       <div class="bg-white" id="modalPrintInvoice">
-        <PrintInvoice :prints="Penjualan.prints" :no_invoice="no_invoice" :waktu="waktu"
+        <PrintInvoice :prints="ReturJual.prints" :id_retur="id_retur" :waktu="waktu"
           :total_harga_global="total_harga_global" :total_bayar_global="total_bayar_global" :kembalian="kembalian" />
       </div>
     </ModalBody>
@@ -518,7 +475,7 @@ renderQrScanner();
 
 <script setup>
 import $ from "jquery";
-import { usePenjualanStore } from "@/stores/penjualan";
+import { useReturJualStore } from "@/stores/retur-jual";
 import ModalDatabaseError from "@/components/modal-error/Main.vue";
 import { useAuthStore } from "@/stores/auth";
 import { ref, provide, reactive, onMounted, onBeforeUnmount, watch } from "vue";
@@ -529,11 +486,11 @@ import dom from "@left4code/tw-starter/dist/js/dom";
 import qrcode from "@/components/qrcode/QrCode.vue";
 import { currencyFormatter } from "@/utils/helper";
 import PrintInvoice from "./PrintInvoice.vue";
-import DetailPenjualan from "./DetailPenjualan.vue";
+import DetailReturJual from "./DetailReturJual.vue";
 import moment from "moment";
 import html2canvas from "html2canvas";
 const modalErrorRef = ref();
-const Penjualan = usePenjualanStore();
+const ReturJual = useReturJualStore();
 const Auth = useAuthStore();
 const modal_utama = ref(false);
 const deleteConfirmationModal = ref(false);
@@ -544,13 +501,13 @@ const qrScanner = ref();
 const tableJualRef = ref();
 const tabulator = ref();
 const filter = reactive({
-  field: "no_invoice",
+  field: "id_retur",
   type: "like",
   value: "",
 });
 var subTable;
 const isInvoice = ref(false);
-const no_invoice = ref("-");
+const id_retur = ref("-");
 const waktu = ref("");
 const item_select = ref("kosong");
 const stok = ref(0);
@@ -558,8 +515,8 @@ const nama_barang_select = ref("-");
 const nama_varian_select = ref("-");
 const nama_campur_select = ref("-");
 const qty_select = ref(0);
-const harga_item_select = ref(0);
-const total_harga_select = ref(0);
+const keterangan_select = ref(0);
+const bukti_select = ref(0);
 const total_harga_global = ref(0);
 const total_bayar_global = ref(0);
 const kembalian = ref(0);
@@ -579,24 +536,24 @@ const basicNonStickyNotificationToggle = () => {
 };
 
 const startTransaction = () => {
-  Penjualan.startTransaction().then((data) => {
-    no_invoice.value = data.no_invoice;
-    waktu.value = data.tanggal_penjualan;
+  ReturJual.startTransaction().then((data) => {
+    id_retur.value = data.id_retur;
+    waktu.value = data.tanggal_pengembalian;
   });
 };
 
 const addItem = () => {
-  Penjualan.addDetailPenjualan(
-    no_invoice.value,
+  ReturJual.addDetailReturJual(
+    id_retur.value,
     item_select.value,
     qty_select.value
   )
     .then((data) => {
-      total_harga_global.value = +data.total_harga_jual;
+      total_harga_global.value = +data.total_barang;
       stok.value = +stok.value - +qty_select.value;
       nama_campur_select.value = `${nama_barang_select.value} - ${nama_varian_select.value} | ${stok.value}`;
     })
-    .catch((error) => {
+    .catch((e) => {
       alert("addItem" + e);
     });
 };
@@ -609,7 +566,7 @@ const onPrintInvoice = () => {
   }).then((canvas) => {
     var barcodeImgTag = document.createElement("a");
     document.body.appendChild(barcodeImgTag);
-    barcodeImgTag.download = `Invoice-${no_invoice.value}.jpg`;
+    barcodeImgTag.download = `Invoice-${id_retur.value}.jpg`;
     barcodeImgTag.href = canvas.toDataURL();
     barcodeImgTag.target = "_blank";
     barcodeImgTag.click();
@@ -626,30 +583,30 @@ const openModalRemove = (item) => {
   deleteConfirmationModal.value = true;
 };
 
-const removeItem = (id_detail_jual, no_invoice) => {
-  Penjualan.removeItem(id_detail_jual, no_invoice)
+const removeItem = (id_detail_jual, id_retur) => {
+  ReturJual.removeItem(id_detail_jual, id_retur)
     .then((data) => {
       stok.value = stok.value + parseInt(itemDel.value.qty);
       nama_campur_select.value = `${nama_barang_select.value} - ${nama_varian_select.value} | ${stok.value}`;
       deleteConfirmationModal.value = false;
       total_harga_global.value = parseFloat(data);
     })
-    .catch((error) => {
+    .catch((e) => {
       alert("removeItem" + e);
     });
 };
 
-const simpanPenjualan = () => {
-  const no_invoice_now = no_invoice.value;
+const simpanReturJual = () => {
+  const id_retur_now = id_retur.value;
   const total_harga_global_now = total_harga_global.value;
   const total_bayar_global_now = total_bayar_global.value;
   const kembalian_now = kembalian.value;
   if (
-    Penjualan.penjualanDetail.length !== 0 &&
+    ReturJual.penjualanDetail.length !== 0 &&
     total_bayar_global.value >= total_harga_global.value
   ) {
-    Penjualan.addPenjualan(
-      no_invoice_now,
+    ReturJual.addReturJual(
+      id_retur_now,
       waktu.value,
       total_harga_global_now,
       total_bayar_global_now,
@@ -662,16 +619,16 @@ const simpanPenjualan = () => {
         modal_utama.value = false;
         initTabulator();
       })
-      .catch((error) => {
+      .catch((e) => {
         alert("Simpan Error: " + e);
       });
   } else {
-    alert("Simpan Detail Penjualan Tidak Boleh Kosong");
+    alert("Simpan Detail ReturJual Tidak Boleh Kosong");
   }
 };
 
-const deletePenjualan = (no_invoice) => {
-  Penjualan.removePenjualan(no_invoice);
+const deleteReturJual = (id_retur) => {
+  ReturJual.removeReturJual(id_retur);
   initTabulator();
   deleteConfirmationModal.value = false;
 };
@@ -696,7 +653,7 @@ const resetModal = () => {
   isEdit.value = false;
   isModalScanner.value = false;
   isInvoice.value = false;
-  no_invoice.value = "-";
+  id_retur.value = "-";
   waktu.value = "";
   item_select.value = "kosong";
   stok.value = 0;
@@ -704,30 +661,30 @@ const resetModal = () => {
   nama_varian_select.value = "-";
   nama_campur_select.value = "-";
   qty_select.value = 0;
-  harga_item_select.value = 0;
-  total_harga_select.value = 0;
+  keterangan_select.value = 0;
+  bukti_select.value = 0;
   total_harga_global.value = 0;
   total_bayar_global.value = 0;
   kembalian.value = 0;
   itemDel.value = "";
-  Penjualan.rawPenjualanDetail = [];
+  ReturJual.rawReturJualDetail = [];
 };
 
 watch(item_select, async (e) => {
   try {
     if (e !== "kosong") {
-      Penjualan.readDetailItem(e)
+      ReturJual.readDetailItem(e)
         .then((data) => {
           (nama_barang_select.value = data.nama_barang),
             (nama_varian_select.value = data.nama_varian),
             (nama_campur_select.value = `${data.nama_barang} - ${data.nama_varian} | ${data.stok_varian}`),
-            (harga_item_select.value = data.harga_jual_varian),
+            (keterangan_select.value = data.harga_jual_varian),
             (stok.value = data.stok_varian),
             (qty_select.value = 1),
-            (total_harga_select.value = data.harga_jual_varian);
+            (bukti_select.value = data.harga_jual_varian);
         })
         .catch((error) => {
-             throw new Error(error)
+          throw new Error(error)
         });
     }
   } catch (error) {
@@ -737,7 +694,7 @@ watch(item_select, async (e) => {
 
 watch(qty_select, async (newValue, oldValue) => {
   const qty = newValue;
-  const harga_item_select_now = harga_item_select.value;
+  const keterangan_select_now = keterangan_select.value;
   const stok_now = stok.value;
   try {
     if (newValue > stok_now) {
@@ -747,7 +704,7 @@ watch(qty_select, async (newValue, oldValue) => {
       alert("Minimal Qty harus 1");
       qty_select.value = 1;
     } else {
-      total_harga_select.value = +harga_item_select_now * +qty;
+      bukti_select.value = +keterangan_select_now * +qty;
     }
   } catch (error) {
     alert("Gagal wtch qty" + error);
@@ -794,12 +751,13 @@ watch(filter, async () => {
 
 const initTabulator = () => {
   tabulator.value = new Tabulator(tableJualRef.value, {
-    data: Penjualan.penjualans,
-    printHeader: `<h1 class='text-2xl p-2 m-2 text-center border-y-2 border-black'>Tabel Penjualan<h1>`,
+    data: ReturJual.returjuals,
+    printHeader: `<h1 class='text-2xl p-2 m-2 text-center border-y-2 border-black'>Tabel ReturJual<h1>`,
     printFooter: `<h2 class='p-2 m-2 text-center mt-4'>${moment(
       Date.now()
     ).format("DD MMM YYYY HH:SS")}<h2>`,
     printAsHtml: true,
+    height: "100%",
     addRowPos: true,
     printStyled: true,
     pagination: "remote",
@@ -846,23 +804,57 @@ const initTabulator = () => {
         cellClick: function (e, cell) {
           const penjualan = cell.getData();
 
-          Penjualan.readDetail(penjualan.no_invoice)
+          ReturJual.readDetail(penjualan.id_retur)
             .then(() => {
-              no_invoice.value = penjualan.no_invoice;
-              waktu.value = penjualan.tanggal_penjualan;
-              total_harga_global.value = parseFloat(penjualan.total_harga_jual);
+              id_retur.value = penjualan.id_retur;
+              waktu.value = penjualan.tanggal_pengembalian;
+              total_harga_global.value = parseFloat(penjualan.total_barang);
               total_bayar_global.value = parseFloat(penjualan.total_bayar_jual);
               kembalian.value = parseFloat(penjualan.kembalian_jual);
 
               isInvoice.value = true;
             })
-            .catch((error) => {
+            .catch((e) => {
               alert("gagal open invoice" + e);
             });
         },
       },
       {
+        title: "ID RETUR",
+        minWidth: 200,
+        responsive: 0,
+        field: "id_retur",
+        vertAlign: "middle",
+        hozAlign: "center",
+        print: false,
+        download: false,
+        formatter(cell) {
+          return `<div>
+                <div class="font-medium whitespace-nowrap">${cell.getData().id_retur
+            }</div>
+              </div>`;
+        },
+      },
+      {
+        title: "TANGGAL PENGEMBALIAN",
+        headerHozAlign: "center",
+        minWidth: 200,
+        field: "tanggal_pengembalian",
+        hozAlign: "center",
+        vertAlign: "middle",
+        print: false,
+        download: false,
+        formatter(cell) {
+          return `<div>
+                <div class="font-medium whitespace-nowrap">${moment(
+            cell.getData().tanggal_pengembalian
+          ).format("DD MMM YYYY HH:SS")}</div>
+              </div>`;
+        },
+      },
+      {
         title: "INVOICE",
+        headerHozAlign: "center",
         minWidth: 200,
         responsive: 0,
         field: "no_invoice",
@@ -878,70 +870,18 @@ const initTabulator = () => {
         },
       },
       {
-        title: "TANGGAL PENJUALAN",
+        title: "TOTAL BARANG",
+        minWidth: 50,
         headerHozAlign: "center",
-        minWidth: 200,
-        field: "tanggal_penjualan",
+        field: "total_barang",
         hozAlign: "center",
         vertAlign: "middle",
         print: false,
         download: false,
         formatter(cell) {
           return `<div>
-                <div class="font-medium whitespace-nowrap">${moment(
-            cell.getData().tanggal_penjualan
-          ).format("DD MMM YYYY HH:SS")}</div>
-              </div>`;
-        },
-      },
-      {
-        title: "TOTAL HARGA",
-        minWidth: 200,
-        headerHozAlign: "center",
-        field: "total_harga_jual",
-        hozAlign: "right",
-        vertAlign: "middle",
-        print: false,
-        download: false,
-        formatter(cell) {
-          return `<div>
-                <div class="font-medium whitespace-nowrap">${currencyFormatter.format(
-            cell.getData().total_harga_jual
-          )}</div>
-              </div>`;
-        },
-      },
-      {
-        title: "TOTAL BAYAR",
-        minWidth: 200,
-        headerHozAlign: "center",
-        field: "total_bayar_jual",
-        hozAlign: "right",
-        vertAlign: "middle",
-        print: false,
-        download: false,
-        formatter(cell) {
-          return `<div>
-                <div class="font-medium whitespace-nowrap">${currencyFormatter.format(
-            cell.getData().total_bayar_jual
-          )}</div>
-              </div>`;
-        },
-      },
-      {
-        title: "KEMBALIAN",
-        headerHozAlign: "center",
-        minWidth: 200,
-        field: "kembalian_jual",
-        hozAlign: "right",
-        vertAlign: "middle",
-        print: false,
-        download: false,
-        formatter(cell) {
-          return `<div>
-                <div class="font-medium whitespace-nowrap">${currencyFormatter.format(
-            cell.getData().kembalian_jual
-          )}</div>
+                <div class="font-medium whitespace-nowrap">${cell.getData().total_barang
+            }</div>
               </div>`;
         },
       },
@@ -957,21 +897,15 @@ const initTabulator = () => {
         download: false,
         formatter(cell) {
           const a =
-            auth.value.role !== "Super Admin"
+            auth.value.role === "Operator"
               ? dom(`<div class="flex lg:justify-center items-center">
                 <a id="edit" class="flex items-center mr-3 text-primary" href="javascript:;">
                   <i data-lucide="check-square" class="w-4 h-4 mr-1"></i> Edit
-                </a>
-                <a id="retur" class="flex items-center" href="javascript:;">
-                  <i data-lucide="undo" class="w-4 h-4 mr-1"></i> Retur
                 </a>
               </div>`)
               : dom(`<div class="flex lg:justify-center items-center">
                 <a id="edit" class="flex items-center mr-4 text-primary" href="javascript:;">
                   <i data-lucide="check-square" class="w-4 h-4 mr-1"></i> Edit
-                </a>
-                <a id="retur" class="flex items-center mr-4" href="javascript:;">
-                  <i data-lucide="undo" class="w-4 h-4 mr-1"></i> Retur
                 </a>
                 <a id="delete" class="flex items-center text-danger" href="javascript:;">
                   <i data-lucide="trash-2" class="w-4 h-4 mr-1"></i> Delete
@@ -980,12 +914,12 @@ const initTabulator = () => {
           dom(a).on("click", "a", function (e) {
             if (e.id === "edit") {
               const penjualan = cell.getData();
-              Penjualan.readDetailPenjualan(penjualan.no_invoice)
+              ReturJual.readDetailReturJual(penjualan.id_retur)
                 .then(() => {
-                  no_invoice.value = penjualan.no_invoice;
-                  waktu.value = penjualan.tanggal_penjualan;
+                  id_retur.value = penjualan.id_retur;
+                  waktu.value = penjualan.tanggal_pengembalian;
                   total_harga_global.value = parseFloat(
-                    penjualan.total_harga_jual
+                    penjualan.total_barang
                   );
                   total_bayar_global.value = parseFloat(
                     penjualan.total_bayar_jual
@@ -994,13 +928,11 @@ const initTabulator = () => {
                   isEdit.value = true;
                   modal_utama.value = true;
                 })
-                .catch((error) => {
+                .catch((e) => {
                   alert("gagal open edit" + e);
                 });
-            } else if (e.id === "retur") {
-              alert("retur");
             } else {
-              no_invoice.value = cell.getData().no_invoice;
+              id_retur.value = cell.getData().id_retur;
               deleteConfirmationModal.value = true;
             }
           });
@@ -1011,6 +943,27 @@ const initTabulator = () => {
 
       // For print format
       {
+        title: "ID RETUR",
+        field: "id_retur",
+        visible: false,
+        print: true,
+        download: true,
+      },
+      {
+        title: "TANGGAL PENGEMBALIAN",
+        field: "tanggal_pengembalian",
+        visible: false,
+        print: true,
+        download: true,
+        formatter(cell) {
+          return `<div>
+                <div class="font-medium whitespace-nowrap">${moment(
+            cell.getData().tanggal_pengembalian
+          ).format("DD MMM YYYY HH:SS")}</div>
+              </div>`;
+        },
+      },
+      {
         title: "INVOICE",
         field: "no_invoice",
         visible: false,
@@ -1018,58 +971,15 @@ const initTabulator = () => {
         download: true,
       },
       {
-        title: "TANGGAL PENJUALAN",
-        field: "tanggal_penjualan",
+        title: "TOTAL BARANG",
+        field: "total_barang",
         visible: false,
         print: true,
         download: true,
         formatter(cell) {
           return `<div>
-                <div class="font-medium whitespace-nowrap">${moment(
-            cell.getData().tanggal_penjualan
-          ).format("DD MMM YYYY HH:SS")}</div>
-              </div>`;
-        },
-      },
-      {
-        title: "TOTAL HARGA",
-        field: "total_harga_jual",
-        visible: false,
-        print: true,
-        download: true,
-        formatter(cell) {
-          return `<div>
-                <div class="font-medium whitespace-nowrap">${currencyFormatter.format(
-            parseFloat(cell.getData().total_harga_jual)
-          )}</div>
-              </div>`;
-        },
-      },
-      {
-        title: "TOTAL BAYAR",
-        field: "total_bayar_jual",
-        visible: false,
-        print: true,
-        download: true,
-        formatter(cell) {
-          return `<div>
-                <div class="font-medium whitespace-nowrap">${currencyFormatter.format(
-            cell.getData().total_bayar_jual
-          )}</div>
-              </div>`;
-        },
-      },
-      {
-        title: "KEMBALIAN",
-        field: "kembalian_jual",
-        visible: false,
-        print: true,
-        download: true,
-        formatter(cell) {
-          return `<div>
-                <div class="font-medium whitespace-nowrap">${currencyFormatter.format(
-            cell.getData().kembalian_jual
-          )}</div>
+                <div class="font-medium whitespace-nowrap">${parseFloat(cell.getData().total_barang)
+            }</div>
               </div>`;
         },
       },
@@ -1078,7 +988,7 @@ const initTabulator = () => {
       var holderEl = document.createElement("div");
       var tableEl = document.createElement("div");
       holderEl.style.display = "none";
-      const id = row.getData().no_invoice;
+      const id = row.getData().id_retur;
       holderEl.style.boxSizing = "border-box";
       holderEl.style.padding = "10px 30px 10px 10px";
       holderEl.style.borderTop = "1px solid #333";
@@ -1145,7 +1055,7 @@ const initTabulator = () => {
             },
           },
           {
-            title: "TOTAL HARGA",
+            title: "TOTAL BARANG",
             minWidth: 200,
             headerHozAlign: "center",
             field: "total_harga_detail_jual",
@@ -1185,7 +1095,7 @@ const initTabulator = () => {
             download: true,
           },
           {
-            title: "TOTAL HARGA",
+            title: "TOTAL BARANG",
             field: "total_harga_detail_jual",
             visible: false,
             print: true,
@@ -1203,14 +1113,14 @@ const initTabulator = () => {
     });
   });
   tabulator.value.on("rowDblClick", async function (e, row) {
-    const id = row.getData().no_invoice;
+    const id = row.getData().id_retur;
     try {
-      await Penjualan.readDetail(id)
+      await ReturJual.readDetail(id)
         .then((data) => {
           tabulator.value.replaceData(data);
         })
         .catch((error) => {
-             throw new Error(error)
+          throw new Error(error)
         });
       $(".subTable" + id + "").toggle();
     } catch (error) {
@@ -1218,7 +1128,7 @@ const initTabulator = () => {
     }
   });
   tabulator.value.on("rowClick", function (e, row) {
-    const id = row.getData().no_invoice;
+    const id = row.getData().id_retur;
     $(".subTable" + id + "").hide();
   });
 };
@@ -1242,7 +1152,7 @@ const onFilter = () => {
 
 // On reset filter
 const onResetFilter = () => {
-  filter.field = "no_invoice";
+  filter.field = "id_retur";
   filter.type = "like";
   filter.value = "";
   onFilter();
@@ -1269,7 +1179,7 @@ onMounted(async function () {
   try {
     auth.value = Auth.items;
     isLoading.value = true;
-    await Penjualan.readItem();
+    await ReturJual.readItem();
     initTabulator();
     reInitOnResizeWindow();
     basicNonStickyNotificationToggle();

@@ -57,7 +57,7 @@
                 <button
                   type="button"
                   @click="resetFormVarian"
-                  class="btn btn-outline-danger inline-block hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                  class="btn btn-outline-danger hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
                 >
                   <RefreshCwIcon class="mr-2" />Reset Form
                 </button>
@@ -370,7 +370,7 @@
           <select
             id="tabulator-html-filter-field"
             v-model="filter.field"
-            class="form-select w-full sm:w-32 2xl:w-full mt-2 sm:mt-0 sm:w-auto"
+            class="form-select w-full 2xl:w-full mt-2 sm:mt-0 sm:w-auto"
           >
             <option value="id_barang">ID Barang</option>
             <option value="nama_barang">Nama Barang</option>
@@ -632,7 +632,7 @@ const deleteVarian = () => {
       initTabulator();
       resetModal();
     })
-    .catch((error) => {
+    .catch((e) => {
       alert("removeVarian" + JSON.stringify(e));
     });
 };
@@ -703,7 +703,7 @@ watch(daftarVarian, async (newValue) => {
         outlet.value = detail.item.nama_outlet;
         stokTersedia.value = parseInt(+stokLokal.value + +stokTersisa.value);
       })
-      .catch((error) => {
+      .catch((e) => {
         alert("Error edit Get " + e);
       });
   }
@@ -733,6 +733,7 @@ watch(stokLokal, async (newValue, oldValue) => {
 const initTabulator = () => {
   tabulator.value = new Tabulator(tableRef.value, {
     data: Barang.items,
+    height: "100%",
     printHeader: `<h1 class='text-2xl p-2 m-2 text-center border-y-2 border-black'>Tabel Barang<h1>`,
     printFooter: `<h2 class='p-2 m-2 text-center mt-4'>${moment(
       Date.now()
@@ -1054,7 +1055,7 @@ const initTabulator = () => {
                       isEdit.value = true;
                       modalVarian.value = true;
                     })
-                    .catch((error) => {
+                    .catch((e) => {
                       alert("Error edit Get click" + e);
                     });
                 } else {

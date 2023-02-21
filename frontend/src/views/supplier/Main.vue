@@ -126,7 +126,7 @@
           <select
             id="tabulator-html-filter-field"
             v-model="filter.field"
-            class="form-select w-full sm:w-32 2xl:w-full mt-2 sm:mt-0 sm:w-auto"
+            class="form-select w-full 2xl:w-full mt-2 sm:mt-0 sm:w-auto"
           >
             <option value="id_supplier">ID Supplier</option>
             <option value="nama_supplier">Nama Supplier</option>
@@ -386,6 +386,7 @@ export default {
         data: this.Supplier.items,
         pagination: "remote",
         paginationSize: 10,
+        height: "100%",
         paginationSizeSelector: [10, 20, 30, 40, 50],
         layout: "fitColumns",
         responsiveLayout: "collapse",

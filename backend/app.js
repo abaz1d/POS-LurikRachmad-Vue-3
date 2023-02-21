@@ -52,6 +52,7 @@ var outletRouter = require('./routes/outlet')(pool);
 var pelangganRouter = require('./routes/pelanggan')(pool);
 
 var mutasiBarangRouter = require('./routes/mutasi-barang')(pool);
+var returJualRouter = require('./routes/retur-penjualan')(pool);
 
 //var produk = require('./routes/produk') (pool);
 
@@ -82,6 +83,7 @@ app.use('/users', usersRouter);
 app.use('/outlet', outletRouter);
 app.use('/pelanggan', pelangganRouter);
 app.use('/mutasi-barang', mutasiBarangRouter);
+app.use('/retur-jual', returJualRouter);
 
 
 //app.use('/produk', produk);

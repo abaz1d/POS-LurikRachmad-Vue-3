@@ -75,7 +75,7 @@ url = '';
               <ModalHeader>
                 <h2 class="font-medium text-base mr-auto">Tambah Varian</h2>
                 <button type="button" @click="resetFormVarian"
-                  class="btn btn-outline-danger inline-block hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
+                  class="btn btn-outline-danger hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
                   <RefreshCwIcon class="mr-2" />Reset Form
                 </button>
               </ModalHeader>
@@ -271,7 +271,7 @@ renderQrScanner();
         <div class="sm:flex items-center sm:mr-4">
           <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2">Field</label>
           <select id="tabulator-html-filter-field" v-model="filter.field"
-            class="form-select w-full sm:w-32 2xl:w-full mt-2 sm:mt-0 sm:w-auto">
+            class="form-select w-full 2xl:w-full mt-2 sm:mt-0 sm:w-auto">
             <option value="id_barang">ID Barang</option>
             <option value="nama_barang">Nama Barang</option>
           </select>
@@ -575,7 +575,7 @@ const deleteVarian = () => {
       initTabulator();
       resetModal();
     })
-    .catch((error) => {
+    .catch((e) => {
       alert("removeVarian" + JSON.stringify(e));
     });
 };
@@ -653,6 +653,7 @@ const initTabulator = () => {
     printStyled: true,
     addRowPos: true,
     height: "60vh",
+    height: "100%",
     pagination: "remote",
     paginationSize: 10,
     paginationSizeSelector: [10, 20, 30, 40, 50, 100],
@@ -967,7 +968,7 @@ const initTabulator = () => {
                       isEdit.value = true;
                       modalVarian.value = true;
                     })
-                    .catch((error) => {
+                    .catch((e) => {
                       alert("Error edit Get " + e);
                     });
                 } else {

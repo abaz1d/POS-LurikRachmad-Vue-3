@@ -4,22 +4,40 @@ var path = require('path');
 const { currencyFormatter, isLoggedIn, Response } = require('../helpers/util')
 
 module.exports = function (db) {
-	router.get('/retur-jual', isLoggedIn, async function (req, res, next) {
+	router.get('/', isLoggedIn, async function (req, res, next) {
 		try {
-			const noInvoice = req.query.noInvoice ? req.query.noInvoice : '';
+			const id_retur = req.query.id_retur ? req.query.id_retur : '';
 			const id_outlet = req.query.id_outlet ? req.query.id_outlet : '';
-			const { rows } = await db.query('SELECT rj.*, ot.nama_outlet AS penerima, op.nama_outlet AS pengirim FROM retur_penjualan rj LEFT JOIN outlet ot ON rj.id_outlet_penerima = ot.id_outlet LEFT JOIN outlet op ON rj.id_outlet_pengirim = op.id_outlet WHERE id_outlet = $1 ORDER BY rj.tanggal_pengembalian DESC', [id_outlet]);
-			const details = await db.query('SELECT bmd.*, v.nama_varian FROM retur_penjualan_detail as bmd LEFT JOIN varian as v ON bmd.id_varian = v.id_varian WHERE bmd.no_invoice = $1 ORDER BY bmd.id_detail_barang_mutasi', [noInvoice]);
-			const varian = await db.query('SELECT sv.id_varian, v.nama_varian, sv.id_outlet, sv.stok_varian FROM sub_varian as sv LEFT JOIN varian as v ON sv.id_varian = v.id_varian WHERE sv.id_outlet = $1', [id_outlet]);
-			const outlet = await db.query('SELECT * FROM outlet WHERE id_outlet != $1 ORDER BY id_outlet', [id_outlet]);
-			//const supplier = await db.query('SELECT * FROM supplier ORDER BY id_supplier');
-			const print = await db.query('SELECT bmd.*,rj.*,v.nama_varian FROM retur_penjualan_detail as bmd LEFT JOIN varian as v ON bmd.id_varian = v.id_varian LEFT JOIN retur_penjualan as rj ON bmd.no_invoice = rj.no_invoice WHERE bmd.no_invoice = $1', [noInvoice]);
+			let reqSQL
+      let argumentSQL
+			if (id_outlet == '') {
+				reqSQL = `SELECT rj.*, o.nama_outlet FROM retur_penjualan rj LEFT JOIN outlet o ON rj.id_outlet = o.id_outlet ORDER BY rj.tanggal_pengembalian DESC`
+				argumentSQL = ''
+		} else {
+				reqSQL = `SELECT rj.*, o.nama_outlet FROM retur_penjualan rj LEFT JOIN outlet o ON rj.id_outlet = o.id_outlet WHERE rj.id_outlet = $1 ORDER BY rj.tanggal_pengembalian DESC`
+				argumentSQL = [id_outlet]
+		}
+		const { rows } = await db.query(reqSQL, argumentSQL);
+			// const { rows } = await db.query('SELECT rj.*, ot.nama_outlet AS penerima, op.nama_outlet AS pengirim FROM retur_penjualan rj LEFT JOIN outlet ot ON rj.id_outlet = ot.id_outlet WHERE id_outlet = $1 ORDER BY rj.tanggal_pengembalian DESC', [id_outlet]);
+			const details = await db.query('SELECT rjd.*, v.nama_varian FROM retur_penjualan_detail as rjd LEFT JOIN varian as v ON rjd.id_varian = v.id_varian WHERE rjd.id_retur = $1 ORDER BY rjd.id_detail_retur_jual', [id_retur]);
+
+			if (id_outlet == '') {
+				reqSQL = `SELECT no_invoice,tanggal_penjualan FROM penjualan WHERE tanggal_penjualan >= CURRENT_DATE - 14`
+				argumentSQL = ''
+			} else {
+				reqSQL = `SELECT no_invoice,tanggal_penjualan FROM penjualan WHERE tanggal_penjualan >= CURRENT_DATE - 14 AND id_outlet = $1`
+				argumentSQL = [id_outlet]
+			}
+
+			const penjualan = await db.query(reqSQL, argumentSQL);
+			const varian = await db.query('SELECT sv.*,v.nama_varian, b.id_barang, b.nama_barang FROM sub_varian as sv LEFT JOIN varian v ON sv.id_varian = v.id_varian LEFT JOIN barang as b ON v.id_barang = b.id_barang WHERE sv.id_outlet = $1 ORDER BY b.id_barang', [id_outlet]);
+			const print = await db.query('SELECT rjd.*,rj.*,v.nama_varian FROM retur_penjualan_detail as rjd LEFT JOIN varian as v ON rjd.id_varian = v.id_varian LEFT JOIN retur_penjualan as rj ON rjd.id_retur = rj.no_invoice WHERE rjd.id_retur = $1', [id_retur]);
 			res.json(new Response({
 				pengembalian: rows,
-				outlet: outlet.rows,
 				details: details.rows,
 				varian: varian.rows,
-				print,
+				penjualan: penjualan.rows,
+				print: print.rows,
 			}));
 		} catch (e) {
 			console.error(e);
@@ -106,7 +124,7 @@ module.exports = function (db) {
 	});
 	router.get('/details/:no_invoice', isLoggedIn, async function (req, res, next) {
 		try {
-			const { rows } = await db.query('SELECT bmd.*, v.nama_varian FROM retur_penjualan_detail as bmd LEFT JOIN varian as v ON bmd.id_varian = v.id_varian WHERE bmd.no_invoice = $1 ORDER BY bmd.id_detail_barang_mutasi', [req.params.no_invoice]);
+			const { rows } = await db.query('SELECT rjd.*, v.nama_varian FROM retur_penjualan_detail as rjd LEFT JOIN varian as v ON rjd.id_varian = v.id_varian WHERE rjd.id_retur = $1 ORDER BY rjd.id_detail_retur_jual', [req.params.no_invoice]);
 			res.json(new Response({ rows }));
 		} catch (e) {
 			res.status(500).json(new Response(e, false))

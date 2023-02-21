@@ -114,7 +114,7 @@
           <select
             id="tabulator-html-filter-field"
             v-model="filter.field"
-            class="form-select w-full sm:w-32 2xl:w-full mt-2 sm:mt-0 sm:w-auto"
+            class="form-select w-full 2xl:w-full mt-2 sm:mt-0 sm:w-auto"
           >
             <option value="id_pelanggan">ID Pelanggan</option>
             <option value="nama_pelanggan">Nama Pelanggan</option>
@@ -360,6 +360,7 @@ export default {
     initTabulator() {
       this.tabulator = new Tabulator(this.$refs.tableRef, {
         printAsHtml: true,
+        height: "100%",
         printStyled: true,
         printHeader: `<h1 class='text-2xl p-2 m-2 text-center border-y-2 border-black'>Tabel Pelanggan<h1>`,
         printFooter: `<h2 class='p-2 m-2 text-center mt-4'>${moment(

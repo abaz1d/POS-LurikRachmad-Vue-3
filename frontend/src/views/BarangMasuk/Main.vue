@@ -22,7 +22,7 @@
           <select
             id="tabulator-html-filter-field"
             v-model="filter.field"
-            class="form-select w-full sm:w-32 2xl:w-full mt-2 sm:mt-0 sm:w-auto"
+            class="form-select w-full 2xl:w-full mt-2 sm:mt-0 sm:w-auto"
           >
             <option value="no_invoice">No Invoice</option>
             <option value="tanggal_mutasi">Tanggal Barang Masuk</option>
@@ -190,7 +190,7 @@
               <div class="col-span-2 hidden sm:block mr-40">
                 <div class="grid justify-items-center items-center bg-white">
                   <div
-                    class="font-philosopher bg-white text-4xl text-[#CDA562] font-black bg-white"
+                    class="font-philosopher bg-white text-4xl text-[#CDA562] font-black"
                   >
                     <b> Lurik Rachmad </b>
                   </div>
@@ -199,7 +199,7 @@
                     <br />
                     Kecamatan Pedan,Kabupaten Klaten, Jawa Tengah 57468
                   </div>
-                  <div class="bg-white mt-1 text-black bg-white">
+                  <div class="bg-white mt-1 text-black">
                     <MailIcon class="inline-block w-4 m-auto bg-white" />
                     <p class="inline-block underline">
                       : lurikrachmad@gmail.com,
@@ -586,6 +586,7 @@ const initTabulator = () => {
     printStyled: true,
     pagination: "remote",
     paginationSize: 10,
+    height: "100%",
     paginationSizeSelector: [10, 20, 30, 40, 50, 100],
     layout: "fitColumns",
     responsiveLayout: "collapse",
@@ -629,7 +630,7 @@ const initTabulator = () => {
               data_utama.value = mutasi;
               isInvoice.value = true;
             })
-            .catch((error) => {
+            .catch((e) => {
               alert("gagal open invoice" + e);
             });
         },
@@ -795,7 +796,7 @@ const initTabulator = () => {
                 isEdit.value = true;
                 isInvoice.value = true;
               })
-              .catch((error) => {
+              .catch((e) => {
                 alert("gagal open invoice" + e);
               });
           });
