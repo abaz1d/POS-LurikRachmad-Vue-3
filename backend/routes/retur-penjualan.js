@@ -66,7 +66,7 @@ module.exports = function (db) {
 		const id_outlet = req.query.id_outlet ? req.query.id_outlet : '';
 		try {
 			const { rows } = await db.query('INSERT INTO retur_penjualan(id_outlet) VALUES($1) returning *', [id_outlet])
-			res.json(new Response({ rows: rows[0] }));
+			res.json(new Response(rows));
 		} catch (e) {
 			res.status(500).json(new Response(e, false))
 		}
@@ -110,12 +110,14 @@ module.exports = function (db) {
 			res.status(500).json(new Response(e, false))
 		}
 	});
-	router.post('/upmutasi', async function (req, res, next) {
-		const { no_invoice, outlet_penerima, ekspedisi, no_resi } = req.body
+
+	router.post('/upreturjual', async function (req, res, next) {
+		const { id_retur,no_invoice } = req.body
+
 		try {
-			updatemutasi = await db.query('UPDATE retur_penjualan SET id_outlet_penerima = $1, ekspedisi = $2, no_resi = $3 WHERE no_invoice = $4 returning *', [outlet_penerima, ekspedisi, no_resi, no_invoice])
-			const { rows } = await db.query('SELECT rj.*, ot.nama_outlet AS penerima, op.nama_outlet AS pengirim FROM retur_penjualan rj LEFT JOIN outlet ot ON rj.id_outlet_penerima = ot.id_outlet LEFT JOIN outlet op ON rj.id_outlet_pengirim = op.id_outlet WHERE no_invoice = $1', [no_invoice])
-			res.json(new Response({ rows }));
+			updateretur = await db.query('UPDATE retur_penjualan SET no_invoice = $1 WHERE id_retur = $2 returning *', [no_invoice, id_retur]) 
+			const { rows } = await db.query('SELECT rj.*, o.nama_outlet FROM retur_penjualan rj LEFT JOIN outlet o ON rj.id_outlet = o.id_outlet WHERE id_retur = $1', [id_retur])
+			res.json(new Response( rows ));
 		} catch (e) {
 			console.error(e);
 			res.status(500).json(new Response(e, false))

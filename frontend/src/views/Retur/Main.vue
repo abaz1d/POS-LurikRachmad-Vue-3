@@ -500,10 +500,10 @@ const basicNonStickyNotificationToggle = () => {
 };
 
 const startTransaction = () => {
-  // ReturJual.startTransaction().then((data) => {
-  //   id_retur.value = data.id_retur;
-  //   waktu.value = data.tanggal_pengembalian;
-  // });
+  ReturJual.startTransaction().then((data) => {
+    id_retur.value = data.id_retur;
+    waktu.value = data.tanggal_pengembalian;
+  });
 };
 
 const addItem = () => {
@@ -520,6 +520,7 @@ const addItem = () => {
         (nama_campur_select.value = "-"),
         (qty_select.value = 0)
       file.value = "";
+      url.value = null
       keterangan_select.value = "";
       stok.value = +stok.value - +qty_select.value;
     })
@@ -563,19 +564,13 @@ const removeItem = (id_detail_retur_jual, id_retur) => {
 };
 
 const simpanReturJual = () => {
-  const id_retur_now = id_retur.value;
-  const total_harga_global_now = total_harga_global.value;
-  const total_bayar_global_now = total_bayar_global.value;
-  const kembalian_now = kembalian.value;
   if (
-    ReturJual.penjualanDetail.length !== 0
+    ReturJual.rawReturJualDetail.length !== 0 && invoice_select !== 'kosong'
   ) {
     ReturJual.addReturJual(
-      id_retur_now,
+      id_retur.value,
       waktu.value,
-      total_harga_global_now,
-      total_bayar_global_now,
-      kembalian_now,
+      invoice_select.value,
       isEdit.value
     )
       .then(() => {

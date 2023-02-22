@@ -21,7 +21,7 @@ export default {
     };
   },
   watch: {
-    qty(e) {
+    qty(e) { console.log("e",e)
       if (e !== 0) {
         this.update();
       } else {

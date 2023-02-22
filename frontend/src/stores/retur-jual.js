@@ -61,35 +61,27 @@ export const useReturJualStore = defineStore({
       }
     },
     async addReturJual(
-      no_invoice,
+      id_retur,
       waktu,
-      total_harga_global,
-      total_bayar_global,
-      kembalian,
+      no_invoice,
       isEdit
     ) {
-      const tanggal_penjualan = waktu;
-      const total_harga_jual = total_harga_global;
-      const total_bayar_jual = total_bayar_global;
       if (!isEdit) {
         this.rawReturJuals.push({
-          no_invoice,
-          tanggal_penjualan,
-          total_harga_jual,
-          total_bayar_jual,
-          kembalian,
+          id_retur: id_retur,
+          tanggal_pengembalian: waktu,
+          no_invoice: no_invoice,
+          total_barang: 0
         });
       }
       try {
-        const { data } = await request.post("retur-jual/upjual", {
+        const { data } = await request.post("retur-jual/upreturjual", {
+          id_retur,
           no_invoice,
-          total_harga_jual,
-          total_bayar_jual,
-          kembalian,
         });
         if (data.success) {
           this.rawReturJuals = this.rawReturJuals.map((item) => {
-            if (item.no_invoice == no_invoice) {
+            if (item.id_retur == id_retur) {
               return data.data[0];
             }
             return item;
@@ -106,7 +98,7 @@ export const useReturJualStore = defineStore({
         (item) => item.id_retur !== id_retur
       );
       request
-        .get(`retur-jual/delete/${id_retur}`)
+        .delete(`retur-jual/delete/${id_retur}`)
         .then((res) => {
           if (res.success) {
             return res.success;
@@ -176,7 +168,6 @@ export const useReturJualStore = defineStore({
     },
     async removeItem(id_detail_retur_jual, id_retur) {
       try {
-        console.log(id_detail_retur_jual, id_retur)
         const { data } = await request.delete(
           `retur-jual/delitem/${id_detail_retur_jual}`,
           { data: { id_retur: id_retur } }
