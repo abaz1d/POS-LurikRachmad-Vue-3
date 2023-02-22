@@ -896,7 +896,7 @@ const initTabulator = () => {
           tabulator.value.replaceData(data);
         })
         .catch((error) => {
-             throw new Error(error)
+          throw new Error(error);
         });
       $(".subTable" + id + "").toggle();
     } catch (error) {
@@ -962,8 +962,8 @@ onMounted(() => {
     })
     .catch((error) => {
       console.error(error);
-    isLoading.value = false;
-    modalErrorRef.value.errorDatabaseModal = true;
+      isLoading.value = false;
+      modalErrorRef.value.errorDatabaseModal = true;
     });
 });
 

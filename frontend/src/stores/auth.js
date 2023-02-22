@@ -31,7 +31,7 @@ export const useAuthStore = defineStore({
         }
         return data;
       } catch (error) {
-        throw new Error(error)
+        throw new Error(error);
       }
     },
 
@@ -44,7 +44,7 @@ export const useAuthStore = defineStore({
           this.user = null;
         }
       } catch (error) {
-        throw new Error(error)
+        throw new Error(error);
       }
     },
   },

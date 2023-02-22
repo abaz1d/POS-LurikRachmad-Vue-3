@@ -29,25 +29,27 @@ export const useReturJualStore = defineStore({
       try {
         const Auth = useAuthStore();
         const { data } = await request.get(
-          `${Auth.items.role !== "Super Admin"
-            ? `retur-jual/laporan?id_outlet=${String(Auth.items.id_outlet)}`
-            : "retur-jual/laporan"
+          `${
+            Auth.items.role !== "Super Admin"
+              ? `retur-jual/laporan?id_outlet=${String(Auth.items.id_outlet)}`
+              : "retur-jual/laporan"
           }`
         );
         if (data.success) {
           this.rawLaporans = data.data;
         }
       } catch (error) {
-        throw new Error(error)
+        throw new Error(error);
       }
     },
     async readItem() {
       try {
         const Auth = useAuthStore();
         const { data } = await request.get(
-          `${Auth.items.role !== "Super Admin"
-            ? `retur-jual?id_outlet=${String(Auth.items.id_outlet)}`
-            : "retur-jual"
+          `${
+            Auth.items.role !== "Super Admin"
+              ? `retur-jual?id_outlet=${String(Auth.items.id_outlet)}`
+              : "retur-jual"
           }`
         );
         if (data.success) {
@@ -57,21 +59,16 @@ export const useReturJualStore = defineStore({
           return this.rawReturJuals;
         }
       } catch (error) {
-        throw new Error(error)
+        throw new Error(error);
       }
     },
-    async addReturJual(
-      id_retur,
-      waktu,
-      no_invoice,
-      isEdit
-    ) {
+    async addReturJual(id_retur, waktu, no_invoice, isEdit) {
       if (!isEdit) {
         this.rawReturJuals.push({
           id_retur: id_retur,
           tanggal_pengembalian: waktu,
           no_invoice: no_invoice,
-          total_barang: 0
+          total_barang: 0,
         });
       }
       try {
@@ -89,7 +86,7 @@ export const useReturJualStore = defineStore({
           return this.rawReturJuals;
         }
       } catch (error) {
-        throw new Error(error)
+        throw new Error(error);
       }
     },
 
@@ -106,7 +103,13 @@ export const useReturJualStore = defineStore({
         })
         .catch((error) => console.error(error));
     },
-    async addDetailReturJual(id_retur, id_varian, qty, keterangan, gambar_bukti) {
+    async addDetailReturJual(
+      id_retur,
+      id_varian,
+      qty,
+      keterangan,
+      gambar_bukti
+    ) {
       const formData = new FormData();
       formData.append("file", gambar_bukti);
       formData.append("id_retur", id_retur);
@@ -115,7 +118,8 @@ export const useReturJualStore = defineStore({
       formData.append("keterangan", keterangan);
       const headers = { "Content-Type": "multipart/form-data" };
       try {
-        const { data } = await request.post("retur-jual/additem",
+        const { data } = await request.post(
+          "retur-jual/additem",
           formData,
           headers
         );
@@ -124,17 +128,19 @@ export const useReturJualStore = defineStore({
           return data.data[0];
         }
       } catch (error) {
-        throw new Error(error)
+        throw new Error(error);
       }
     },
     async readVarians(no_invoice) {
       try {
-        this.rawVarians = []
-        const { data } = await request.get(`/retur-jual/read-varians/${no_invoice}`);
+        this.rawVarians = [];
+        const { data } = await request.get(
+          `/retur-jual/read-varians/${no_invoice}`
+        );
         this.rawVarians = data.data;
         return data.data;
       } catch (error) {
-        throw new Error(error)
+        throw new Error(error);
       }
     },
     async readDetailReturJual(id_retur) {
@@ -143,7 +149,7 @@ export const useReturJualStore = defineStore({
         this.rawReturJualDetail = data.data;
         return data.data;
       } catch (error) {
-        throw new Error(error)
+        throw new Error(error);
       }
     },
     async updateDetail(id_detail_retur_jual, id_varian, qty, keterangan) {
@@ -163,7 +169,7 @@ export const useReturJualStore = defineStore({
           return data.data.rows[0];
         }
       } catch (error) {
-        throw new Error(error)
+        throw new Error(error);
       }
     },
     async removeItem(id_detail_retur_jual, id_retur) {
@@ -176,10 +182,9 @@ export const useReturJualStore = defineStore({
           this.rawReturJualDetail = this.rawReturJualDetail.filter(
             (item) => item.id_detail_retur_jual !== id_detail_retur_jual
           );
-
         }
       } catch (error) {
-        throw new Error(error)
+        throw new Error(error);
       }
     },
     async readDetail(id_retur) {
@@ -200,21 +205,18 @@ export const useReturJualStore = defineStore({
           return this.rawReturJuals;
         }
       } catch (error) {
-        throw new Error(error)
+        throw new Error(error);
       }
     },
 
     async readDetailItem(id_varian, no_invoice) {
       try {
-        const Auth = useAuthStore();
         const { data } = await request.get(
-          `/retur-jual/barang/${id_varian}?no_invoice=${String(
-            no_invoice
-          )}`
+          `/retur-jual/barang/${id_varian}?no_invoice=${String(no_invoice)}`
         );
         return data.data[0];
       } catch (error) {
-        throw new Error(error)
+        throw new Error(error);
       }
     },
 
@@ -226,7 +228,7 @@ export const useReturJualStore = defineStore({
         );
         return data.data[0];
       } catch (error) {
-        throw new Error(error)
+        throw new Error(error);
       }
     },
   },

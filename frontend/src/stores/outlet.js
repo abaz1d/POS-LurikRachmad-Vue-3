@@ -18,7 +18,7 @@ export const useOutletStore = defineStore({
           return this.rawItems;
         }
       } catch (error) {
-       throw new Error(error)
+        throw new Error(error);
       }
     },
     async addItem(nama_outlet, alamat_outlet, kontak_outlet, email_outlet) {
@@ -46,7 +46,7 @@ export const useOutletStore = defineStore({
           });
         }
       } catch (error) {
-       throw new Error(error)
+        throw new Error(error);
       }
     },
     async removeItem(id_outlet) {

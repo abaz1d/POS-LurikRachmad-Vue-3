@@ -2,38 +2,56 @@
   <div class="intro-y flex flex-col sm:flex-row items-center mt-8">
     <h2 class="text-lg font-medium mr-auto">Retur Penjualan</h2>
     <div class="w-full sm:w-auto flex mt-4 sm:mt-0">
-      <button class="btn btn-primary shadow-md mb-3 mr-2 pr-5" @click="
-  modal_utama = true;
-startTransaction();
-      ">
+      <button
+        class="btn btn-primary shadow-md mb-3 mr-2 pr-5"
+        @click="
+          modal_utama = true;
+          startTransaction();
+        "
+      >
         <PlusIcon class="w-4 h-4 mr-2" />
         <p class="hidden xl:block mr-1">Retur</p>
         Baru
       </button>
       <!-- BEGIN: Modal Content -->
-      <Modal size="modal-xl" backdrop="static" :show="modal_utama" @hidden="modal_utama = false">
+      <Modal
+        size="modal-xl"
+        backdrop="static"
+        :show="modal_utama"
+        @hidden="modal_utama = false"
+      >
         <ModalHeader class="border-b-2">
           <h2 class="hidden lg:block font-medium text-base mr-auto">
             <p class="mx-auto" v-if="isEdit">Edit ReturJual {{ id_retur }}</p>
             <p class="mx-auto" v-else>Tambah ReturJual</p>
           </h2>
 
-          <div class="sm:w-auto flex mt-3 mx-auto sm:mx-0 sm:mr-0 sm:ml-4 items-center sm:items-right">
+          <div
+            class="sm:w-auto flex mt-3 mx-auto sm:mx-0 sm:mr-0 sm:ml-4 items-center sm:items-right"
+          >
             <div class="mr-2 m-auto">
-              <div class="bg-slate-200 rounded-md p-2 font-medium lg:text-base text-sm px-2">
+              <div
+                class="bg-slate-200 rounded-md p-2 font-medium lg:text-base text-sm px-2"
+              >
                 <p class="text-right text-black">{{ id_retur }}</p>
               </div>
-              <p class="text-center bg-primary text-white rounded-md w-24 mx-auto lg:-mt-[52px] -mt-12 lg:mb-8 mb-6">
+              <p
+                class="text-center bg-primary text-white rounded-md w-24 mx-auto lg:-mt-[52px] -mt-12 lg:mb-8 mb-6"
+              >
                 NO ID RETUR
               </p>
             </div>
             <div class="mr-2 m-auto">
-              <div class="bg-slate-200 rounded-md p-2 font-medium lg:text-base text-sm px-2">
+              <div
+                class="bg-slate-200 rounded-md p-2 font-medium lg:text-base text-sm px-2"
+              >
                 <p class="text-right text-black">
                   {{ moment(waktu).format("DD MMM YYYY HH:SS") }}
                 </p>
               </div>
-              <p class="text-center bg-primary text-white rounded-md w-24 mx-auto lg:-mt-[52px] -mt-12 lg:mb-8 mb-6">
+              <p
+                class="text-center bg-primary text-white rounded-md w-24 mx-auto lg:-mt-[52px] -mt-12 lg:mb-8 mb-6"
+              >
                 WAKTU
               </p>
             </div>
@@ -50,43 +68,66 @@ startTransaction();
                       <div class="flex-1 mt-0">
                         <div class="grid grid-cols-12 gap-x-2 sm:gap-x-3">
                           <div class="col-span-12 mb-5">
-                            <label for="pos-form-1" class="form-label">Invoice</label>
+                            <label for="pos-form-1" class="form-label"
+                              >Invoice</label
+                            >
                             <div v-if="!isEdit" class="flex w-full">
-                              <TomSelect v-model="invoice_select" class="w-full" required>
+                              <TomSelect
+                                v-model="invoice_select"
+                                class="w-full"
+                                required
+                              >
                                 <option value="kosong" disabled>
                                   &gt;-- Pilih Invoice &lt;--
                                 </option>
-                                <option v-for="penjualan in ReturJual.penjualans" :key="penjualan.no_invoice"
-                                  :penjualan="penjualan" :value="penjualan.no_invoice">
+                                <option
+                                  v-for="penjualan in ReturJual.penjualans"
+                                  :key="penjualan.no_invoice"
+                                  :penjualan="penjualan"
+                                  :value="penjualan.no_invoice"
+                                >
                                   {{ penjualan.no_invoice }} -
-                                  {{ moment(penjualan.tanggal_penjualan).format("DD MMM YYYY HH:SS") }}
+                                  {{
+                                    moment(penjualan.tanggal_penjualan).format(
+                                      "DD MMM YYYY HH:SS"
+                                    )
+                                  }}
                                 </option>
                               </TomSelect>
                             </div>
-                            <div v-else class="bg-slate-100 py-2 px-3 border-2 rounded-md">
+                            <div
+                              v-else
+                              class="bg-slate-100 py-2 px-3 border-2 rounded-md"
+                            >
                               <p class="text-black">{{ invoice_select }}</p>
                             </div>
                           </div>
 
                           <div class="sm:col-span-9 col-span-12 mb-5">
-                            <label for="pos-form-1" class="form-label">ID Barang/Item
+                            <label for="pos-form-1" class="form-label"
+                              >ID Barang/Item
                               <p class="sm:hidden form-label">& Qty Jual</p>
                             </label>
                             <div class="flex w-full">
                               <div
                                 class="z-30 rounded-l w-10 flex items-center justify-center bg-gray-100 hover:bg-gray-300 border text-gray-600 dark:bg-dark-1 dark:border-dark-4 -mr-1 cursor-pointer"
                                 @click="
-  isModalScanner = true;
-renderQrScanner();
-                                ">
+                                  isModalScanner = true;
+                                  renderQrScanner();
+                                "
+                              >
                                 <CameraIcon class="w-4 h-4" />
                               </div>
                               <select v-model="item_select" class="w-full">
                                 <option value="kosong" disabled>
                                   --&gt; Pilih Items &lt;--
                                 </option>
-                                <option v-for="varian in ReturJual.varians" :key="varian.id_varian" :varian="varian"
-                                  :value="varian.id_varian">
+                                <option
+                                  v-for="varian in ReturJual.varians"
+                                  :key="varian.id_varian"
+                                  :varian="varian"
+                                  :value="varian.id_varian"
+                                >
                                   {{ varian.id_barang }} -
                                   {{ varian.nama_barang }} |
                                   {{ varian.id_varian }} -
@@ -99,75 +140,152 @@ renderQrScanner();
                             </div>
                           </div>
                           <div class="hidden sm:block col-span-3 mb-5">
-                            <label for="pos-form-1" class="form-label">Qty Jual</label>
-                            <input v-model="stok" id="pos-form-1" type="text" class="form-control flex-1"
-                              placeholder="Masukan Stok Tersisa" readonly />
+                            <label for="pos-form-1" class="form-label"
+                              >Qty Jual</label
+                            >
+                            <input
+                              v-model="stok"
+                              id="pos-form-1"
+                              type="text"
+                              class="form-control flex-1"
+                              placeholder="Masukan Stok Tersisa"
+                              readonly
+                            />
                           </div>
 
                           <div class="hidden sm:block col-span-6 mb-5">
-                            <label for="pos-form-1" class="form-label">Nama Barang</label>
-                            <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
+                            <label for="pos-form-1" class="form-label"
+                              >Nama Barang</label
+                            >
+                            <div
+                              class="bg-slate-100 py-2 px-3 border-2 rounded-md"
+                            >
                               <p class="text-black">{{ nama_barang_select }}</p>
                             </div>
                           </div>
                           <div class="hidden sm:block col-span-6 mb-5">
-                            <label for="pos-form-1" class="form-label">Nama Varian</label>
-                            <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
+                            <label for="pos-form-1" class="form-label"
+                              >Nama Varian</label
+                            >
+                            <div
+                              class="bg-slate-100 py-2 px-3 border-2 rounded-md"
+                            >
                               <p class="text-black">{{ nama_varian_select }}</p>
                             </div>
                           </div>
 
                           <div class="sm:hidden col-span-12 mb-5">
-                            <label for="pos-form-1" class="form-label">Nama Barang & Varian</label>
-                            <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
+                            <label for="pos-form-1" class="form-label"
+                              >Nama Barang & Varian</label
+                            >
+                            <div
+                              class="bg-slate-100 py-2 px-3 border-2 rounded-md"
+                            >
                               <p class="text-black">{{ nama_campur_select }}</p>
                             </div>
                           </div>
-                          <form @submit.prevent="addItem()" id="returForm"
-                            class="grid grid-cols-12 gap-x-2 sm:gap-x-3 col-span-12">
+                          <form
+                            @submit.prevent="addItem()"
+                            id="returForm"
+                            class="grid grid-cols-12 gap-x-2 sm:gap-x-3 col-span-12"
+                          >
                             <div class="col-span-12 sm:col-span-2 mb-5">
-                              <label for="pos-form-1" class="form-label">Qty</label>
-                              <input id="pos-form-1" type="text" class="form-control flex-1" placeholder="Masukan Qty"
-                                required v-model="qty_select" :disabled="item_select == 'kosong'" />
+                              <label for="pos-form-1" class="form-label"
+                                >Qty</label
+                              >
+                              <input
+                                id="pos-form-1"
+                                type="text"
+                                class="form-control flex-1"
+                                placeholder="Masukan Qty"
+                                required
+                                v-model="qty_select"
+                                :disabled="item_select == 'kosong'"
+                              />
                             </div>
                             <div class="col-span-12 sm:col-span-5 mb-5">
-                              <label for="pos-form-1" class="form-label">Keterangan</label>
-                              <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
-                                <textarea class="text-black w-full" name="keterangan" id="keterangan" rows="3"
-                                  v-model="keterangan_select" placeholder="Keterangan Barang" required></textarea>
+                              <label for="pos-form-1" class="form-label"
+                                >Keterangan</label
+                              >
+                              <div
+                                class="bg-slate-100 py-2 px-3 border-2 rounded-md"
+                              >
+                                <textarea
+                                  class="text-black w-full"
+                                  name="keterangan"
+                                  id="keterangan"
+                                  rows="3"
+                                  v-model="keterangan_select"
+                                  placeholder="Keterangan Barang"
+                                  required
+                                ></textarea>
                               </div>
                             </div>
 
                             <div class="col-span-12 sm:col-span-5 mb-5">
-                              <label for="pos-form-1" class="form-label">Gambar Bukti</label>
-                              <div class="bg-slate-100 py-2 px-3 border-2 rounded-md">
+                              <label for="pos-form-1" class="form-label"
+                                >Gambar Bukti</label
+                              >
+                              <div
+                                class="bg-slate-100 py-2 px-3 border-2 rounded-md"
+                              >
                                 <div class="space-y-1 text-center">
-                                  <svg @click="this.$refs.gambarBaru.click()" v-if="url == null || url == ''"
-                                    class="mx-auto h-12 w-12 text-gray-400 cursor-pointer" stroke="currentColor"
-                                    fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                  <svg
+                                    @click="this.$refs.gambarBaru.click()"
+                                    v-if="url == null || url == ''"
+                                    class="mx-auto h-12 w-12 text-gray-400 cursor-pointer"
+                                    stroke="currentColor"
+                                    fill="none"
+                                    viewBox="0 0 48 48"
+                                    aria-hidden="true"
+                                  >
                                     <path
                                       d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                                      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                      stroke-width="2"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                    />
                                   </svg>
 
-                                  <div v-else
+                                  <div
+                                    v-else
                                     class="col-span-5 md:col-span-2 -mb-6 relative items-center cursor-pointer zoom-in"
-                                    style="height: 5rem">
-                                    <img width="100" height="100" class="imgUp rounded-md mx-auto h-14 w-auto"
-                                      alt="Lurik Rachmad" :src="url" decoding="async" loading="lazy" />
-                                    <Tippy content="Remove this image?" @click="url = null"
-                                      class="tooltip w-5 h-5 flex items-center justify-center absolute rounded-full text-white bg-danger right-28 top-0 -mr-2 -mt-2">
+                                    style="height: 5rem"
+                                  >
+                                    <img
+                                      width="100"
+                                      height="100"
+                                      class="imgUp rounded-md mx-auto h-14 w-auto"
+                                      alt="Lurik Rachmad"
+                                      :src="url"
+                                      decoding="async"
+                                      loading="lazy"
+                                    />
+                                    <Tippy
+                                      content="Remove this image?"
+                                      @click="url = null"
+                                      class="tooltip w-5 h-5 flex items-center justify-center absolute rounded-full text-white bg-danger right-28 top-0 -mr-2 -mt-2"
+                                    >
                                       <XIcon class="w-4 h-4" />
                                     </Tippy>
                                   </div>
                                   <div>
                                     <div class="flex text-sm text-gray-600">
-                                      <label for="gambarBaru"
-                                        class="relative mx-auto cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500">
+                                      <label
+                                        for="gambarBaru"
+                                        class="relative mx-auto cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500"
+                                      >
                                         <span>Upload a file</span>
-                                        <input id="gambarBaru" ref="gambarBaru" @change="previewImage"
-                                          name="file-upload" type="file" class="sr-only" accept="image/jpeg, image/png"
-                                          required />
+                                        <input
+                                          id="gambarBaru"
+                                          ref="gambarBaru"
+                                          @change="previewImage"
+                                          name="file-upload"
+                                          type="file"
+                                          class="sr-only"
+                                          accept="image/jpeg, image/png"
+                                          required
+                                        />
                                         <span>or drag and drop</span>
                                       </label>
                                     </div>
@@ -180,8 +298,12 @@ renderQrScanner();
                             </div>
                           </form>
                         </div>
-                        <button type="submit" form="returForm" class="btn btn-primary w-20 mt-3"
-                          :disabled="qty_select == 0">
+                        <button
+                          type="submit"
+                          form="returForm"
+                          class="btn btn-primary w-20 mt-3"
+                          :disabled="qty_select == 0"
+                        >
                           Tambah
                         </button>
                       </div>
@@ -194,7 +316,9 @@ renderQrScanner();
               <!-- BEGIN: Detail ReturJual -->
               <div class="col-span-12 flex-col-reverse">
                 <div class="intro-y box">
-                  <div class="flex items-center px-5 py-2 border-b border-slate-200/60 dark:border-darkmode-400">
+                  <div
+                    class="flex items-center px-5 py-2 border-b border-slate-200/60 dark:border-darkmode-400"
+                  >
                     <h2 class="font-medium text-base mr-auto">
                       Detail ReturJual
                     </h2>
@@ -205,29 +329,45 @@ renderQrScanner();
                         <thead>
                           <tr>
                             <th
-                              class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
-                              #</th>
+                              class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell"
+                            >
+                              #
+                            </th>
                             <th
-                              class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
-                              ID & Nama Varian</th>
+                              class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell"
+                            >
+                              ID & Nama Varian
+                            </th>
                             <th
-                              class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
-                              QTY</th>
+                              class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell"
+                            >
+                              QTY
+                            </th>
                             <th
-                              class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
-                              Keterangan</th>
+                              class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell"
+                            >
+                              Keterangan
+                            </th>
                             <th
-                              class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
-                              Gambar Bukti</th>
+                              class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell"
+                            >
+                              Gambar Bukti
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
-                          <DetailReturJual v-for="detail in ReturJual.returJualDetail" :key="detail.id_barang"
-                            :detail="detail" @openModalRemove="openModalRemove" />
+                          <DetailReturJual
+                            v-for="detail in ReturJual.returJualDetail"
+                            :key="detail.id_barang"
+                            :detail="detail"
+                            @openModalRemove="openModalRemove"
+                          />
                         </tbody>
                       </table>
                     </div>
-                    <ChevronDownIcon class="motion-safe:animate-bounce col-span-12 mt-1 mb-[-10px] block mx-auto" />
+                    <ChevronDownIcon
+                      class="motion-safe:animate-bounce col-span-12 mt-1 mb-[-10px] block mx-auto"
+                    />
                   </div>
                 </div>
               </div>
@@ -235,21 +375,33 @@ renderQrScanner();
             </div>
           </div>
         </ModalBody>
-        <ModalFooter class="text-right bottom-0 relative z-50 rounded-md sm:border-t-2 border-t-4 btm sm:btm-">
-          <button type="button" @click="
-  modal_utama = false;
-resetModal();
-          " class="btn btn-outline-secondary w-32 mr-1">
+        <ModalFooter
+          class="text-right bottom-0 relative z-50 rounded-md sm:border-t-2 border-t-4 btm sm:btm-"
+        >
+          <button
+            type="button"
+            @click="
+              modal_utama = false;
+              resetModal();
+            "
+            class="btn btn-outline-secondary w-32 mr-1"
+          >
             Cancel
           </button>
-          <button type="button" @click="simpanReturJual()" class="object-left btn btn-primary w-32" :disabled="
-            invoice_select == 'kosong'
-          ">
+          <button
+            type="button"
+            @click="simpanReturJual()"
+            class="object-left btn btn-primary w-32"
+            :disabled="invoice_select == 'kosong'"
+          >
             Simpan
           </button>
         </ModalFooter>
       </Modal>
-      <a href="" class="ml-auto sm:ml-0 btn px-2 h-10 box flex items-center text-primary">
+      <a
+        href=""
+        class="ml-auto sm:ml-0 btn px-2 h-10 box flex items-center text-primary"
+      >
         <RefreshCcwIcon class="w-4 h-4 sm:mr-3 sm:m-0 m-2" />
         <p class="sm:block hidden">Reload Data</p>
       </a>
@@ -260,18 +412,28 @@ resetModal();
     <div class="flex flex-col sm:flex-row sm:items-end xl:items-start">
       <form id="tabulator-html-filter-form" class="xl:flex sm:mr-auto">
         <div class="sm:flex items-center sm:mr-4">
-          <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2">Field</label>
-          <select id="tabulator-html-filter-field" v-model="filter.field"
-            class="form-select w-full 2xl:w-full mt-2 sm:mt-0 sm:w-auto">
+          <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2"
+            >Field</label
+          >
+          <select
+            id="tabulator-html-filter-field"
+            v-model="filter.field"
+            class="form-select w-full 2xl:w-full mt-2 sm:mt-0 sm:w-auto"
+          >
             <option value="id_retur">Id Retur</option>
             <option value="tanggal_pengembalian">Tanggal ReturJual</option>
             <option value="total_barang">Total Harga Jual</option>
           </select>
         </div>
         <div class="sm:flex items-center sm:mr-4 mt-2 xl:mt-0">
-          <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2">Type</label>
-          <select id="tabulator-html-filter-type" v-model="filter.type"
-            class="form-select w-full mt-2 sm:mt-0 sm:w-auto">
+          <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2"
+            >Type</label
+          >
+          <select
+            id="tabulator-html-filter-type"
+            v-model="filter.type"
+            class="form-select w-full mt-2 sm:mt-0 sm:w-auto"
+          >
             <option value="like" selected>like</option>
             <option value="=">=</option>
             <option value="<">&lt;</option>
@@ -282,19 +444,34 @@ resetModal();
           </select>
         </div>
         <div class="sm:flex items-center sm:mr-4 mt-2 xl:mt-0">
-          <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2">Value</label>
-          <input id="tabulator-html-filter-value" v-model="filter.value" type="text"
-            class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0" placeholder="Search..." />
+          <label class="w-12 flex-none xl:w-auto xl:flex-initial mr-2"
+            >Value</label
+          >
+          <input
+            id="tabulator-html-filter-value"
+            v-model="filter.value"
+            type="text"
+            class="form-control sm:w-40 2xl:w-full mt-2 sm:mt-0"
+            placeholder="Search..."
+          />
         </div>
         <div class="mt-2 xl:mt-0">
-          <button id="tabulator-html-filter-reset" type="button"
-            class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1" @click="onResetFilter">
+          <button
+            id="tabulator-html-filter-reset"
+            type="button"
+            class="btn btn-secondary w-full sm:w-16 mt-2 sm:mt-0 sm:ml-1"
+            @click="onResetFilter"
+          >
             Reset
           </button>
         </div>
       </form>
       <div class="flex mt-5 sm:mt-0">
-        <button id="tabulator-print" class="btn btn-outline-secondary w-1/2 sm:w-auto mr-2" @click="onPrint">
+        <button
+          id="tabulator-print"
+          class="btn btn-outline-secondary w-1/2 sm:w-auto mr-2"
+          @click="onPrint"
+        >
           <PrinterIcon class="w-4 h-4 mr-2" /> Print
         </button>
         <Dropdown class="w-1/2 sm:w-auto">
@@ -315,9 +492,14 @@ resetModal();
         </Dropdown>
       </div>
     </div>
-    <div v-show="isLoading" wire:loading
-      class="fixed intro-y top-0 left-0 right-0 bottom-0 w-full h-[50vw] z-50 overflow-hidden bg-gray-700 opacity-75 flex flex-col items-center justify-center">
-      <Loader2Icon class="motion-safe:animate-spin stroke-[10px] text-white h-12 w-12 mb-4" />
+    <div
+      v-show="isLoading"
+      wire:loading
+      class="fixed intro-y top-0 left-0 right-0 bottom-0 w-full h-[50vw] z-50 overflow-hidden bg-gray-700 opacity-75 flex flex-col items-center justify-center"
+    >
+      <Loader2Icon
+        class="motion-safe:animate-spin stroke-[10px] text-white h-12 w-12 mb-4"
+      />
       <h2 class="text-center text-white text-xl font-semibold">Loading...</h2>
       <p class="w-1/3 text-center text-white">
         Ini mungkin memakan waktu beberapa detik, tolong jangan tutup halaman
@@ -325,12 +507,19 @@ resetModal();
       </p>
     </div>
     <div v-show="!isLoading" class="overflow-x-auto scrollbar-hidden">
-      <div id="tabulator" ref="tableJualRef" class="mt-5 intro-y table-report table-report--tabulator"></div>
+      <div
+        id="tabulator"
+        ref="tableJualRef"
+        class="mt-5 intro-y table-report table-report--tabulator"
+      ></div>
     </div>
   </div>
   <!-- END: HTML Table Data -->
   <!-- BEGIN: Delete Confirmation Modal -->
-  <Modal :show="deleteConfirmationModal" @hidden="deleteConfirmationModal = false">
+  <Modal
+    :show="deleteConfirmationModal"
+    @hidden="deleteConfirmationModal = false"
+  >
     <ModalBody class="p-0">
       <div class="p-5 text-center">
         <XCircleIcon class="w-16 h-16 text-danger mx-auto mt-3" />
@@ -345,14 +534,22 @@ resetModal();
         </div>
       </div>
       <div class="px-5 pb-8 text-center">
-        <button type="button" @click="deleteConfirmationModal = false" class="btn btn-outline-secondary w-24 mr-1">
+        <button
+          type="button"
+          @click="deleteConfirmationModal = false"
+          class="btn btn-outline-secondary w-24 mr-1"
+        >
           Cancel
         </button>
-        <button type="button" class="btn btn-danger w-24" @click="
-          modal_utama
-            ? removeItem(itemDel.id_detail_retur_jual, itemDel.id_retur)
-            : deleteReturJual(id_retur)
-        ">
+        <button
+          type="button"
+          class="btn btn-danger w-24"
+          @click="
+            modal_utama
+              ? removeItem(itemDel.id_detail_retur_jual, itemDel.id_retur)
+              : deleteReturJual(id_retur)
+          "
+        >
           Delete
         </button>
       </div>
@@ -360,7 +557,12 @@ resetModal();
   </Modal>
   <!-- END: Delete Confirmation Modal -->
 
-  <Modal size="modal-xl" backdrop="static" :show="isModalScanner" @hidden="isModalScanner = false">
+  <Modal
+    size="modal-xl"
+    backdrop="static"
+    :show="isModalScanner"
+    @hidden="isModalScanner = false"
+  >
     <ModalHeader>
       <div class="text-center mt-2">
         <h2 class="text-lg font-bold">QR Code Scanner</h2>
@@ -370,13 +572,22 @@ resetModal();
       <div class="text-center">
         <div class="mb-5">
           <div class="intro-y justify-center flex mt-5">
-            <qrcode v-bind:qrbox="250" v-bind:fps="10" ref="qrScanner" @resultScan="resultScan" />
+            <qrcode
+              v-bind:qrbox="250"
+              v-bind:fps="10"
+              ref="qrScanner"
+              @resultScan="resultScan"
+            />
           </div>
         </div>
-        <button type="button" @click="
-  isModalScanner = false;
-closeQrScanner();
-        " class="btn btn-danger w-24">
+        <button
+          type="button"
+          @click="
+            isModalScanner = false;
+            closeQrScanner();
+          "
+          class="btn btn-danger w-24"
+        >
           Close
         </button>
       </div>
@@ -384,16 +595,25 @@ closeQrScanner();
   </Modal>
 
   <!-- BEGIN: Basic Non Sticky Notification Content -->
-  <Notification refKey="basicNonStickyNotification" :options="{
-    duration: 5000,
-  }" class="flex flex-col sm:flex-row hover:animate-none md:animate-bounce animate-pulse">
+  <Notification
+    refKey="basicNonStickyNotification"
+    :options="{
+      duration: 5000,
+    }"
+    class="flex flex-col sm:flex-row hover:animate-none md:animate-bounce animate-pulse"
+  >
     <div class="font-medium">
       Klik 2 kali pada salah satu baris tabel untuk melihat detail transaksi!
     </div>
   </Notification>
   <!-- END: Basic Non Sticky Notification Content -->
 
-  <Modal backdrop="static" size="modal-xl" :show="isInvoice" @hidden="isInvoice = false">
+  <Modal
+    backdrop="static"
+    size="modal-xl"
+    :show="isInvoice"
+    @hidden="isInvoice = false"
+  >
     <ModalHeader>
       <h2 class="font-small text-base mr-auto">
         <button class="btn btn-primary shadow-md mr-2" @click="onPrintInvoice">
@@ -402,7 +622,10 @@ closeQrScanner();
         <b>{{ id_retur }}</b>
       </h2>
 
-      <div @click="resetModal()" class="sm:w-auto flex mr-0 ml-4 items-right cursor-pointer">
+      <div
+        @click="resetModal()"
+        class="sm:w-auto flex mr-0 ml-4 items-right cursor-pointer"
+      >
         <div class="ml-2 m-auto text-danger">
           <XIcon class="w-8 h-8 mx-auto" />
         </div>
@@ -410,7 +633,11 @@ closeQrScanner();
     </ModalHeader>
     <ModalBody class="bg-white">
       <div class="bg-white" id="modalPrintInvoice">
-        <PrintInvoice :prints="ReturJual.prints" :id_retur="id_retur" :waktu="waktu" />
+        <PrintInvoice
+          :prints="ReturJual.prints"
+          :id_retur="id_retur"
+          :waktu="waktu"
+        />
       </div>
     </ModalBody>
   </Modal>
@@ -461,12 +688,9 @@ const nama_varian_select = ref("-");
 const nama_campur_select = ref("-");
 const qty_select = ref(0);
 const keterangan_select = ref("");
-const total_harga_global = ref(0);
-const total_bayar_global = ref(0);
-const kembalian = ref(0);
 const url = ref("");
 const file = ref("");
-const gambar_lama_preview = ref("")
+const gambar_lama_preview = ref("");
 
 const itemDel = ref("");
 const auth = ref();
@@ -478,7 +702,9 @@ const previewImage = (e) => {
 const getImgUrl = (gambar_varian) => {
   if (gambar_varian) {
     var images = gambar_varian.data.map((b) => String.fromCharCode(b)).join("");
-    gambar_lama_preview.value = new URL(`${publicPath}gambar_bukti/retur_jual/${images}`).href;
+    gambar_lama_preview.value = new URL(
+      `${publicPath}gambar_bukti/retur_jual/${images}`
+    ).href;
     if (isEdit.value) {
       url.value = gambar_lama_preview.value;
     }
@@ -512,15 +738,15 @@ const addItem = () => {
     item_select.value,
     qty_select.value,
     keterangan_select.value,
-    file.value,
+    file.value
   )
-    .then((data) => {
+    .then(() => {
       (nama_barang_select.value = "-"),
         (nama_varian_select.value = "-"),
         (nama_campur_select.value = "-"),
-        (qty_select.value = 0)
+        (qty_select.value = 0);
       file.value = "";
-      url.value = null
+      url.value = null;
       keterangan_select.value = "";
       stok.value = +stok.value - +qty_select.value;
     })
@@ -552,11 +778,8 @@ const openModalRemove = (item) => {
 
 const removeItem = (id_detail_retur_jual, id_retur) => {
   ReturJual.removeItem(id_detail_retur_jual, id_retur)
-    .then((data) => {
-      // stok.value = stok.value + parseInt(itemDel.value.qty);
-      // nama_campur_select.value = `${nama_barang_select.value} - ${nama_varian_select.value} | ${stok.value}`;
+    .then(() => {
       deleteConfirmationModal.value = false;
-      // total_harga_global.value = parseFloat(data);
     })
     .catch((e) => {
       alert("removeItem" + e);
@@ -565,7 +788,8 @@ const removeItem = (id_detail_retur_jual, id_retur) => {
 
 const simpanReturJual = () => {
   if (
-    ReturJual.rawReturJualDetail.length !== 0 && invoice_select !== 'kosong'
+    ReturJual.rawReturJualDetail.length !== 0 &&
+    invoice_select.value !== "kosong"
   ) {
     ReturJual.addReturJual(
       id_retur.value,
@@ -615,7 +839,7 @@ const resetModal = () => {
   isInvoice.value = false;
   id_retur.value = "-";
   waktu.value = "";
-  invoice_select.value = "kosong"
+  invoice_select.value = "kosong";
   item_select.value = "kosong";
   stok.value = 0;
   nama_barang_select.value = "-";
@@ -623,9 +847,9 @@ const resetModal = () => {
   nama_campur_select.value = "-";
   qty_select.value = 0;
   keterangan_select.value = "";
-  total_harga_global.value = 0;
-  total_bayar_global.value = 0;
-  kembalian.value = 0;
+  // total_harga_global.value = 0;
+  // total_bayar_global.value = 0;
+  // kembalian.value = 0;
   itemDel.value = "";
   url.value = "";
   file.value = "";
@@ -637,18 +861,18 @@ watch(invoice_select, async (e) => {
   try {
     if (e !== "kosong") {
       ReturJual.readVarians(e)
-        .then((data) => {
+        .then(() => {
           item_select.value = "kosong";
           (nama_barang_select.value = "-"),
             (nama_varian_select.value = "-"),
             (nama_campur_select.value = "-"),
             (stok.value = 0),
-            (qty_select.value = 0)
+            (qty_select.value = 0);
           file.value = "";
           keterangan_select.value = "";
         })
         .catch((error) => {
-          throw new Error(error)
+          throw new Error(error);
         });
     }
   } catch (error) {
@@ -665,10 +889,10 @@ watch(item_select, async (e) => {
             (nama_varian_select.value = data.nama_varian),
             (nama_campur_select.value = `${data.nama_barang} - ${data.nama_varian} | ${data.stok_varian}`),
             (stok.value = data.qty),
-            (qty_select.value = 1)
+            (qty_select.value = 1);
         })
         .catch((error) => {
-          throw new Error(error)
+          throw new Error(error);
         });
     }
   } catch (error) {
@@ -677,7 +901,6 @@ watch(item_select, async (e) => {
 });
 
 watch(qty_select, async (newValue, oldValue) => {
-  const qty = newValue;
   const stok_now = stok.value;
   try {
     if (newValue > stok_now) {
@@ -686,9 +909,7 @@ watch(qty_select, async (newValue, oldValue) => {
     } else if (newValue === "") {
       alert("Minimal Qty harus 1");
       qty_select.value = 1;
-    } else {
-
-    }
+    } 
   } catch (error) {
     alert("Gagal wtch qty" + error);
   }
@@ -779,8 +1000,9 @@ const initTabulator = () => {
         download: false,
         formatter(cell) {
           return `<div>
-                <div class="font-medium whitespace-nowrap">${cell.getData().id_retur
-            }</div>
+                <div class="font-medium whitespace-nowrap">${
+                  cell.getData().id_retur
+                }</div>
               </div>`;
         },
       },
@@ -796,8 +1018,8 @@ const initTabulator = () => {
         formatter(cell) {
           return `<div>
                 <div class="font-medium whitespace-nowrap">${moment(
-            cell.getData().tanggal_pengembalian
-          ).format("DD MMM YYYY HH:SS")}</div>
+                  cell.getData().tanggal_pengembalian
+                ).format("DD MMM YYYY HH:SS")}</div>
               </div>`;
         },
       },
@@ -812,8 +1034,9 @@ const initTabulator = () => {
         download: false,
         formatter(cell) {
           return `<div>
-                <div class="font-medium whitespace-nowrap">${cell.getData().no_invoice
-            }</div>
+                <div class="font-medium whitespace-nowrap">${
+                  cell.getData().no_invoice
+                }</div>
               </div>`;
         },
       },
@@ -828,8 +1051,9 @@ const initTabulator = () => {
         download: false,
         formatter(cell) {
           return `<div>
-                <div class="font-medium whitespace-nowrap">${cell.getData().total_barang
-            }</div>
+                <div class="font-medium whitespace-nowrap">${
+                  cell.getData().total_barang
+                }</div>
               </div>`;
         },
       },
@@ -866,11 +1090,11 @@ const initTabulator = () => {
                 .then(() => {
                   id_retur.value = retur.id_retur;
                   waktu.value = retur.tanggal_pengembalian;
-                  invoice_select.value = retur.no_invoice
+                  invoice_select.value = retur.no_invoice;
                   isEdit.value = true;
                   modal_utama.value = true;
-                  console.log("detail value", ReturJual.returJualDetail)
-                }).catch((e) => {
+                })
+                .catch((e) => {
                   alert("gagal open invoice" + e);
                 });
             } else {
@@ -900,8 +1124,8 @@ const initTabulator = () => {
         formatter(cell) {
           return `<div>
                 <div class="font-medium whitespace-nowrap">${moment(
-            cell.getData().tanggal_pengembalian
-          ).format("DD MMM YYYY HH:SS")}</div>
+                  cell.getData().tanggal_pengembalian
+                ).format("DD MMM YYYY HH:SS")}</div>
               </div>`;
         },
       },
@@ -920,8 +1144,9 @@ const initTabulator = () => {
         download: true,
         formatter(cell) {
           return `<div>
-                <div class="font-medium whitespace-nowrap">${parseFloat(cell.getData().total_barang)
-            }</div>
+                <div class="font-medium whitespace-nowrap">${parseFloat(
+                  cell.getData().total_barang
+                )}</div>
               </div>`;
         },
       },
@@ -959,9 +1184,9 @@ const initTabulator = () => {
             download: false,
             formatter(cell) {
               return `<div>
-                <div class="font-medium whitespace-nowrap">${cell.getData().nama_varian
-                } - ${cell.getData().nama_varian
-                }</div>
+                <div class="font-medium whitespace-nowrap">${
+                  cell.getData().nama_varian
+                } - ${cell.getData().nama_varian}</div>
               </div>`;
             },
           },
@@ -976,7 +1201,8 @@ const initTabulator = () => {
             download: false,
             formatter(cell) {
               return `<div>
-                <div class="font-medium whitespace-nowrap">${cell.getData().qty
+                <div class="font-medium whitespace-nowrap">${
+                  cell.getData().qty
                 }</div>
               </div>`;
             },
@@ -1063,7 +1289,7 @@ const initTabulator = () => {
           tabulator.value.replaceData(data);
         })
         .catch((error) => {
-          throw new Error(error)
+          throw new Error(error);
         });
       $(".subTable" + id + "").toggle();
     } catch (error) {

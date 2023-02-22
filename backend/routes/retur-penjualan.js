@@ -112,12 +112,12 @@ module.exports = function (db) {
 	});
 
 	router.post('/upreturjual', async function (req, res, next) {
-		const { id_retur,no_invoice } = req.body
+		const { id_retur, no_invoice } = req.body
 
 		try {
-			updateretur = await db.query('UPDATE retur_penjualan SET no_invoice = $1 WHERE id_retur = $2 returning *', [no_invoice, id_retur]) 
+			updateretur = await db.query('UPDATE retur_penjualan SET no_invoice = $1 WHERE id_retur = $2 returning *', [no_invoice, id_retur])
 			const { rows } = await db.query('SELECT rj.*, o.nama_outlet FROM retur_penjualan rj LEFT JOIN outlet o ON rj.id_outlet = o.id_outlet WHERE id_retur = $1', [id_retur])
-			res.json(new Response( rows ));
+			res.json(new Response(rows));
 		} catch (e) {
 			console.error(e);
 			res.status(500).json(new Response(e, false))
@@ -135,8 +135,9 @@ module.exports = function (db) {
 
 	router.delete('/delete/:id_retur', isLoggedIn, async function (req, res, next) {
 		try {
-			const { rows } = await db.query('DELETE FROM retur_penjualan WHERE id_retur = $1', [req.params.id_retur])
 			delPen = await db.query('DELETE FROM retur_penjualan_detail WHERE id_retur = $1', [req.params.id_retur])
+			const { rows } = await db.query('DELETE FROM retur_penjualan WHERE id_retur = $1', [req.params.id_retur])
+
 			//res.redirect('/retur_penjualan')
 			res.json(new Response({ message: "delete retur success" }, true))
 		} catch (e) {
@@ -146,7 +147,7 @@ module.exports = function (db) {
 	})
 	router.put('/upditem/:id_detail_retur_jual', isLoggedIn, async function (req, res, next) {
 		try {
-			const {id_varian, qty, keterangan} = req.body
+			const { id_varian, qty, keterangan } = req.body
 			const id = parseInt(req.params.id_detail_retur_jual);
 			const { rows } = await db.query('UPDATE retur_penjualan_detail SET id_varian = $1, qty = $2, keterangan = $3 WHERE id_detail_retur_jual = $4', [id_varian, parseInt(qty), keterangan, id])
 			res.json(new Response({ message: "update detail success" }, true))

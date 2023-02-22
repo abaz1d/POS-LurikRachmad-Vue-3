@@ -953,7 +953,7 @@ watch(item_select, async (e) => {
             (total_harga_select.value = data.harga_beli_varian);
         })
         .catch((error) => {
-             throw new Error(error)
+          throw new Error(error);
         });
     }
   } catch (error) {
@@ -1443,7 +1443,7 @@ const initTabulator = () => {
           tabulator.value.replaceData(data);
         })
         .catch((error) => {
-             throw new Error(error)
+          throw new Error(error);
         });
       $(".subTable" + id + "").toggle();
     } catch (error) {

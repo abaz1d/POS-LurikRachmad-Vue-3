@@ -17,7 +17,7 @@ export const useSatuanStore = defineStore({
           this.rawItems = data.data;
         }
       } catch (error) {
-       throw new Error(error)
+        throw new Error(error);
       }
     },
     async addItem(nama_satuan, keterangan_satuan) {
@@ -37,7 +37,7 @@ export const useSatuanStore = defineStore({
           });
         }
       } catch (error) {
-       throw new Error(error)
+        throw new Error(error);
       }
     },
     async removeItem(id_satuan) {

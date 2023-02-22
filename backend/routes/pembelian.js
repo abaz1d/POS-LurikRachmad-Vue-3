@@ -83,8 +83,8 @@ module.exports = function (db) {
 
     router.get('/delete/:no_invoice', isLoggedIn, async function (req, res, next) {
         try {
-            const { rows } = await db.query('DELETE FROM pembelian WHERE no_invoice = $1', [req.params.no_invoice])
             delPen = await db.query('DELETE FROM pembelian_detail WHERE no_invoice = $1', [req.params.no_invoice])
+            const { rows } = await db.query('DELETE FROM pembelian WHERE no_invoice = $1', [req.params.no_invoice])
             res.json(new Response({ message: "delete barang success" }, true))
         } catch (e) {
             console.log(e)

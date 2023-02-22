@@ -741,7 +741,6 @@ const initTabulator = () => {
     printAsHtml: true,
     addRowPos: true,
     printStyled: true,
-    height: "60vh",
     pagination: "remote",
     paginationSize: 10,
     paginationSizeSelector: [10, 20, 30, 40, 50, 100],
@@ -1155,7 +1154,7 @@ const initTabulator = () => {
           tabulator.value.replaceData(data);
         })
         .catch((error) => {
-             throw new Error(error)
+          throw new Error(error);
         });
       $(".subTable" + id + "").toggle();
     } catch (error) {

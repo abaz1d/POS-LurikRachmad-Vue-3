@@ -17,7 +17,7 @@ export const useSupplierStore = defineStore({
           this.rawItems = data.data;
         }
       } catch (error) {
-       throw new Error(error)
+        throw new Error(error);
       }
     },
     async addItem(
@@ -50,7 +50,7 @@ export const useSupplierStore = defineStore({
           });
         }
       } catch (error) {
-       throw new Error(error)
+        throw new Error(error);
       }
     },
     async removeItem(id_supplier) {

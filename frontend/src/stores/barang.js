@@ -25,7 +25,7 @@ export const useBarangStore = defineStore({
           this.rawLaporans = data.data.rows;
         }
       } catch (error) {
-       throw new Error(error)
+        throw new Error(error);
       }
     },
     async readItem() {
@@ -36,7 +36,7 @@ export const useBarangStore = defineStore({
           this.rawVarians = data.data.varian;
         }
       } catch (error) {
-       throw new Error(error)
+        throw new Error(error);
       }
     },
 
@@ -57,7 +57,7 @@ export const useBarangStore = defineStore({
           });
         }
       } catch (error) {
-       throw new Error(error)
+        throw new Error(error);
       }
     },
 
@@ -71,7 +71,7 @@ export const useBarangStore = defineStore({
           return data.success;
         }
       } catch (error) {
-       throw new Error(error)
+        throw new Error(error);
       }
     },
     async updateItem(barang) {
@@ -91,7 +91,7 @@ export const useBarangStore = defineStore({
           return data.success;
         }
       } catch (error) {
-       throw new Error(error)
+        throw new Error(error);
       }
     },
     async readVarian(id_barang) {
@@ -112,7 +112,7 @@ export const useBarangStore = defineStore({
           return this.rawItems;
         }
       } catch (error) {
-       throw new Error(error)
+        throw new Error(error);
       }
     },
 
@@ -126,7 +126,7 @@ export const useBarangStore = defineStore({
           console.log("error", data.status);
         }
       } catch (error) {
-       throw new Error(error)
+        throw new Error(error);
       }
     },
 
@@ -210,7 +210,7 @@ export const useBarangStore = defineStore({
           return data.data;
         }
       } catch (error) {
-       throw new Error(error)
+        throw new Error(error);
       }
     },
 
@@ -300,7 +300,7 @@ export const useBarangStore = defineStore({
           console.log("error", data.status);
         }
       } catch (error) {
-       throw new Error(error)
+        throw new Error(error);
       }
     },
 
@@ -337,7 +337,7 @@ export const useBarangStore = defineStore({
           });
         }
       } catch (error) {
-       throw new Error(error)
+        throw new Error(error);
       }
     },
 
@@ -365,7 +365,7 @@ export const useBarangStore = defineStore({
           return this.rawItems;
         }
       } catch (error) {
-       throw new Error(error)
+        throw new Error(error);
       }
     },
 
@@ -381,7 +381,7 @@ export const useBarangStore = defineStore({
           return data.data;
         }
       } catch (error) {
-       throw new Error(error)
+        throw new Error(error);
       }
     },
 
@@ -426,7 +426,7 @@ export const useBarangStore = defineStore({
           return data.success;
         }
       } catch (error) {
-       throw new Error(error)
+        throw new Error(error);
       }
     },
   },

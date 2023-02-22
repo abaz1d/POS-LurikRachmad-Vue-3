@@ -36,8 +36,8 @@ export const useBarangKeluarStore = defineStore({
           this.rawOutlets = data.data.outlet;
           this.rawDetails = data.data.details;
         }
-       } catch (error) {
-       throw new Error(error)
+      } catch (error) {
+        throw new Error(error);
       }
     },
     async readDetail(no_invoice) {
@@ -61,7 +61,7 @@ export const useBarangKeluarStore = defineStore({
           return this.rawItems;
         }
       } catch (error) {
-       throw new Error(error)
+        throw new Error(error);
       }
     },
     async addMutasi(no_invoice, outlet_penerima, tanggal, ekspedisi, no_resi) {
@@ -83,7 +83,7 @@ export const useBarangKeluarStore = defineStore({
           return this.rawItems;
         }
       } catch (error) {
-       throw new Error(error)
+        throw new Error(error);
       }
     },
     async startMutation() {
@@ -97,7 +97,7 @@ export const useBarangKeluarStore = defineStore({
           return data.data.rows;
         }
       } catch (error) {
-       throw new Error(error)
+        throw new Error(error);
       }
     },
     async readDetailItem(id_varian) {
@@ -112,7 +112,7 @@ export const useBarangKeluarStore = defineStore({
           return data.data.rows;
         }
       } catch (error) {
-       throw new Error(error)
+        throw new Error(error);
       }
     },
     async removeMutasi(no_invoice) {
@@ -127,7 +127,7 @@ export const useBarangKeluarStore = defineStore({
           // alert(`Sukses Hapus Data ${id_barang}`)
         }
       } catch (error) {
-       throw new Error(error)
+        throw new Error(error);
       }
     },
     //----------------------------------------------------------------  Detail
@@ -141,7 +141,7 @@ export const useBarangKeluarStore = defineStore({
           return data.data.rows;
         }
       } catch (error) {
-       throw new Error(error)
+        throw new Error(error);
       }
     },
     async addDetailMutasi(noInvoice, id_varian, qty) {
@@ -157,7 +157,7 @@ export const useBarangKeluarStore = defineStore({
           return data.data;
         }
       } catch (error) {
-       throw new Error(error)
+        throw new Error(error);
       }
     },
     async updateDetail(id_detail_barang_mutasi, qty) {
@@ -170,7 +170,7 @@ export const useBarangKeluarStore = defineStore({
           return data.success;
         }
       } catch (error) {
-       throw new Error(error)
+        throw new Error(error);
       }
     },
     async removeDetail(id_detail_barang_mutasi) {
@@ -185,7 +185,7 @@ export const useBarangKeluarStore = defineStore({
           return data.success;
         }
       } catch (error) {
-       throw new Error(error)
+        throw new Error(error);
       }
     },
   },

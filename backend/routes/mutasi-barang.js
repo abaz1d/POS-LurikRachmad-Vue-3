@@ -139,8 +139,8 @@ module.exports = function (db) {
 
 	router.delete('/delete/:no_invoice', isLoggedIn, async function (req, res, next) {
 		try {
-			const { rows } = await db.query('DELETE FROM mutasi_barang WHERE no_invoice = $1', [req.params.no_invoice])
 			delPen = await db.query('DELETE FROM barang_mutasi_detail WHERE no_invoice = $1', [req.params.no_invoice])
+			const { rows } = await db.query('DELETE FROM mutasi_barang WHERE no_invoice = $1', [req.params.no_invoice])
 			//res.redirect('/mutasi_barang')
 			res.json(new Response({ message: "delete mutasi success" }, true))
 		} catch (e) {

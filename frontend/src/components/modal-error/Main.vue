@@ -22,7 +22,9 @@
       <div
         class="p-5 text-center border-t border-slate-200/60 dark:border-darkmode-400"
       >
-        <a  href="https://api.whatsapp.com/send/?phone=%2B6281548993484&text=Database+aplikasi+POS+mengalami+masalah+&type=phone_number&app_absent=0" class="text-primary"
+        <a
+          href="https://api.whatsapp.com/send/?phone=%2B6281548993484&text=Database+aplikasi+POS+mengalami+masalah+&type=phone_number&app_absent=0"
+          class="text-primary"
           >&gt; Hubungi
           <b class="font-philosopher text-base text-[#CDA562]">Lurik Rachmad</b>
           &lt;</a

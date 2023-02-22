@@ -30,7 +30,7 @@ export const usePembelianStore = defineStore({
           this.rawLaporans = data.data;
         }
       } catch (error) {
-        throw new Error(error)
+        throw new Error(error);
       }
     },
     async readItem() {
@@ -44,10 +44,7 @@ export const usePembelianStore = defineStore({
           return this.rawPembelians;
         }
       } catch (error) {
-        throw new Error(error)
-        this.rawVarians = { error };
-        this.rawPembelians = { error };
-        this.rawDetails = { error };
+        throw new Error(error);
       }
     },
     async addPembelian(
@@ -88,7 +85,7 @@ export const usePembelianStore = defineStore({
           });
         }
       } catch (error) {
-       throw new Error(error)
+        throw new Error(error);
       }
     },
 
@@ -118,7 +115,7 @@ export const usePembelianStore = defineStore({
           return data.data;
         }
       } catch (error) {
-       throw new Error(error)
+        throw new Error(error);
       }
     },
     async readDetailPembelian(no_invoice) {
@@ -127,7 +124,7 @@ export const usePembelianStore = defineStore({
         this.rawPembelianDetail = data.data;
         return data.data;
       } catch (error) {
-        throw new Error(error)
+        throw new Error(error);
       }
     },
     async updateDetail(id_detail_beli, no_invoice, qty) {
@@ -147,7 +144,7 @@ export const usePembelianStore = defineStore({
           return data.data.rows[0];
         }
       } catch (error) {
-        throw new Error(error)
+        throw new Error(error);
       }
     },
     async removeItem(id_detail_beli, noInvoice) {
@@ -167,7 +164,7 @@ export const usePembelianStore = defineStore({
           }
         }
       } catch (error) {
-        throw new Error(error)
+        throw new Error(error);
       }
     },
     updateItem(pembelian) {
@@ -206,7 +203,7 @@ export const usePembelianStore = defineStore({
           return this.rawPembelians;
         }
       } catch (error) {
-        throw new Error(error)
+        throw new Error(error);
       }
     },
 
@@ -217,7 +214,7 @@ export const usePembelianStore = defineStore({
           return data.data;
         }
       } catch (error) {
-        throw new Error(error)
+        throw new Error(error);
       }
     },
 
@@ -228,7 +225,7 @@ export const usePembelianStore = defineStore({
           return data.data;
         }
       } catch (error) {
-        throw new Error(error)
+        throw new Error(error);
       }
     },
   },

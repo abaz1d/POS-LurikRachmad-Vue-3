@@ -37,7 +37,7 @@ export const usePenjualanStore = defineStore({
           this.rawLaporans = data.data;
         }
       } catch (error) {
-       throw new Error(error)
+        throw new Error(error);
       }
     },
     async readItem() {
@@ -57,7 +57,7 @@ export const usePenjualanStore = defineStore({
           return this.rawPenjualans;
         }
       } catch (error) {
-        throw new Error(error)
+        throw new Error(error);
       }
     },
     async addPenjualan(
@@ -97,7 +97,7 @@ export const usePenjualanStore = defineStore({
           return this.rawPenjualans;
         }
       } catch (error) {
-        throw new Error(error)
+        throw new Error(error);
       }
     },
 
@@ -127,7 +127,7 @@ export const usePenjualanStore = defineStore({
           return data.data[0];
         }
       } catch (error) {
-        throw new Error(error)
+        throw new Error(error);
       }
     },
     async readDetailPenjualan(no_invoice) {
@@ -136,7 +136,7 @@ export const usePenjualanStore = defineStore({
         this.rawPenjualanDetail = data.data;
         return data.data;
       } catch (error) {
-       throw new Error(error)
+        throw new Error(error);
       }
     },
     async updateDetail(id_detail_jual, no_invoice, qty) {
@@ -156,7 +156,7 @@ export const usePenjualanStore = defineStore({
           return data.data.rows[0];
         }
       } catch (error) {
-       throw new Error(error)
+        throw new Error(error);
       }
     },
     async removeItem(id_detail_jual, noInvoice) {
@@ -176,7 +176,7 @@ export const usePenjualanStore = defineStore({
           }
         }
       } catch (error) {
-       throw new Error(error)
+        throw new Error(error);
       }
     },
     async readDetail(no_invoice) {
@@ -198,7 +198,7 @@ export const usePenjualanStore = defineStore({
           return this.rawPenjualans;
         }
       } catch (error) {
-       throw new Error(error)
+        throw new Error(error);
       }
     },
 
@@ -212,7 +212,7 @@ export const usePenjualanStore = defineStore({
         );
         return data.data[0];
       } catch (error) {
-       throw new Error(error)
+        throw new Error(error);
       }
     },
 
@@ -224,7 +224,7 @@ export const usePenjualanStore = defineStore({
         );
         return data.data[0];
       } catch (error) {
-       throw new Error(error)
+        throw new Error(error);
       }
     },
   },

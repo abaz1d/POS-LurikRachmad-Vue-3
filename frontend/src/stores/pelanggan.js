@@ -17,7 +17,7 @@ export const usePelangganStore = defineStore({
           this.rawItems = data.data;
         }
       } catch (error) {
-       throw new Error(error)
+        throw new Error(error);
       }
     },
     async addItem(nama_pelanggan, alamat_pelanggan, kontak_pelanggan) {
@@ -43,7 +43,7 @@ export const usePelangganStore = defineStore({
           });
         }
       } catch (error) {
-       throw new Error(error)
+        throw new Error(error);
       }
     },
     async removeItem(id_pelanggan) {
