@@ -1,5 +1,5 @@
 <script>
-import { usePembelianStore } from "@/stores/Pembelian";
+import { usePembelianStore } from "@/stores/pembelian";
 import { currencyFormatter } from "@/utils/helper";
 
 export default {
