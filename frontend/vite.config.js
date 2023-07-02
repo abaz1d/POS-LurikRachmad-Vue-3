@@ -5,7 +5,8 @@ import { defineConfig, splitVendorChunkPlugin } from "vite";
 import vue from "@vitejs/plugin-vue";
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(({ command, mode }) => ({
+  base: command === "build" ? "/abadan-land-arrangement/" : "/",
   plugins: [/*basicSsl(),*/ tailwindcss, vue({}), splitVendorChunkPlugin()],
   resolve: {
     alias: {
@@ -32,4 +33,4 @@ export default defineConfig({
     //   }
     // }
   },
-});
+}));

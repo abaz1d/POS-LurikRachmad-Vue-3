@@ -1,5 +1,5 @@
 import { useAuthStore } from "@/stores/auth";
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
 import SideMenu from "@/layouts/side-menu/Main.vue";
 import SimpleMenu from "@/layouts/simple-menu/Main.vue";
 import TopMenu from "@/layouts/top-menu/Main.vue";
@@ -371,7 +371,8 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(),
+  // history: createWebHistory(),
+  history: createWebHashHistory("/abadan-land-arrangement/"),
   routes,
   scrollBehavior(to, from, savedPosition) {
     return savedPosition || { left: 0, top: 0 };
