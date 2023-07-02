@@ -12,9 +12,15 @@ export default defineConfig({
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
-  // server: {
-  //   port: 8000,
-  // },
+  server: {
+    https: {
+      // ...
+      // Konfigurasi HTTPS sesuai kebutuhan Anda
+      // ...
+    },
+    // Tambahkan opsi disableHostCheck untuk mengizinkan permintaan HTTP
+    disableHostCheck: true,
+  },
   build: {
     // rollupOptions: {
     //   output: {

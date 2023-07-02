@@ -16,6 +16,7 @@
     "express-fileupload": "^1.4.0",
     "express-session": "^1.17.3",
     "http-errors": "^2.0.0",
+    "http-proxy-middleware": "^2.0.6",
     "jsonwebtoken": "^9.0.0",
     "morgan": "~1.9.1",
     "pg": "^8.8.0"
