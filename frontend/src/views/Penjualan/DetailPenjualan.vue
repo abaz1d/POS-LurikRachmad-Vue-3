@@ -1,5 +1,5 @@
 <script>
-import { usePenjualanStore } from "@/stores/Penjualan";
+import { usePenjualanStore } from "@/stores/penjualan";
 import { currencyFormatter } from "@/utils/helper";
 
 export default {
