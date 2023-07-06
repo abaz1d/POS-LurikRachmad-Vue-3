@@ -4,7 +4,7 @@
 
 This is a simple full stack Vue Point of Sales application which provides a solid starting point for [PostgreSQL](https://www.postgresql.org/), [ExpressJS](https://expressjs.com/), [Vue.js](https://vuejs.org/) and [NodeJS](https://nodejs.org/en/) based applications. Client side code is written in Vue and the backend API is written using Express.
 
-The point of sales, or point of purchase, is the time and place for the completion of retail transactions. At the point of sale, the merchant calculates the amount owed by the customer, indicates the amount, can prepare an invoice for the customer, and indicates options for the customer to make payment.
+The point of sales, or point of purchase, is the time and place for the completion of retail transactions. At the point of sale, the merchant calculates the amount owed by the customer, indicates the amount, can prepare an invoice for the customer, and indicates options for the customer to make payment. 
 
 ## Before You Begin
 
